@@ -36,7 +36,7 @@ public class TestAdaptorImpl implements TestAdaptor {
         HttpEntity<List<Response>> requestEntity = new HttpEntity<>(headers);
 
         //responseEntity
-        ResponseEntity<List<Response>> exchange = restTemplate.exchange("http://180.210.83.227:6060" + "/api/orders-statuses",
+        ResponseEntity<List<Response>> exchange = restTemplate.exchange("http://180.210.83.227:6060" + "/api/orders-status",
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<List<Response>>() {
