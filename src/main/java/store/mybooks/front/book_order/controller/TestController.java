@@ -25,10 +25,10 @@ import store.mybooks.front.book_order.service.TestService;
 public class TestController {
     private final TestService testService;
 
-    @GetMapping("/api/orders-statuses")
+    @GetMapping("/test")
     public ResponseEntity<String> test() {
         List<Response> data = testService.getTestResult();
-        return new ResponseEntity<>(data.get(0).toString(), HttpStatus.OK);
+        return new ResponseEntity<>("ok", HttpStatus.OK);
     }
 
 }
