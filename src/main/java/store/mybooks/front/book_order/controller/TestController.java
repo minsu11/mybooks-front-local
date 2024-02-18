@@ -28,7 +28,8 @@ public class TestController {
     @GetMapping("/test")
     public ResponseEntity<String> test() {
         List<Response> data = testService.getTestResult();
-        return new ResponseEntity<>("ok", HttpStatus.OK);
+        String result = "result: " + data.size();
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 }
