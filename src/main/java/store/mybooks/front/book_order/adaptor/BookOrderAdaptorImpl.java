@@ -38,7 +38,7 @@ public class BookOrderAdaptorImpl implements BookOrderAdaptor {
 
         HttpEntity<List<Response>> requestEntity = new HttpEntity<>(headers);
 
-        ResponseEntity<List<Response>> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/orders-status",
+        ResponseEntity<List<Response>> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/orders-statuses",
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<List<Response>>() {
