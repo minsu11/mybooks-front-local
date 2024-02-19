@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import store.mybooks.front.book_order.model.Response;
-import store.mybooks.front.book_order.service.TestService;
+import store.mybooks.front.book_order.service.BookOrderService;
 
 /**
  * packageName    : store.mybooks.front.book_order.controller
@@ -22,8 +22,8 @@ import store.mybooks.front.book_order.service.TestService;
  */
 @RestController
 @RequiredArgsConstructor
-public class TestController {
-    private final TestService testService;
+public class BookOrderRestController {
+    private final BookOrderService testService;
 
     @GetMapping("/test")
     public ResponseEntity<String> test() {

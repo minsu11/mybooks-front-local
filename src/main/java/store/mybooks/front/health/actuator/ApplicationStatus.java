@@ -1,4 +1,4 @@
-package store.mybooks.front.l4.actuator;
+package store.mybooks.front.health.actuator;
 
 import org.springframework.stereotype.Component;
 

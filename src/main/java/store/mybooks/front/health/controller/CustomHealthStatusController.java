@@ -1,11 +1,11 @@
-package store.mybooks.front.l4.controller;
+package store.mybooks.front.health.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import store.mybooks.front.l4.actuator.ApplicationStatus;
+import store.mybooks.front.health.actuator.ApplicationStatus;
 
 
 /**

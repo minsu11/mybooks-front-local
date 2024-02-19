@@ -15,6 +15,6 @@ import store.mybooks.front.book_order.model.Response;
  * 2/19/24        minsu11       최초 생성
  */
 
-public interface TestAdaptor {
+public interface BookOrderAdaptor {
     List<Response> test();
 }

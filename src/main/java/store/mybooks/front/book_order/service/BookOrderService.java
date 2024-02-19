@@ -3,7 +3,7 @@ package store.mybooks.front.book_order.service;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import store.mybooks.front.book_order.adaptor.TestAdaptor;
+import store.mybooks.front.book_order.adaptor.BookOrderAdaptor;
 import store.mybooks.front.book_order.model.Response;
 
 /**
@@ -19,11 +19,11 @@ import store.mybooks.front.book_order.model.Response;
  */
 @Service
 @RequiredArgsConstructor
-public class TestService {
-    private final TestAdaptor testAdaptor;
+public class BookOrderService {
+    private final BookOrderAdaptor bookOrderAdaptor;
 
     public List<Response> getTestResult() {
-        List<Response> responseList = testAdaptor.test();
+        List<Response> responseList = bookOrderAdaptor.test();
         return responseList;
     }
 
