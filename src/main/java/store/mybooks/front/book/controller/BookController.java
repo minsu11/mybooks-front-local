@@ -1,6 +1,7 @@
 package store.mybooks.front.book.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -15,10 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * 2/22/24        minsu11       최초 생성<br>
  */
 @Controller
-@RequestMapping("book")
+@RequestMapping("/book")
 public class BookController {
+    @GetMapping
     public String get() {
 
-        return "layout";
+        return "my-books-layout";
     }
 }
