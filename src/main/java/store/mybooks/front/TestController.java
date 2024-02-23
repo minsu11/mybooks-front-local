@@ -55,4 +55,9 @@ public class TestController {
     public String test7() {
         return "faq";
     }
+
+    @GetMapping("index")
+    public String test8() {
+        return "index";
+    }
 }
