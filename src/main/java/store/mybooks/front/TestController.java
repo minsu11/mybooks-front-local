@@ -70,4 +70,9 @@ public class TestController {
     public String test10() {
         return "product-details";
     }
+
+    @GetMapping("product-grids")
+    public String test11() {
+        return "product-grids";
+    }
 }
