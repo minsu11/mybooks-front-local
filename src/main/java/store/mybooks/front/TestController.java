@@ -20,4 +20,14 @@ public class TestController {
     public String test() {
         return "about-us";
     }
+
+    @GetMapping("blog-grid-sidebar")
+    public String test1() {
+        return "blog-grid-sidebar";
+    }
+
+    @GetMapping("blog-single")
+    public String test2() {
+        return "blog-single";
+    }
 }
