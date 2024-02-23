@@ -86,4 +86,8 @@ public class TestController {
         return "index";
     }
 
+    @GetMapping("register")
+    public String test14() {
+        return "register";
+    }
 }
