@@ -45,4 +45,9 @@ public class TestController {
     public String test5() {
         return "checkout";
     }
+
+    @GetMapping("contact")
+    public String test6() {
+        return "contact";
+    }
 }
