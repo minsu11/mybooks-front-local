@@ -75,4 +75,15 @@ public class TestController {
     public String test11() {
         return "product-grids";
     }
+
+    @GetMapping("product-list")
+    public String test12() {
+        return "product-list";
+    }
+
+    @GetMapping("/")
+    public String test13() {
+        return "index";
+    }
+
 }
