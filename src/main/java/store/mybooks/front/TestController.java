@@ -30,4 +30,9 @@ public class TestController {
     public String test2() {
         return "blog-single";
     }
+
+    @GetMapping("blog-single-sidebar")
+    public String test3() {
+        return "blog-single-sidebar";
+    }
 }
