@@ -60,4 +60,9 @@ public class TestController {
     public String test8() {
         return "index";
     }
+
+    @GetMapping("login")
+    public String test9() {
+        return "login";
+    }
 }
