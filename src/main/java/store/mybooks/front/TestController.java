@@ -35,4 +35,9 @@ public class TestController {
     public String test3() {
         return "blog-single-sidebar";
     }
+
+    @GetMapping("cart")
+    public String test4() {
+        return "cart";
+    }
 }
