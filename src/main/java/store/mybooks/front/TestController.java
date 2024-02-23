@@ -65,4 +65,9 @@ public class TestController {
     public String test9() {
         return "login";
     }
+
+    @GetMapping("product-details")
+    public String test10() {
+        return "product-details";
+    }
 }
