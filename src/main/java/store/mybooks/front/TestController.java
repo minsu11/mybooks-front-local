@@ -40,4 +40,9 @@ public class TestController {
     public String test4() {
         return "cart";
     }
+
+    @GetMapping("checkout")
+    public String test5() {
+        return "checkout";
+    }
 }
