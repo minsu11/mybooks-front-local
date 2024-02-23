@@ -18,8 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+    /**
+     * get 요청이 들어오면 관리자 페이지를 반환
+     *
+     * @return 관리자 페이지 파일 명
+     */
     @GetMapping
     public String doAdmin() {
+        
         return "admin";
 
     }
