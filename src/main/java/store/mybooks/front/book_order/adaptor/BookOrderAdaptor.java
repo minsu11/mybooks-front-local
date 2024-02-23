@@ -17,4 +17,5 @@ import store.mybooks.front.book_order.model.Response;
 
 public interface BookOrderAdaptor {
     List<Response> test();
+    
 }
