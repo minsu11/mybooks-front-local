@@ -50,4 +50,9 @@ public class TestController {
     public String test6() {
         return "contact";
     }
+
+    @GetMapping("faq")
+    public String test7() {
+        return "faq";
+    }
 }
