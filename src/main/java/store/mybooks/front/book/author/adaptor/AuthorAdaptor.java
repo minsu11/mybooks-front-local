@@ -15,7 +15,7 @@ import store.mybooks.front.pageable.dto.response.PageResponse;
  * fileName       : AuthorAdaptor<br>
  * author         : minsu11<br>
  * date           : 2/23/24<br>
- * description    :
+ * description    : gateway 서버와 연결되어 요청과 응답을 해주는 adaptor
  * ===========================================================<br>
  * DATE              AUTHOR             NOTE<br>
  * -----------------------------------------------------------<br>
@@ -43,6 +43,7 @@ public class AuthorAdaptor {
             throw new RuntimeException();
         }
         return exchange.getBody();
-
     }
+
+    public
 }

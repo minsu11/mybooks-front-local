@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
  * fileName       : AuthorCreateRequest<br>
  * author         : minsu11<br>
  * date           : 2/24/24<br>
- * description    :
+ * description    : 저자 등록하는 dto
  * ===========================================================<br>
  * DATE              AUTHOR             NOTE<br>
  * -----------------------------------------------------------<br>
