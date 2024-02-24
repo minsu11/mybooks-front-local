@@ -6,6 +6,8 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import store.mybooks.front.book.author.dto.request.AuthorCreateRequest;
+import store.mybooks.front.book.author.dto.response.AuthorCreateResponse;
 import store.mybooks.front.book.author.dto.response.AuthorResponse;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.pageable.dto.response.PageResponse;
@@ -45,5 +47,31 @@ public class AuthorAdaptor {
         return exchange.getBody();
     }
 
-    public
+    /**
+     * methodName : createAuthor<br>
+     * author : minsu11<br>
+     * description : {@code AuthorCreateRequest}를 {@code gateway}로 요청 보내
+     * 저자를 등록한 후 {@code AuthorCraeteResponse}로 응답 받음
+     * <br> *
+     *
+     * @param authorCreateRequest 등록할 저자
+     * @return authorCreateResponse 등록하고 응답 받은 데이터
+     */
+    public AuthorCreateResponse createAuthor(AuthorCreateRequest authorCreateRequest) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+
+        HttpEntity<AuthorCreateRequest> requestHttpEntity = new HttpEntity<>(authorCreateRequest, headers);
+        ResponseEntity<AuthorCreateResponse> exchage = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/authors",
+                HttpMethod.POST,
+                requestHttpEntity,
+                new ParameterizedTypeReference<AuthorCreateResponse>() {
+                });
+
+        if (exchage.getStatusCode() != HttpStatus.CREATED) {
+            throw new RuntimeException();
+        }
+        return exchage.getBody();
+    }
 }
