@@ -1,5 +1,9 @@
 package store.mybooks.front.book.author.dto.request;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 /**
  * packageName    : store.mybooks.front.book.author.dto.request<br>
  * fileName       : AuthorCreateRequest<br>
@@ -11,5 +15,11 @@ package store.mybooks.front.book.author.dto.request;
  * -----------------------------------------------------------<br>
  * 2/24/24        minsu11       최초 생성<br>
  */
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class AuthorCreateRequest {
+    private String name;
+
+    private String content;
 }
