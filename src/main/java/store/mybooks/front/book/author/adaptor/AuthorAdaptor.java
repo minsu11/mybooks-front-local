@@ -51,7 +51,7 @@ public class AuthorAdaptor {
      * methodName : createAuthor<br>
      * author : minsu11<br>
      * description : {@code AuthorCreateRequest}를 {@code gateway}로 요청 보내
-     * 저자를 등록한 후 {@code AuthorCraeteResponse}로 응답 받음
+     * 저자를 등록한 후 {@code AuthorCreateResponse}로 응답 받음
      * <br> *
      *
      * @param authorCreateRequest 등록할 저자
