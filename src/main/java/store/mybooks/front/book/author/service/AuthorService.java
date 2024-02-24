@@ -1,9 +1,11 @@
 package store.mybooks.front.book.author.service;
 
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.book.author.adaptor.AuthorAdaptor;
+import store.mybooks.front.book.author.dto.request.AuthorCreateRequest;
 import store.mybooks.front.book.author.dto.response.AuthorResponse;
 
 /**
@@ -35,7 +37,17 @@ public class AuthorService {
         return adaptor.getAuthor().getContent();
     }
 
-    public void createAuthor() {
-        
+    /**
+     * methodName : createAuthor<br>
+     * author : minsu11<br>
+     * description : 등록할 저자의 정보를 저장.
+     * 저장에 성공 되면 {@code true} 반환. 실패 하면 {@code false} 반환
+     * <br> *
+     *
+     * @param request 등록할 저자 정보
+     * @return 저장한 객체의 응답 값이 {@code nonNull}인지 아닌지 따른 {@code boolean} 값 반환
+     */
+    public boolean createAuthor(AuthorCreateRequest request) {
+        return Objects.nonNull(adaptor.createAuthor(request));
     }
 }
