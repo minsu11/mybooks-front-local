@@ -2,6 +2,8 @@ package store.mybooks.front.user.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * packageName    : store.mybooks.resource.user.dto.response
@@ -16,7 +18,8 @@ import lombok.Getter;
  */
 
 @Getter
-@AllArgsConstructor
+@Setter
+@NoArgsConstructor
 public class UserLoginResponse {
 
     private Boolean isValidUser;

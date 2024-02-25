@@ -3,6 +3,7 @@ package store.mybooks.front.user.dto.response;
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -19,7 +20,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@NoArgsConstructor
 public class UserCreateResponse {
 
     private String name;
