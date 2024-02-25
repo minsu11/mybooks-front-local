@@ -2,11 +2,14 @@ package store.mybooks.front.book.author.controller;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import store.mybooks.front.book.author.dto.request.AuthorCreateRequest;
 import store.mybooks.front.book.author.dto.response.AuthorResponse;
 import store.mybooks.front.book.author.service.AuthorService;
 
@@ -21,6 +24,7 @@ import store.mybooks.front.book.author.service.AuthorService;
  * -----------------------------------------------------------<br>
  * 2/24/24        minsu11       최초 생성<br>
  */
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin/authors")
@@ -30,6 +34,7 @@ public class AuthorController {
 
     @GetMapping
     public String viewAuthor(ModelMap modelMap) {
+        log.info("저자 폼");
 
         List<AuthorResponse> authorResponseList = authorService.getAllAuthors();
         modelMap.put("authorList", authorResponseList);
@@ -44,9 +49,17 @@ public class AuthorController {
     }
 
 
-    @PostMapping
-    public String doRegisterAuthor() {
-        return "redirect:admin/view/author-view";
+    @PostMapping("/register")
+    public String doRegisterAuthor(
+            @ModelAttribute AuthorCreateRequest createRequest) {
+
+        log.info("=======>value: {}", createRequest.getName());
+        if (authorService.createAuthor(createRequest)) {
+            log.info("확인");
+            return "redirect:/admin/authors";
+        }
+        return "redirect:/admin/authors/register";
+
     }
 
 

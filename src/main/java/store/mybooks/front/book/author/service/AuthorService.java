@@ -1,12 +1,14 @@
 package store.mybooks.front.book.author.service;
 
 import java.util.List;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.book.author.adaptor.AuthorAdaptor;
 import store.mybooks.front.book.author.dto.request.AuthorCreateRequest;
+import store.mybooks.front.book.author.dto.response.AuthorCreateResponse;
 import store.mybooks.front.book.author.dto.response.AuthorResponse;
+
 
 /**
  * packageName    : store.mybooks.front.book.author.service<br>
@@ -19,6 +21,7 @@ import store.mybooks.front.book.author.dto.response.AuthorResponse;
  * -----------------------------------------------------------<br>
  * 2/24/24        minsu11       최초 생성<br>
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthorService {
@@ -47,6 +50,14 @@ public class AuthorService {
      * @return 저장한 객체의 응답 값이 {@code nonNull}인지 아닌지 따른 {@code boolean} 값 반환
      */
     public boolean createAuthor(AuthorCreateRequest request) {
-        return Objects.nonNull(adaptor.createAuthor(request));
+        try {
+            log.info("등록 메서드 시작 ");
+            AuthorCreateResponse authorCreateResponse = adaptor.createAuthor(request);
+            log.info("등록하고 난 후 value:{}", authorCreateResponse);
+            return true;
+        } catch (RuntimeException e) {
+
+            return false;
+        }
     }
 }

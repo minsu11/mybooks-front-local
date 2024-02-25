@@ -5,6 +5,13 @@
 
 <div layout:fragment="content">
     <p>저자 등록 페이지 및 수정 페이지</p>
-
+    <div class="input-group input-group-sm justify-content-center mb-3">
+        <form method="post" action="/admin/authors/register">
+            <input type="text" name="name" class="form-control" placeholder="저자 명"/>
+            <input type="text" name="content" class="form-control" placeholder="저자 설명"/>
+            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">등록
+            </button>
+        </form>
+    </div>
 </div>
 </html>
