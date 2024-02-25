@@ -19,6 +19,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PublisherResponse {
-    private Integer id;
     private String name;
+    private Integer id;
 }

@@ -5,32 +5,29 @@
 
 <div layout:fragment="content">
     <div class="container mt-5">
-        <h2>저자</h2>
-        <form method="get" action="/admin/authors/register">
+        <h2>출판사</h2>
+        <form method="get" action="/admin/publisher/register">
             <button type="submit" class="btn btn-outline-primary">Primary</button>
 
         </form>
         <table class="table">
             <thead>
             <tr>
-                <th>저자</th>
-                <th>내용</th>
+                <th>출판사</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="author:${authorList}">
-                <p th:text="${author.getId()}" hidden></p>
-                <td th:text="${author.getName()}"></td>
-                <td th:text="${author.getContent()}"></td>
+            <tr th:each="publisher:${publisherList}">
+                <td th:text="${publisher.getName()}"></td>
                 <td>
-                    <form method="get" action="/admin/authors/update">
-                        <input type="hidden" th:name="id" th:value="${author.getId()}"/>
+                    <form method="get" action="/admin/publisher/update">
+                        <input type="hidden" th:name="id" th:value="${publisher.getId()}"/>
                         <button class="btn btn-outline-secondary" type="submit" id="button-addon2">수정하기</button>
                     </form>
                 </td>
                 <td>
-                    <form id="deleteForm" method="post" action="/admin/authors/delete">
-                        <input type="hidden" th:name="id" th:value="${author.getId()}"/>
+                    <form id="deleteForm" method="post" action="/admin/publisher/delete">
+                        <input type="hidden" th:name="id" th:value="${publisher.getId()}"/>
                         <button class="btn btn-outline-secondary" type="submit" id="button-delete">삭제
                         </button>
                     </form>

@@ -25,8 +25,8 @@ import store.mybooks.front.pageable.dto.response.PageResponse;
 @Component
 @RequiredArgsConstructor
 public class PublisherAdaptor {
-    private RestTemplate restTemplate;
-    private GatewayAdaptorProperties gatewayAdaptorProperties;
+    private final RestTemplate restTemplate;
+    private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
     /**
      * methodName : getPublisherList<br>
