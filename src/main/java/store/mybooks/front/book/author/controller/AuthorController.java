@@ -59,7 +59,6 @@ public class AuthorController {
             return "redirect:/admin/authors";
         }
         return "redirect:/admin/authors/register";
-
     }
 
 
