@@ -31,6 +31,16 @@ public class AuthorAdaptor {
     private final RestTemplate restTemplate;
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
+    /**
+     * methodName : getAuthor<br>
+     * author : minsu11<br>
+     * description : 요청한 {@code id}를 통해 저자의 정보를 조회
+     * <br> *
+     *
+     * @param id 조회할 저자의 {@code id}
+     * @return author response
+     * @throws RuntimeException {@code Http status code ok}가 나오지 않는 경우
+     */
     public AuthorResponse getAuthor(Integer id) {
         ResponseEntity<AuthorResponse> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/authors/{id}",
                 HttpMethod.GET,
