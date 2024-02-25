@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/admin-layout}">
+
+<div layout:fragment="content">
+    <p>출판사 등록 페이지 및 수정 페이지</p>
+    <div class="input-group input-group-sm justify-content-center mb-3">
+        <form method="post" action="/admin/publishers/register">
+            <div th:if="${modifyPublisher == null}">
+                <input type="text" name="name" class="form-control" placeholder="출판사 명"/>
+                <button class="btn btn-outline-secondary" type="submit">등록
+                </button>
+            </div>
+            <div th:if="${modifyPublisher != null }">
+                <input type="text" name="name" class="form-control" placeholder="출판사 명"
+                       th:value="${modifyPublisher.name}"/>
+                <button class="btn btn-outline-secondary" type="submit">수정
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+</html>

@@ -76,4 +76,5 @@ public class PublisherAdaptor {
         return exchange.getBody();
     }
 
+
 }

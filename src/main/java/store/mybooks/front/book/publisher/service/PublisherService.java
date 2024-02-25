@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.book.publisher.adaptor.PublisherAdaptor;
+import store.mybooks.front.book.publisher.dto.request.PublisherCreateRequest;
 import store.mybooks.front.book.publisher.dto.response.PublisherResponse;
 
 /**
@@ -30,4 +31,13 @@ public class PublisherService {
         return list;
     }
 
+    public boolean registerPublisher(PublisherCreateRequest request) {
+        try {
+            publisherAdaptor.registerPublisher(request);
+
+        } catch (RuntimeException e) {
+            return false;
+        }
+        return true;
+    }
 }

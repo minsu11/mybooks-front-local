@@ -6,7 +6,7 @@
 <div layout:fragment="content">
     <div class="container mt-5">
         <h2>출판사</h2>
-        <form method="get" action="/admin/publisher/register">
+        <form method="get" action="/admin/publishers/register">
             <button type="submit" class="btn btn-outline-primary">Primary</button>
 
         </form>
@@ -20,7 +20,7 @@
             <tr th:each="publisher:${publisherList}">
                 <td th:text="${publisher.getName()}"></td>
                 <td>
-                    <form method="get" action="/admin/publisher/update">
+                    <form method="get" action="/admin/publishers/update">
                         <input type="hidden" th:name="id" th:value="${publisher.getId()}"/>
                         <button class="btn btn-outline-secondary" type="submit" id="button-addon2">수정하기</button>
                     </form>
