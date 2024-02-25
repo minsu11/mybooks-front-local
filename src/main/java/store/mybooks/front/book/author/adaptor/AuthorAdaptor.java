@@ -121,15 +121,26 @@ public class AuthorAdaptor {
         return exchange.getBody();
     }
 
+    /**
+     * methodName : deleteAuthor<br>
+     * author : minsu11<br>
+     * description : 저자 id에 대한 삭제. 정상 삭제 시 {@code AuthorDeleteResponse}를 반환
+     * 삭제 실패 시 {@code RuntimeException}을 던짐
+     * <br> *
+     *
+     * @param id 삭제할 저자 아이디
+     * @return 삭제한 저자 이름이 담긴 dto
+     * @throws RuntimeException 삭제 실패 시
+     */
     public AuthorDeleteResponse deleteAuthor(Integer id) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
         HttpEntity<AuthorDeleteResponse> request = new HttpEntity<>(headers);
-        ResponseEntity<AuthorResponse> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/author/{id}",
+        ResponseEntity<AuthorDeleteResponse> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/author/{id}",
                 HttpMethod.DELETE,
                 request,
-                new ParameterizedTypeReference<AuthorResponse>() {
+                new ParameterizedTypeReference<AuthorDeleteResponse>() {
                 }, id);
         if (exchange.getStatusCode() != HttpStatus.OK) {
             throw new RuntimeException();
