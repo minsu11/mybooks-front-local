@@ -8,6 +8,7 @@ import store.mybooks.front.book.author.adaptor.AuthorAdaptor;
 import store.mybooks.front.book.author.dto.request.AuthorCreateRequest;
 import store.mybooks.front.book.author.dto.request.AuthorModifyRequest;
 import store.mybooks.front.book.author.dto.response.AuthorCreateResponse;
+import store.mybooks.front.book.author.dto.response.AuthorDeleteResponse;
 import store.mybooks.front.book.author.dto.response.AuthorModifyResponse;
 import store.mybooks.front.book.author.dto.response.AuthorResponse;
 
@@ -29,6 +30,7 @@ import store.mybooks.front.book.author.dto.response.AuthorResponse;
 public class AuthorService {
     private final AuthorAdaptor adaptor;
 
+
     /**
      * methodName : getAllAuthors<br>
      * author : minsu11<br>
@@ -38,7 +40,7 @@ public class AuthorService {
      * @return 모든 저자의 list
      */
     public List<AuthorResponse> getAllAuthors() {
-        return adaptor.getAuthor().getContent();
+        return adaptor.getAuthors().getContent();
     }
 
     /**
@@ -72,11 +74,23 @@ public class AuthorService {
      * @param request
      * @return boolean
      */
-    public boolean modifyAuthor(AuthorModifyRequest request, Integer id) {
+    public boolean updateAuthor(AuthorModifyRequest request, Integer id) {
         try {
             log.info("수정 메서드 시작");
             AuthorModifyResponse authorModifyResponse = adaptor.modifyResponse(request, id);
             log.info("수정 된 저자: {}", authorModifyResponse);
+            return true;
+        } catch (RuntimeException e) {
+            return false;
+        }
+    }
+
+    public boolean deleteAuthor(Integer id) {
+        try {
+            log.info("delete 시작");
+            AuthorDeleteResponse deleteResponse = adaptor.deleteAuthor(id);
+            log.info("delete response:{}", deleteResponse);
+
             return true;
         } catch (RuntimeException e) {
             return false;
