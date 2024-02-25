@@ -82,7 +82,7 @@ public class AuthorController {
                                  @ModelAttribute AuthorModifyRequest request) {
 
         log.info("modify request: {}", request);
-        if (authorService.modifyAuthor(request, id)) {
+        if (authorService.updateAuthor(request, id)) {
             log.info("if문 진입");
             return "redirect:/admin/authors";
         }
