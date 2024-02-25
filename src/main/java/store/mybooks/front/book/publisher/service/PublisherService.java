@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.book.publisher.adaptor.PublisherAdaptor;
 import store.mybooks.front.book.publisher.dto.request.PublisherCreateRequest;
+import store.mybooks.front.book.publisher.dto.request.PublisherModifyRequest;
+import store.mybooks.front.book.publisher.dto.request.PublisherRequest;
 import store.mybooks.front.book.publisher.dto.response.PublisherResponse;
 
 /**
@@ -36,6 +38,16 @@ public class PublisherService {
             publisherAdaptor.registerPublisher(request);
 
         } catch (RuntimeException e) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean updatePublisher(PublisherRequest request) {
+        try {
+            publisherAdaptor.updatePublisher(new PublisherModifyRequest(request.getName()), request.getId());
+        } catch (RuntimeException e
+        ) {
             return false;
         }
         return true;

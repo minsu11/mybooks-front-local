@@ -7,7 +7,9 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import store.mybooks.front.book.publisher.dto.request.PublisherCreateRequest;
+import store.mybooks.front.book.publisher.dto.request.PublisherModifyRequest;
 import store.mybooks.front.book.publisher.dto.response.PublisherCreateResponse;
+import store.mybooks.front.book.publisher.dto.response.PublisherModifyResponse;
 import store.mybooks.front.book.publisher.dto.response.PublisherResponse;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.pageable.dto.response.PageResponse;
@@ -76,5 +78,30 @@ public class PublisherAdaptor {
         return exchange.getBody();
     }
 
+    /**
+     * methodName : updatePublisher<br>
+     * author : minsu11<br>
+     * description : 출판사의 정보 수정.
+     * <br> *
+     *
+     * @param publisherModifyRequest 출판사 수정 정보가 담긴 DTO
+     * @param id
+     * @return publisher modify response
+     */
+    public PublisherModifyResponse updatePublisher(PublisherModifyRequest publisherModifyRequest, Integer id) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
 
+        HttpEntity<PublisherModifyRequest> request = new HttpEntity<>(publisherModifyRequest, headers);
+        ResponseEntity<PublisherModifyResponse> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/publishers/{id}",
+                HttpMethod.PUT,
+                request,
+                new ParameterizedTypeReference<PublisherModifyResponse>() {
+                }, id);
+        if (exchange.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException();
+        }
+        return exchange.getBody();
+    }
 }

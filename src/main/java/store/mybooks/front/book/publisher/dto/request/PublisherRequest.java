@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * packageName    : store.mybooks.front.book.publisher.dto.request<br>
- * fileName       : PublisherModifyRequest<br>
+ * fileName       : PublisherRequest<br>
  * author         : minsu11<br>
  * date           : 2/26/24<br>
  * description    :
@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PublisherModifyRequest {
-    private String changeName;
+public class PublisherRequest {
+    private Integer id;
+    private String name;
 }

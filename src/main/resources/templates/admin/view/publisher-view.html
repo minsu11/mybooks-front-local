@@ -22,12 +22,14 @@
                 <td>
                     <form method="get" action="/admin/publishers/update">
                         <input type="hidden" th:name="id" th:value="${publisher.getId()}"/>
+                        <input type="hidden" th:name="name" th:value="${publisher.getName()}"/>
                         <button class="btn btn-outline-secondary" type="submit" id="button-addon2">수정하기</button>
                     </form>
                 </td>
                 <td>
                     <form id="deleteForm" method="post" action="/admin/publisher/delete">
                         <input type="hidden" th:name="id" th:value="${publisher.getId()}"/>
+                        <input type="hidden" th:name="name" th:value="${publisher.getName()}"/>
                         <button class="btn btn-outline-secondary" type="submit" id="button-delete">삭제
                         </button>
                     </form>
