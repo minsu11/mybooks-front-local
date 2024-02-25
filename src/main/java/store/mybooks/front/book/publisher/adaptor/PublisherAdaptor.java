@@ -28,6 +28,14 @@ public class PublisherAdaptor {
     private RestTemplate restTemplate;
     private GatewayAdaptorProperties gatewayAdaptorProperties;
 
+    /**
+     * methodName : getPublisherList<br>
+     * author : minsu11<br>
+     * description : {@code pagination}을 통해 출판사 정보를 일부분만 가지고 옴
+     * <br> *
+     *
+     * @return page response
+     */
     public PageResponse<PublisherResponse> getPublisherList() {
         ResponseEntity<PageResponse<PublisherResponse>> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/publishers",
                 HttpMethod.GET,
