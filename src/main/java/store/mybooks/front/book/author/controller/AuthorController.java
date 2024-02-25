@@ -23,9 +23,10 @@ import store.mybooks.front.book.author.service.AuthorService;
  */
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/admin/author")
+@RequestMapping("/admin/authors")
 public class AuthorController {
     private final AuthorService authorService;
+
 
     @GetMapping
     public String viewAuthor(ModelMap modelMap) {
@@ -33,18 +34,20 @@ public class AuthorController {
         List<AuthorResponse> authorResponseList = authorService.getAllAuthors();
         modelMap.put("authorList", authorResponseList);
         // todo 관리자 권한이 있는 사람만 가능하게
-        return "admin/author-view";
+        return "admin/view/author-view";
     }
 
-    @GetMapping("register")
+    @GetMapping("/register")
     public String viewAuthorRegister() {
 
         return "admin/view/author-register-view";
     }
 
+
     @PostMapping
     public String doRegisterAuthor() {
         return "redirect:admin/view/author-view";
     }
+
 
 }

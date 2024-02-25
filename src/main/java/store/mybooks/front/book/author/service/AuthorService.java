@@ -24,7 +24,6 @@ import store.mybooks.front.book.author.dto.response.AuthorResponse;
 public class AuthorService {
     private final AuthorAdaptor adaptor;
 
-
     /**
      * methodName : getAllAuthors<br>
      * author : minsu11<br>

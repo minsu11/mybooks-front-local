@@ -30,15 +30,10 @@ public class AuthorAdaptor {
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
     public PageResponse<AuthorResponse> getAuthor() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-
-        HttpEntity<PageResponse<AuthorResponse>> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<PageResponse<AuthorResponse>> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/authors",
                 HttpMethod.GET,
-                requestEntity,
+                null,
                 new ParameterizedTypeReference<PageResponse<AuthorResponse>>() {
                 });
         if (exchange.getStatusCode() != HttpStatus.OK) {

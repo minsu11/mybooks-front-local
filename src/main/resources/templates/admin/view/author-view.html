@@ -4,7 +4,24 @@
       layout:decorate="~{common/layout/admin-layout}">
 
 <div layout:fragment="content">
-    <p>저자 리스트 페이지</p>
-    
+    <div class="container mt-5">
+        <h2>저자</h2>
+      
+        <table class="table">
+            <thead>
+            <tr>
+                <th>저자</th>
+                <th>내용</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="author:${authorList}">
+                <td th:text="${author.getName()}"></td>
+                <td th:text="${author.getContent()}"></td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
 </div>
 </html>
