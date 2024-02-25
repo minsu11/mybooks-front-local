@@ -9,6 +9,7 @@ import org.springframework.web.client.RestTemplate;
 import store.mybooks.front.book.author.dto.request.AuthorCreateRequest;
 import store.mybooks.front.book.author.dto.request.AuthorModifyRequest;
 import store.mybooks.front.book.author.dto.response.AuthorCreateResponse;
+import store.mybooks.front.book.author.dto.response.AuthorDeleteResponse;
 import store.mybooks.front.book.author.dto.response.AuthorModifyResponse;
 import store.mybooks.front.book.author.dto.response.AuthorResponse;
 import store.mybooks.front.config.GatewayAdaptorProperties;
@@ -113,6 +114,22 @@ public class AuthorAdaptor {
                 HttpMethod.PUT,
                 requestHttpEntity,
                 new ParameterizedTypeReference<AuthorModifyResponse>() {
+                }, id);
+        if (exchange.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException();
+        }
+        return exchange.getBody();
+    }
+
+    public AuthorDeleteResponse deleteAuthor(Integer id) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        HttpEntity<AuthorDeleteResponse> request = new HttpEntity<>(headers);
+        ResponseEntity<AuthorResponse> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/author/{id}",
+                HttpMethod.DELETE,
+                request,
+                new ParameterizedTypeReference<AuthorResponse>() {
                 }, id);
         if (exchange.getStatusCode() != HttpStatus.OK) {
             throw new RuntimeException();
