@@ -89,5 +89,9 @@ public class AuthorController {
         return "redirect:/admin/authors/modify";
     }
 
-  
+    @DeleteMapping("/delete")
+    public String doDeleteAuthor(@ModelAttribute Integer id) {
+        //
+        return "redirect:/admin/authors";
+    }
 }
