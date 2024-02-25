@@ -54,6 +54,14 @@ public class AuthorAdaptor {
         return exchange.getBody();
     }
 
+    /**
+     * methodName : getAuthors<br>
+     * author : minsu11<br>
+     * description : 모든 저자의 정보를 조회
+     * <br> *
+     *
+     * @return page response
+     */
     public PageResponse<AuthorResponse> getAuthors() {
 
         ResponseEntity<PageResponse<AuthorResponse>> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/authors",
