@@ -6,7 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.book.author.adaptor.AuthorAdaptor;
 import store.mybooks.front.book.author.dto.request.AuthorCreateRequest;
+import store.mybooks.front.book.author.dto.request.AuthorModifyRequest;
 import store.mybooks.front.book.author.dto.response.AuthorCreateResponse;
+import store.mybooks.front.book.author.dto.response.AuthorModifyResponse;
 import store.mybooks.front.book.author.dto.response.AuthorResponse;
 
 
@@ -57,6 +59,26 @@ public class AuthorService {
             return true;
         } catch (RuntimeException e) {
 
+            return false;
+        }
+    }
+
+    /**
+     * methodName : modifyAuthor<br>
+     * author : minsu11<br>
+     * description : 저자의 정보가 수정. 수정이 성공이 되면 {@code true}, 실패하면 {@code false}
+     * <br> *
+     *
+     * @param request
+     * @return boolean
+     */
+    public boolean modifyAuthor(AuthorModifyRequest request, Integer id) {
+        try {
+            log.info("수정 메서드 시작");
+            AuthorModifyResponse authorModifyResponse = adaptor.modifyResponse(request, id);
+            log.info("수정 된 저자: {}", authorModifyResponse);
+            return true;
+        } catch (RuntimeException e) {
             return false;
         }
     }

@@ -7,7 +7,9 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import store.mybooks.front.book.author.dto.request.AuthorCreateRequest;
+import store.mybooks.front.book.author.dto.request.AuthorModifyRequest;
 import store.mybooks.front.book.author.dto.response.AuthorCreateResponse;
+import store.mybooks.front.book.author.dto.response.AuthorModifyResponse;
 import store.mybooks.front.book.author.dto.response.AuthorResponse;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.pageable.dto.response.PageResponse;
@@ -58,15 +60,41 @@ public class AuthorAdaptor {
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
 
         HttpEntity<AuthorCreateRequest> requestHttpEntity = new HttpEntity<>(authorCreateRequest, headers);
-        ResponseEntity<AuthorCreateResponse> exchage = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/authors",
+        ResponseEntity<AuthorCreateResponse> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/authors",
                 HttpMethod.POST,
                 requestHttpEntity,
                 new ParameterizedTypeReference<AuthorCreateResponse>() {
                 });
 
-        if (exchage.getStatusCode() != HttpStatus.CREATED) {
+        if (exchange.getStatusCode() != HttpStatus.CREATED) {
             throw new RuntimeException();
         }
-        return exchage.getBody();
+        return exchange.getBody();
+    }
+
+    /**
+     * methodName : modifyResponse<br>
+     * author : minsu11<br>
+     * description : 수정할 저자의 정보를 요청을 보냄. 성공적으로 수정이 됐다면 수정한 저자의 정보를 응답 받음.
+     * <br> *
+     *
+     * @param authorModifyRequest 수정 요청할 저자
+     * @return author modify response
+     * @throws RuntimeException {@code HttpStatus code}가 200이 아닌 경우
+     */
+    public AuthorModifyResponse modifyResponse(AuthorModifyRequest authorModifyRequest, Integer id) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        HttpEntity<AuthorModifyRequest> requestHttpEntity = new HttpEntity<>(authorModifyRequest, headers);
+        ResponseEntity<AuthorModifyResponse> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/authors/{id}",
+                HttpMethod.PUT,
+                requestHttpEntity,
+                new ParameterizedTypeReference<AuthorModifyResponse>() {
+                }, id);
+        if (exchange.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException();
+        }
+        return exchange.getBody();
     }
 }

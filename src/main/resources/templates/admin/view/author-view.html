@@ -19,8 +19,16 @@
             </thead>
             <tbody>
             <tr th:each="author:${authorList}">
+                <p th:text="${author.getId()}" hidden></p>
                 <td th:text="${author.getName()}"></td>
                 <td th:text="${author.getContent()}"></td>
+                <td>
+                    <form method="get" action="/admin/authors/modify">
+                        <input type="hidden" th:name="id" th:value="${author.getId()}"/>
+                        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">수정하기</button>
+                    </form>
+                </td>
+
             </tr>
 
             </tbody>

@@ -7,8 +7,15 @@
     <p>저자 등록 페이지 및 수정 페이지</p>
     <div class="input-group input-group-sm justify-content-center mb-3">
         <form method="post" action="/admin/authors/register">
-            <input type="text" name="name" class="form-control" placeholder="저자 명"/>
-            <input type="text" name="content" class="form-control" placeholder="저자 설명"/>
+            <div th:if="${modifyAuthor == null}">
+                <input type="text" name="name" class="form-control" placeholder="저자 명"/>
+                <input type="text" name="content" class="form-control" placeholder="저자 설명"/>
+            </div>
+            <div th:if="${modifyAuthor != null }">
+                <input type="text" name="name" class="form-control" placeholder="저자 명" th:value="modifyAuthor.name"/>
+                <input type="text" name="content" class="form-control" placeholder="저자 설명"
+                       th:value="modifyAuthor.content"/>
+            </div>
             <button class="btn btn-outline-secondary" type="submit" id="button-addon2">등록
             </button>
         </form>

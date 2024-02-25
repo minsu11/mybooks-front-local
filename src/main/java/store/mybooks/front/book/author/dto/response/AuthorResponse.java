@@ -19,10 +19,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Setter
 public class AuthorResponse {
-    private String name;
     private int id;
+    private String name;
     private String content;
-
-    // Getters and setters
-
 }
