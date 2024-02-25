@@ -31,6 +31,17 @@ public class AuthorAdaptor {
     private final RestTemplate restTemplate;
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
+    public AuthorResponse getAuthor(Integer id) {
+        ResponseEntity<AuthorResponse> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/authors/{id}",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<AuthorResponse>() {
+                }, id);
+        if (exchange.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException();
+        }
+        return exchange.getBody();
+    }
 
     public PageResponse<AuthorResponse> getAuthors() {
 
