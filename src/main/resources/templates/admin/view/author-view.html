@@ -23,9 +23,15 @@
                 <td th:text="${author.getName()}"></td>
                 <td th:text="${author.getContent()}"></td>
                 <td>
-                    <form method="get" action="/admin/authors/modify">
+                    <form method="get" action="/admin/authors/update">
                         <input type="hidden" th:name="id" th:value="${author.getId()}"/>
                         <button class="btn btn-outline-secondary" type="submit" id="button-addon2">수정하기</button>
+                    </form>
+                </td>
+                <td>
+                    <form id="deleteForm" method="post" action="/admin/authors/delete">
+                        <input type="hidden" th:name="id" th:value="${author.getId()}"/>
+                        <button class="btn btn-outline-secondary" type="submit" id="button-delete">삭제</button>
                     </form>
                 </td>
 
@@ -35,4 +41,26 @@
         </table>
     </div>
 </div>
+<script>
+    function submitForm() {
+        var form = document.getElementById("deleteForm");
+        var formData = new FormData(form);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open(form.method, form.action, true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    // 서버로부터의 응답을 처리할 코드
+                    console.log("폼이 성공적으로 제출되었습니다.");
+                } else {
+                    // 서버로부터의 에러 응답을 처리할 코드
+                    console.error("폼 제출 중 에러가 발생했습니다.");
+                }
+            }
+        };
+        xhr.send(formData);
+        window.parent.location.reload();
+    }
+</script>
 </html>

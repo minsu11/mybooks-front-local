@@ -1,5 +1,11 @@
-package store.mybooks.front.book.author.dto.request;/**
- *packageName    : store.mybooks.front.book.author.dto.request<br>
+package store.mybooks.front.book.author.dto.request;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+/**
+ * packageName    : store.mybooks.front.book.author.dto.request<br>
  * fileName       : AuthorDeleteRequest<br>
  * author         : minsu11<br>
  * date           : 2/25/24<br>
@@ -8,5 +14,10 @@ package store.mybooks.front.book.author.dto.request;/**
  * DATE              AUTHOR             NOTE<br>
  * -----------------------------------------------------------<br>
  * 2/25/24        minsu11       최초 생성<br>
- */public class AuthorDeleteRequest {
+ */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class AuthorDeleteRequest {
+    private Integer id;
 }

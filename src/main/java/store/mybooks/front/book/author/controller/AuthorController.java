@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import store.mybooks.front.book.author.dto.request.AuthorCreateRequest;
+import store.mybooks.front.book.author.dto.request.AuthorDeleteRequest;
 import store.mybooks.front.book.author.dto.request.AuthorModifyRequest;
 import store.mybooks.front.book.author.dto.response.AuthorResponse;
 import store.mybooks.front.book.author.service.AuthorService;
@@ -71,27 +72,31 @@ public class AuthorController {
      */
     @GetMapping("/update")
     public String viewModifyForm(ModelMap modelMap,
-                                 @ModelAttribute Integer id) {
-
+                                 @RequestParam(name = "id") Integer id) {
+        log.info("author id value: {}", id);
+        modelMap.put("modifyAuthor", new AuthorModifyRequest(1, "test", "ts"));
         return "admin/view/author-register-view";
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     public String doModifyAuthor(ModelMap map,
-                                 @ModelAttribute Integer id,
                                  @ModelAttribute AuthorModifyRequest request) {
 
         log.info("modify request: {}", request);
-        if (authorService.updateAuthor(request, id)) {
+        if (authorService.updateAuthor(request)) {
             log.info("if문 진입");
             return "redirect:/admin/authors";
         }
         return "redirect:/admin/authors/modify";
     }
 
-    @DeleteMapping("/delete")
-    public String doDeleteAuthor(@ModelAttribute Integer id) {
-        //
+    @PostMapping("/delete")
+    public String doDeleteAuthor(@ModelAttribute AuthorDeleteRequest id) {
+        log.info("삭제할 id value: {}", id);
+        if (authorService.deleteAuthor(id)) {
+
+            return "redirect:/admin/authors";
+        }
         return "redirect:/admin/authors";
     }
 }

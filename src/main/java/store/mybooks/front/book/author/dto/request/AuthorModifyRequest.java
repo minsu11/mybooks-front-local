@@ -17,6 +17,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class AuthorModifyRequest {
+    private Integer id;
     private String name;
     private String content;
 

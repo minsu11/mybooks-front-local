@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.book.author.adaptor.AuthorAdaptor;
 import store.mybooks.front.book.author.dto.request.AuthorCreateRequest;
+import store.mybooks.front.book.author.dto.request.AuthorDeleteRequest;
 import store.mybooks.front.book.author.dto.request.AuthorModifyRequest;
 import store.mybooks.front.book.author.dto.response.AuthorCreateResponse;
 import store.mybooks.front.book.author.dto.response.AuthorDeleteResponse;
@@ -74,10 +75,10 @@ public class AuthorService {
      * @param request
      * @return boolean
      */
-    public boolean updateAuthor(AuthorModifyRequest request, Integer id) {
+    public boolean updateAuthor(AuthorModifyRequest request) {
         try {
             log.info("수정 메서드 시작");
-            AuthorModifyResponse authorModifyResponse = adaptor.modifyResponse(request, id);
+            AuthorModifyResponse authorModifyResponse = adaptor.modifyResponse(request, request.getId());
             log.info("수정 된 저자: {}", authorModifyResponse);
             return true;
         } catch (RuntimeException e) {
@@ -85,10 +86,10 @@ public class AuthorService {
         }
     }
 
-    public boolean deleteAuthor(Integer id) {
+    public boolean deleteAuthor(AuthorDeleteRequest request) {
         try {
             log.info("delete 시작");
-            AuthorDeleteResponse deleteResponse = adaptor.deleteAuthor(id);
+            AuthorDeleteResponse deleteResponse = adaptor.deleteAuthor(request.getId());
             log.info("delete response:{}", deleteResponse);
 
             return true;

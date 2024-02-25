@@ -137,7 +137,7 @@ public class AuthorAdaptor {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
         HttpEntity<AuthorDeleteResponse> request = new HttpEntity<>(headers);
-        ResponseEntity<AuthorDeleteResponse> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/author/{id}",
+        ResponseEntity<AuthorDeleteResponse> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/authors/{id}",
                 HttpMethod.DELETE,
                 request,
                 new ParameterizedTypeReference<AuthorDeleteResponse>() {
