@@ -72,7 +72,7 @@ public class AuthorService {
      * description : 저자의 정보가 수정. 수정이 성공이 되면 {@code true}, 실패하면 {@code false}
      * <br> *
      *
-     * @param request
+     * @param request 수정 할 저자가 담긴 DTO
      * @return boolean
      */
     public boolean updateAuthor(AuthorModifyRequest request) {
@@ -86,6 +86,16 @@ public class AuthorService {
         }
     }
 
+    /**
+     * methodName : deleteAuthor<br>
+     * author : minsu11<br>
+     * description : 요청 들어온 저자에 대한 삭제. 삭제 성공 시 {@code true} 반환하고
+     * 실패 시 {@code false}를 반환함
+     * <br> *
+     *
+     * @param request 삭제 요청할 저자 DTO
+     * @return boolean 삭제 성공 유무
+     */
     public boolean deleteAuthor(AuthorDeleteRequest request) {
         try {
             log.info("delete 시작");
