@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
  * fileName       : AuthorDeleteRequest<br>
  * author         : minsu11<br>
  * date           : 2/25/24<br>
- * description    :
+ * description    : 삭제할 저자의 DTO
  * ===========================================================<br>
  * DATE              AUTHOR             NOTE<br>
  * -----------------------------------------------------------<br>

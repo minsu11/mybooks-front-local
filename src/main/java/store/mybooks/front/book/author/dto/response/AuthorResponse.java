@@ -9,7 +9,7 @@ import lombok.Setter;
  * fileName       : AuthorResponse<br>
  * author         : minsu11<br>
  * date           : 2/24/24<br>
- * description    :
+ * description    : 저자의 응답 DTO
  * ===========================================================<br>
  * DATE              AUTHOR             NOTE<br>
  * -----------------------------------------------------------<br>
