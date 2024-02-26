@@ -31,10 +31,10 @@ public class PublisherService {
     /**
      * methodName : getPublisherList<br>
      * author : minsu11<br>
-     * description :
+     * description : 출판사의 목록을 조회
      * <br> *
      *
-     * @return list
+     * @return 출판사 목록 조회
      */
     public List<PublisherResponse> getPublisherList() {
         return publisherAdaptor.getPublisherList().getContent();
@@ -50,6 +50,15 @@ public class PublisherService {
         return true;
     }
 
+    /**
+     * methodName : updatePublisher<br>
+     * author : minsu11<br>
+     * description : 출판사 정보를 수정
+     * <br> *
+     *
+     * @param request 수정할 출판사 정보<br>
+     * @return 수정 성공 시 {@code true} 실패 시 {@code false}
+     */
     public boolean updatePublisher(PublisherRequest request) {
         try {
             publisherAdaptor.updatePublisher(new PublisherModifyRequest(request.getName()), request.getId());
@@ -60,6 +69,15 @@ public class PublisherService {
         return true;
     }
 
+    /**
+     * methodName : deletePublisher<br>
+     * author : minsu11<br>
+     * description : 출판사 정보를 삭제. 삭제 성공 시 {@code true} 반환하고, 실패 시 {@code false} 반환
+     * <br> *
+     *
+     * @param request 삭제할 출판사 정보<br>
+     * @return 삭제 성공 시 {@code true} 반환하고, 실패 시 {@code false} 반환
+     */
     public boolean deletePublisher(PublisherDeleteRequest request) {
         try {
             publisherAdaptor.deletePublisher(request.getId());

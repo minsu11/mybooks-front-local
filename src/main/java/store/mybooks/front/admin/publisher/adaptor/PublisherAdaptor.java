@@ -6,10 +6,10 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import store.mybooks.front.admin.publisher.dto.response.PublisherDeleteResponse;
 import store.mybooks.front.admin.publisher.dto.request.PublisherCreateRequest;
 import store.mybooks.front.admin.publisher.dto.request.PublisherModifyRequest;
 import store.mybooks.front.admin.publisher.dto.response.PublisherCreateResponse;
+import store.mybooks.front.admin.publisher.dto.response.PublisherDeleteResponse;
 import store.mybooks.front.admin.publisher.dto.response.PublisherModifyResponse;
 import store.mybooks.front.admin.publisher.dto.response.PublisherResponse;
 import store.mybooks.front.config.GatewayAdaptorProperties;
@@ -35,7 +35,7 @@ public class PublisherAdaptor {
     /**
      * methodName : getPublisherList<br>
      * author : minsu11<br>
-     * description : {@code pagination}을 통해 출판사 정보를 일부분만 가지고 옴
+     * description : {@code pagination}을 통해 출판사 정보를 일부분만 가지고 옴.
      * <br> *
      *
      * @return page response
@@ -55,7 +55,7 @@ public class PublisherAdaptor {
     /**
      * methodName : registerPublisher<br>
      * author : minsu11<br>
-     * description : 등록할 출판사 정보를 백엔드에 보낸 뒤 정상 등록이 된다면 응답 정보를 보냄
+     * description : 등록할 출판사 정보를 {@code resource}에 보낸 뒤 정상 등록이 된다면 응답 정보를 보냄
      * <br> *
      *
      * @param publisherCreateRequest 등록할 출판사 DTO
@@ -107,6 +107,15 @@ public class PublisherAdaptor {
 
     }
 
+    /**
+     * methodName : deletePublisher<br>
+     * author : minsu11<br>
+     * description : {@code id}에 맞는 저자의 정보를 삭제
+     * <br> *
+     *
+     * @param id 삭제할 저자의 id
+     * @return publisher delete response
+     */
     public PublisherDeleteResponse deletePublisher(Integer id) {
         ResponseEntity<PublisherDeleteResponse> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/publishers/{id}",
                 HttpMethod.DELETE,
