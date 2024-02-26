@@ -1,5 +1,6 @@
 package store.mybooks.front.user_status.dto.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
@@ -14,8 +15,9 @@ import lombok.Getter;
  * 2/19/24        masiljangajji       최초 생성
  */
 @Getter
+@AllArgsConstructor
 public class UserStatusGetResponse {
 
-    String id;
+    private String id;
 
 }
