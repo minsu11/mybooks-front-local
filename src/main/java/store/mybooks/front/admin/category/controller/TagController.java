@@ -5,10 +5,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import store.mybooks.front.admin.category.model.request.TagCreateRequest;
+import store.mybooks.front.admin.category.model.request.TagModifyRequest;
 import store.mybooks.front.admin.category.service.TagService;
 
 /**
@@ -72,12 +74,31 @@ public class TagController {
      * author : damho-lee <br>
      * description : 태그 등록 요청 처리. 성공적으로 처리하면 태그 등록페이지로 리다이렉트. <br>
      *
-     * @param tagCreateRequest ㅆagCreateRequest
+     * @param tagCreateRequest TagCreateRequest
      * @return string
      */
     @PostMapping("/register")
     public String createTag(@ModelAttribute TagCreateRequest tagCreateRequest) {
         tagService.createTag(tagCreateRequest);
-        return "/admin/view/tag-register";
+        return "redirect:/admin/tag/register";
+    }
+
+    @GetMapping("/update")
+    public String getUpdatePage(@RequestParam("id") Integer id, Model model) {
+        model.addAttribute("tag", tagService.getTag(id));
+        return "/admin/view/tag-update";
+    }
+
+    @PostMapping("/update/{id}")
+    public String updateTag(@PathVariable("id") Integer id, @ModelAttribute TagModifyRequest tagModifyRequest) {
+        tagService.updateTag(id, tagModifyRequest);
+        return "redirect:/admin/tag";
+    }
+
+
+    @GetMapping("/delete/{id}")
+    public String deleteTag(@PathVariable("id") Integer id) {
+        tagService.deleteTag(id);
+        return "redirect:/admin/tag";
     }
 }

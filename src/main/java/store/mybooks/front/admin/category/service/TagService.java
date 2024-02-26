@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.admin.category.adaptor.TagAdaptor;
 import store.mybooks.front.admin.category.model.request.TagCreateRequest;
+import store.mybooks.front.admin.category.model.request.TagModifyRequest;
 import store.mybooks.front.admin.category.model.response.TagGetResponse;
 import store.mybooks.front.pageable.dto.response.PageResponse;
 
@@ -36,6 +37,10 @@ public class TagService {
         return tagAdaptor.getTags(page, size);
     }
 
+    public TagGetResponse getTag(Integer id) {
+        return tagAdaptor.getTag(id);
+    }
+
     /**
      * methodName : createTag <br>
      * author : damho-lee <br>
@@ -45,5 +50,13 @@ public class TagService {
      */
     public void createTag(TagCreateRequest tagCreateRequest) {
         tagAdaptor.createTag(tagCreateRequest);
+    }
+
+    public void updateTag(Integer id, TagModifyRequest tagModifyRequest) {
+        tagAdaptor.updateTag(id, tagModifyRequest);
+    }
+
+    public void deleteTag(Integer id) {
+        tagAdaptor.deleteTag(id);
     }
 }

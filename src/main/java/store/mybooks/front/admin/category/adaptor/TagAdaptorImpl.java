@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import store.mybooks.front.admin.category.model.request.TagCreateRequest;
+import store.mybooks.front.admin.category.model.request.TagModifyRequest;
 import store.mybooks.front.admin.category.model.response.TagGetResponse;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.pageable.dto.response.PageResponse;
@@ -35,6 +36,28 @@ public class TagAdaptorImpl implements TagAdaptor {
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
     @Override
+    public TagGetResponse getTag(Integer id) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<TagGetResponse> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + "/api/tags/" + id,
+                HttpMethod.GET,
+                requestEntity,
+                new ParameterizedTypeReference<>() {
+                });
+
+        if (exchange.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException();
+        }
+
+        return exchange.getBody();
+    }
+
+    @Override
     public PageResponse<TagGetResponse> getTags(int page, int size) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -43,7 +66,7 @@ public class TagAdaptorImpl implements TagAdaptor {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<PageResponse<TagGetResponse>> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + "/api/tags?" + page + "&size=" + size,
+                gatewayAdaptorProperties.getAddress() + "/api/tags?page=" + page + "&size=" + size,
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
@@ -72,6 +95,46 @@ public class TagAdaptorImpl implements TagAdaptor {
                 });
 
         if (exchange.getStatusCode() != HttpStatus.CREATED) {
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public void updateTag(Integer id, TagModifyRequest tagModifyRequest) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+
+        HttpEntity<TagModifyRequest> requestEntity = new HttpEntity<>(tagModifyRequest, headers);
+
+        ResponseEntity<Void> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + "/api/tags/" + id,
+                HttpMethod.PUT,
+                requestEntity,
+                new ParameterizedTypeReference<>() {
+                });
+
+        if (exchange.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public void deleteTag(Integer id) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<Void> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + "/api/tags/" + id,
+                HttpMethod.DELETE,
+                requestEntity,
+                new ParameterizedTypeReference<>() {
+                });
+
+        if (exchange.getStatusCode() != HttpStatus.OK) {
             throw new RuntimeException();
         }
     }
