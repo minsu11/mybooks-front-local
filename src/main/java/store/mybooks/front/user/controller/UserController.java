@@ -21,10 +21,10 @@ import store.mybooks.front.user.dto.response.PhoneNumberAuthResponse;
 import store.mybooks.front.user.dto.response.UserGetResponse;
 
 /**
- * packageName    : store.mybooks.front.user.controller
- * fileName       : UserController
- * author         : masiljangajji
- * date           : 2/23/24
+ * packageName    : store.mybooks.front.user.controller<br>
+ * fileName       : UserController<br>
+ * author         : masiljangajji<br>
+ * date           : 2/23/24<br>
  * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE

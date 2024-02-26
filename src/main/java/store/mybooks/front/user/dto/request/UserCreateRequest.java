@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
- * packageName    : store.mybooks.resource.user.dto.request
- * fileName       : UserCreateRequest
- * author         : masiljangajji
- * date           : 2/13/24
+ * packageName    : store.mybooks.resource.user.dto.request<br>
+ * fileName       : UserCreateRequest<br>
+ * author         : masiljangajji<br>
+ * date           : 2/13/24<br>
  * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE

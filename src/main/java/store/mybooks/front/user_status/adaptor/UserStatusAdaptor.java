@@ -11,10 +11,10 @@ import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.user_status.dto.response.UserStatusGetResponse;
 
 /**
- * packageName    : store.mybooks.front.user_status.adaptor
- * fileName       : UserStatusAdaptor
- * author         : masiljangajji
- * date           : 2/22/24
+ * packageName    : store.mybooks.front.user_status.adaptor<br>
+ * fileName       : UserStatusAdaptor<br>
+ * author         : masiljangajji<br>
+ * date           : 2/22/24<br>
  * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE

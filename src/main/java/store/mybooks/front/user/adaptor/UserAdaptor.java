@@ -28,10 +28,10 @@ import store.mybooks.front.user.dto.response.UserPasswordModifyResponse;
 import store.mybooks.front.user.dto.response.UserStatusModifyResponse;
 
 /**
- * packageName    : store.mybooks.front.user.adaptor
- * fileName       : UserAdaptor
- * author         : masiljangajji
- * date           : 2/23/24
+ * packageName    : store.mybooks.front.user.adaptor<br>
+ * fileName       : UserAdaptor<br>
+ * author         : masiljangajji<br>
+ * date           : 2/23/24<br>
  * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE

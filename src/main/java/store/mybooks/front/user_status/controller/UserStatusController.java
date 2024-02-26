@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import store.mybooks.front.user_status.adaptor.UserStatusAdaptor;
 
 /**
- * packageName    : store.mybooks.resource.user_status.controller
- * fileName       : UserStatusRestController
- * author         : masiljangajji
- * date           : 2/18/24
+ * packageName    : store.mybooks.resource.user_status.controller<br>
+ * fileName       : UserStatusRestController<br>
+ * author         : masiljangajji<br>
+ * date           : 2/18/24<br>
  * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE

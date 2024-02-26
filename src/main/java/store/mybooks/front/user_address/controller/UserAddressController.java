@@ -15,10 +15,10 @@ import store.mybooks.front.user_address.request.UserAddressModifyRequest;
 import store.mybooks.front.user_address.response.UserAddressGetResponse;
 
 /**
- * packageName    : store.mybooks.front.user.user_address.controller
- * fileName       : UserAddressController
- * author         : masiljangajji
- * date           : 2/25/24
+ * packageName    : store.mybooks.front.user.user_address.controller<br>
+ * fileName       : UserAddressController<br>
+ * author         : masiljangajji<br>
+ * date           : 2/25/24<br>
  * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE

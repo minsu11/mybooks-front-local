@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
- * packageName    : store.mybooks.resource.user.dto.response
- * fileName       : UserGetResponse
- * author         : masiljangajji
- * date           : 2/16/24
+ * packageName    : store.mybooks.resource.user.dto.response<br>
+ * fileName       : UserGetResponse<br>
+ * author         : masiljangajji<br>
+ * date           : 2/16/24<br>
  * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE
