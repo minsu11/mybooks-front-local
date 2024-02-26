@@ -47,7 +47,26 @@ public class UserAdaptor {
 
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
+    public void loginUser(UserLoginRequest userLoginRequest) {
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+
+        HttpEntity<UserLoginRequest> requestEntity = new HttpEntity<>(userLoginRequest, headers);
+
+        ResponseEntity<UserLoginResponse> responseEntity =
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/users/login", HttpMethod.POST,
+                        requestEntity,
+                        new ParameterizedTypeReference<>() {
+                        });
+
+        System.out.println(requestEntity.getBody().getPassword());
+
+        if (responseEntity.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException();
+        }
+    }
 
 
 
