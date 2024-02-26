@@ -65,8 +65,6 @@ public class UserAdaptor {
                         new ParameterizedTypeReference<>() {
                         });
 
-        System.out.println(requestEntity.getBody().getPassword());
-
         if (responseEntity.getStatusCode() != HttpStatus.OK) {
             throw new RuntimeException();
         }
