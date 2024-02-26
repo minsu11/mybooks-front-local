@@ -16,7 +16,6 @@ import lombok.NoArgsConstructor;
  * 2/13/24        masiljangajji       최초 생성
  */
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
 public class UserAddressCreateRequest {
 

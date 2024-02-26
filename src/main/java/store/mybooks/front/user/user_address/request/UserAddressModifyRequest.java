@@ -17,18 +17,11 @@ import lombok.NoArgsConstructor;
  */
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
 public class UserAddressModifyRequest {
 
     private String alias;
 
-    private String roadName;
-
     private String detail;
-
-    private Integer number;
-
-    private String reference;
 
 }
