@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/admin-layout}">
+
+<div layout:fragment="content">
+    <h1>카테고리 등록 페이지</h1>
+    <div>
+        <a th:href="@{/admin/category}" class="btn btn-primary" role="button">리스트로 돌아가기</a>
+    </div>
+    <div class="container d-flex justify-content-center align-items-center">
+        <form method="post" action="/admin/category/register">
+            <div class="col-auto">
+                <label for="firstParentCategoryId" class="form-label">1단계 카테고리 선택</label>
+                <select class="form-select" id="firstParentCategoryId" name="firstParentCategoryId" aria-label="Default select example">
+                    <option selected th:value="null" th:text="없음"></option>
+                    <option th:each="category : ${categoryIdAndNameList}" th:value="${category.id}" th:text="${category.name}">
+                    </option>
+                </select>
+            </div>
+            <div class="col-auto">
+                <label for="secondParentCategoryId" class="form-label">2단계 카테고리 선택</label>
+                <select class="form-select" id="secondParentCategoryId" name="secondParentCategoryId" aria-label="Default select example">
+                    <option selected th:value="null" th:text="없음"></option>
+                    <option th:each="category : ${childCategory}" th:value="${category.id}" th:text="${category.name}">
+                    </option>
+                </select>
+            </div>
+            <div class="col-auto">
+                <div class="form-inline form-group">
+                    <input type="text" class="form-control" id="categoryName" name="name" placeholder="카테고리 이름">
+                </div>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">카테고리 생성</button>
+            </div>
+        </form>
+    </div>
+</div>
+</html>
