@@ -6,18 +6,22 @@
 <div layout:fragment="content">
     <p>저자 등록 페이지 및 수정 페이지</p>
     <div class="input-group input-group-sm justify-content-center mb-3">
-        <form method="post" action="/admin/authors/register">
+        <form method="post" th:action="@{'/admin/authors/'+${pathValue}}">
             <div th:if="${modifyAuthor == null}">
                 <input type="text" name="name" class="form-control" placeholder="저자 명"/>
                 <input type="text" name="content" class="form-control" placeholder="저자 설명"/>
+                <button class="btn btn-outline-secondary" type="submit" id="button-register">등록
+                </button>
             </div>
             <div th:if="${modifyAuthor != null }">
-                <input type="text" name="name" class="form-control" placeholder="저자 명" th:value="${modifyAuthor.name}"/>
-                <input type="text" name="content" class="form-control" placeholder="저자 설명"
-                       th:value="${modifyAuthor.content}"/>
+                <input type="hidden" name="id" th:value="${modifyAuthor.getId()}"/>
+                <input type="text" id="name" name="name" class="form-control" placeholder="저자 명"
+                       th:value="${modifyAuthor.getName()}"/>
+                <input type="text" id="content" name="content" class="form-control" placeholder="저자 설명"
+                       th:value="${modifyAuthor.getContent()}"/>
+                <button class="btn btn-outline-secondary" type="submit" id="button-update">수정
+                </button>
             </div>
-            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">등록
-            </button>
         </form>
     </div>
 </div>

@@ -5,10 +5,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import store.mybooks.front.book.author.dto.request.AuthorCreateRequest;
 import store.mybooks.front.book.author.dto.request.AuthorDeleteRequest;
-import store.mybooks.front.book.author.dto.request.AuthorModifyRequest;
+import store.mybooks.front.book.author.dto.request.AuthorRequest;
 import store.mybooks.front.book.author.dto.response.AuthorResponse;
 import store.mybooks.front.book.author.service.AuthorService;
 
@@ -59,7 +62,8 @@ public class AuthorController {
      * @return string
      */
     @GetMapping("/register")
-    public String viewAuthorRegister() {
+    public String viewAuthorRegister(ModelMap modelMap) {
+        modelMap.put("pathValue", "register");
 
         return "admin/view/author-register-view";
     }
@@ -93,14 +97,15 @@ public class AuthorController {
      * <br> *
      *
      * @param modelMap 수정할 저자 데이터를 view에 전달해주는 modelMap
-     * @param id       저자의 id
+     * @param request  저자의 id
      * @return {@code view}가 저장된 경로
      */
     @GetMapping("/update")
     public String viewModifyForm(ModelMap modelMap,
-                                 @RequestParam(name = "id") Integer id) {
-        log.info("author id value: {}", id);
-        modelMap.put("modifyAuthor", new AuthorModifyRequest(1, "test", "ts"));
+                                 @ModelAttribute AuthorRequest request) {
+        log.info("author id value: {}", request);
+        modelMap.put("modifyAuthor", request);
+        modelMap.put("pathValue", "update");
         return "admin/view/author-register-view";
     }
 
@@ -118,7 +123,7 @@ public class AuthorController {
     @PostMapping("/update")
     public String doModifyAuthor(
             ModelMap modelMap,
-            @ModelAttribute AuthorModifyRequest request) {
+            @ModelAttribute AuthorRequest request) {
 
         log.info("modify request: {}", request);
         if (authorService.updateAuthor(request)) {
@@ -126,7 +131,7 @@ public class AuthorController {
             return "redirect:/admin/authors";
         }
         modelMap.put("modifyAuthor", request);
-        return "redirect:/admin/authors/modify";
+        return "redirect:/admin/authors/update";
     }
 
     /**

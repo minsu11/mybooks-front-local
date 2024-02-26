@@ -8,6 +8,7 @@ import store.mybooks.front.book.author.adaptor.AuthorAdaptor;
 import store.mybooks.front.book.author.dto.request.AuthorCreateRequest;
 import store.mybooks.front.book.author.dto.request.AuthorDeleteRequest;
 import store.mybooks.front.book.author.dto.request.AuthorModifyRequest;
+import store.mybooks.front.book.author.dto.request.AuthorRequest;
 import store.mybooks.front.book.author.dto.response.AuthorCreateResponse;
 import store.mybooks.front.book.author.dto.response.AuthorDeleteResponse;
 import store.mybooks.front.book.author.dto.response.AuthorModifyResponse;
@@ -75,10 +76,11 @@ public class AuthorService {
      * @param request 수정 할 저자가 담긴 DTO
      * @return boolean
      */
-    public boolean updateAuthor(AuthorModifyRequest request) {
+    public boolean updateAuthor(AuthorRequest request) {
         try {
             log.info("수정 메서드 시작");
-            AuthorModifyResponse authorModifyResponse = adaptor.modifyResponse(request, request.getId());
+            AuthorModifyRequest authorModifyRequest = new AuthorModifyRequest(request.getName(), request.getContent());
+            AuthorModifyResponse authorModifyResponse = adaptor.modifyResponse(authorModifyRequest, request.getId());
             log.info("수정 된 저자: {}", authorModifyResponse);
             return true;
         } catch (RuntimeException e) {

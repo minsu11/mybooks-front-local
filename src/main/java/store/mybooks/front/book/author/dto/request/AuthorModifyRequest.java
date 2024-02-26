@@ -2,6 +2,7 @@ package store.mybooks.front.book.author.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * packageName    : store.mybooks.front.book.author.dto.request<br>
@@ -15,10 +16,10 @@ import lombok.Data;
  * 2/25/24        minsu11       최초 생성<br>
  */
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class AuthorModifyRequest {
-    private Integer id;
-    private String name;
-    private String content;
+    private String changeName;
+    private String changeContent;
 
 }
