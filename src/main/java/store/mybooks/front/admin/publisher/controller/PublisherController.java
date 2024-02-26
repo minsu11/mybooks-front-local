@@ -89,20 +89,19 @@ public class PublisherController {
      * description : 출판사의 정보를 수정할 {@code view}를 보여줌.
      * <br> *
      *
-     * @param id            수정할 저자의 {@code id}
-     * @param modifyRequest
-     * @param modelMap
+     * @param id       수정할 출판사 아이디
+     * @param request  수정할 출판사 정보
+     * @param modelMap {@code view}로 전달
      * @return string
      */
-    @GetMapping("/update")
-    public String viewUpdatePublisher(@RequestParam(name = "id") Integer id,
-                                      @RequestParam(name = "name") PublisherModifyRequest modifyRequest,
-                                      ModelMap modelMap) {
-        modelMap.put("id", id);
-        modelMap.put("modifyPublisher", modifyRequest);
+    @GetMapping("/{id}")
+    public String viewUpdatePublisher(
+            @PathVariable Integer id,
+            @ModelAttribute PublisherModifyRequest request,
+            ModelMap modelMap) {
+        modelMap.put("id", "/" + id);
+        modelMap.put("modifyPublisher", request);
         modelMap.put("pathValue", "update");
-        log.info("수정할 출판사 아이디: {}", id);
-        log.info("수정할 출판사 이름: {}", modifyRequest.getChangeName());
         return "admin/view/publisher-register-view";
     }
 
@@ -122,13 +121,12 @@ public class PublisherController {
             @ModelAttribute PublisherRequest request,
             ModelMap modelMap) {
         log.info("id value:{}", request.getId());
-        String beforeValue = request.getName();
         if (publisherService.updatePublisher(request)) {
             return "redirect:/admin/publishers";
         }
         modelMap.put("id", request.getId());
         modelMap.put("modifyPublisher", request.getName());
-        return "redirect:/admin/publishers/update?id=" + request.getId() + "&name=" + beforeValue;
+        return "redirect:/admin/publishers/" + request.getId();
 
     }
 

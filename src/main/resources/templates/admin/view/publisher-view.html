@@ -20,8 +20,7 @@
             <tr th:each="publisher:${publisherList}">
                 <td th:text="${publisher.getName()}"></td>
                 <td>
-                    <form method="get" action="/admin/publishers/update">
-                        <input type="hidden" th:name="id" th:value="${publisher.getId()}"/>
+                    <form method="post" th:action="@{'/admin/publishers/'+${publisher.getId()}}">
                         <input type="hidden" th:name="name" th:value="${publisher.getName()}"/>
                         <button class="btn btn-outline-secondary" type="submit" id="button-addon2">수정하기</button>
                     </form>
