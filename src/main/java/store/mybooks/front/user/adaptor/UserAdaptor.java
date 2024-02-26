@@ -52,7 +52,22 @@ public class UserAdaptor {
 
 
 
+    public UserGetResponse findUserById(Long userId) {
 
+        ResponseEntity<UserGetResponse> responseEntity =
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/users/{userId}", HttpMethod.GET,
+                        null,
+                        new ParameterizedTypeReference<>() {
+                        },userId);
+
+
+        if (responseEntity.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException();
+        }
+
+        return responseEntity.getBody();
+
+    }
 
     public void modifyUserPassword(Long userId, UserPasswordModifyRequest modifyRequest){
 
