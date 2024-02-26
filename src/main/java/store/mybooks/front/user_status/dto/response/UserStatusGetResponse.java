@@ -1,4 +1,4 @@
-package store.mybooks.front.user.user_status.dto.response;
+package store.mybooks.front.user_status.dto.response;
 
 import lombok.Getter;
 

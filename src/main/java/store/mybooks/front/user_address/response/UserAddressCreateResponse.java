@@ -1,4 +1,4 @@
-package store.mybooks.front.user.user_address.response;
+package store.mybooks.front.user_address.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
