@@ -1,10 +1,7 @@
 package store.mybooks.front.user.dto.response;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -22,15 +19,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
+@AllArgsConstructor
 public class UserModifyResponse {
 
     private String name;
-    private String userStatusName;
-    private String userGradeName;
-    private LocalDateTime latestLogin;
-    private LocalDateTime deletedAt;
-    private LocalDate gradeChangedDate;
 
+    private String phoneNumber;
 
 }
