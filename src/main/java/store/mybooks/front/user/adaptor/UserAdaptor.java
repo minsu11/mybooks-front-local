@@ -200,6 +200,18 @@ public class UserAdaptor {
         }
     }
 
+    public void deleteUser(Long userId){
 
+        ResponseEntity<UserModifyResponse> responseEntity =
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/users/{userId}", HttpMethod.DELETE,
+                        null,
+                        new ParameterizedTypeReference<>() {
+                        },userId);
+
+
+        if (responseEntity.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException();
+        }
+    }
 
 }
