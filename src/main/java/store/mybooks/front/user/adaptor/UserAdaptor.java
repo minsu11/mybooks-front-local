@@ -68,9 +68,27 @@ public class UserAdaptor {
         }
     }
 
+    public void createUser(UserCreateRequest createRequest) {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+
+        HttpEntity<UserCreateRequest> requestEntity = new HttpEntity<>(createRequest, headers);
+
+        ResponseEntity<UserCreateResponse> responseEntity =
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/users", HttpMethod.POST,
+                        requestEntity,
+                        new ParameterizedTypeReference<>() {
+                        });
 
 
+        if (responseEntity.getStatusCode() != HttpStatus.CREATED) {
+            throw new RuntimeException();
+        }
+    }
 
+   
     public UserGetResponse findUserById(Long userId) {
 
         ResponseEntity<UserGetResponse> responseEntity =
