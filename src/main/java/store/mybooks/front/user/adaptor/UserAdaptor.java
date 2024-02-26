@@ -88,7 +88,21 @@ public class UserAdaptor {
         }
     }
 
-   
+    public PhoneNumberAuthResponse getPhoneNumberAuthResponse(){
+
+        ResponseEntity<PhoneNumberAuthResponse> responseEntity =
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/auth/phone", HttpMethod.GET,
+                        null,
+                        new ParameterizedTypeReference<>() {
+                        });
+
+
+        if (responseEntity.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException();
+        }
+
+        return responseEntity.getBody();
+    }
     public UserGetResponse findUserById(Long userId) {
 
         ResponseEntity<UserGetResponse> responseEntity =
