@@ -21,15 +21,7 @@ import store.mybooks.front.user.dto.response.PhoneNumberAuthResponse;
 import store.mybooks.front.user.dto.response.UserGetResponse;
 
 /**
- * packageName    : store.mybooks.front.user.controller<br>
- * fileName       : UserController<br>
- * author         : masiljangajji<br>
- * date           : 2/23/24<br>
- * description    :
- * ===========================================================
- * DATE              AUTHOR             NOTE
- * -----------------------------------------------------------
- * 2/23/24        masiljangajji       최초 생성
+ * The type User controller.
  */
 @Controller
 @RequiredArgsConstructor
@@ -40,9 +32,11 @@ public class UserController {
 
 
     /**
-     * Login user form string.
-     * Login 페이지로 이동
-     * @return the string
+     * methodName : loginUserForm
+     * author : masiljangajji
+     * description : 로그인 페이지로 이동
+     *
+     * @return string
      */
     @GetMapping("/login")
     public String loginUserForm() {
@@ -51,25 +45,25 @@ public class UserController {
 
 
     /**
-     * Create user form string.
-     * 회원가입 페이지로 이동
-     * @param model the model 유저정보를 담기위한 객체
-     * @return the string
+     * methodName : createUserForm
+     * author : masiljangajji
+     * description : 회원가입 페이지로 이동
+     *
+     * @return string
      */
     @GetMapping("/user/register")
-    public String createUserForm(Model model) {
-        UserGetResponse userGetResponse = userAdaptor.findUserById(1L);
-        model.addAttribute("user", userGetResponse);
-
+    public String createUserForm() {
         return "register";
     }
 
 
     /**
-     * My page form string.
-     * 유저 MyPage 로 이동
-     * @param model the model 유저정보를 담기위한 객체
-     * @return the string
+     * methodName : myPageForm
+     * author : masiljangajji
+     * description : mypage로 이동
+     *
+     * @param model 유저의 정보
+     * @return string
      */
     @GetMapping("/user")
     public String myPageForm(Model model) {
@@ -80,9 +74,11 @@ public class UserController {
     }
 
     /**
-     * User phone auth phone number auth response.
-     * 유저가 전화번호를 변경하거나 , 회원가입시 Dooray로 메시지 인증받기 위한 메서드
-     * @return the phone number auth response
+     * methodName : userPhoneAuth
+     * author : masiljangajji
+     * description : 유저 회원가입 및 전화번호 변경에 필요한 인증메시지를 요청
+     *
+     * @return phone number auth response
      */
     @GetMapping("/user/auth/phone")
     @ResponseBody
@@ -92,10 +88,12 @@ public class UserController {
     }
 
     /**
-     * Login user string.
-     * 유저의 로그인 요청을 처리함
-     * @param userLoginRequest the user login request
-     * @return the string
+     * methodName : loginUser
+     * author : masiljangajji
+     * description : 유저의 로그인처리
+     *
+     * @param userLoginRequest login request
+     * @return string
      */
     @PostMapping("/login")
     public String loginUser(@ModelAttribute UserLoginRequest userLoginRequest) {
@@ -104,10 +102,12 @@ public class UserController {
     }
 
     /**
-     * Create user string.
-     * 유저의 회원가입 요청을 처리함
-     * @param userCreateRequest the user create request
-     * @return the string
+     * methodName : createUser
+     * author : masiljangajji
+     * description : 회원가입 요청을 처리
+     *
+     * @param userCreateRequest create request
+     * @return string
      */
     @PostMapping("/user/register")
     public String createUser(@ModelAttribute UserCreateRequest userCreateRequest) {
@@ -116,10 +116,12 @@ public class UserController {
     }
 
     /**
-     * Modify user password string.
-     * 유저의 비밀번호 변경 요청을 처리함
-     * @param modifyRequest the modify request
-     * @return the string
+     * methodName : modifyUserPassword
+     * author : masiljangajji
+     * description : 유저의 비밀번호 변경
+     *
+     * @param modifyRequest request
+     * @return string
      */
     @PostMapping("/user/modify/password")
     public String modifyUserPassword(@ModelAttribute UserPasswordModifyRequest modifyRequest) {
@@ -130,10 +132,12 @@ public class UserController {
     }
 
     /**
-     * Modify user status string.
-     * 유저의 상태변경을 처리함
-     * @param modifyRequest the modify request
-     * @return the string
+     * methodName : modifyUserStatus
+     * author : masiljangajji
+     * description : 유저의 상태변경
+     *
+     * @param modifyRequest request
+     * @return string
      */
     @PostMapping("/user/modify/status")
     public String modifyUserStatus(@ModelAttribute UserStatusModifyRequest modifyRequest) {
@@ -144,10 +148,12 @@ public class UserController {
     }
 
     /**
-     * Modify user grade string.
-     * 유저의 등급변경을 처리함
-     * @param modifyRequest the modify request
-     * @return the string
+     * methodName : modifyUserGrade
+     * author : masiljangajji
+     * description : 유저의 등급 변경
+     *
+     * @param modifyRequest request
+     * @return string
      */
     @PostMapping("/user/modify/grade")
     public String modifyUserGrade(@ModelAttribute UserGradeModifyRequest modifyRequest) {
@@ -159,10 +165,12 @@ public class UserController {
 
 
     /**
-     * Modify user string.
-     * 유저의 정보 (이름,전화번호) 변경을 처리함
-     * @param modifyRequest the modify request
-     * @return the string
+     * methodName : modifyUser
+     * author : masiljangajji
+     * description : 유저의 정보를 변경 (이름,전화번호)
+     *
+     * @param modifyRequest request
+     * @return string
      */
     @PostMapping("/user/modify")
     public String modifyUser(@ModelAttribute UserModifyRequest modifyRequest) {
@@ -175,9 +183,11 @@ public class UserController {
 
 
     /**
-     * Delete user string.
-     * 유저 탈퇴를 처리함
-     * @return the string
+     * methodName : deleteUser
+     * author : masiljangajji
+     * description : 회원탈퇴
+     *
+     * @return string
      */
     @PostMapping("/user/delete")
     public String deleteUser() {

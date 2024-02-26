@@ -30,6 +30,14 @@ public class UserStatusAdaptor {
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
 
+    /**
+     * methodName : findUserStatusById
+     * author : masiljangajji
+     * description : 유저가 가질 수 있는 상태를 찾음
+     *
+     * @param id id
+     * @return user status get response
+     */
     public UserStatusGetResponse findUserStatusById(String id) {
         ResponseEntity<UserStatusGetResponse> responseEntity =
                 restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/users-statuses/{statusId}", HttpMethod.GET, null,

@@ -46,10 +46,13 @@ public class UserAdaptor {
 
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
+
     /**
-     * Login user.
-     * 유저의 로그인 요청을 처리
-     * @param userLoginRequest the user login request
+     * methodName : loginUser
+     * author : masiljangajji
+     * description : 유저의 로그인 요청을 처리함
+     *
+     * @param userLoginRequest login request
      */
     public void loginUser(UserLoginRequest userLoginRequest) {
 
@@ -70,10 +73,13 @@ public class UserAdaptor {
         }
     }
 
+
     /**
-     * Create user.
-     * 유저의 회원가입 요청을 처리
-     * @param createRequest the create request
+     * methodName : createUser
+     * author : masiljangajji
+     * description : 유저의 회원가입 요청을 처리함
+     *
+     * @param createRequest request
      */
     public void createUser(UserCreateRequest createRequest) {
 
@@ -95,10 +101,13 @@ public class UserAdaptor {
         }
     }
 
+
     /**
-     * Get phone number auth response phone number auth response.
-     * 유저가 전화번호 변경 및 회원가입시 전화번호 인증을 처리함
-     * @return the phone number auth response
+     * methodName : getPhoneNumberAuthResponse
+     * author : masiljangajji
+     * description : 유저 회원가입 , 전화번호 변경에 필요한 인증메시지를 요청함
+     *
+     * @return phone number auth response
      */
     public PhoneNumberAuthResponse getPhoneNumberAuthResponse(){
 
@@ -114,11 +123,14 @@ public class UserAdaptor {
         return responseEntity.getBody();
     }
 
+
     /**
-     * Find user by id user get response.
-     * 유저의 정보를 가져옴
-     * @param userId the user id
-     * @return the user get response
+     * methodName : findUserById
+     * author : masiljangajji
+     * description : 유저의 Id로 유저의 정보를 가져옴
+     *
+     * @param userId id
+     * @return user get response
      */
     public UserGetResponse findUserById(Long userId) {
 
@@ -137,11 +149,14 @@ public class UserAdaptor {
 
     }
 
+
     /**
-     * Modify user password.
-     * 유저의 비밀번호 변경을 처리함
-     * @param userId        the user id
-     * @param modifyRequest the modify request
+     * methodName : modifyUserPassword
+     * author : masiljangajji
+     * description : 유저의 비밀번호를 변경함
+     *
+     * @param userId   id
+     * @param modifyRequest request
      */
     public void modifyUserPassword(Long userId, UserPasswordModifyRequest modifyRequest){
 
@@ -163,11 +178,14 @@ public class UserAdaptor {
         }
     }
 
+
     /**
-     * Modify user status.
-     * 유저의 상태변경을 처리함
-     * @param userId        the user id
-     * @param modifyRequest the modify request
+     * methodName : modifyUserStatus
+     * author : masiljangajji
+     * description : 유저의 상태를 변경함
+     *
+     * @param userId   id
+     * @param modifyRequest request
      */
     public void modifyUserStatus(Long userId, UserStatusModifyRequest modifyRequest){
 
@@ -189,11 +207,14 @@ public class UserAdaptor {
         }
     }
 
+
     /**
-     * Modify user grade.
-     * 유저의 등급변경을 처리함
-     * @param userId        the user id
-     * @param modifyRequest the modify request
+     * methodName : modifyUserGrade
+     * author : masiljangajji
+     * description : 유저의 등급을 변경함
+     *
+     * @param userId   id
+     * @param modifyRequest request
      */
     public void modifyUserGrade(Long userId, UserGradeModifyRequest modifyRequest){
 
@@ -215,11 +236,14 @@ public class UserAdaptor {
         }
     }
 
+
     /**
-     * Modify user.
-     * 유저의 정보를 변경함(이름,전화번호)
-     * @param userId        the user id
-     * @param modifyRequest the modify request
+     * methodName : modifyUser
+     * author : masiljangajji
+     * description : 유저의 정보를 변경함 (이름,전화번호)
+     *
+     * @param userId   id
+     * @param modifyRequest request
      */
     public void modifyUser(Long userId, UserModifyRequest modifyRequest){
 
@@ -241,10 +265,13 @@ public class UserAdaptor {
         }
     }
 
+
     /**
-     * Delete user.
-     * 유저의 회원탈퇴를 처리함
-     * @param userId the user id
+     * methodName : deleteUser
+     * author : masiljangajji
+     * description : 회원탈퇴
+     *
+     * @param userId id
      */
     public void deleteUser(Long userId){
 

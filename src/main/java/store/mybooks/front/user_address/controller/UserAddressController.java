@@ -34,10 +34,12 @@ public class UserAddressController {
     private final UserAddressAdaptor userAddressAdaptor;
 
     /**
-     * User address form string.
-     * 유저 주소관리 페이지로 이동
-     * @param model the model 유저 주소정보를 담음
-     * @return the string
+     * methodName : userAddressForm
+     * author : masiljangajji
+     * description :유저 주소 페이지로 이동
+     *
+     * @param model 유저의 모든 주소 정보를 담음
+     * @return string
      */
     @GetMapping("/user/address")
     public String userAddressForm(Model model) {
@@ -47,17 +49,18 @@ public class UserAddressController {
 
         List<UserAddressGetResponse> list = userAddressAdaptor.findAllAddressByUserId(userId);
 
-        model.addAttribute("userId", userId);
         model.addAttribute("userAddressList", list);
 
         return "address";
     }
 
     /**
-     * Delete address string.
-     * 유저 주소를 삭제함 (강삭제)
-     * @param addressId the address id
-     * @return the string
+     * methodName : deleteAddress
+     * author : masiljangajji
+     * description : 유저의 주소를 삭제
+     *
+     * @param addressId id
+     * @return string
      */
     @PostMapping("/address/delete")
     public String deleteAddress(@RequestParam(name="addressId")Long addressId) {
@@ -67,10 +70,12 @@ public class UserAddressController {
     }
 
     /**
-     * Create user address string.
-     * 유저 주소를 생성함
-     * @param userAddressCreateRequest the user address create request
-     * @return the string
+     * methodName : createUserAddress
+     * author : masiljangajji
+     * description : 유저의 주소를 등록
+     *
+     * @param userAddressCreateRequest address create request
+     * @return string
      */
     @PostMapping("/user/address/create")
     public String createUserAddress(@ModelAttribute UserAddressCreateRequest userAddressCreateRequest) {
@@ -80,11 +85,13 @@ public class UserAddressController {
     }
 
     /**
-     * Modify user address string.
-     * 유저 주소를 변경함 (별명,상세주소)
-     * @param addressId                the address id
-     * @param userAddressModifyRequest the user address modify request
-     * @return the string
+     * methodName : modifyUserAddress
+     * author : masiljangajji
+     * description : 유저의 주소를 수정 (별명,상세주소)
+     *
+     * @param addressId id
+     * @param userAddressModifyRequest    address modify request
+     * @return string
      */
     @PostMapping("/user/address/modify")
     public String modifyUserAddress(@RequestParam(name = "addressId") Long addressId,

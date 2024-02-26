@@ -38,6 +38,14 @@ public class UserAddressAdaptor {
 
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
+    /**
+     * methodName : findAllAddressByUserId
+     * author : masiljangajji
+     * description : 유저의 모든 주소를 찾음
+     *
+     * @param userId id
+     * @return list
+     */
     public List<UserAddressGetResponse> findAllAddressByUserId(Long userId) {
 
         ResponseEntity<List<UserAddressGetResponse>> responseEntity =
@@ -54,6 +62,14 @@ public class UserAddressAdaptor {
         return responseEntity.getBody();
     }
 
+    /**
+     * methodName : deleteUserAddress
+     * author : masiljangajji
+     * description : 유저의 주소중 하나를 찾음
+     *
+     * @param userId    id
+     * @param addressId id
+     */
     public void deleteUserAddress(Long userId, Long addressId) {
 
         ResponseEntity<UserAddressDeleteResponse> responseEntity =
@@ -69,6 +85,14 @@ public class UserAddressAdaptor {
 
     }
 
+    /**
+     * methodName : createUserAddress
+     * author : masiljangajji
+     * description : 유저 주소를 생성
+     *
+     * @param userId id
+     * @param userAddressCreateRequest address create request
+     */
     public void createUserAddress(Long userId, UserAddressCreateRequest userAddressCreateRequest) {
 
         HttpHeaders headers = new HttpHeaders();
@@ -90,6 +114,15 @@ public class UserAddressAdaptor {
 
     }
 
+    /**
+     * methodName : modifyUserAddress
+     * author : masiljangajji
+     * description : 유저의 주소정보를 변경 (별명,상세주소)
+     *
+     * @param userId    id
+     * @param addressId id
+     * @param userAddressModifyRequest    address modify request
+     */
     public void modifyUserAddress(Long userId, Long addressId, UserAddressModifyRequest userAddressModifyRequest) {
 
         HttpHeaders headers = new HttpHeaders();
