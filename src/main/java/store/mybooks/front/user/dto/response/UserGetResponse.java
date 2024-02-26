@@ -2,6 +2,9 @@ package store.mybooks.front.user.dto.response;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * packageName    : store.mybooks.resource.user.dto.response
@@ -16,25 +19,26 @@ import java.time.LocalDateTime;
  */
 
 
-public interface UserGetResponse {
+@Getter
+@NoArgsConstructor
+public class UserGetResponse {
 
-    String getUserGradeUserGradeNameId();
+    String userGradeUserGradeNameId;
 
-    String getUserStatusId();
+    String userStatusId;
+    String name;
 
-    String getName();
+    String phoneNumber;
 
-    String getPhoneNumber();
+    String email;
 
-    String getEmail();
+    LocalDate birth;
 
-    LocalDate getBirth();
+    LocalDateTime createdAt;
 
-    LocalDateTime getCreatedAt();
+    LocalDateTime latestLogin;
 
-    LocalDateTime getLatestLogin();
-
-    LocalDate getGradeChangedDate();
+    LocalDate gradeChangedDate;
 
 
 }
