@@ -2,6 +2,7 @@ package store.mybooks.front.user.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * packageName    : store.mybooks.authorization.dooray.dto.response
@@ -16,9 +17,9 @@ import lombok.Getter;
  */
 
 @Getter
-@AllArgsConstructor
+@NoArgsConstructor
 public class PhoneNumberAuthResponse {
 
-    private final String randomNumber;
+    private String randomNumber;
 
 }

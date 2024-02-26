@@ -23,22 +23,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 @NoArgsConstructor
 public class UserGetResponse {
 
-    String userGradeUserGradeNameId;
+    private String userGradeUserGradeNameId;
 
-    String userStatusId;
-    String name;
+    private String userStatusId;
+    private String name;
 
-    String phoneNumber;
+    private String phoneNumber;
 
-    String email;
+    private String email;
 
-    LocalDate birth;
+    private LocalDate birth;
 
-    LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
-    LocalDateTime latestLogin;
+    private LocalDateTime latestLogin;
 
-    LocalDate gradeChangedDate;
+    private LocalDate gradeChangedDate;
 
 
 }
