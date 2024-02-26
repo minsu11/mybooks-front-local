@@ -1,9 +1,9 @@
-package store.mybooks.front.category.adaptor;
+package store.mybooks.front.admin.category.adaptor;
 
 import java.util.List;
-import store.mybooks.front.category.model.request.CategoryCreateRequestForTransmission;
-import store.mybooks.front.category.model.request.CategoryModifyRequestForTransmission;
-import store.mybooks.front.category.model.response.CategoryGetResponse;
+import store.mybooks.front.admin.category.model.request.CategoryCreateRequestForTransmission;
+import store.mybooks.front.admin.category.model.request.CategoryModifyRequestForTransmission;
+import store.mybooks.front.admin.category.model.response.CategoryGetResponse;
 import store.mybooks.front.pageable.dto.response.PageResponse;
 
 /**
