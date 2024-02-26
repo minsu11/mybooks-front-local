@@ -33,6 +33,12 @@ public class UserAddressController {
 
     private final UserAddressAdaptor userAddressAdaptor;
 
+    /**
+     * User address form string.
+     * 유저 주소정보를 보여줌
+     * @param model the model 주서정보를 담음
+     * @return the string
+     */
     @GetMapping("/user/address")
     public String userAddressForm(Model model) {
 
@@ -47,6 +53,12 @@ public class UserAddressController {
         return "address";
     }
 
+    /**
+     * Delete address string.
+     * 유저 주소를 삭제함 (강삭제)
+     * @param addressId the address id
+     * @return the string
+     */
     @PostMapping("/address/delete")
     public String deleteAddress(@RequestParam(name="addressId")Long addressId) {
         // todo userId는 토큰에거 꺼내 쓸 꺼야
@@ -54,6 +66,12 @@ public class UserAddressController {
         return "redirect:/user/address";
     }
 
+    /**
+     * Create user address string.
+     * 유저 주소를 생성함
+     * @param userAddressCreateRequest the user address create request
+     * @return the string
+     */
     @PostMapping("/user/address/create")
     public String createUserAddress(@ModelAttribute UserAddressCreateRequest userAddressCreateRequest) {
         // todo UserId는 토큰에서 꺼내 쓸 꺼야
@@ -61,6 +79,13 @@ public class UserAddressController {
         return "redirect:/user/address";
     }
 
+    /**
+     * Modify user address string.
+     * 유저 주소를 변경함 (별명,상세주소)
+     * @param addressId                the address id
+     * @param userAddressModifyRequest the user address modify request
+     * @return the string
+     */
     @PostMapping("/user/address/modify")
     public String modifyUserAddress(@RequestParam(name = "addressId") Long addressId,
                                     @ModelAttribute UserAddressModifyRequest userAddressModifyRequest) {

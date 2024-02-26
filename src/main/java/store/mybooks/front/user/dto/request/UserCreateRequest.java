@@ -35,4 +35,5 @@ public class UserCreateRequest {
 
     private Boolean isAdmin;
 
+
 }

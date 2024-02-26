@@ -38,7 +38,6 @@ import store.mybooks.front.user.dto.response.UserStatusModifyResponse;
  * -----------------------------------------------------------
  * 2/23/24        masiljangajji       최초 생성
  */
-
 @Component
 @RequiredArgsConstructor
 public class UserAdaptor {
@@ -47,6 +46,11 @@ public class UserAdaptor {
 
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
+    /**
+     * Login user.
+     * 유저의 로그인 요청을 처리
+     * @param userLoginRequest the user login request
+     */
     public void loginUser(UserLoginRequest userLoginRequest) {
 
         HttpHeaders headers = new HttpHeaders();
@@ -68,6 +72,11 @@ public class UserAdaptor {
         }
     }
 
+    /**
+     * Create user.
+     * 유저의 회원가입 요청을 처리
+     * @param createRequest the create request
+     */
     public void createUser(UserCreateRequest createRequest) {
 
         HttpHeaders headers = new HttpHeaders();
@@ -88,6 +97,11 @@ public class UserAdaptor {
         }
     }
 
+    /**
+     * Get phone number auth response phone number auth response.
+     * 유저가 전화번호 변경 및 회원가입시 전화번호 인증을 처리함
+     * @return the phone number auth response
+     */
     public PhoneNumberAuthResponse getPhoneNumberAuthResponse(){
 
         ResponseEntity<PhoneNumberAuthResponse> responseEntity =
@@ -95,14 +109,19 @@ public class UserAdaptor {
                         null,
                         new ParameterizedTypeReference<>() {
                         });
-
-
         if (responseEntity.getStatusCode() != HttpStatus.OK) {
             throw new RuntimeException();
         }
 
         return responseEntity.getBody();
     }
+
+    /**
+     * Find user by id user get response.
+     * 유저의 정보를 가져옴
+     * @param userId the user id
+     * @return the user get response
+     */
     public UserGetResponse findUserById(Long userId) {
 
         ResponseEntity<UserGetResponse> responseEntity =
@@ -120,6 +139,12 @@ public class UserAdaptor {
 
     }
 
+    /**
+     * Modify user password.
+     * 유저의 비밀번호 변경을 처리함
+     * @param userId        the user id
+     * @param modifyRequest the modify request
+     */
     public void modifyUserPassword(Long userId, UserPasswordModifyRequest modifyRequest){
 
         HttpHeaders headers = new HttpHeaders();
@@ -140,6 +165,12 @@ public class UserAdaptor {
         }
     }
 
+    /**
+     * Modify user status.
+     * 유저의 상태변경을 처리함
+     * @param userId        the user id
+     * @param modifyRequest the modify request
+     */
     public void modifyUserStatus(Long userId, UserStatusModifyRequest modifyRequest){
 
         HttpHeaders headers = new HttpHeaders();
@@ -160,6 +191,12 @@ public class UserAdaptor {
         }
     }
 
+    /**
+     * Modify user grade.
+     * 유저의 등급변경을 처리함
+     * @param userId        the user id
+     * @param modifyRequest the modify request
+     */
     public void modifyUserGrade(Long userId, UserGradeModifyRequest modifyRequest){
 
         HttpHeaders headers = new HttpHeaders();
@@ -180,6 +217,12 @@ public class UserAdaptor {
         }
     }
 
+    /**
+     * Modify user.
+     * 유저의 정보를 변경함(이름,전화번호)
+     * @param userId        the user id
+     * @param modifyRequest the modify request
+     */
     public void modifyUser(Long userId, UserModifyRequest modifyRequest){
 
         HttpHeaders headers = new HttpHeaders();
@@ -200,6 +243,11 @@ public class UserAdaptor {
         }
     }
 
+    /**
+     * Delete user.
+     * 유저의 회원탈퇴를 처리함
+     * @param userId the user id
+     */
     public void deleteUser(Long userId){
 
         ResponseEntity<UserModifyResponse> responseEntity =
