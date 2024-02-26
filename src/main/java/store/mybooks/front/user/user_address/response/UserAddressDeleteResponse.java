@@ -2,6 +2,7 @@ package store.mybooks.front.user.user_address.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * packageName    : store.mybooks.resource.user_address.dto.response
@@ -15,7 +16,7 @@ import lombok.Getter;
  * 2/13/24        masiljangajji       최초 생성
  */
 @Getter
-@AllArgsConstructor
+@NoArgsConstructor
 public class UserAddressDeleteResponse {
 
     private String message;

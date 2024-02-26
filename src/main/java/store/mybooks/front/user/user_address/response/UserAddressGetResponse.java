@@ -18,6 +18,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public class UserAddressGetResponse {
 
+    private Long id;
+
     private String alias;
 
     private String roadName;

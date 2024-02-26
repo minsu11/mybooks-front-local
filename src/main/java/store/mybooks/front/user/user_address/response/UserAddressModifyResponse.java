@@ -23,13 +23,7 @@ public class UserAddressModifyResponse {
 
     private String alias;
 
-    private String roadName;
-
     private String detail;
-
-    private Integer number;
-
-    private String reference;
 
 
 }
