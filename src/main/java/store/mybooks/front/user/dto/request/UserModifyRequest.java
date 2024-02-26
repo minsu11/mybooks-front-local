@@ -1,7 +1,5 @@
 package store.mybooks.front.user.dto.request;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,13 +21,7 @@ import lombok.NoArgsConstructor;
 public class UserModifyRequest {
 
     private String name;
-    private String password;
-    private String userStatusName;
-    private String userGradeName;
     private String phoneNumber;
-    private LocalDateTime latestLogin;
-    private LocalDateTime deletedAt;
-    private LocalDate gradeChangeDate;
 
 }
 
