@@ -6,8 +6,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import store.mybooks.front.user.adaptor.UserAdaptor;
 import store.mybooks.front.user.dto.request.UserCreateRequest;
 import store.mybooks.front.user.dto.request.UserGradeModifyRequest;
@@ -45,27 +47,25 @@ public class UserController {
     @GetMapping("/user/register")
     public String createUserForm(@ModelAttribute UserLoginRequest userLoginRequest,Model model) {
         UserGetResponse userGetResponse = userAdaptor.findUserById(1L);
-        model.addAttribute("userId",1L);
         model.addAttribute("user", userGetResponse);
 
-        return "real-test";
+        return "register";
     }
 
     @GetMapping("/user")
     public String myPageForm(Model model) {
         // todo JWT에서 id 꺼내쓰기
         UserGetResponse userGetResponse = userAdaptor.findUserById(1L);
-        model.addAttribute("userId",1L);
         model.addAttribute("user", userGetResponse);
         return "my-page";
     }
 
     @GetMapping("/user/auth/phone")
-    public String userPhoneAuth(Model model){
+    @ResponseBody
+    public PhoneNumberAuthResponse userPhoneAuth(){
 
         PhoneNumberAuthResponse phoneNumberAuthResponse = userAdaptor.getPhoneNumberAuthResponse();
-        model.addAttribute("phoneNumberAuth",phoneNumberAuthResponse.getRandomNumber());
-        return "/";
+        return phoneNumberAuthResponse;
     }
 
     @PostMapping("/login")
@@ -106,9 +106,11 @@ public class UserController {
 
 
     @PostMapping("/user/modify")
-    public String modifyUser(@RequestParam("userId")Long userId, @ModelAttribute UserModifyRequest modifyRequest) {
+    public String modifyUser(@ModelAttribute UserModifyRequest modifyRequest) {
 
-        userAdaptor.modifyUser(userId, modifyRequest);
+        // todo JWT 에서 뽑아오기
+
+        userAdaptor.modifyUser(1L, modifyRequest);
         return "redirect:/user";
     }
 
