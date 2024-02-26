@@ -42,7 +42,7 @@
                             <h2 class="accordion-header" id="headingOne">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    <span class="title">회원정보 관리</span><i
+                                    <span class="title">회원정보</span><i
                                         class="lni lni-plus"></i>
                                 </button>
                             </h2>
@@ -55,7 +55,6 @@
                                     <p><strong>생일:</strong> <span th:text="${user.birth}"></span></p>
                                     <p><strong>마지막 로그인:</strong> <span th:text="${user.latestLogin}"></span></p>
                                     <p><strong>등급 변경일:</strong> <span th:text="${user.gradeChangedDate}"></span></p>
-                                    <button type="button" class="btn btn-primary delete-btn" th:id="${userId}" th:onclick="'openWindow(' + ${userId} + ')'">수정</button>
                                 </div>
                             </div>
 
@@ -90,7 +89,7 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#collapseThree" aria-expanded="false"
                                         aria-controls="collapseThree">
-                                    <span class="title">나중에 추가</span><i
+                                    <span class="title">이름 변경</span><i
                                         class="lni lni-plus"></i>
                                 </button>
                             </h2>
@@ -98,7 +97,15 @@
                                  aria-labelledby="headingThree"
                                  data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
-
+                                    <form id="changeNameForm" action="/user/modify" method="post">
+                                        <!-- Hidden input으로 기존 핸드폰 번호를 전송합니다. -->
+                                        <input type="hidden" id="userPhoneNumber" name="phoneNumber" th:value="${user.phoneNumber}">
+                                        <div class="form-group">
+                                            <label for="newName">새 이름:</label>
+                                            <input type="text" id="newName" class="form-control" name="name" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">이름 변경</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -107,14 +114,28 @@
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#collapseFour" aria-expanded="false"
                                         aria-controls="collapseFour">
-                                    <span class="title">나중에 추가</span><i
+                                    <span class="title">전화번호 변경</span><i
                                         class="lni lni-plus"></i>
                                 </button>
                             </h2>
                             <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour"
                                  data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
-
+                                    <form id="changePhoneNumberForm" action="/user/modify" method="post" onsubmit="return checkPasswordAndAuth()">
+                                        <input type="hidden" id="name" name="name" th:value="${user.name}">
+                                        <div class="form-group">
+                                            <label for="phoneNumber">새 전화번호:</label>
+                                            <input type="text" id="phoneNumber" class="form-control" name="phoneNumber" required pattern="[0-9]{10,11}">
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="button" class="btn btn-primary" onclick="validatePhoneNumberAndRequestAuthCode()">인증받기</button>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="verificationCode">인증번호:</label>
+                                            <input type="text" id="verificationCode" class="form-control" name="verificationCode" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">전화번호 변경</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -198,6 +219,9 @@
     <!-- End Team Area -->
 
     <script>
+
+        var phoneNumberAuth; // 전역 변수로 선언하여 다른 함수에서도 사용할 수 있도록 설정
+
         function confirmAndSubmit() {
             // 사용자에게 확인 창을 표시합니다.
             var confirmResign = confirm("정말 탈퇴하시겠습니까?");
@@ -234,71 +258,57 @@
             return true;
         }
 
-        var newWindow;
+        function validatePhoneNumberAndRequestAuthCode() {
+            console.log(111)
+            // 전화번호 양식을 가져옵니다.
+            var phoneNumberInput = document.getElementById('phoneNumber');
 
-        function openWindow(userId) {
-            // 기존에 열려있는 창이 있다면 닫기
-            if (newWindow && !newWindow.closed) {
-                newWindow.close();
+            console.log(phoneNumberInput)
+            // 전화번호의 값
+            var phoneNumberValue = phoneNumberInput.value;
+            // 전화번호의 유효성을 확인합니다.
+            var phoneNumberPattern = /^[0-9]{10,11}$/;
+            if (!phoneNumberPattern.test(phoneNumberValue)) {
+                // 전화번호가 유효하지 않은 경우 경고 메시지를 표시하고 함수를 종료합니다.
+                alert("올바른 전화번호를 입력해주세요.");
+                return;
             }
 
-            // 새 창 열기
-            newWindow = window.open("", "NewWindow", "width=400,height=100");
-
-            console.log(userId)
-
-            // 새 창에 폼 내용 작성
-            var content = `
-        <html>
-        <head>
-            <title>회원 정보 수정</title>
-            <!-- 필요한 CSS와 스타일을 추가하세요 -->
-        </head>
-        <body>
-        <form id="modifyForm" method="post" action="/user/modify">
-            <input type="hidden" name="userId" value="${userId}"/>
-
-            <!-- 수정 양식 내용 -->
-            <div class="form-group">
-                <label for="modify_alias">이름</label>
-                <input type="text" id="modify_alias" class="form-control" name="name" placeholder="이름" required>
-            </div>
-            <div class="form-group">
-                <label for="modify_sample6_detailAddress">핸드폰번호</label>
-                <input type="text" id="modify_sample6_detailAddress" class="form-control" name="phoneNumber" placeholder="핸드폰번호" required>
-            </div>
-            <button type="submit">변경</button>
-        </form>
-        </body>
-        </html>
-    `;
-
-            // 새 창에 내용 쓰기
-            newWindow.document.write(content);
-
-            // 폼 제출 시 새 창 닫기
-            newWindow.document.getElementById('modifyForm').addEventListener('submit', function (event) {
-                event.preventDefault(); // 폼 제출 방지
-                var form = event.target; // 폼 요소 가져오기
-                var formData = new FormData(form); // 폼 데이터 생성
-                var xhr = new XMLHttpRequest(); // XMLHttpRequest 객체 생성
-                xhr.open('POST', form.action); // 요청 설정
-                xhr.onload = function () {
-                    // 요청 완료 시
-                    if (xhr.status === 200) {
-                        // 요청 성공 시
-                        newWindow.close(); // 새 창 닫기
-                        location.reload(); // 기존 페이지 새로고침
-                    }
-                };
-                xhr.send(formData); // 요청 전송
-            });
+            // 전화번호가 유효한 경우에만 인증번호를 요청합니다.
+            requestAuthCode();
         }
 
-        // 기존 창 닫기
-        function closeWindow() {
-            // 창 닫기
-            newWindow.close();
+        function requestAuthCode() {
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/user/auth/phone", true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        var responseJson = JSON.parse(xhr.responseText); // JSON 문자열을 JavaScript 객체로 변환
+                        phoneNumberAuth = responseJson.randomNumber; // 서버로부터 받은 인증번호 중 randomNumber 값만 추출하여 저장
+                        alert("인증번호를 전송했습니다.");
+                    } else {
+                        alert("인증번호 요청에 실패했습니다.");
+                    }
+                }
+            };
+            xhr.send();
+        }
+
+        function checkPasswordAndAuth() {
+            // 인증번호 확인
+            var verificationCode = document.getElementById('verificationCode').value;
+
+
+            if (verificationCode !== phoneNumberAuth) {
+                // 인증번호가 일치하지 않는 경우
+                alert("인증번호가 일치하지 않습니다.");
+                return false; // 회원가입 폼 제출 방지
+            }
+
+            // 인증번호가 일치하는 경우 회원가입 폼 제출
+            return true;
         }
 
     </script>
