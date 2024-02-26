@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.book.publisher.adaptor.PublisherAdaptor;
 import store.mybooks.front.book.publisher.dto.request.PublisherCreateRequest;
+import store.mybooks.front.book.publisher.dto.request.PublisherDeleteRequest;
 import store.mybooks.front.book.publisher.dto.request.PublisherModifyRequest;
 import store.mybooks.front.book.publisher.dto.request.PublisherRequest;
 import store.mybooks.front.book.publisher.dto.response.PublisherResponse;
@@ -27,10 +28,16 @@ import store.mybooks.front.book.publisher.dto.response.PublisherResponse;
 public class PublisherService {
     private final PublisherAdaptor publisherAdaptor;
 
+    /**
+     * methodName : getPublisherList<br>
+     * author : minsu11<br>
+     * description :
+     * <br> *
+     *
+     * @return list
+     */
     public List<PublisherResponse> getPublisherList() {
-        List<PublisherResponse> list = publisherAdaptor.getPublisherList().getContent();
-        log.info("value: {}", list);
-        return list;
+        return publisherAdaptor.getPublisherList().getContent();
     }
 
     public boolean registerPublisher(PublisherCreateRequest request) {
@@ -48,6 +55,16 @@ public class PublisherService {
             publisherAdaptor.updatePublisher(new PublisherModifyRequest(request.getName()), request.getId());
         } catch (RuntimeException e
         ) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean deletePublisher(PublisherDeleteRequest request) {
+        try {
+            publisherAdaptor.deletePublisher(request.getId());
+
+        } catch (RuntimeException e) {
             return false;
         }
         return true;

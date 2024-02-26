@@ -9,6 +9,7 @@ import org.springframework.web.client.RestTemplate;
 import store.mybooks.front.book.publisher.dto.request.PublisherCreateRequest;
 import store.mybooks.front.book.publisher.dto.request.PublisherModifyRequest;
 import store.mybooks.front.book.publisher.dto.response.PublisherCreateResponse;
+import store.mybooks.front.book.publisher.dto.response.PublisherDeleteResponse;
 import store.mybooks.front.book.publisher.dto.response.PublisherModifyResponse;
 import store.mybooks.front.book.publisher.dto.response.PublisherResponse;
 import store.mybooks.front.config.GatewayAdaptorProperties;
@@ -103,5 +104,21 @@ public class PublisherAdaptor {
             throw new RuntimeException();
         }
         return exchange.getBody();
+
     }
+
+    public PublisherDeleteResponse deletePublisher(Integer id) {
+        ResponseEntity<PublisherDeleteResponse> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/publishers/{id}",
+                HttpMethod.DELETE,
+                null,
+                new ParameterizedTypeReference<PublisherDeleteResponse>() {
+                },
+                id);
+        if (exchange.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException();
+        }
+        return exchange.getBody();
+
+    }
+
 }

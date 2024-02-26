@@ -27,9 +27,8 @@
                     </form>
                 </td>
                 <td>
-                    <form id="deleteForm" method="post" action="/admin/publisher/delete">
+                    <form id="deleteForm" method="post" action="/admin/publishers/delete">
                         <input type="hidden" th:name="id" th:value="${publisher.getId()}"/>
-                        <input type="hidden" th:name="name" th:value="${publisher.getName()}"/>
                         <button class="btn btn-outline-secondary" type="submit" id="button-delete">삭제
                         </button>
                     </form>

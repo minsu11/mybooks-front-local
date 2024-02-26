@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import store.mybooks.front.book.publisher.dto.request.PublisherCreateRequest;
+import store.mybooks.front.book.publisher.dto.request.PublisherDeleteRequest;
 import store.mybooks.front.book.publisher.dto.request.PublisherModifyRequest;
 import store.mybooks.front.book.publisher.dto.request.PublisherRequest;
 import store.mybooks.front.book.publisher.dto.response.PublisherResponse;
@@ -91,9 +92,9 @@ public class PublisherController {
     }
 
     @PostMapping("/delete")
-    public String doDelete() {
-
-
+    public String doDelete(@ModelAttribute PublisherDeleteRequest request) {
+        log.info("delete value: {}", request.getId());
+        publisherService.deletePublisher(request);
         return "redirect:/admin/publishers";
     }
 }
