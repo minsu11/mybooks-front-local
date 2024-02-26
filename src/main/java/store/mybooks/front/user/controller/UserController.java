@@ -41,7 +41,7 @@ public class UserController {
 
     /**
      * Login user form string.
-     * Login 페이지로 매핑
+     * Login 페이지로 이동
      * @return the string
      */
     @GetMapping("/login")
@@ -52,7 +52,7 @@ public class UserController {
 
     /**
      * Create user form string.
-     * 회원가입 페이지로 매핑
+     * 회원가입 페이지로 이동
      * @param model the model 유저정보를 담기위한 객체
      * @return the string
      */
@@ -67,7 +67,7 @@ public class UserController {
 
     /**
      * My page form string.
-     * 유저 MyPage 로 매핑
+     * 유저 MyPage 로 이동
      * @param model the model 유저정보를 담기위한 객체
      * @return the string
      */

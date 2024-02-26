@@ -35,8 +35,8 @@ public class UserAddressController {
 
     /**
      * User address form string.
-     * 유저 주소정보를 보여줌
-     * @param model the model 주서정보를 담음
+     * 유저 주소관리 페이지로 이동
+     * @param model the model 유저 주소정보를 담음
      * @return the string
      */
     @GetMapping("/user/address")
