@@ -21,7 +21,15 @@ import store.mybooks.front.user.dto.response.PhoneNumberAuthResponse;
 import store.mybooks.front.user.dto.response.UserGetResponse;
 
 /**
- * The type User controller.
+ * packageName    : store.mybooks.front.user.controller<br>
+ * fileName       : UserController<br>
+ * author         : masiljangajji<br>
+ * date           : 2/23/24<br>
+ * description    :
+ * ===========================================================
+ * DATE              AUTHOR             NOTE
+ * -----------------------------------------------------------
+ * 2/23/24        masiljangajji       최초 생성
  */
 @Controller
 @RequiredArgsConstructor

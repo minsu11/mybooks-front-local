@@ -26,12 +26,12 @@ public class UserStatusController {
 
     private final UserStatusAdaptor userStatusAdaptor;
 
+
     @GetMapping("/{id}")
     public String getAllAccounts(@PathVariable(name = "id") String id,
                                  Model model) {
         model.addAttribute("userStatus", userStatusAdaptor.findUserStatusById(id));
 
-        System.out.println(userStatusAdaptor.findUserStatusById(id));
 
         return "good";
     }
