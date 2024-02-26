@@ -23,7 +23,8 @@
                 <td th:text="${author.getName()}"></td>
                 <td th:text="${author.getContent()}"></td>
                 <td>
-                    <form method="get" action="/admin/authors/update">
+
+                    <form method="post" th:action="@{'/admin/authors/'+${author.getId()}}">
                         <input type="hidden" th:name="id" th:value="${author.getId()}"/>
                         <input type="hidden" th:name="name" th:value="${author.getName()}"/>
                         <input type="hidden" th:name="content" th:value="${author.getContent()}"/>
