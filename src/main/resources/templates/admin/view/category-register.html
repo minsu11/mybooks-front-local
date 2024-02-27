@@ -9,7 +9,7 @@
         <a th:href="@{/admin/category}" class="btn btn-primary" role="button">리스트로 돌아가기</a>
     </div>
     <div class="container d-flex justify-content-center align-items-center">
-        <form method="post" action="/admin/category/register">
+        <form name="form" method="post" action="/admin/category/register">
             <div class="col-auto">
                 <label for="firstParentCategoryId" class="form-label">1단계 카테고리 선택</label>
                 <select class="form-select" id="firstParentCategoryId" name="firstParentCategoryId" aria-label="Default select example">
@@ -32,11 +32,13 @@
                 </div>
             </div>
             <div class="col-auto">
-                <button type="submit" class="btn btn-primary">카테고리 생성</button>
+                <button id="submit" type="submit" class="btn btn-primary">카테고리 생성</button>
             </div>
         </form>
     </div>
     <script src="../js/category-register.js"></script>
+    <script src="../js/category-name-validation.js"></script>
+    <script src="../js/category-register-validation.js"></script>
 </div>
 
 </html>
