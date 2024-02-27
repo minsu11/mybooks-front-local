@@ -141,13 +141,7 @@ public class CategoryService {
      * @param categoryModifyRequest CategoryModifyRequest
      */
     public void updateCategory(CategoryModifyRequest categoryModifyRequest) {
-        Integer parentCategoryId = categoryModifyRequest.getFirstParentCategoryId();
-        if (categoryModifyRequest.getSecondParentCategoryId() != null) {
-            parentCategoryId = categoryModifyRequest.getSecondParentCategoryId();
-        }
-
         categoryAdaptor.updateCategory(categoryModifyRequest.getId(), new CategoryModifyRequestForTransmission(
-                parentCategoryId,
                 categoryModifyRequest.getName()
         ));
     }
