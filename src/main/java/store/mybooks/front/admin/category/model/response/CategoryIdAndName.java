@@ -2,7 +2,6 @@ package store.mybooks.front.admin.category.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * packageName    : store.mybooks.front.category.model
@@ -16,7 +15,6 @@ import lombok.Setter;
  * 2/24/24          damho-lee          최초 생성
  */
 @Getter
-@Setter
 @AllArgsConstructor
 public class CategoryIdAndName {
     private Integer id;

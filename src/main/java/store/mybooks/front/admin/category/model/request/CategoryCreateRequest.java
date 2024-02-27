@@ -2,8 +2,6 @@ package store.mybooks.front.admin.category.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  * packageName    : store.mybooks.front.category.model.request

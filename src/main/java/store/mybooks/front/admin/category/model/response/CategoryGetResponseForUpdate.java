@@ -2,8 +2,6 @@ package store.mybooks.front.admin.category.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  * packageName    : store.mybooks.front.category.model.response
@@ -17,9 +15,7 @@ import lombok.Setter;
  * 2/26/24          damho-lee          최초 생성
  */
 @Getter
-@Setter
 @AllArgsConstructor
-@NoArgsConstructor
 public class CategoryGetResponseForUpdate {
     private CategoryGetResponse targetCategory;
     private String levelOneCategoryName;
