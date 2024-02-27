@@ -38,6 +38,8 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
 
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
+    private final String url = "/api/categories";
+
     @Override
     public List<CategoryGetResponse> getHighestCategories() {
         HttpHeaders headers = new HttpHeaders();
@@ -47,7 +49,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<List<CategoryGetResponse>> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + "/api/categories/highest",
+                gatewayAdaptorProperties.getAddress() + url + "/highest",
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
@@ -69,7 +71,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<List<CategoryGetResponse>> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + "/api/categories/parentCategoryId/" + parentCategoryId,
+                gatewayAdaptorProperties.getAddress() + url + "/parentCategoryId/" + parentCategoryId,
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
@@ -92,7 +94,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
                 new HttpEntity<>(categoryCreateRequest, headers);
 
         ResponseEntity<Void> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + "/api/categories",
+                gatewayAdaptorProperties.getAddress() + url,
                 HttpMethod.POST,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
@@ -112,8 +114,8 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<PageResponse<CategoryGetResponseForView>> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress()
-                        + "/api/categories/page?page=" + pageable.getPageNumber() + "&size=" + pageable.getPageSize(),
+                gatewayAdaptorProperties.getAddress() + url
+                        + "/page?page=" + pageable.getPageNumber() + "&size=" + pageable.getPageSize(),
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
@@ -136,7 +138,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
                 new HttpEntity<>(categoryModifyRequestForTransmission, headers);
 
         ResponseEntity<Void> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + "/api/categories/" + id,
+                gatewayAdaptorProperties.getAddress() + url + "/" + id,
                 HttpMethod.PUT,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
@@ -156,7 +158,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<Void> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + "/api/categories/" + id,
+                gatewayAdaptorProperties.getAddress() + url + "/" + id,
                 HttpMethod.DELETE,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
@@ -176,7 +178,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<CategoryGetResponseForUpdate> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + "/api/categories/categoryId/" + id,
+                gatewayAdaptorProperties.getAddress() + url + "/categoryId/" + id,
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
