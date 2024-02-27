@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/my-books-layout}">
+
+<div layout:fragment="content">
+
+    <!-- Start Breadcrumbs -->
+    <div class="breadcrumbs">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="breadcrumbs-content">
+                        <h1 class="page-title"></h1>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-12">
+                    <ul class="breadcrumb-nav">
+                        <li><a href="/"><i class="lni lni-home"></i> Home</a></li>
+                        <li>마이페이지</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Breadcrumbs -->
+
+    <!-- Start Faq Area -->
+    <section class="faq section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-title">
+                        <h2>마이페이지</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-10 offset-lg-1 col-md-12 col-12">
+                    <div class="accordion" id="accordionExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <span class="title">회원정보</span><i
+                                        class="lni lni-plus"></i>
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                                 data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <p><strong>이름:</strong> <span th:text="${user.name}"></span></p>
+                                    <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
+                                    <p><strong>핸드폰 번호:</strong> <span th:text="${user.phoneNumber}"></span></p>
+                                    <p><strong>생일:</strong> <span th:text="${user.birth}"></span></p>
+                                    <p><strong>마지막 로그인:</strong> <span th:text="${user.latestLogin}"></span></p>
+                                    <p><strong>등급 변경일:</strong> <span th:text="${user.gradeChangedDate}"></span></p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingTwo">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    <span class="title">비밀번호 변경</span><i class="lni lni-plus"></i>
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                                 data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <form id="changePasswordForm" action="/user/modify/password" method="post" onsubmit="return validatePassword()">
+                                        <div class="form-group">
+                                            <input type="password" id="password" class="form-control" name="password" placeholder="새 비밀번호" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="password" id="confirmPassword" class="form-control" name="confirmPassword" placeholder="비밀번호 확인" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">변경</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseThree" aria-expanded="false"
+                                        aria-controls="collapseThree">
+                                    <span class="title">이름 변경</span><i
+                                        class="lni lni-plus"></i>
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse"
+                                 aria-labelledby="headingThree"
+                                 data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <form id="changeNameForm" action="/user/modify" method="post">
+                                        <!-- Hidden input으로 기존 핸드폰 번호를 전송합니다. -->
+                                        <input type="hidden" id="userPhoneNumber" name="phoneNumber" th:value="${user.phoneNumber}">
+                                        <div class="form-group">
+                                            <label for="newName">새 이름:</label>
+                                            <input type="text" id="newName" class="form-control" name="name" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">이름 변경</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingFour">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseFour" aria-expanded="false"
+                                        aria-controls="collapseFour">
+                                    <span class="title">전화번호 변경</span><i
+                                        class="lni lni-plus"></i>
+                                </button>
+                            </h2>
+                            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour"
+                                 data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <form id="changePhoneNumberForm" action="/user/modify" method="post" onsubmit="return checkPasswordAndAuth()">
+                                        <input type="hidden" id="name" name="name" th:value="${user.name}">
+                                        <div class="form-group">
+                                            <label for="phoneNumber">새 전화번호:</label>
+                                            <input type="text" id="phoneNumber" class="form-control" name="phoneNumber" required pattern="[0-9]{10,11}">
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="button" class="btn btn-primary" onclick="validatePhoneNumberAndRequestAuthCode()">인증받기</button>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="verificationCode">인증번호:</label>
+                                            <input type="text" id="verificationCode" class="form-control" name="verificationCode" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">전화번호 변경</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingFive">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseFive" aria-expanded="false"
+                                        aria-controls="collapseFive">
+                                    <span class="title">회원탈퇴</span><i
+                                        class="lni lni-plus"></i>
+                                </button>
+                            </h2>
+                            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive"
+                                 data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <button class="btn btn-danger" onclick="confirmAndSubmit()">탈퇴</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End About Area -->
+
+
+    <!-- Start Team Area -->
+    <section class="team section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-12">
+                    <!-- Start Single Team -->
+                    <div class="single-team">
+                        <div class="content">
+                            <div class="info">
+                                <a href="/user">
+                                    <h3>마이페이지</h3>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Single Team -->
+                </div>
+                <div class="col-lg-3 col-md-6 col-12">
+                    <!-- Start Single Team -->
+                    <div class="single-team">
+                        <div class="content">
+                            <a href="/user/address">
+                                <h3>주소관리</h3>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- End Single Team -->
+                </div>
+                <div class="col-lg-3 col-md-6 col-12">
+                    <!-- Start Single Team -->
+                    <div class="single-team">
+                        <div class="content">
+                            <div class="info">
+                                <h3>구매 목록</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Single Team -->
+                </div>
+                <div class="col-lg-3 col-md-6 col-12">
+                    <!-- Start Single Team -->
+                    <div class="single-team">
+                        <div class="content">
+                            <div class="info">
+                                <h3>나중에 추가</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Single Team -->
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Team Area -->
+
+    <script>
+
+        var phoneNumberAuth; // 전역 변수로 선언하여 다른 함수에서도 사용할 수 있도록 설정
+
+        function confirmAndSubmit() {
+            // 사용자에게 확인 창을 표시합니다.
+            var confirmResign = confirm("정말 탈퇴하시겠습니까?");
+
+            // 사용자가 "예"를 선택한 경우
+            if (confirmResign) {
+                // form 엘리먼트를 동적으로 생성합니다.
+                var form = document.createElement('form');
+                form.method = 'POST';  // POST 요청 설정
+                form.action = '/user/delete';  // 요청할 URL 설정
+
+                // form을 body에 추가합니다.
+                document.body.appendChild(form);
+
+                // form을 서브밋합니다.
+                form.submit();
+            } else {
+                // 아무 동작도 하지 않습니다.
+            }
+        }
+
+        function validatePassword() {
+            // 새 비밀번호와 비밀번호 확인 값을 가져옵니다.
+            var newPassword = document.getElementById('password').value;
+            var confirmPassword = document.getElementById('confirmPassword').value;
+
+            // 새 비밀번호와 비밀번호 확인이 일치하는지 확인합니다.
+            if (newPassword !== confirmPassword) {
+                // 일치하지 않는 경우 경고 메시지를 표시하고 폼을 제출하지 않습니다.
+                alert("새 비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+                return false; // 폼 제출 방지
+            }
+            // 일치하는 경우 폼을 제출합니다.
+            return true;
+        }
+
+        function validatePhoneNumberAndRequestAuthCode() {
+            console.log(111)
+            // 전화번호 양식을 가져옵니다.
+            var phoneNumberInput = document.getElementById('phoneNumber');
+
+            console.log(phoneNumberInput)
+            // 전화번호의 값
+            var phoneNumberValue = phoneNumberInput.value;
+            // 전화번호의 유효성을 확인합니다.
+            var phoneNumberPattern = /^[0-9]{10,11}$/;
+            if (!phoneNumberPattern.test(phoneNumberValue)) {
+                // 전화번호가 유효하지 않은 경우 경고 메시지를 표시하고 함수를 종료합니다.
+                alert("올바른 전화번호를 입력해주세요.");
+                return;
+            }
+
+            // 전화번호가 유효한 경우에만 인증번호를 요청합니다.
+            requestAuthCode();
+        }
+
+        function requestAuthCode() {
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/user/auth/phone", true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        var responseJson = JSON.parse(xhr.responseText); // JSON 문자열을 JavaScript 객체로 변환
+                        phoneNumberAuth = responseJson.randomNumber; // 서버로부터 받은 인증번호 중 randomNumber 값만 추출하여 저장
+                        alert("인증번호를 전송했습니다.");
+                    } else {
+                        alert("인증번호 요청에 실패했습니다.");
+                    }
+                }
+            };
+            xhr.send();
+        }
+
+        function checkPasswordAndAuth() {
+            // 인증번호 확인
+            var verificationCode = document.getElementById('verificationCode').value;
+
+
+            if (verificationCode !== phoneNumberAuth) {
+                // 인증번호가 일치하지 않는 경우
+                alert("인증번호가 일치하지 않습니다.");
+                return false; // 회원가입 폼 제출 방지
+            }
+
+            // 인증번호가 일치하는 경우 회원가입 폼 제출
+            return true;
+        }
+
+    </script>
+
+</div>
