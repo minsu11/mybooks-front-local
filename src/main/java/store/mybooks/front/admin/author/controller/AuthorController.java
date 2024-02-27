@@ -45,12 +45,11 @@ public class AuthorController {
      */
     @GetMapping
     public String viewAuthor(ModelMap modelMap) {
-        log.info("저자 폼");
 
-        List<AuthorResponse> authorResponseList = authorService.getAllAuthors();
-        modelMap.put("authorList", authorResponseList);
-        // todo 관리자 권한이 있는 사람만 가능하게
-        return "admin/view/author-view";
+        List<AuthorResponse> authorResponseList = authorService.getPageAuthors().getContent();
+        log.debug("=======> value:{}", authorResponseList);
+        modelMap.put("authors", authorResponseList);
+        return "admin/view/author-view-form";
     }
 
     /**
@@ -82,9 +81,8 @@ public class AuthorController {
     public String doRegisterAuthor(
             @ModelAttribute AuthorCreateRequest createRequest) {
 
-        log.info("=======>value: {}", createRequest.getName());
+        log.debug("=======>value: {}", createRequest.getName());
         if (authorService.createAuthor(createRequest)) {
-            log.info("확인");
             return "redirect:/admin/authors";
         }
         return "redirect:/admin/authors/register";
@@ -100,10 +98,10 @@ public class AuthorController {
      * @param request  저자의 id
      * @return {@code view}가 저장된 경로
      */
-    @PostMapping("/{id}")
+    @GetMapping("/update-form")
     public String viewModifyForm(ModelMap modelMap,
                                  @ModelAttribute AuthorRequest request) {
-        log.info("author id value: {}", request);
+        log.debug("author id value: {}", request);
         modelMap.put("modifyAuthor", request);
         modelMap.put("pathValue", "update");
         return "admin/view/author-register-view";
@@ -125,13 +123,12 @@ public class AuthorController {
             ModelMap modelMap,
             @ModelAttribute AuthorRequest request) {
 
-        log.info("modify request: {}", request);
+        log.debug("modify request: {}", request);
         if (authorService.updateAuthor(request)) {
-            log.info("if문 진입");
             return "redirect:/admin/authors";
         }
         modelMap.put("modifyAuthor", request);
-        return "redirect:/admin/authors/update";
+        return "redirect:/admin/authors/update-form";
     }
 
     /**
@@ -145,7 +142,7 @@ public class AuthorController {
      */
     @PostMapping("/delete")
     public String doDeleteAuthor(@ModelAttribute AuthorDeleteRequest id) {
-        log.info("삭제할 id value: {}", id);
+        log.debug("삭제할 id value: {}", id);
         authorService.deleteAuthor(id);
 
         return "redirect:/admin/authors";

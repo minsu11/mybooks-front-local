@@ -1,7 +1,7 @@
 package store.mybooks.front.admin.author.dto.response;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
@@ -16,11 +16,11 @@ import lombok.NoArgsConstructor;
  * 2/24/24        minsu11       최초 생성<br>
  */
 
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuthorResponse {
-    private int id;
+    private Integer id;
     private String name;
     private String content;
 }

@@ -14,11 +14,11 @@
                 </button>
             </div>
             <div th:if="${modifyAuthor != null }">
-                <input type="hidden" name="id" th:value="${modifyAuthor.getId()}"/>
+                <input type="hidden" name="id" th:value="${modifyAuthor.id}"/>
                 <input type="text" id="name" name="name" class="form-control" placeholder="저자 명"
-                       th:value="${modifyAuthor.getName()}"/>
+                       th:value="${modifyAuthor.name}"/>
                 <input type="text" id="content" name="content" class="form-control" placeholder="저자 설명"
-                       th:value="${modifyAuthor.getContent()}"/>
+                       th:value="${modifyAuthor.content}"/>
                 <button class="btn btn-outline-secondary" type="submit" id="button-update">수정
                 </button>
             </div>

@@ -1,6 +1,5 @@
 package store.mybooks.front.admin.publisher.service;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -10,6 +9,7 @@ import store.mybooks.front.admin.publisher.dto.request.PublisherDeleteRequest;
 import store.mybooks.front.admin.publisher.dto.request.PublisherModifyRequest;
 import store.mybooks.front.admin.publisher.dto.request.PublisherRequest;
 import store.mybooks.front.admin.publisher.dto.response.PublisherResponse;
+import store.mybooks.front.pageable.dto.response.PageResponse;
 
 /**
  * packageName    : store.mybooks.front.book.publisher.service<br>
@@ -36,8 +36,9 @@ public class PublisherService {
      *
      * @return 출판사 목록 조회
      */
-    public List<PublisherResponse> getPublisherList() {
-        return publisherAdaptor.getPublisherList().getContent();
+    public PageResponse<PublisherResponse> getPublisherList() {
+        return publisherAdaptor.getPublisherList();
+
     }
 
     public boolean registerPublisher(PublisherCreateRequest request) {

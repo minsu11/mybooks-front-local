@@ -42,8 +42,7 @@ public class PublisherController {
      */
     @GetMapping
     public String viewPublisher(ModelMap modelMap) {
-        log.info("viewPublisher 시작");
-        List<PublisherResponse> publisherResponseList = publisherService.getPublisherList();
+        List<PublisherResponse> publisherResponseList = publisherService.getPublisherList().getContent();
         modelMap.put("publisherList", publisherResponseList);
         return "admin/view/publisher-view";
     }
@@ -99,7 +98,7 @@ public class PublisherController {
             @PathVariable Integer id,
             @ModelAttribute PublisherModifyRequest request,
             ModelMap modelMap) {
-        modelMap.put("id", "/" + id);
+        modelMap.put("id", id);
         modelMap.put("modifyPublisher", request);
         modelMap.put("pathValue", "update");
         return "admin/view/publisher-register-view";

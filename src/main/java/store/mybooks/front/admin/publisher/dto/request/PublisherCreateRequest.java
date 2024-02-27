@@ -1,8 +1,7 @@
 package store.mybooks.front.admin.publisher.dto.request;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
 /**
  * packageName    : store.mybooks.front.book.publisher.dto.request<br>
@@ -15,8 +14,7 @@ import lombok.NoArgsConstructor;
  * -----------------------------------------------------------<br>
  * 2/26/24        minsu11       최초 생성<br>
  */
-@Data
-@NoArgsConstructor
+@Getter
 @AllArgsConstructor
 public class PublisherCreateRequest {
     private String name;

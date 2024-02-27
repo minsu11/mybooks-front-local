@@ -1,6 +1,5 @@
 package store.mybooks.front.admin.author.adaptor;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
@@ -45,8 +44,13 @@ public class AuthorAdaptor {
      */
     public AuthorResponse getAuthor(Integer id) {
         String url = gatewayAdaptorProperties.getAddress() + "/api/authors/{id}";
-        return Utils.getResponseEntity(restTemplate, url, HttpMethod.GET,
-                null, HttpStatus.OK, AuthorResponse.class, id);
+        ResponseEntity<AuthorResponse> exchange = restTemplate.exchange(url,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<AuthorResponse>() {
+                });
+
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
     /**
@@ -58,10 +62,15 @@ public class AuthorAdaptor {
      * @return page response
      */
     public PageResponse<AuthorResponse> getAuthors() {
-        String url = gatewayAdaptorProperties.getAddress() + "/api/authors";
 
-        return Utils.getResponseEntity(restTemplate, url, HttpMethod.GET,
-                null, HttpStatus.OK, PageResponse.class);
+        String url = gatewayAdaptorProperties.getAddress() + "/api/authors";
+        ResponseEntity<PageResponse<AuthorResponse>> exchange = restTemplate.exchange(url,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<PageResponse<AuthorResponse>>() {
+                });
+
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
     /**
@@ -69,27 +78,22 @@ public class AuthorAdaptor {
      * author : minsu11<br>
      * description : {@code AuthorCreateRequest}를 {@code gateway}로 요청 보내
      * 저자를 등록한 후 {@code AuthorCreateResponse}로 응답 받음
-     * <br> *
+     * <br>
      *
      * @param authorCreateRequest 등록할 저자
      * @return authorCreateResponse 등록하고 응답 받은 데이터
      */
     public AuthorCreateResponse createAuthor(AuthorCreateRequest authorCreateRequest) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        String url = gatewayAdaptorProperties.getAddress() + "/api/authors";
+        HttpHeaders headers = Utils.getHttpHeader();
 
         HttpEntity<AuthorCreateRequest> requestHttpEntity = new HttpEntity<>(authorCreateRequest, headers);
-        ResponseEntity<AuthorCreateResponse> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/authors",
-                HttpMethod.POST,
+        ResponseEntity<AuthorCreateResponse> exchange = restTemplate.exchange(url,
+                HttpMethod.PUT,
                 requestHttpEntity,
                 new ParameterizedTypeReference<AuthorCreateResponse>() {
                 });
-
-        if (exchange.getStatusCode() != HttpStatus.CREATED) {
-            throw new RuntimeException();
-        }
-        return exchange.getBody();
+        return Utils.getResponseEntity(exchange, HttpStatus.CREATED);
     }
 
     /**
@@ -103,20 +107,16 @@ public class AuthorAdaptor {
      * @throws RuntimeException {@code HttpStatus code}가 200이 아닌 경우
      */
     public AuthorModifyResponse modifyResponse(AuthorModifyRequest authorModifyRequest, Integer id) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-
+        String url = gatewayAdaptorProperties.getAddress() + "/api/authors/{id}";
+        HttpHeaders headers = Utils.getHttpHeader();
         HttpEntity<AuthorModifyRequest> requestHttpEntity = new HttpEntity<>(authorModifyRequest, headers);
-        ResponseEntity<AuthorModifyResponse> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/authors/{id}",
+        ResponseEntity<AuthorModifyResponse> exchange = restTemplate.exchange(url,
                 HttpMethod.PUT,
                 requestHttpEntity,
                 new ParameterizedTypeReference<AuthorModifyResponse>() {
-                }, id);
-        if (exchange.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException();
-        }
-        return exchange.getBody();
+                },
+                id);
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
     /**
@@ -131,18 +131,13 @@ public class AuthorAdaptor {
      * @throws RuntimeException 삭제 실패 시
      */
     public AuthorDeleteResponse deleteAuthor(Integer id) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-        HttpEntity<AuthorDeleteResponse> request = new HttpEntity<>(headers);
-        ResponseEntity<AuthorDeleteResponse> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/authors/{id}",
+        String url = gatewayAdaptorProperties.getAddress() + "/api/authors/{id}";
+        ResponseEntity<AuthorDeleteResponse> exchange = restTemplate.exchange(url,
                 HttpMethod.DELETE,
-                request,
+                null,
                 new ParameterizedTypeReference<AuthorDeleteResponse>() {
-                }, id);
-        if (exchange.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException();
-        }
-        return exchange.getBody();
+                },
+                id);
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 }

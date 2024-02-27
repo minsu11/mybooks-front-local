@@ -1,6 +1,5 @@
 package store.mybooks.front.admin.author.service;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,6 +12,7 @@ import store.mybooks.front.admin.author.dto.response.AuthorCreateResponse;
 import store.mybooks.front.admin.author.dto.response.AuthorDeleteResponse;
 import store.mybooks.front.admin.author.dto.response.AuthorModifyResponse;
 import store.mybooks.front.admin.author.dto.response.AuthorResponse;
+import store.mybooks.front.pageable.dto.response.PageResponse;
 
 
 /**
@@ -41,8 +41,8 @@ public class AuthorService {
      *
      * @return 모든 저자의 list
      */
-    public List<AuthorResponse> getAllAuthors() {
-        return adaptor.getAuthors().getContent();
+    public PageResponse<AuthorResponse> getPageAuthors() {
+        return adaptor.getAuthors();
     }
 
     /**

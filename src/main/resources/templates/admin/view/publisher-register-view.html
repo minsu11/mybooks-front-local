@@ -15,7 +15,7 @@
             <div th:if="${modifyPublisher != null }">
                 <input type="hidden" name=id th:value="${id}">
                 <input type="text" name="name" class="form-control"
-                       th:value="${modifyPublisher.getChangeName()}"/>
+                       th:value="${modifyPublisher.changeName}"/>
                 <button class="btn btn-outline-secondary" type="submit">수정
                 </button>
             </div>

@@ -1,7 +1,7 @@
 package store.mybooks.front.admin.publisher.adaptor;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
@@ -14,6 +14,7 @@ import store.mybooks.front.admin.publisher.dto.response.PublisherModifyResponse;
 import store.mybooks.front.admin.publisher.dto.response.PublisherResponse;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.pageable.dto.response.PageResponse;
+import store.mybooks.front.utils.Utils;
 
 /**
  * packageName    : store.mybooks.front.book.publisher.adaptor<br>
@@ -26,6 +27,7 @@ import store.mybooks.front.pageable.dto.response.PageResponse;
  * -----------------------------------------------------------<br>
  * 2/25/24        minsu11       최초 생성<br>
  */
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class PublisherAdaptor {
@@ -41,15 +43,17 @@ public class PublisherAdaptor {
      * @return page response
      */
     public PageResponse<PublisherResponse> getPublisherList() {
-        ResponseEntity<PageResponse<PublisherResponse>> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/publishers",
+        String url = gatewayAdaptorProperties.getAddress() + "/api/publishers";
+        HttpEntity<PageResponse<PublisherResponse>> responseHttpEntity = new HttpEntity<>(Utils.getHttpHeader());
+        ResponseEntity<PageResponse<PublisherResponse>> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/publishers/page",
                 HttpMethod.GET,
-                null,
+                responseHttpEntity,
                 new ParameterizedTypeReference<PageResponse<PublisherResponse>>() {
                 });
-        if (exchange.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException();
-        }
-        return exchange.getBody();
+        log.info("exchange value: {}", exchange.getBody());
+
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+
     }
 
     /**
@@ -63,20 +67,18 @@ public class PublisherAdaptor {
      * @throws RuntimeException {@code http status code created}가 아니면 예외를 던짐
      */
     public PublisherCreateResponse registerPublisher(PublisherCreateRequest publisherCreateRequest) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        String url = gatewayAdaptorProperties.getAddress() + "/api/publishers";
+        HttpHeaders headers = Utils.getHttpHeader();
 
         HttpEntity<PublisherCreateRequest> request = new HttpEntity<>(publisherCreateRequest, headers);
-        ResponseEntity<PublisherCreateResponse> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/publishers",
+        ResponseEntity<PublisherCreateResponse> exchange = restTemplate.exchange(url,
                 HttpMethod.POST,
                 request,
                 new ParameterizedTypeReference<PublisherCreateResponse>() {
                 });
-        if (exchange.getStatusCode() != HttpStatus.CREATED) {
-            throw new RuntimeException();
-        }
-        return exchange.getBody();
+        return Utils.getResponseEntity(exchange, HttpStatus.CREATED);
+
+
     }
 
     /**
@@ -90,9 +92,8 @@ public class PublisherAdaptor {
      * @return publisher modify response
      */
     public PublisherModifyResponse updatePublisher(PublisherModifyRequest publisherModifyRequest, Integer id) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+
+        HttpHeaders headers = Utils.getHttpHeader();
 
         HttpEntity<PublisherModifyRequest> request = new HttpEntity<>(publisherModifyRequest, headers);
         ResponseEntity<PublisherModifyResponse> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/publishers/{id}",
@@ -100,10 +101,8 @@ public class PublisherAdaptor {
                 request,
                 new ParameterizedTypeReference<PublisherModifyResponse>() {
                 }, id);
-        if (exchange.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException();
-        }
-        return exchange.getBody();
+
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
 
     }
 
@@ -123,10 +122,7 @@ public class PublisherAdaptor {
                 new ParameterizedTypeReference<PublisherDeleteResponse>() {
                 },
                 id);
-        if (exchange.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException();
-        }
-        return exchange.getBody();
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
 
     }
 

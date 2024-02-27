@@ -1,7 +1,8 @@
 package store.mybooks.front.admin.publisher.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
@@ -15,10 +16,12 @@ import lombok.NoArgsConstructor;
  * -----------------------------------------------------------<br>
  * 2/25/24        minsu11       최초 생성<br>
  */
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class PublisherResponse {
+    @JsonProperty(value = "name")
     private String name;
+    @JsonProperty(value = "id")
     private Integer id;
 }

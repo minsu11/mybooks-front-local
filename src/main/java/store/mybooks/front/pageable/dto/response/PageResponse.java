@@ -1,5 +1,6 @@
 package store.mybooks.front.pageable.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -22,16 +23,28 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PageResponse<T> {
     private List<T> content;
+
     @JsonProperty("pageable")
     private Pageable pageable;
+
+    @JsonIgnore
     private boolean last;
+
     private int totalPages;
+
     private int totalElements;
-    private int size;
-    private int number;
+
+    @JsonIgnore
     private boolean first;
-    @JsonProperty("sort")
+    @JsonIgnore
+    private int size;
+    @JsonIgnore
+    private int number;
+
+    @JsonIgnore
     private Sort sort;
+    @JsonIgnore
     private int numberOfElements;
+    @JsonIgnore
     private boolean empty;
 }
