@@ -20,14 +20,16 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="bookName">도서명</label>
-                                            <input class="form-control" type="text" id="bookName" name="name" required minlength="1"
+                                            <input class="form-control" type="text" id="bookName" name="name" required
+                                                   minlength="1"
                                                    maxlength="100">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="bookIsbn">ISBN(13자리)</label>
-                                            <input class="form-control" type="text" id="bookIsbn" name="isbn" required pattern="\d{13}">
+                                            <input class="form-control" type="text" id="bookIsbn" name="isbn" required
+                                                   pattern="\d{13}">
                                         </div>
                                     </div>
                                 </div>
@@ -36,14 +38,16 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="bookPublisher">출판사</label>
-                                            <input class="form-control" type="number" id="bookPublisher" name="publisherId" min="1" max="100"
+                                            <input class="form-control" type="number" id="bookPublisher"
+                                                   name="publisherId" min="1" max="100"
                                                    required>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="bookPublishDate">출판일자</label>
-                                            <input class="form-control" type="date" id="bookPublishDate" name="publishDate" required>
+                                            <input class="form-control" type="date" id="bookPublishDate"
+                                                   name="publishDate" required>
                                         </div>
                                     </div>
                                 </div>
@@ -51,7 +55,8 @@
                                 <div class="col-sm-15">
                                     <div class="form-group">
                                         <label for="bookIndex">목차</label>
-                                        <textarea style="resize:none" class="form-control" id="bookIndex" name="index" rows="10"
+                                        <textarea style="resize:none" class="form-control" id="bookIndex" name="index"
+                                                  rows="10"
                                                   required></textarea>
                                     </div>
                                 </div>
@@ -59,7 +64,8 @@
                                 <div class="col-sm-15">
                                     <div class="form-group">
                                         <label for="bookContent">설명</label>
-                                        <textarea style="resize:none" class="form-control" id="bookContent" name="content" rows="20"
+                                        <textarea style="resize:none" class="form-control" id="bookContent"
+                                                  name="content" rows="20"
                                                   required></textarea>
                                     </div>
                                 </div>
@@ -70,13 +76,15 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="bookOriginalCost">정가</label>
-                                            <input class="form-control" type="number" id="bookOriginalCost" name="originalCost" required min = "1">
+                                            <input class="form-control" type="number" id="bookOriginalCost"
+                                                   name="originalCost" required min="1">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="bookPage">페이지수</label>
-                                            <input class="form-control" type="number" id="bookPage" name="page" required min = "1">
+                                            <input class="form-control" type="number" id="bookPage" name="page" required
+                                                   min="1">
                                         </div>
                                     </div>
                                 </div>
@@ -85,14 +93,16 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="bookSaleCost">판매가</label>
-                                            <input class="form-control" type="number" id="bookSaleCost" name="saleCost" required min = "1">
+                                            <input class="form-control" type="number" id="bookSaleCost" name="saleCost"
+                                                   required min="1">
                                         </div>
                                     </div>
 
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="bookStatus">도서 상태</label>
-                                            <input class="form-control" type="text" id="bookStatus" name="bookStatusId" required min="1" max="20">
+                                            <input class="form-control" type="text" id="bookStatus" name="bookStatusId"
+                                                   required min="1" max="20">
                                         </div>
                                     </div>
                                 </div>
@@ -101,7 +111,8 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="bookStock">재고</label>
-                                            <input class="form-control" type="number" id="bookStock" name="stock" required min = "0">
+                                            <input class="form-control" type="number" id="bookStock" name="stock"
+                                                   required min="0">
                                         </div>
                                     </div>
 
@@ -126,16 +137,21 @@
                                         </div>
                                     </div>
                                 </div>
-<!--                                <div class="row">-->
-<!--                                    <div class="col-sm-12">-->
-<!--                                        <div class="form-group">-->
-<!--                                            <label for="bookCategory">카테고리</label>-->
-<!--                                            <input class="form-control" type="text" id="bookCategory" required>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-                                <div class="button">
-                                    <button class="btn btn-primary" type="submit">추가하기</button>
+                                <!--                                <div class="row">-->
+                                <!--                                    <div class="col-sm-12">-->
+                                <!--                                        <div class="form-group">-->
+                                <!--                                            <label for="bookCategory">카테고리</label>-->
+                                <!--                                            <input class="form-control" type="text" id="bookCategory" required>-->
+                                <!--                                        </div>-->
+                                <!--                                    </div>-->
+                                <!--                                </div>-->
+                                <div class="form-group row mt-5">
+                                    <div class="col-sm-auto">
+                                        <button class="btn btn-primary" type="submit">추가하기</button>
+                                    </div>
+                                    <div class="col-sm-auto">
+                                        <a th:href="@{/admin/book}" class="btn btn-secondary" role="button">뒤로가기</a>
+                                    </div>
                                 </div>
                             </div>
                         </form>
