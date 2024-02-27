@@ -5,14 +5,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.HttpClientErrorException;
 import store.mybooks.front.admin.category.model.request.CategoryCreateRequest;
 import store.mybooks.front.admin.category.model.request.CategoryModifyRequest;
 import store.mybooks.front.admin.category.model.response.CategoryGetResponseForUpdate;
@@ -41,7 +39,7 @@ public class CategoryController {
      * description : 사이드바에서 카테고리를 눌렀을 때 페이지.<br>
      *
      * @param pageable Pageable
-     * @param model Model
+     * @param model    Model
      * @return string
      */
     @GetMapping
@@ -98,7 +96,7 @@ public class CategoryController {
      * author : damho-lee <br>
      * description : 카테고리 수정 페이지. resource 서버에서 id 를 통해 데이터를 받아와서 model 에 넣어준다.<br>
      *
-     * @param id Integer
+     * @param id    Integer
      * @param model Model
      * @return string
      */
