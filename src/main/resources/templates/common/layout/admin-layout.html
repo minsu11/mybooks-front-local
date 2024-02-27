@@ -2,7 +2,6 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-
 <head>
 
     <meta charset="utf-8">
@@ -21,7 +20,7 @@
 
     <!-- Custom styles for this template-->
     <link href="../../admin/css/sb-admin-2.min.css" rel="stylesheet">
-
+    <script src="../../admin/vendor/jquery/jquery.min.js"></script>
 </head>
 
 <body id="page-top">
@@ -29,14 +28,14 @@
 <!-- Page Wrapper -->
 <div id="wrapper">
     <!-- 사이드 바 -->
-    <div th:replace="common/fragment/admin/admin-sidebar::sidebarFragment"></div>
+    <div th:replace="/common/fragment/admin/admin-sidebar::sidebarFragment"></div>
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
 
         <!-- Main Content -->
         <div id="content">
-            <header th:replace="common/fragment/admin/admin-header::headerFragment"></header>
+            <header th:replace="/common/fragment/admin/admin-header::headerFragment"></header>
             <!-- content의 내용이 들어갈 곳-->
             <div>
                 <!-- 밑에 부분에 파일이름이 바껴서 들어감 -->
@@ -46,7 +45,7 @@
             <!-- content의 내용이 끝나는 지점 -->
 
             <!-- Footer -->
-            <footer th:replace="common/fragment/admin/admin-footer::footerFragment"></footer>
+            <footer th:replace="/common/fragment/admin/admin-footer::footerFragment"></footer>
             <!-- End of Footer -->
 
         </div>
@@ -84,7 +83,6 @@
 </div>
 
 <!-- Bootstrap core JavaScript-->
-<script src="../../admin/vendor/jquery/jquery.min.js"></script>
 <script src="../../admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- Core plugin JavaScript-->
@@ -94,11 +92,11 @@
 <script src="../../admin/js/sb-admin-2.min.js"></script>
 
 <!-- Page level plugins -->
-<script src="../../admin/vendor/chart.js/Chart.min.js"></script>
+<!--<script src="../../admin/vendor/chart.js/Chart.min.js"></script>-->
 
 <!-- Page level custom scripts -->
-<script src="../../admin/js/demo/chart-area-demo.js"></script>
-<script src="../../admin/js/demo/chart-pie-demo.js"></script>
+<!--<script src="../../admin/js/demo/chart-area-demo.js"></script>-->
+<!--<script src="../../admin/js/demo/chart-pie-demo.js"></script>-->
 
 </body>
 

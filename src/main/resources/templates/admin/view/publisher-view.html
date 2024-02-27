@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/admin-layout}">
+
+<div layout:fragment="content">
+    <div class="container mt-5">
+        <h2>출판사</h2>
+        <form method="get" action="/admin/publishers/register">
+            <button type="submit" class="btn btn-outline-primary">Primary</button>
+
+        </form>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>출판사</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="publisher:${publisherList}">
+                <td th:text="${publisher.name}"></td>
+                <td>
+                    <form method="get" th:action="@{'/admin/publishers/'+${publisher.id}}">
+                        <input type="hidden" th:name="changeName" th:value="${publisher.name}"/>
+                        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">수정하기</button>
+                    </form>
+                </td>
+                <td>
+                    <form id="deleteForm" method="post" action="/admin/publishers/delete">
+                        <input type="hidden" th:name="id" th:value="${publisher.id}"/>
+                        <button class="btn btn-outline-secondary" type="submit" id="button-delete">삭제
+                        </button>
+                    </form>
+                </td>
+
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+</html>
