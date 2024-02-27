@@ -1,6 +1,5 @@
 package store.mybooks.front.admin.category.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +10,6 @@ import store.mybooks.front.admin.category.model.request.CategoryCreateRequest;
 import store.mybooks.front.admin.category.model.request.CategoryCreateRequestForTransmission;
 import store.mybooks.front.admin.category.model.request.CategoryModifyRequest;
 import store.mybooks.front.admin.category.model.request.CategoryModifyRequestForTransmission;
-import store.mybooks.front.admin.category.model.response.CategoryGetResponse;
 import store.mybooks.front.admin.category.model.response.CategoryGetResponseForUpdate;
 import store.mybooks.front.admin.category.model.response.CategoryGetResponseForView;
 import store.mybooks.front.admin.category.model.response.CategoryIdAndName;
@@ -42,34 +40,10 @@ public class CategoryService {
      * @return pageResponse
      */
     public PageResponse<CategoryGetResponseForView> getCategories(Pageable pageable) {
-        PageResponse<CategoryGetResponse> pageResponse = categoryAdaptor.getCategories(pageable);
-        List<CategoryGetResponseForView> categoryGetResponseForViewList = new ArrayList<>();
-        for (CategoryGetResponse categoryGetResponse : pageResponse.getContent()) {
-            CategoryGetResponse firstCategory = categoryGetResponse.getParentCategory();
-            CategoryGetResponse secondCategory = null;
-
-            if (categoryGetResponse.getParentCategory() != null && firstCategory.getParentCategory() != null) {
-                secondCategory = firstCategory;
-                firstCategory = firstCategory.getParentCategory();
-            }
-
-            String firstCategoryName = firstCategory == null ? "" : firstCategory.getName();
-            String secondCategoryName = secondCategory == null ? "" : secondCategory.getName();
-
-            String parentCategoryName = firstCategoryName;
-            if (!secondCategoryName.isEmpty()) {
-                parentCategoryName = parentCategoryName.concat("/").concat(secondCategoryName);
-            }
-
-            categoryGetResponseForViewList.add(new CategoryGetResponseForView(
-                    categoryGetResponse.getId(),
-                    categoryGetResponse.getName(),
-                    parentCategoryName
-            ));
-        }
+        PageResponse<CategoryGetResponseForView> pageResponse = categoryAdaptor.getCategories(pageable);
 
         return new PageResponse<>(
-                categoryGetResponseForViewList,
+                pageResponse.getContent(),
                 pageResponse.getPageable(),
                 pageResponse.isLast(),
                 pageResponse.getTotalPages(),
@@ -166,18 +140,6 @@ public class CategoryService {
      * @return CategoryGetResponseForUpdate get response for update
      */
     public CategoryGetResponseForUpdate getCategory(Integer id) {
-        CategoryGetResponse categoryGetResponse = categoryAdaptor.getCategory(id);
-        CategoryGetResponse levelOneCategory = categoryGetResponse.getParentCategory();
-        CategoryGetResponse levelTwoCategory = null;
-        if (levelOneCategory != null && levelOneCategory.getParentCategory() != null) {
-            levelTwoCategory = levelOneCategory;
-            levelOneCategory = levelOneCategory.getParentCategory();
-        }
-
-        String levelOneCategoryName = levelOneCategory == null ? null : levelOneCategory.getName();
-        String levelTwoCategoryName = levelTwoCategory == null ? null : levelTwoCategory.getName();
-
-        return new CategoryGetResponseForUpdate(
-                categoryGetResponse, levelOneCategoryName, levelTwoCategoryName);
+        return categoryAdaptor.getCategory(id);
     }
 }

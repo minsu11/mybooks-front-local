@@ -5,6 +5,8 @@ import org.springframework.data.domain.Pageable;
 import store.mybooks.front.admin.category.model.request.CategoryCreateRequestForTransmission;
 import store.mybooks.front.admin.category.model.request.CategoryModifyRequestForTransmission;
 import store.mybooks.front.admin.category.model.response.CategoryGetResponse;
+import store.mybooks.front.admin.category.model.response.CategoryGetResponseForUpdate;
+import store.mybooks.front.admin.category.model.response.CategoryGetResponseForView;
 import store.mybooks.front.pageable.dto.response.PageResponse;
 
 /**
@@ -25,11 +27,11 @@ public interface CategoryAdaptor {
 
     void createCategory(CategoryCreateRequestForTransmission categoryCreateRequest);
 
-    PageResponse<CategoryGetResponse> getCategories(Pageable pageable);
+    PageResponse<CategoryGetResponseForView> getCategories(Pageable pageable);
 
     void updateCategory(Integer id, CategoryModifyRequestForTransmission categoryModifyRequestForTransmission);
 
     void deleteCategory(Integer id);
 
-    CategoryGetResponse getCategory(Integer id);
+    CategoryGetResponseForUpdate getCategory(Integer id);
 }

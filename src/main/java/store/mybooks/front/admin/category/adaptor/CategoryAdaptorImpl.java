@@ -15,6 +15,8 @@ import org.springframework.web.client.RestTemplate;
 import store.mybooks.front.admin.category.model.request.CategoryCreateRequestForTransmission;
 import store.mybooks.front.admin.category.model.request.CategoryModifyRequestForTransmission;
 import store.mybooks.front.admin.category.model.response.CategoryGetResponse;
+import store.mybooks.front.admin.category.model.response.CategoryGetResponseForUpdate;
+import store.mybooks.front.admin.category.model.response.CategoryGetResponseForView;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.pageable.dto.response.PageResponse;
 
@@ -102,14 +104,14 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
     }
 
     @Override
-    public PageResponse<CategoryGetResponse> getCategories(Pageable pageable) {
+    public PageResponse<CategoryGetResponseForView> getCategories(Pageable pageable) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
 
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
-        ResponseEntity<PageResponse<CategoryGetResponse>> exchange = restTemplate.exchange(
+        ResponseEntity<PageResponse<CategoryGetResponseForView>> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress()
                         + "/api/categories/page?page=" + pageable.getPageNumber() + "&size=" + pageable.getPageSize(),
                 HttpMethod.GET,
@@ -166,14 +168,14 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
     }
 
     @Override
-    public CategoryGetResponse getCategory(Integer id) {
+    public CategoryGetResponseForUpdate getCategory(Integer id) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
 
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
-        ResponseEntity<CategoryGetResponse> exchange = restTemplate.exchange(
+        ResponseEntity<CategoryGetResponseForUpdate> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + "/api/categories/categoryId/" + id,
                 HttpMethod.GET,
                 requestEntity,
