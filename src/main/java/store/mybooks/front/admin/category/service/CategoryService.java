@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.admin.category.adaptor.CategoryAdaptor;
 import store.mybooks.front.admin.category.model.request.CategoryCreateRequest;
@@ -41,8 +42,8 @@ public class CategoryService {
      * @param size int
      * @return pageResponse
      */
-    public PageResponse<CategoryGetResponseForView> getCategories(int page, int size) {
-        PageResponse<CategoryGetResponse> pageResponse = categoryAdaptor.getCategories(page, size);
+    public PageResponse<CategoryGetResponseForView> getCategories(Pageable pageable) {
+        PageResponse<CategoryGetResponse> pageResponse = categoryAdaptor.getCategories(pageable);
         List<CategoryGetResponseForView> categoryGetResponseForViewList = new ArrayList<>();
         for (CategoryGetResponse categoryGetResponse : pageResponse.getContent()) {
             CategoryGetResponse firstCategory = categoryGetResponse.getParentCategory();

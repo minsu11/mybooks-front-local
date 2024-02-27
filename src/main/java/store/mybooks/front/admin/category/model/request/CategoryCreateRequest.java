@@ -1,5 +1,6 @@
 package store.mybooks.front.admin.category.model.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,8 +17,7 @@ import lombok.Setter;
  * 2/25/24          damho-lee          최초 생성
  */
 @Getter
-@Setter
-@NoArgsConstructor
+@AllArgsConstructor
 public class CategoryCreateRequest {
     private Integer firstParentCategoryId;
     private Integer secondParentCategoryId;

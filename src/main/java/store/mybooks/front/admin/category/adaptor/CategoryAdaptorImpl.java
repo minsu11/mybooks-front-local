@@ -3,6 +3,7 @@ package store.mybooks.front.admin.category.adaptor;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -101,7 +102,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
     }
 
     @Override
-    public PageResponse<CategoryGetResponse> getCategories(int page, int size) {
+    public PageResponse<CategoryGetResponse> getCategories(Pageable pageable) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
@@ -109,7 +110,8 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<PageResponse<CategoryGetResponse>> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + "/api/categories/page?page=" + page + "&size=" + size,
+                gatewayAdaptorProperties.getAddress()
+                        + "/api/categories/page?page=" + pageable.getPageNumber() + "&size=" + pageable.getPageSize(),
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<>() {

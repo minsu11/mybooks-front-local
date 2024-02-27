@@ -1,6 +1,8 @@
 package store.mybooks.front.admin.category.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -38,24 +40,13 @@ public class CategoryController {
      * author : damho-lee <br>
      * description : 사이드바에서 카테고리를 눌렀을 때 페이지.<br>
      *
-     * @param page Integer
-     * @param size Integer
+     * @param pageable Pageable
      * @param model Model
      * @return string
      */
     @GetMapping
-    public String getCategoryPage(@RequestParam(value = "page", required = false) Integer page,
-                                  @RequestParam(value = "size", required = false) Integer size,
-                                  Model model) {
-        if (page == null) {
-            page = 0;
-        }
-
-        if (size == null) {
-            size = 10;
-        }
-
-        model.addAttribute("categories", categoryService.getCategories(page, size).getContent());
+    public String getCategoryPage(@PageableDefault Pageable pageable, Model model) {
+        model.addAttribute("categories", categoryService.getCategories(pageable).getContent());
 
         return "/admin/view/category";
     }
