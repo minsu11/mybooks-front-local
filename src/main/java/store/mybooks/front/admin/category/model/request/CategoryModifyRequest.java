@@ -20,7 +20,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CategoryModifyRequest {
     private Integer id;
-    private Integer firstParentCategoryId;
-    private Integer secondParentCategoryId;
     private String name;
 }
