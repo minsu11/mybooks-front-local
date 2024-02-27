@@ -125,21 +125,4 @@ public class CategoryController {
         categoryService.updateCategory(categoryModifyRequest);
         return "redirect:/admin/category";
     }
-
-    /**
-     * methodName : badRequestException <br>
-     * author : damho-lee <br>
-     * description : resource 서버에서 BadRequest, NotFound 상태코드가 오는 경우를 처리하는 ExceptionHandler.<br>
-     *
-     * @param exception HttpClientErrorException
-     * @param model Model
-     * @return string
-     */
-    @ExceptionHandler({HttpClientErrorException.BadRequest.class, HttpClientErrorException.NotFound.class})
-    public String badRequestException(HttpClientErrorException exception, Model model) {
-        if (exception.getMessage() != null) {
-            model.addAttribute("message", exception.getMessage());
-        }
-        return "/admin/view/error";
-    }
 }
