@@ -1,8 +1,7 @@
 package store.mybooks.front.admin.category.model.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  * packageName    : store.mybooks.front.category.model.request
@@ -16,8 +15,7 @@ import lombok.Setter;
  * 2/26/24          damho-lee          최초 생성
  */
 @Getter
-@Setter
-@NoArgsConstructor
+@AllArgsConstructor
 public class TagCreateRequest {
     private String name;
 }
