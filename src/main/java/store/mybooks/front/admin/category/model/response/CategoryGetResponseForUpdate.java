@@ -22,6 +22,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CategoryGetResponseForUpdate {
     private CategoryGetResponse targetCategory;
-    private CategoryGetResponse levelOneCategory;
-    private CategoryGetResponse levelTwoCategory;
+    private String levelOneCategoryName;
+    private String levelTwoCategoryName;
 }

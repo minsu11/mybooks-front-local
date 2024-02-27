@@ -8,17 +8,17 @@
     </div>
     <div class="container d-flex justify-content-center align-items-center">
         <form action="/admin/category/update" method="post">
-            <div th:if="${levelOneCategory != null}">
-                1단계 카테고리 : <label class="form-label" th:text="${levelOneCategory.name}"></label>
+            <div th:if="${levelOneCategoryName != null}">
+                1단계 카테고리 : <label class="form-label" th:text="${levelOneCategoryName}"></label>
             </div>
-            <div th:unless="${levelOneCategory != null}">
+            <div th:unless="${levelOneCategoryName != null}">
                 1단계 카테고리 : <label class="form-label" th:text="없음"></label>
             </div>
             <div>
-                <div th:if="${levelTwoCategory != null}">
-                    2단계 카테고리 : <label class="form-label" th:text="${levelTwoCategory.name}"></label>
+                <div th:if="${levelTwoCategoryName != null}">
+                    2단계 카테고리 : <label class="form-label" th:text="${levelTwoCategoryName}"></label>
                 </div>
-                <div th:unless="${levelTwoCategory != null}">
+                <div th:unless="${levelTwoCategoryName != null}">
                     2단계 카테고리 : <label class="form-label" th:text="없음"></label>
                 </div>
             </div>

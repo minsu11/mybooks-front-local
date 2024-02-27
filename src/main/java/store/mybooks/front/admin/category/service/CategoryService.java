@@ -174,6 +174,10 @@ public class CategoryService {
             levelOneCategory = levelOneCategory.getParentCategory();
         }
 
-        return new CategoryGetResponseForUpdate(categoryGetResponse, levelOneCategory, levelTwoCategory);
+        String levelOneCategoryName = levelOneCategory == null ? null : levelOneCategory.getName();
+        String levelTwoCategoryName = levelTwoCategory == null ? null : levelTwoCategory.getName();
+
+        return new CategoryGetResponseForUpdate(
+                categoryGetResponse, levelOneCategoryName, levelTwoCategoryName);
     }
 }

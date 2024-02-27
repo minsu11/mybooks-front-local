@@ -115,8 +115,8 @@ public class CategoryController {
     public String getUpdateForm(@RequestParam("id") Integer id, Model model) {
         CategoryGetResponseForUpdate categoryGetResponseForUpdate = categoryService.getCategory(id);
         model.addAttribute("category", categoryGetResponseForUpdate.getTargetCategory());
-        model.addAttribute("levelOneCategory", categoryGetResponseForUpdate.getLevelOneCategory());
-        model.addAttribute("levelTwoCategory", categoryGetResponseForUpdate.getLevelTwoCategory());
+        model.addAttribute("levelOneCategoryName", categoryGetResponseForUpdate.getLevelOneCategoryName());
+        model.addAttribute("levelTwoCategoryName", categoryGetResponseForUpdate.getLevelTwoCategoryName());
 
         return "/admin/view/category-update";
     }
