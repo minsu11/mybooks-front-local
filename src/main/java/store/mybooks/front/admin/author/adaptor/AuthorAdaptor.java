@@ -14,6 +14,7 @@ import store.mybooks.front.admin.author.dto.response.AuthorModifyResponse;
 import store.mybooks.front.admin.author.dto.response.AuthorResponse;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.pageable.dto.response.PageResponse;
+import store.mybooks.front.utils.Utils;
 
 /**
  * packageName    : store.mybooks.front.book.author.adaptor<br>
@@ -43,15 +44,9 @@ public class AuthorAdaptor {
      * @throws RuntimeException {@code Http status code ok}가 나오지 않는 경우
      */
     public AuthorResponse getAuthor(Integer id) {
-        ResponseEntity<AuthorResponse> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/authors/{id}",
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<AuthorResponse>() {
-                }, id);
-        if (exchange.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException();
-        }
-        return exchange.getBody();
+        String url = gatewayAdaptorProperties.getAddress() + "/api/authors/{id}";
+        return Utils.getResponseEntity(restTemplate, url, HttpMethod.GET,
+                null, HttpStatus.OK, AuthorResponse.class, id);
     }
 
     /**
@@ -63,16 +58,10 @@ public class AuthorAdaptor {
      * @return page response
      */
     public PageResponse<AuthorResponse> getAuthors() {
+        String url = gatewayAdaptorProperties.getAddress() + "/api/authors";
 
-        ResponseEntity<PageResponse<AuthorResponse>> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/authors",
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<PageResponse<AuthorResponse>>() {
-                });
-        if (exchange.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException();
-        }
-        return exchange.getBody();
+        return Utils.getResponseEntity(restTemplate, url, HttpMethod.GET,
+                null, HttpStatus.OK, PageResponse.class);
     }
 
     /**

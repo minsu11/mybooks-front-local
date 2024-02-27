@@ -1,5 +1,10 @@
 package store.mybooks.front.pageable.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * packageName    : store.mybooks.front.pageable.dto.response<br>
  * fileName       : Sort<br>
@@ -11,9 +16,15 @@ package store.mybooks.front.pageable.dto.response;
  * -----------------------------------------------------------<br>
  * 2/24/24        minsu11       최초 생성<br>
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Sort {
+    @JsonProperty("empty")
     private boolean empty;
+    @JsonProperty("sorted")
     private boolean sorted;
+    @JsonProperty("unsorted")
     private boolean unsorted;
 
 }
