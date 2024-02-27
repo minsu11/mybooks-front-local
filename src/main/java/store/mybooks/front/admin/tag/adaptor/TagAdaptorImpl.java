@@ -1,4 +1,4 @@
-package store.mybooks.front.admin.category.adaptor;
+package store.mybooks.front.admin.tag.adaptor;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -11,9 +11,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import store.mybooks.front.admin.category.model.request.TagCreateRequest;
-import store.mybooks.front.admin.category.model.request.TagModifyRequest;
-import store.mybooks.front.admin.category.model.response.TagGetResponse;
+import store.mybooks.front.admin.tag.model.request.TagCreateRequest;
+import store.mybooks.front.admin.tag.model.request.TagModifyRequest;
+import store.mybooks.front.admin.tag.model.response.TagGetResponse;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.pageable.dto.response.PageResponse;
 

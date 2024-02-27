@@ -1,4 +1,4 @@
-package store.mybooks.front.admin.category.model.request;
+package store.mybooks.front.admin.tag.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,11 +1,11 @@
-package store.mybooks.front.admin.category.model.response;
+package store.mybooks.front.admin.tag.model.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 /**
- * packageName    : store.mybooks.front.category.model.response
- * fileName       : TagGetResponse
+ * packageName    : store.mybooks.front.admin.category.model.request
+ * fileName       : TagModifyRequest
  * author         : damho-lee
  * date           : 2/26/24
  * description    :
@@ -15,8 +15,7 @@ import lombok.NoArgsConstructor;
  * 2/26/24          damho-lee          최초 생성
  */
 @Getter
-@NoArgsConstructor
-public class TagGetResponse {
-    private Integer id;
+@AllArgsConstructor
+public class TagModifyRequest {
     private String name;
 }

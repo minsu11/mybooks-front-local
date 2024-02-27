@@ -1,4 +1,4 @@
-package store.mybooks.front.admin.category.controller;
+package store.mybooks.front.admin.tag.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import store.mybooks.front.admin.category.model.request.TagCreateRequest;
-import store.mybooks.front.admin.category.model.request.TagModifyRequest;
-import store.mybooks.front.admin.category.service.TagService;
+import store.mybooks.front.admin.tag.model.request.TagCreateRequest;
+import store.mybooks.front.admin.tag.model.request.TagModifyRequest;
+import store.mybooks.front.admin.tag.service.TagService;
 
 /**
  * packageName    : store.mybooks.front.category.controller

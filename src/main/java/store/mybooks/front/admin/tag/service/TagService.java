@@ -1,11 +1,11 @@
-package store.mybooks.front.admin.category.service;
+package store.mybooks.front.admin.tag.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import store.mybooks.front.admin.category.adaptor.TagAdaptor;
-import store.mybooks.front.admin.category.model.request.TagCreateRequest;
-import store.mybooks.front.admin.category.model.request.TagModifyRequest;
-import store.mybooks.front.admin.category.model.response.TagGetResponse;
+import store.mybooks.front.admin.tag.adaptor.TagAdaptor;
+import store.mybooks.front.admin.tag.model.request.TagCreateRequest;
+import store.mybooks.front.admin.tag.model.request.TagModifyRequest;
+import store.mybooks.front.admin.tag.model.response.TagGetResponse;
 import store.mybooks.front.pageable.dto.response.PageResponse;
 
 /**
