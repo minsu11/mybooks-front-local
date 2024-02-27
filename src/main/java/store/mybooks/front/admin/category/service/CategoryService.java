@@ -38,8 +38,7 @@ public class CategoryService {
      * author : damho-lee <br>
      * description : page, size 에 맞는 카테고리 리턴.<br>
      *
-     * @param page int
-     * @param size int
+     * @param pageable Pageable
      * @return pageResponse
      */
     public PageResponse<CategoryGetResponseForView> getCategories(Pageable pageable) {
