@@ -8,29 +8,22 @@
     </div>
     <div class="container d-flex justify-content-center align-items-center">
         <form action="/admin/category/update" method="post">
-            <div>
-                <input type="text" id="targetCategoryId" name="id" th:value="${category.id}" readonly hidden="hidden">
+            <div th:if="${levelOneCategory != null}">
+                1단계 카테고리 : <label class="form-label" th:text="${levelOneCategory.name}"></label>
             </div>
-            <div>
-                <div th:if="${levelOneCategory != null}">
-                    1단계 카테고리 : <label for="firstParentCategoryId" class="form-label" th:text="${levelOneCategory.name}"></label>
-                    <input type="text" id="firstParentCategoryId" name="firstParentCategoryId" th:value="${levelOneCategory.getId()}" readonly hidden="hidden">
-                </div>
-                <div th:unless="${levelOneCategory != null}">
-                    1단계 카테고리 : <label for="firstParentCategoryIdWhenNull" class="form-label" th:text="없음"></label>
-                    <input type="text" id="firstParentCategoryIdWhenNull" name="firstParentCategoryId" th:value="null" readonly hidden="hidden">
-                </div>
+            <div th:unless="${levelOneCategory != null}">
+                1단계 카테고리 : <label class="form-label" th:text="없음"></label>
             </div>
             <div>
                 <div th:if="${levelTwoCategory != null}">
-                    2단계 카테고리 : <label for="secondParentCategoryId" class="form-label" th:text="${levelTwoCategory.name}"></label>
-                    <input type="text" id="secondParentCategoryId" name="secondParentCategoryId" th:value="${levelTwoCategory.getId()}" readonly hidden="hidden">
+                    2단계 카테고리 : <label class="form-label" th:text="${levelTwoCategory.name}"></label>
                 </div>
                 <div th:unless="${levelTwoCategory != null}">
-                    2단계 카테고리 : <label for="secondParentCategoryIdWhenNull" class="form-label" th:text="없음"></label>
-                    <input type="text" id="secondParentCategoryIdWhenNull" name="secondParentCategoryId" th:value="null" readonly hidden="hidden">
+                    2단계 카테고리 : <label class="form-label" th:text="없음"></label>
                 </div>
-
+            </div>
+            <div>
+                <input type="text" id="targetCategoryId" name="id" th:value="${category.id}" readonly hidden="hidden">
             </div>
             <div>
                 <label for="targetCategory" class="form-label">카테고리 이름</label>
