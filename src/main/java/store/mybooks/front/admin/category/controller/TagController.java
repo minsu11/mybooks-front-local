@@ -83,12 +83,30 @@ public class TagController {
         return "redirect:/admin/tag/register";
     }
 
+    /**
+     * methodName : getUpdatePage <br>
+     * author : damho-lee <br>
+     * description : 태그 수정 페이지.<br>
+     *
+     * @param id Integer
+     * @param model Model
+     * @return string
+     */
     @GetMapping("/update")
     public String getUpdatePage(@RequestParam("id") Integer id, Model model) {
         model.addAttribute("tag", tagService.getTag(id));
         return "/admin/view/tag-update";
     }
 
+    /**
+     * methodName : updateTag <br>
+     * author : damho-lee <br>
+     * description : 태그 수정 요청.<br>
+     *
+     * @param id Integer
+     * @param tagModifyRequest TagModifyRequest
+     * @return string
+     */
     @PostMapping("/update/{id}")
     public String updateTag(@PathVariable("id") Integer id, @ModelAttribute TagModifyRequest tagModifyRequest) {
         tagService.updateTag(id, tagModifyRequest);
@@ -96,6 +114,14 @@ public class TagController {
     }
 
 
+    /**
+     * methodName : deleteTag <br>
+     * author : damho-lee <br>
+     * description : 태그 삭제 요청.<br>
+     *
+     * @param id Integer
+     * @return string
+     */
     @GetMapping("/delete/{id}")
     public String deleteTag(@PathVariable("id") Integer id) {
         tagService.deleteTag(id);
