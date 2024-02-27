@@ -131,7 +131,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
         HttpEntity<CategoryModifyRequestForTransmission> requestEntity =
                 new HttpEntity<>(categoryModifyRequestForTransmission, headers);
 
-        ResponseEntity<PageResponse<CategoryGetResponse>> exchange = restTemplate.exchange(
+        ResponseEntity<Void> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + "/api/categories/" + id,
                 HttpMethod.PUT,
                 requestEntity,
@@ -151,7 +151,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
 
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
-        ResponseEntity<PageResponse<CategoryGetResponse>> exchange = restTemplate.exchange(
+        ResponseEntity<Void> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + "/api/categories/" + id,
                 HttpMethod.DELETE,
                 requestEntity,
@@ -172,7 +172,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<CategoryGetResponse> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + "/api/categories/id/" + id,
+                gatewayAdaptorProperties.getAddress() + "/api/categories/categoryId/" + id,
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
