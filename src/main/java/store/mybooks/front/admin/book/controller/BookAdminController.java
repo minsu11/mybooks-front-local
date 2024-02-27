@@ -32,11 +32,10 @@ public class BookAdminController {
     private final BookAdminService bookAdminService;
 
     @GetMapping
-    public String getBookPage(@PageableDefault Pageable pageable, Model model) {
-        model.addAttribute("books", bookAdminService.getBooks(pageable).getContent());
+    public String getBookPage(@PageableDefault(size = 8) Pageable pageable, Model model) {
+        model.addAttribute("books", bookAdminService.getBooks(pageable));
         return "admin/view/book";
     }
-
 
     @GetMapping("/register")
     public String getBookRegisterPage() {
