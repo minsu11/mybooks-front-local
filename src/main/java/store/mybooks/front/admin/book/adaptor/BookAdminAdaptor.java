@@ -70,7 +70,7 @@ public class BookAdminAdaptor {
         HttpEntity<BookCreateRequest> requestHttpEntity = new HttpEntity<>(httpHeaders);
 
         ResponseEntity<BookDetailResponse> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + url + bookId,
+                gatewayAdaptorProperties.getAddress() + url + "/" + bookId,
                 HttpMethod.GET,
                 requestHttpEntity,
                 new ParameterizedTypeReference<>() {
