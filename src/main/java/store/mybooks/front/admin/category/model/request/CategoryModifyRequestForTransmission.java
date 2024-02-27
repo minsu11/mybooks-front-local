@@ -17,6 +17,5 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class CategoryModifyRequestForTransmission {
-    private Integer parentCategoryId;
     private String name;
 }
