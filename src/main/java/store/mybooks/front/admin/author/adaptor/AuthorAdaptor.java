@@ -64,7 +64,7 @@ public class AuthorAdaptor {
      */
     public PageResponse<AuthorResponse> getAuthors(Pageable pageable) {
 
-        String url = gatewayAdaptorProperties.getAddress() + "/api/authors?page=" + pageable.getPageNumber() + "&size==" + pageable.getPageSize();
+        String url = gatewayAdaptorProperties.getAddress() + "/api/authors?page=" + pageable.getPageNumber() + "&size=" + pageable.getPageSize();
         ResponseEntity<PageResponse<AuthorResponse>> exchange = restTemplate.exchange(url,
                 HttpMethod.GET,
                 null,
