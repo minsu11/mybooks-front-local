@@ -29,7 +29,7 @@
             <nav aria-label="admin-book-paging">
                 <ul class="pagination">
                     <li th:each="pageNum : ${#numbers.sequence(0, books.totalPages - 1)}" class="page-item"
-                        th:classappend="${pageNum == books.number ? 'active' : ''}">
+                        th:classappend="${pageNum + 1 == books.number ? 'active' : ''}">
                         <a class="page-link" th:text="${pageNum + 1}" th:href="@{/admin/book(page=${pageNum})}"></a>
                     </li>
                 </ul>
