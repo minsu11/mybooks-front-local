@@ -1,6 +1,8 @@
 package store.mybooks.front.admin.wrap.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,8 +27,9 @@ public class WrapAdminController {
     private final WrapService wrapService;
 
     @GetMapping
-    public String viewWrap(ModelMap modelMap) {
-        
+    public String viewWrap(
+            @PageableDefault Pageable pageable,
+            ModelMap modelMap) {
         return "admin/view/wrap-view";
     }
 }

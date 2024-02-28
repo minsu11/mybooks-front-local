@@ -1,5 +1,6 @@
 package store.mybooks.front.admin.wrap.adaptor;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -39,6 +40,7 @@ public class WrapAdaptor {
      */
     public WrapResponse getWrapResponse(Integer id) {
         String url = gatewayAdaptorProperties.getAddress() + "/api/wraps/{id}";
+
         ResponseEntity<WrapResponse> exchange = restTemplate.exchange(url,
                 HttpMethod.GET,
                 null,
@@ -46,4 +48,24 @@ public class WrapAdaptor {
                 }, id);
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
+
+    /**
+     * methodName : getWrapResponseList<br>
+     * author : minsu11<br>
+     * description : 사용 중인 포장지 목록을 가지고 옴.
+     * <br> *
+     *
+     * @return list
+     */
+    public List<WrapResponse> getWrapResponseList() {
+        String url = gatewayAdaptorProperties.getAddress() + "/api/wraps";
+        ResponseEntity<List<WrapResponse>> exchange = restTemplate.exchange(url,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<WrapResponse>>() {
+                });
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
+
+
 }
