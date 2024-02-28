@@ -15,10 +15,12 @@ import org.springframework.web.client.RestTemplate;
 import store.mybooks.front.admin.category.model.request.CategoryCreateRequestForTransmission;
 import store.mybooks.front.admin.category.model.request.CategoryModifyRequestForTransmission;
 import store.mybooks.front.admin.category.model.response.CategoryGetResponse;
+import store.mybooks.front.admin.category.model.response.CategoryGetResponseForBookCreate;
 import store.mybooks.front.admin.category.model.response.CategoryGetResponseForUpdate;
 import store.mybooks.front.admin.category.model.response.CategoryGetResponseForView;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.pageable.dto.response.PageResponse;
+import store.mybooks.front.utils.Utils;
 
 /**
  * packageName    : store.mybooks.front.category.adaptor
@@ -38,7 +40,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
 
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
-    private final String url = "/api/categories";
+    private static final String URL = "/api/categories";
 
     @Override
     public List<CategoryGetResponse> getHighestCategories() {
@@ -49,7 +51,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<List<CategoryGetResponse>> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + url + "/highest",
+                gatewayAdaptorProperties.getAddress() + URL + "/highest",
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
@@ -71,7 +73,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<List<CategoryGetResponse>> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + url + "/parentCategoryId/" + parentCategoryId,
+                gatewayAdaptorProperties.getAddress() + URL + "/parentCategoryId/" + parentCategoryId,
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
@@ -94,7 +96,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
                 new HttpEntity<>(categoryCreateRequest, headers);
 
         ResponseEntity<Void> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + url,
+                gatewayAdaptorProperties.getAddress() + URL,
                 HttpMethod.POST,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
@@ -114,7 +116,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<PageResponse<CategoryGetResponseForView>> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + url
+                gatewayAdaptorProperties.getAddress() + URL
                         + "/page?page=" + pageable.getPageNumber() + "&size=" + pageable.getPageSize(),
                 HttpMethod.GET,
                 requestEntity,
@@ -129,6 +131,19 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
     }
 
     @Override
+    public List<CategoryGetResponseForBookCreate> getCategories() {
+        String url = gatewayAdaptorProperties.getAddress() + URL;
+        ResponseEntity<List<CategoryGetResponseForBookCreate>> exchange = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<>() {
+                });
+
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
+
+    @Override
     public void updateCategory(Integer id, CategoryModifyRequestForTransmission categoryModifyRequestForTransmission) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -138,7 +153,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
                 new HttpEntity<>(categoryModifyRequestForTransmission, headers);
 
         ResponseEntity<Void> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + url + "/" + id,
+                gatewayAdaptorProperties.getAddress() + URL + "/" + id,
                 HttpMethod.PUT,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
@@ -158,7 +173,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<Void> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + url + "/" + id,
+                gatewayAdaptorProperties.getAddress() + URL + "/" + id,
                 HttpMethod.DELETE,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
@@ -178,7 +193,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<CategoryGetResponseForUpdate> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + url + "/categoryId/" + id,
+                gatewayAdaptorProperties.getAddress() + URL + "/categoryId/" + id,
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
