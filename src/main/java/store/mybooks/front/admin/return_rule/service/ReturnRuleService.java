@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.admin.return_rule.adaptor.ReturnRuleAdaptor;
 import store.mybooks.front.admin.return_rule.dto.request.ReturnRuleCreateRequest;
+import store.mybooks.front.admin.return_rule.dto.request.ReturnRuleDeleteRequest;
 import store.mybooks.front.admin.return_rule.dto.request.ReturnRuleModifyRequest;
 import store.mybooks.front.admin.return_rule.dto.response.ReturnRuleResponse;
 
@@ -35,6 +36,12 @@ public class ReturnRuleService {
     }
 
     public Boolean updateReturnRule(ReturnRuleModifyRequest request, Integer id) {
+
         return Objects.nonNull(returnRuleAdaptor.modifyReturnRule(request, id));
+    }
+
+    public void deleteReturnRule(ReturnRuleDeleteRequest request) {
+        returnRuleAdaptor.deleteReturnRule(request.getId());
+        
     }
 }

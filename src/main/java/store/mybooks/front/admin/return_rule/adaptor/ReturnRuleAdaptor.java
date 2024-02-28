@@ -84,7 +84,6 @@ public class ReturnRuleAdaptor {
      */
     public ReturnRuleModifyResponse modifyReturnRule(ReturnRuleModifyRequest request, Integer id) {
         String url = gatewayAdaptorProperties.getAddress() + "/api/return-rules/{id}";
-        log.info("테스트: {}", request.getReturnName());
         HttpHeaders headers = Utils.getHttpHeader();
         HttpEntity<ReturnRuleModifyRequest> requestHttpEntity = new HttpEntity<>(request, headers);
         ResponseEntity<ReturnRuleModifyResponse> exchange = restTemplate.exchange(url,
@@ -93,6 +92,16 @@ public class ReturnRuleAdaptor {
                 new ParameterizedTypeReference<ReturnRuleModifyResponse>() {
                 }, id);
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
+
+    public void deleteReturnRule(Integer id) {
+        String url = gatewayAdaptorProperties.getAddress() + "/api/return-rules/{id}";
+        ResponseEntity<Object> exchange = restTemplate.exchange(url,
+                HttpMethod.DELETE,
+                null,
+                new ParameterizedTypeReference<>() {
+                }, id);
+        Utils.getResponseEntity(exchange, HttpStatus.NO_CONTENT);
     }
 
 }

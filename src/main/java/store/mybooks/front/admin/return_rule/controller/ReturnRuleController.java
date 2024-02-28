@@ -8,6 +8,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import store.mybooks.front.admin.return_rule.dto.request.ReturnRuleCreateRequest;
+import store.mybooks.front.admin.return_rule.dto.request.ReturnRuleDeleteRequest;
 import store.mybooks.front.admin.return_rule.dto.request.ReturnRuleModifyRequest;
 import store.mybooks.front.admin.return_rule.dto.response.ReturnRuleResponse;
 import store.mybooks.front.admin.return_rule.service.ReturnRuleService;
@@ -92,4 +93,13 @@ public class ReturnRuleController {
     public String updateFail() {
         return "admin/view/return-rule-view";
     }
+
+    @PostMapping("/delete")
+    public String doDelete(@ModelAttribute ReturnRuleDeleteRequest request) {
+        returnRuleService.deleteReturnRule(request);
+
+        return "redirect:/admin/return-rules";
+    }
+    
+
 }
