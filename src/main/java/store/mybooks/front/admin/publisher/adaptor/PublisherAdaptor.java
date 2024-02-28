@@ -3,6 +3,7 @@ package store.mybooks.front.admin.publisher.adaptor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -42,10 +43,11 @@ public class PublisherAdaptor {
      *
      * @return page response
      */
-    public PageResponse<PublisherResponse> getPublisherList() {
-        String url = gatewayAdaptorProperties.getAddress() + "/api/publishers";
+    public PageResponse<PublisherResponse> getPublisherList(Pageable pageable) {
+        String url = gatewayAdaptorProperties.getAddress() + "/api/publishers/page?page=" + pageable.getPageNumber() + "&size==" + pageable.getPageSize();
+
         HttpEntity<PageResponse<PublisherResponse>> responseHttpEntity = new HttpEntity<>(Utils.getHttpHeader());
-        ResponseEntity<PageResponse<PublisherResponse>> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/publishers/page",
+        ResponseEntity<PageResponse<PublisherResponse>> exchange = restTemplate.exchange(url,
                 HttpMethod.GET,
                 responseHttpEntity,
                 new ParameterizedTypeReference<PageResponse<PublisherResponse>>() {

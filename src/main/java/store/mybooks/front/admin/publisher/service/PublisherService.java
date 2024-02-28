@@ -2,6 +2,7 @@ package store.mybooks.front.admin.publisher.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.admin.publisher.adaptor.PublisherAdaptor;
 import store.mybooks.front.admin.publisher.dto.request.PublisherCreateRequest;
@@ -36,8 +37,8 @@ public class PublisherService {
      *
      * @return 출판사 목록 조회
      */
-    public PageResponse<PublisherResponse> getPublisherList() {
-        return publisherAdaptor.getPublisherList();
+    public PageResponse<PublisherResponse> getPublisherList(Pageable pageable) {
+        return publisherAdaptor.getPublisherList(pageable);
 
     }
 

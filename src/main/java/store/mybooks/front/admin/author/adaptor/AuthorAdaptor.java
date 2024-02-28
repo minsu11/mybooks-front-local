@@ -2,6 +2,7 @@ package store.mybooks.front.admin.author.adaptor;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -61,9 +62,9 @@ public class AuthorAdaptor {
      *
      * @return page response
      */
-    public PageResponse<AuthorResponse> getAuthors() {
+    public PageResponse<AuthorResponse> getAuthors(Pageable pageable) {
 
-        String url = gatewayAdaptorProperties.getAddress() + "/api/authors";
+        String url = gatewayAdaptorProperties.getAddress() + "/api/authors?page=" + pageable.getPageNumber() + "&size=" + pageable.getPageSize();
         ResponseEntity<PageResponse<AuthorResponse>> exchange = restTemplate.exchange(url,
                 HttpMethod.GET,
                 null,
