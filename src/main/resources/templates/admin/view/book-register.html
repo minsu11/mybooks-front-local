@@ -98,7 +98,7 @@
                                             <label for="authors">저자</label>
                                         </div>
                                         <div class="form-group">
-                                            <select id="authors" name="authors[]" multiple="multiple" size="10">
+                                            <select id="authors" name="authorList[]" multiple="multiple" size="10">
                                                 <option th:each="author : ${authors}" th:value="${author.id}"
                                                         th:title="${author.content}" th:text="${author.name}"></option>
 
@@ -163,7 +163,7 @@
                                             <label for="categories">카테고리</label>
                                         </div>
                                         <div class="form-group">
-                                            <select id="categories" name="categories[]" multiple="multiple" size="10">
+                                            <select id="categories" name="categoryList[]" multiple="multiple" size="10">
                                                 <option th:each="category : ${categories}" th:value="${category.id}"
                                                         th:text="${category.name}"></option>
                                             </select>
