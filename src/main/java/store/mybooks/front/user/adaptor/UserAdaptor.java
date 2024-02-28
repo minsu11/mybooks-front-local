@@ -62,6 +62,8 @@ public class UserAdaptor {
      */
     public UserLoginResponse loginUser(UserLoginRequest userLoginRequest) {
 
+
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
@@ -118,11 +120,32 @@ public class UserAdaptor {
      * @param userId id
      * @return user get response
      */
-    public UserGetResponse findUserById(Long userId) {
+    public UserGetResponse findUserById(Long userId,HttpServletRequest request) {
+
+        Cookie[] cookies = request.getCookies();
+        String token = null;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("token".equals(cookie.getName())) { // 쿠키 이름이 "token"인 경우
+                    token = cookie.getValue(); // 쿠키의 값 가져오기
+                    break;
+                }
+            }
+        }
+
+        System.out.println(token);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        headers.set("token", token);
+
+
+        HttpEntity<Void> httpEntity = new HttpEntity<>(null, headers);
 
         ResponseEntity<UserGetResponse> responseEntity =
                 restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/users/{userId}", HttpMethod.GET,
-                        null,
+                        httpEntity,
                         new ParameterizedTypeReference<>() {
                         }, userId);
 
@@ -273,47 +296,6 @@ public class UserAdaptor {
         if (responseEntity.getStatusCode() != HttpStatus.OK) {
             throw new RuntimeException();
         }
-    }
-
-    public void dd(HttpServletRequest request) {
-
-        // OncePerRequestFilter 모든 요청에 적용되는 필터
-
-        // todo 인가 , 권한
-
-//        물건정보
-//
-//        user/mypage
-//        ServlerRequest 의존적으로
-
-
-        Cookie[] cookies = request.getCookies();
-        String token = null;
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("token".equals(cookie.getName())) { // 쿠키 이름이 "token"인 경우
-                    token = cookie.getValue(); // 쿠키의 값 가져오기
-                    break;
-                }
-            }
-        }
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-        headers.set("token", token);
-
-
-        HttpEntity<Void> httpEntity = new HttpEntity<>(null, headers);
-
-// "http://localhost:7070"
-        // todo 지금 로컬설정임 나중에 배포하고 바꾸기
-        ResponseEntity<TokenCreateResponse> responseEntity =
-                restTemplate.exchange("http://localhost:7070" + "/auth", HttpMethod.GET,
-                        httpEntity,
-                        new ParameterizedTypeReference<>() {
-                        });
-
     }
 
 }
