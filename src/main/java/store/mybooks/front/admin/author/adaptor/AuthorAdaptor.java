@@ -1,7 +1,9 @@
 package store.mybooks.front.admin.author.adaptor;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -53,6 +55,19 @@ public class AuthorAdaptor {
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
+
+    public List<AuthorResponse> getAllAuthors() {
+        String url = gatewayAdaptorProperties.getAddress() + "/api/authors";
+        ResponseEntity<List<AuthorResponse>> exchange = restTemplate.exchange(url,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<AuthorResponse>>() {
+                });
+
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
+
+
     /**
      * methodName : getAuthors<br>
      * author : minsu11<br>
@@ -61,9 +76,9 @@ public class AuthorAdaptor {
      *
      * @return page response
      */
-    public PageResponse<AuthorResponse> getAuthors() {
+    public PageResponse<AuthorResponse> getPagedAuthors(Pageable pageable) {
 
-        String url = gatewayAdaptorProperties.getAddress() + "/api/authors";
+        String url = gatewayAdaptorProperties.getAddress() + "/api/authors/page?page=" + pageable.getPageNumber() + "&size=" + pageable.getPageSize() ;
         ResponseEntity<PageResponse<AuthorResponse>> exchange = restTemplate.exchange(url,
                 HttpMethod.GET,
                 null,
@@ -140,4 +155,6 @@ public class AuthorAdaptor {
                 id);
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
+
+
 }
