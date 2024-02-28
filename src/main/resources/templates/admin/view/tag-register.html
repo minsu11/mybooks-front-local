@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/admin-layout}">
+<div layout:fragment="content">
+    <h1>태그 등록 페이지</h1>
+    <div>
+        <div>
+            <a th:href="@{/admin/tag}" class="btn btn-primary" role="button">리스트로 돌아가기</a>
+        </div>
+        <div class="container d-flex justify-content-center align-items-center">
+            <form id="form" action="/admin/tag/register" method="post">
+                <div class="col-sm-5">
+                    <div class="form-inline form-group">
+                        <label for="tagName">태그 이름</label>
+                        <input type="text" class="form-control" id="tagName" name="name" placeholder="태그 이름">
+                    </div>
+                    <button id="submit" type="submit" class="btn btn-primary">태그 생성</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="../js/tag/tag-name-validation.js"></script>
+    <script src="../js/tag/tag-register-validation.js"></script>
+</div>
+</html>
