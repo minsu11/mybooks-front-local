@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/admin-layout}">
+
+<div layout:fragment="content">
+    <p>출판사 등록 페이지 및 수정 페이지</p>
+    <div class="input-group input-group-sm justify-content-center mb-3">
+        <form method="post" th:action="@{'/admin/return-rules/'+${pathValue}}">
+            <div th:if="${modifyReturnRule == null}">
+                <input type="text" name="returnName" class="form-control" placeholder="반품 규정 명"/>
+                <input type="text" name="deliveryFee" class="form-control" placeholder="반품 시 배송 비"/>
+                <input type="text" name="term" class="form-control" placeholder="반품 유효 기간"/>
+                <button class="btn btn-outline-secondary" type="submit">등록
+                </button>
+            </div>
+            <div th:if="${modifyReturnRule != null }">
+                <input type="hidden" name=id th:value="${id}">
+                <input type="text" name="name" class="form-control"
+                       th:value="${modifyReturnRule.changeName}"/>
+                <button class="btn btn-outline-secondary" type="submit">수정
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+</html>
