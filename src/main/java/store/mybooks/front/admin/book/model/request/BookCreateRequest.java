@@ -1,7 +1,6 @@
 package store.mybooks.front.admin.book.model.request;
 
 import java.time.LocalDate;
-import java.util.List;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -63,13 +62,4 @@ public class BookCreateRequest {
     private Integer stock;
     @NotNull
     private Boolean isPacking;
-
-    @NotNull
-    private List<Integer> authorList;
-
-    @NotNull
-    private List<Integer> tagList;
-
-    @NotNull
-    private List<Long> categoryList;
 }
