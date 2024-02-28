@@ -25,7 +25,7 @@ import store.mybooks.front.admin.return_rule.service.ReturnRuleService;
 @RequiredArgsConstructor
 @RequestMapping("/admin/return-rules")
 public class ReturnRuleController {
-    private ReturnRuleService returnRuleService;
+    private final ReturnRuleService returnRuleService;
 
     @GetMapping
     public String viewReturnRule(ModelMap modelMap) {
@@ -34,5 +34,5 @@ public class ReturnRuleController {
         return "admin/view/return-rule-view";
     }
 
-    
+
 }

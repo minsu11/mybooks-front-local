@@ -17,6 +17,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class ReturnRuleResponse {
+    private Long id;
     private String returnName;
     private Integer deliveryFee;
     private Integer term;
