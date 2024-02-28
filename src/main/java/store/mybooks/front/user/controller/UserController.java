@@ -66,21 +66,7 @@ public class UserController {
      * @return string
      */
     @GetMapping("/user/register")
-    public String createUserForm(HttpServletRequest request) {
-
-
-        Enumeration<String> headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()) {
-            String headerName = headerNames.nextElement();
-            // 각 헤더 이름에 대해 해당 값을 가져와 출력
-            Enumeration<String> headers = request.getHeaders(headerName);
-            while (headers.hasMoreElements()) {
-                String headerValue = headers.nextElement();
-                System.out.println(headerName + ": " + headerValue);
-            }
-        }
-
-        System.out.println("@?@?@@?@@?@@??@? 여기가 헤더랍니다");
+    public String createUserForm() {
 
         return "register";
     }
@@ -95,9 +81,10 @@ public class UserController {
      * @return string
      */
     @GetMapping("/user")
-    public String myPageForm(Model model) {
+    public String myPageForm(Model model, HttpServletRequest request) {
         // todo JWT에서 id 꺼내쓰기
-        UserGetResponse userGetResponse = userAdaptor.findUserById(1L);
+
+        UserGetResponse userGetResponse = userAdaptor.findUserById(1L, request);
 
         model.addAttribute("user", userGetResponse);
         return "my-page";
@@ -120,50 +107,30 @@ public class UserController {
         // 검증됐으면
         if (loginResponse.getIsValidUser()) {
             // 토큰 값 가져오고
+
             TokenCreateResponse tokenCreateResponse =
                     tokenAdaptor.createToken(
                             new TokenCreateRequest(loginResponse.getIsAdmin(), loginResponse.getUserId(),
                                     loginResponse.getStatus()));
 
-            System.out.println(tokenCreateResponse.getAccessToken());
-            System.out.println(tokenCreateResponse.getRefreshToken());
-
-            // 쿠키에 토큰 저장
-//            Cookie accessTokenCookie = new Cookie("accessToken", tokenCreateResponse.getAccessToken());
-//            accessTokenCookie.setMaxAge(24 * 60 * 60); // 1일 유효 기간 설정
-//            accessTokenCookie.setPath("/"); // 쿠키의 경로 설정
-//            response.addCookie(accessTokenCookie);
-//
-//            Cookie refreshTokenCookie = new Cookie("refreshToken", tokenCreateResponse.getRefreshToken());
-//            refreshTokenCookie.setMaxAge(24 * 60 * 60); // 1일 유효 기간 설정
-//            refreshTokenCookie.setPath("/"); // 쿠키의 경로 설정
-//            response.addCookie(refreshTokenCookie);
-
-//            response.setHeader("Set-Cookie",
-//                    "token=" + tokenCreateResponse.getAccessToken() + "; " +
-//                            "Path=/; " +
-//                            "Domain=localhost; " +
-//                            "HttpOnly; " +
-//                            "Max-Age=604800; " +
-//                            "SameSite=None; " + // SameSite 설정 (Strict, Lax, None 중 선택)
-//                            "Secure" // Secure 설정
-//            );
-
             response.setHeader("Set-Cookie",
                     "token=" + tokenCreateResponse.getAccessToken() + "; " +
                             "Path=/; " +
                             "Domain=localhost; " +
-                            "HttpOnly; " +
-                            "Max-Age=604800; "
-                    // secure , samesite
+                            "HttpOnly; " + // JavaScript에서 쿠키에 접근하는 것을 방지하기 위해 HttpOnly 속성을 설정합니다.
+                            "Max-Age=604800; " + //
+                            "SameSite=Strict; " +
+                            // SameSite 설정 (Strict, Lax, None 중 선택) Strict 쿠키가 같은 도메인에서만 , 요청보낼떄는 헤더에 담아 보낼꺼임
+                            "Secure" // Secure 설정
             );
+
+            return "redirect:/";
 
         } else {
             // 실패하면 다시 로그인 창으로
             return "redirect:/login";
         }
 
-        return "redirect:/";
     }
 
     /**
@@ -263,11 +230,6 @@ public class UserController {
     }
 
 
-    @GetMapping("/user/test")
-    public String dd(HttpServletRequest request){
-        userAdaptor.dd(request);
-        return "redirect:/";
-    }
 
 
 }
