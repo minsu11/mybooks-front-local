@@ -3,6 +3,8 @@ package store.mybooks.front.admin.publisher.controller;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -41,8 +43,8 @@ public class PublisherController {
      * @return string
      */
     @GetMapping
-    public String viewPublisher(ModelMap modelMap) {
-        List<PublisherResponse> publisherResponseList = publisherService.getPublisherList().getContent();
+    public String viewPublisher(@PageableDefault Pageable pageable, ModelMap modelMap) {
+        List<PublisherResponse> publisherResponseList = publisherService.getPublisherList(pageable).getContent();
         modelMap.put("publisherList", publisherResponseList);
         return "admin/view/publisher-view";
     }
