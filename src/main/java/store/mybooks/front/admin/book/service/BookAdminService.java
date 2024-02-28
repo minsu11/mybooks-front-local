@@ -1,5 +1,6 @@
 package store.mybooks.front.admin.book.service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import store.mybooks.front.admin.book.model.request.BookCreateRequest;
 import store.mybooks.front.admin.book.model.request.BookModifyRequest;
 import store.mybooks.front.admin.book.model.response.BookBriefResponse;
 import store.mybooks.front.admin.book.model.response.BookDetailResponse;
+import store.mybooks.front.admin.book.model.response.BookStatusGetResponse;
 import store.mybooks.front.pageable.dto.response.PageResponse;
 
 /**
@@ -41,5 +43,9 @@ public class BookAdminService {
 
     public void updateBook(BookModifyRequest modifyRequest) {
         bookAdminAdaptor.updateBook(modifyRequest.getBookId(), modifyRequest);
+    }
+
+    public List<BookStatusGetResponse> getBookStatus() {
+        return bookAdminAdaptor.getBookStatus();
     }
 }
