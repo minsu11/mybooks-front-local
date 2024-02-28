@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thympleaf.org">
+<div th:fragment="myBooksHearderFragment">
+    <!-- Start Header Area -->
+    <header class="header navbar-area">
+        <div th:replace="common/fragment/my-book/header/my-books-header-topbar:: myBooksHearderTopBarFragment"></div>
+        <!-- Start Header Middle -->
+        <div th:replace="common/fragment/my-book/header/my-books-header-middle:: myBooksHeaderMiddleFragment"></div>
+        <!-- Start Header Bottom -->
+        <div th:replace="common/fragment/my-book/header/my-books-header-bottom::myBooksHeaderBottomFragment"></div>
+    </header>
+    <!-- End Header Area -->
+</div>
+</html>
