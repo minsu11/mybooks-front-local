@@ -1,11 +1,11 @@
-package store.mybooks.front.admin.return_rule.dto.response;
+package store.mybooks.front.admin.return_rule.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * packageName    : store.mybooks.front.admin.return_rule.dto.response<br>
- * fileName       : ReturnRuleResponse<br>
+ * packageName    : store.mybooks.front.admin.return_rule.dto.request<br>
+ * fileName       : ReturnRuleModifyRequset<br>
  * author         : minsu11<br>
  * date           : 2/28/24<br>
  * description    :
@@ -16,10 +16,9 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public class ReturnRuleResponse {
-    private Integer id;
+public class ReturnRuleModifyRequest {
     private String returnName;
     private Integer deliveryFee;
     private Integer term;
-    private Boolean isAvailable;
+    
 }

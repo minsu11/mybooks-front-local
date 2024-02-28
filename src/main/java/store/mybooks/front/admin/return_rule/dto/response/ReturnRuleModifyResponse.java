@@ -5,7 +5,7 @@ import lombok.Getter;
 
 /**
  * packageName    : store.mybooks.front.admin.return_rule.dto.response<br>
- * fileName       : ReturnRuleResponse<br>
+ * fileName       : ReturnRuleModifyResponse<br>
  * author         : minsu11<br>
  * date           : 2/28/24<br>
  * description    :
@@ -16,8 +16,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public class ReturnRuleResponse {
-    private Integer id;
+public class ReturnRuleModifyResponse {
     private String returnName;
     private Integer deliveryFee;
     private Integer term;

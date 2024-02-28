@@ -25,8 +25,7 @@
                 <td th:text="${returnRule.term}"></td>
                 <td>
 
-                    <form method="post" th:action="@{'/admin/return-rules/update-form'}">
-                        <input type="hidden" th:name="id" th:value="${returnRule.id}"/>
+                    <form method="post" th:action="@{'/admin/return-rules/update-form/'+${returnRule.id}}">
                         <input type="hidden" th:name="returnName" th:value="${returnRule.returnName}"/>
                         <input type="hidden" th:name="deliveryFee" th:value="${returnRule.deliveryFee}"/>
                         <input type="hidden" th:name="term" th:value="${returnRule.term}"/>
