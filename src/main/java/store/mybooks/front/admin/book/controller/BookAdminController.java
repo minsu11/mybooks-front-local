@@ -10,9 +10,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import store.mybooks.front.admin.author.service.AuthorService;
 import store.mybooks.front.admin.book.model.request.BookCreateRequest;
 import store.mybooks.front.admin.book.model.request.BookModifyRequest;
 import store.mybooks.front.admin.book.service.BookAdminService;
+import store.mybooks.front.admin.category.service.CategoryService;
+import store.mybooks.front.admin.publisher.service.PublisherService;
+import store.mybooks.front.admin.tag.service.TagService;
 
 /**
  * packageName    : store.mybooks.front.admin.book.controller <br/>
@@ -30,6 +34,10 @@ import store.mybooks.front.admin.book.service.BookAdminService;
 @RequestMapping("/admin/book")
 public class BookAdminController {
     private final BookAdminService bookAdminService;
+    private final PublisherService publisherService;
+    private final CategoryService categoryService;
+    private final TagService tagService;
+    private final AuthorService authorService;
 
     @GetMapping
     public String getBookPage(@PageableDefault(size = 8) Pageable pageable, Model model) {
@@ -38,7 +46,12 @@ public class BookAdminController {
     }
 
     @GetMapping("/register")
-    public String getBookRegisterPage() {
+    public String getBookRegisterPage(Model model) {
+//        model.addAttribute("publishers", publisherService.getPublisherList());
+        model.addAttribute("categories", categoryService.getHighestCategories());
+//        model.addAttribute("tags", tagService.getTags());
+//        model.addAttribute("authors", authorService.getPageAuthors());
+        model.addAttribute("bookStatuses", bookAdminService.getBookStatus());
         return "admin/view/book-register";
     }
 
