@@ -1,6 +1,9 @@
 package store.mybooks.front.user.adaptor;
 
+import java.util.Enumeration;
 import java.util.List;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -11,14 +14,17 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.filter.OncePerRequestFilter;
 import store.mybooks.front.config.GatewayAdaptorProperties;
+import store.mybooks.front.dooray.dto.DoorayAuthResponse;
+import store.mybooks.front.jwt.dto.request.TokenCreateRequest;
+import store.mybooks.front.jwt.dto.response.TokenCreateResponse;
 import store.mybooks.front.user.dto.request.UserCreateRequest;
 import store.mybooks.front.user.dto.request.UserGradeModifyRequest;
 import store.mybooks.front.user.dto.request.UserLoginRequest;
 import store.mybooks.front.user.dto.request.UserModifyRequest;
 import store.mybooks.front.user.dto.request.UserPasswordModifyRequest;
 import store.mybooks.front.user.dto.request.UserStatusModifyRequest;
-import store.mybooks.front.user.dto.response.PhoneNumberAuthResponse;
 import store.mybooks.front.user.dto.response.UserCreateResponse;
 import store.mybooks.front.user.dto.response.UserGetResponse;
 import store.mybooks.front.user.dto.response.UserGradeModifyResponse;
@@ -54,7 +60,7 @@ public class UserAdaptor {
      *
      * @param userLoginRequest login request
      */
-    public void loginUser(UserLoginRequest userLoginRequest) {
+    public UserLoginResponse loginUser(UserLoginRequest userLoginRequest) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -71,6 +77,8 @@ public class UserAdaptor {
         if (responseEntity.getStatusCode() != HttpStatus.OK) {
             throw new RuntimeException();
         }
+
+        return responseEntity.getBody();
     }
 
 
@@ -103,28 +111,6 @@ public class UserAdaptor {
 
 
     /**
-     * methodName : getPhoneNumberAuthResponse
-     * author : masiljangajji
-     * description : 유저 회원가입 , 전화번호 변경에 필요한 인증메시지를 요청함
-     *
-     * @return phone number auth response
-     */
-    public PhoneNumberAuthResponse getPhoneNumberAuthResponse(){
-
-        ResponseEntity<PhoneNumberAuthResponse> responseEntity =
-                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/auth/phone", HttpMethod.GET,
-                        null,
-                        new ParameterizedTypeReference<>() {
-                        });
-        if (responseEntity.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException();
-        }
-
-        return responseEntity.getBody();
-    }
-
-
-    /**
      * methodName : findUserById
      * author : masiljangajji
      * description : 유저의 Id로 유저의 정보를 가져옴
@@ -138,7 +124,7 @@ public class UserAdaptor {
                 restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/users/{userId}", HttpMethod.GET,
                         null,
                         new ParameterizedTypeReference<>() {
-                        },userId);
+                        }, userId);
 
 
         if (responseEntity.getStatusCode() != HttpStatus.OK) {
@@ -146,7 +132,6 @@ public class UserAdaptor {
         }
 
         return responseEntity.getBody();
-
     }
 
 
@@ -155,10 +140,10 @@ public class UserAdaptor {
      * author : masiljangajji
      * description : 유저의 비밀번호를 변경함
      *
-     * @param userId   id
+     * @param userId        id
      * @param modifyRequest request
      */
-    public void modifyUserPassword(Long userId, UserPasswordModifyRequest modifyRequest){
+    public void modifyUserPassword(Long userId, UserPasswordModifyRequest modifyRequest) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -167,10 +152,11 @@ public class UserAdaptor {
         HttpEntity<UserPasswordModifyRequest> requestEntity = new HttpEntity<>(modifyRequest, headers);
 
         ResponseEntity<UserPasswordModifyResponse> responseEntity =
-                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/users/{userId}/password", HttpMethod.PUT,
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/users/{userId}/password",
+                        HttpMethod.PUT,
                         requestEntity,
                         new ParameterizedTypeReference<>() {
-                        },userId);
+                        }, userId);
 
 
         if (responseEntity.getStatusCode() != HttpStatus.OK) {
@@ -184,10 +170,10 @@ public class UserAdaptor {
      * author : masiljangajji
      * description : 유저의 상태를 변경함
      *
-     * @param userId   id
+     * @param userId        id
      * @param modifyRequest request
      */
-    public void modifyUserStatus(Long userId, UserStatusModifyRequest modifyRequest){
+    public void modifyUserStatus(Long userId, UserStatusModifyRequest modifyRequest) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -196,10 +182,11 @@ public class UserAdaptor {
         HttpEntity<UserStatusModifyRequest> requestEntity = new HttpEntity<>(modifyRequest, headers);
 
         ResponseEntity<UserStatusModifyResponse> responseEntity =
-                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/users/{userId}/status", HttpMethod.PUT,
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/users/{userId}/status",
+                        HttpMethod.PUT,
                         requestEntity,
                         new ParameterizedTypeReference<>() {
-                        },userId);
+                        }, userId);
 
 
         if (responseEntity.getStatusCode() != HttpStatus.OK) {
@@ -213,10 +200,10 @@ public class UserAdaptor {
      * author : masiljangajji
      * description : 유저의 등급을 변경함
      *
-     * @param userId   id
+     * @param userId        id
      * @param modifyRequest request
      */
-    public void modifyUserGrade(Long userId, UserGradeModifyRequest modifyRequest){
+    public void modifyUserGrade(Long userId, UserGradeModifyRequest modifyRequest) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -225,10 +212,11 @@ public class UserAdaptor {
         HttpEntity<UserGradeModifyRequest> requestEntity = new HttpEntity<>(modifyRequest, headers);
 
         ResponseEntity<UserGradeModifyResponse> responseEntity =
-                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/users/{userId}/grade", HttpMethod.PUT,
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/users/{userId}/grade",
+                        HttpMethod.PUT,
                         requestEntity,
                         new ParameterizedTypeReference<>() {
-                        },userId);
+                        }, userId);
 
 
         if (responseEntity.getStatusCode() != HttpStatus.OK) {
@@ -242,10 +230,10 @@ public class UserAdaptor {
      * author : masiljangajji
      * description : 유저의 정보를 변경함 (이름,전화번호)
      *
-     * @param userId   id
+     * @param userId        id
      * @param modifyRequest request
      */
-    public void modifyUser(Long userId, UserModifyRequest modifyRequest){
+    public void modifyUser(Long userId, UserModifyRequest modifyRequest) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -257,7 +245,7 @@ public class UserAdaptor {
                 restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/users/{userId}", HttpMethod.PUT,
                         requestEntity,
                         new ParameterizedTypeReference<>() {
-                        },userId);
+                        }, userId);
 
 
         if (responseEntity.getStatusCode() != HttpStatus.OK) {
@@ -273,18 +261,59 @@ public class UserAdaptor {
      *
      * @param userId id
      */
-    public void deleteUser(Long userId){
+    public void deleteUser(Long userId) {
 
         ResponseEntity<UserModifyResponse> responseEntity =
                 restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/users/{userId}", HttpMethod.DELETE,
                         null,
                         new ParameterizedTypeReference<>() {
-                        },userId);
+                        }, userId);
 
 
         if (responseEntity.getStatusCode() != HttpStatus.OK) {
             throw new RuntimeException();
         }
+    }
+
+    public void dd(HttpServletRequest request) {
+
+        // OncePerRequestFilter 모든 요청에 적용되는 필터
+
+        // todo 인가 , 권한
+
+//        물건정보
+//
+//        user/mypage
+//        ServlerRequest 의존적으로
+
+
+        Cookie[] cookies = request.getCookies();
+        String token = null;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("token".equals(cookie.getName())) { // 쿠키 이름이 "token"인 경우
+                    token = cookie.getValue(); // 쿠키의 값 가져오기
+                    break;
+                }
+            }
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        headers.set("token", token);
+
+
+        HttpEntity<Void> httpEntity = new HttpEntity<>(null, headers);
+
+// "http://localhost:7070"
+        // todo 지금 로컬설정임 나중에 배포하고 바꾸기
+        ResponseEntity<TokenCreateResponse> responseEntity =
+                restTemplate.exchange("http://localhost:7070" + "/auth", HttpMethod.GET,
+                        httpEntity,
+                        new ParameterizedTypeReference<>() {
+                        });
+
     }
 
 }
