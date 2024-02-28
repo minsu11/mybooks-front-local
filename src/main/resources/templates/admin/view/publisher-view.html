@@ -17,7 +17,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="publisher:${publisherList}">
+            <tr th:each="publisher:${publisherList.getContent()}">
                 <td th:text="${publisher.name}"></td>
                 <td>
                     <form method="get" th:action="@{'/admin/publishers/'+${publisher.id}}">
