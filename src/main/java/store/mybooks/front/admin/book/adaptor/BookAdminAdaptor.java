@@ -18,6 +18,7 @@ import store.mybooks.front.admin.book.model.response.BookBriefResponse;
 import store.mybooks.front.admin.book.model.response.BookCreateResponse;
 import store.mybooks.front.admin.book.model.response.BookDetailResponse;
 import store.mybooks.front.admin.book.model.response.BookModifyResponse;
+import store.mybooks.front.admin.book.model.response.BookStatusGetResponse;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.pageable.dto.response.PageResponse;
 
@@ -115,8 +116,28 @@ public class BookAdminAdaptor {
                 new ParameterizedTypeReference<>() {
                 }
         );
-        if (exchange.getStatusCode() != HttpStatus.CREATED) {
+        if (exchange.getStatusCode() != HttpStatus.OK) {
             throw new RuntimeException();
         }
+    }
+
+    public List<BookStatusGetResponse> getBookStatus() {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
+
+        HttpEntity<Void> requestHttpEntity = new HttpEntity<>(httpHeaders);
+
+        ResponseEntity<List<BookStatusGetResponse>> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + "/api/books-statuses",
+                HttpMethod.GET,
+                requestHttpEntity,
+                new ParameterizedTypeReference<>() {
+                }
+        );
+        if (exchange.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException();
+        }
+        return exchange.getBody();
     }
 }
