@@ -1,7 +1,9 @@
 package store.mybooks.front.admin.publisher.service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.admin.publisher.adaptor.PublisherAdaptor;
 import store.mybooks.front.admin.publisher.dto.request.PublisherCreateRequest;
@@ -28,6 +30,12 @@ import store.mybooks.front.pageable.dto.response.PageResponse;
 public class PublisherService {
     private final PublisherAdaptor publisherAdaptor;
 
+
+    public List<PublisherResponse> getAllPublishers() {
+        return publisherAdaptor.getAllPublishers();
+    }
+
+
     /**
      * methodName : getPublisherList<br>
      * author : minsu11<br>
@@ -36,9 +44,8 @@ public class PublisherService {
      *
      * @return 출판사 목록 조회
      */
-    public PageResponse<PublisherResponse> getPublisherList() {
-        return publisherAdaptor.getPublisherList();
-
+    public PageResponse<PublisherResponse> getPagedPublisher(Pageable pageable) {
+        return publisherAdaptor.getPagedPublishers(pageable);
     }
 
     public boolean registerPublisher(PublisherCreateRequest request) {

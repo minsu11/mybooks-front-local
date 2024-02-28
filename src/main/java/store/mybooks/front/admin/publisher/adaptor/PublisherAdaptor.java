@@ -1,9 +1,15 @@
 package store.mybooks.front.admin.publisher.adaptor;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.*;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import store.mybooks.front.admin.publisher.dto.request.PublisherCreateRequest;
@@ -34,6 +40,28 @@ public class PublisherAdaptor {
     private final RestTemplate restTemplate;
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
+
+    /**
+     * methodName : getAllPublishers
+     * author : newjaehun
+     * description : 전체 출판사 가져오기.
+     *
+     * @return list
+     */
+    public List<PublisherResponse> getAllPublishers() {
+        HttpEntity<PageResponse<PublisherResponse>> responseHttpEntity = new HttpEntity<>(Utils.getHttpHeader());
+        ResponseEntity<List<PublisherResponse>> exchange =
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/publishers",
+                        HttpMethod.GET,
+                        responseHttpEntity,
+                        new ParameterizedTypeReference<List<PublisherResponse>>() {
+                        });
+        log.info("exchange value: {}", exchange.getBody());
+
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
+
+
     /**
      * methodName : getPublisherList<br>
      * author : minsu11<br>
@@ -42,10 +70,11 @@ public class PublisherAdaptor {
      *
      * @return page response
      */
-    public PageResponse<PublisherResponse> getPublisherList() {
-        String url = gatewayAdaptorProperties.getAddress() + "/api/publishers";
+    public PageResponse<PublisherResponse> getPagedPublishers(Pageable pageable) {
         HttpEntity<PageResponse<PublisherResponse>> responseHttpEntity = new HttpEntity<>(Utils.getHttpHeader());
-        ResponseEntity<PageResponse<PublisherResponse>> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/publishers/page",
+        ResponseEntity<PageResponse<PublisherResponse>> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + "/api/publishers/page?page=" + pageable.getPageNumber() +
+                        "&size=" + pageable.getPageSize(),
                 HttpMethod.GET,
                 responseHttpEntity,
                 new ParameterizedTypeReference<PageResponse<PublisherResponse>>() {
@@ -53,7 +82,6 @@ public class PublisherAdaptor {
         log.info("exchange value: {}", exchange.getBody());
 
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
-
     }
 
     /**
@@ -96,11 +124,12 @@ public class PublisherAdaptor {
         HttpHeaders headers = Utils.getHttpHeader();
 
         HttpEntity<PublisherModifyRequest> request = new HttpEntity<>(publisherModifyRequest, headers);
-        ResponseEntity<PublisherModifyResponse> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/publishers/{id}",
-                HttpMethod.PUT,
-                request,
-                new ParameterizedTypeReference<PublisherModifyResponse>() {
-                }, id);
+        ResponseEntity<PublisherModifyResponse> exchange =
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/publishers/{id}",
+                        HttpMethod.PUT,
+                        request,
+                        new ParameterizedTypeReference<PublisherModifyResponse>() {
+                        }, id);
 
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
 
@@ -116,12 +145,13 @@ public class PublisherAdaptor {
      * @return publisher delete response
      */
     public PublisherDeleteResponse deletePublisher(Integer id) {
-        ResponseEntity<PublisherDeleteResponse> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/publishers/{id}",
-                HttpMethod.DELETE,
-                null,
-                new ParameterizedTypeReference<PublisherDeleteResponse>() {
-                },
-                id);
+        ResponseEntity<PublisherDeleteResponse> exchange =
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/publishers/{id}",
+                        HttpMethod.DELETE,
+                        null,
+                        new ParameterizedTypeReference<PublisherDeleteResponse>() {
+                        },
+                        id);
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
 
     }
