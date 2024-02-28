@@ -83,7 +83,7 @@ public class BookAdminAdaptor {
         return exchange.getBody();
     }
 
-    public void createBook(BookCreateRequest bookCreateRequest) {
+    public BookCreateResponse createBook(BookCreateRequest bookCreateRequest) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
@@ -100,6 +100,7 @@ public class BookAdminAdaptor {
         if (exchange.getStatusCode() != HttpStatus.CREATED) {
             throw new RuntimeException();
         }
+        return exchange.getBody();
     }
 
     public void updateBook(Long bookId, BookModifyRequest modifyRequest) {

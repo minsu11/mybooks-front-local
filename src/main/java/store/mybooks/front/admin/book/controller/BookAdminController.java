@@ -1,5 +1,6 @@
 package store.mybooks.front.admin.book.controller;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -47,17 +48,18 @@ public class BookAdminController {
 
     @GetMapping("/register")
     public String getBookRegisterPage(Model model) {
-//        model.addAttribute("publishers", publisherService.getPublisherList());
+        model.addAttribute("publishers", publisherService.getAllPublishers());
         model.addAttribute("categories", categoryService.getHighestCategories());
 //        model.addAttribute("tags", tagService.getTags());
-//        model.addAttribute("authors", authorService.getPageAuthors());
+        model.addAttribute("authors", authorService.getAllAuthors());
         model.addAttribute("bookStatuses", bookAdminService.getBookStatus());
         return "admin/view/book-register";
     }
 
     @PostMapping("/register")
-    public String createBook(@ModelAttribute BookCreateRequest bookCreateRequest) {
-        bookAdminService.createBook(bookCreateRequest);
+    public String createBook(@ModelAttribute BookCreateRequest bookCreateRequest, @RequestParam List<Integer> tagList,
+                             @RequestParam List<Integer> authorList, @RequestParam List<Integer> categoryList) {
+        bookAdminService.createBook(bookCreateRequest, authorList, categoryList, tagList);
         return "redirect:/admin/book/register";
     }
 
