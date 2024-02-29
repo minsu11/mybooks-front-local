@@ -1,6 +1,5 @@
 package store.mybooks.front.admin.book.controller;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -14,12 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import store.mybooks.front.admin.author.service.AuthorService;
 import store.mybooks.front.admin.book.model.request.BookCreateRequest;
 import store.mybooks.front.admin.book.model.request.BookModifyRequest;
-import store.mybooks.front.admin.book.model.response.BookBriefResponse;
 import store.mybooks.front.admin.book.service.BookAdminService;
 import store.mybooks.front.admin.category.service.CategoryService;
 import store.mybooks.front.admin.publisher.service.PublisherService;
 import store.mybooks.front.admin.tag.service.TagService;
-import store.mybooks.front.pageable.dto.response.PageResponse;
 
 /**
  * packageName    : store.mybooks.front.admin.book.controller <br/>
@@ -59,9 +56,8 @@ public class BookAdminController {
     }
 
     @PostMapping("/register")
-    public String createBook(@ModelAttribute BookCreateRequest bookCreateRequest, @RequestParam(required = false) List<Integer> tagList,
-                             @RequestParam List<Integer> authorList, @RequestParam List<Integer> categoryList) {
-        bookAdminService.createBook(bookCreateRequest, authorList, categoryList, tagList);
+    public String createBook(@ModelAttribute BookCreateRequest bookCreateRequest) {
+        bookAdminService.createBook(bookCreateRequest);
         return "redirect:/admin/book/register";
     }
 
