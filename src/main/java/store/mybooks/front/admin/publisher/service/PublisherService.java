@@ -31,6 +31,13 @@ public class PublisherService {
     private final PublisherAdaptor publisherAdaptor;
 
 
+    /**
+     * methodName : getAllPublishers<br>
+     * author : newjaehun<br>
+     * description : 전체 출판사 목록을 조회
+     * <br> *
+     * @return list
+     */
     public List<PublisherResponse> getAllPublishers() {
         return publisherAdaptor.getAllPublishers();
     }
@@ -39,7 +46,7 @@ public class PublisherService {
     /**
      * methodName : getPublisherList<br>
      * author : minsu11<br>
-     * description : 출판사의 목록을 조회
+     * description : 페이징된 출판사의 목록을 조회
      * <br> *
      *
      * @return 출판사 목록 조회
