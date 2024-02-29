@@ -1,26 +1,23 @@
-package store.mybooks.front.user.dto.response;
+package store.mybooks.front.jwt.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 /**
- * packageName    : store.mybooks.resource.user.dto.response<br>
- * fileName       : UserLoginResponse<br>
+ * packageName    : store.mybooks.front.jwt.dto.request<br>
+ * fileName       : TokenRequest<br>
  * author         : masiljangajji<br>
- * date           : 2/23/24<br>
+ * date           : 2/28/24<br>
  * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2/23/24        masiljangajji       최초 생성
+ * 2/28/24        masiljangajji       최초 생성
  */
 
 @Getter
-@NoArgsConstructor
-public class UserLoginResponse {
-
-    private Boolean isValidUser;
+@AllArgsConstructor
+public class TokenCreateRequest {
 
     private Boolean isAdmin;
 
