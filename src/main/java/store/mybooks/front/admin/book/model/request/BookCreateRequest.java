@@ -1,6 +1,7 @@
 package store.mybooks.front.admin.book.model.request;
 
 import java.time.LocalDate;
+import java.util.List;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -14,7 +15,7 @@ import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
- *packageName    : store.mybooks.front.admin.book.model.request <br/>
+ * packageName    : store.mybooks.front.admin.book.model.request <br/>
  * fileName       : BookCreateRequest<br/>
  * author         : newjaehun <br/>
  * date           : 2/26/24<br/>
@@ -62,4 +63,11 @@ public class BookCreateRequest {
     private Integer stock;
     @NotNull
     private Boolean isPacking;
+
+//    @NotNull
+    private List<Integer> authorList;
+    @NotNull
+    private List<Integer> categoryList;
+
+    private List<Integer> tagList;
 }
