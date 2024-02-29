@@ -21,6 +21,7 @@ import store.mybooks.front.admin.book.model.response.BookModifyResponse;
 import store.mybooks.front.admin.book.model.response.BookStatusGetResponse;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.pageable.dto.response.PageResponse;
+import store.mybooks.front.utils.Utils;
 
 /**
  * packageName    : store.mybooks.front.admin.book.adaptor <br/>
@@ -56,11 +57,7 @@ public class BookAdminAdaptor {
                 new ParameterizedTypeReference<>() {
                 }
         );
-        if (exchange.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException();
-        }
-        return exchange.getBody();
-
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
     public BookDetailResponse getDetailBook(Long bookId) {
@@ -77,10 +74,8 @@ public class BookAdminAdaptor {
                 new ParameterizedTypeReference<>() {
                 }
         );
-        if (exchange.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException();
-        }
-        return exchange.getBody();
+
+        return Utils.getResponseEntity(exchange, HttpStatus.CREATED);
     }
 
     public BookCreateResponse createBook(BookCreateRequest bookCreateRequest) {
@@ -97,10 +92,8 @@ public class BookAdminAdaptor {
                 new ParameterizedTypeReference<>() {
                 }
         );
-        if (exchange.getStatusCode() != HttpStatus.CREATED) {
-            throw new RuntimeException();
-        }
-        return exchange.getBody();
+
+        return Utils.getResponseEntity(exchange, HttpStatus.CREATED);
     }
 
     public void updateBook(Long bookId, BookModifyRequest modifyRequest) {
@@ -136,9 +129,6 @@ public class BookAdminAdaptor {
                 new ParameterizedTypeReference<>() {
                 }
         );
-        if (exchange.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException();
-        }
-        return exchange.getBody();
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 }
