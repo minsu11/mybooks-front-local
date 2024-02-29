@@ -35,7 +35,6 @@ public class DoorayController {
      * @return phone number auth response
      */
     @GetMapping("/dooray")
-    @ResponseBody
     public DoorayAuthResponse userPhoneAuth() {
 
         return doorayAdaptor.getDoorayAuthNumber();
