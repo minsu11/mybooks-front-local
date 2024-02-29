@@ -1,11 +1,13 @@
 package store.mybooks.front.admin.wrap.service;
 
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.admin.wrap.adaptor.WrapAdaptor;
+import store.mybooks.front.admin.wrap.dto.request.WrapCreateRequest;
 import store.mybooks.front.admin.wrap.dto.response.WrapResponse;
 import store.mybooks.front.pageable.dto.response.PageResponse;
 
@@ -26,12 +28,33 @@ import store.mybooks.front.pageable.dto.response.PageResponse;
 public class WrapService {
     private final WrapAdaptor wrapAdaptor;
 
+    /**
+     * methodName : getWrapResponse<br>
+     * author : minsu11<br>
+     * description : 포장지의 전체 목록
+     * <br> *
+     *
+     * @return list
+     */
     public List<WrapResponse> getWrapResponse() {
         return wrapAdaptor.getWrapList();
     }
 
+    /**
+     * methodName : getWrapPage<br>
+     * author : minsu11<br>
+     * description : 페이징 처리된 포장지 목록
+     * <br> *
+     *
+     * @param pageable 페이징 정보
+     * @return page response
+     */
     public PageResponse<WrapResponse> getWrapPage(Pageable pageable) {
         return wrapAdaptor.getWrapPage(pageable);
+    }
+
+    public Boolean createWrap(WrapCreateRequest request) {
+        return Objects.nonNull(wrapAdaptor.createWrap(request));
     }
 
 }

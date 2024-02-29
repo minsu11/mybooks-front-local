@@ -4,11 +4,11 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import store.mybooks.front.admin.wrap.dto.request.WrapCreateRequest;
+import store.mybooks.front.admin.wrap.dto.response.WrapCreateResponse;
 import store.mybooks.front.admin.wrap.dto.response.WrapResponse;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.pageable.dto.response.PageResponse;
@@ -67,5 +67,18 @@ public class WrapAdaptor {
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
+    public WrapCreateResponse createWrap(WrapCreateRequest request) {
+        String url = gatewayAdaptorProperties.getAddress() + "/api/wraps";
+        HttpHeaders headers = Utils.getHttpHeader();
+        HttpEntity<WrapCreateRequest> responseHttpEntity = new HttpEntity<>(request, headers);
+
+        ResponseEntity<WrapCreateResponse> exchange = restTemplate.exchange(url,
+                HttpMethod.POST,
+                responseHttpEntity,
+                new ParameterizedTypeReference<WrapCreateResponse>() {
+                });
+
+        return Utils.getResponseEntity(exchange, HttpStatus.CREATED);
+    }
 
 }
