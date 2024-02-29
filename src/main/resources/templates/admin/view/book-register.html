@@ -30,16 +30,16 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="bookName">도서명</label>
-                                            <input class="form-control" type="text" id="bookName" name="name" required
+                                            <label for="name">도서명</label>
+                                            <input class="form-control" type="text" id="name" name="name" required
                                                    minlength="1"
                                                    maxlength="100">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="bookIsbn">ISBN(13자리)</label>
-                                            <input class="form-control" type="text" id="bookIsbn" name="isbn" required
+                                            <label for="isbn">ISBN(13자리)</label>
+                                            <input class="form-control" type="text" id="isbn" name="isbn" required
                                                    pattern="\d{13}">
                                         </div>
                                     </div>
@@ -48,12 +48,12 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group mb-0">
-                                            <label for="bookStatus">출판사</label>
+                                            <label for="publisherId">출판사</label>
                                         </div>
                                         <div class="form-group ">
-                                            <select class="form-select custom-select" id="bookPublisher"
-                                                    name="bookPublisher"
-                                                    aria-label="bookPublisher">
+                                            <select class="form-select custom-select" id="publisherId"
+                                                    name="publisherId"
+                                                    aria-label="publisherId">
                                                 <option selected>출판사 선택</option>
                                                 <option th:each="publisher : ${publishers}"
                                                         th:value="${publisher.id}" th:text="${publisher.name}"></option>
@@ -64,8 +64,8 @@
 
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="bookPublishDate">출판일자</label>
-                                            <input class="form-control" type="date" id="bookPublishDate"
+                                            <label for="publishDate">출판일자</label>
+                                            <input class="form-control" type="date" id="publishDate"
                                                    name="publishDate" required>
                                         </div>
                                     </div>
@@ -73,8 +73,8 @@
 
                                 <div class="col-sm-15">
                                     <div class="form-group">
-                                        <label for="bookIndex">목차</label>
-                                        <textarea style="resize:none" class="form-control" id="bookIndex" name="index"
+                                        <label for="index">목차</label>
+                                        <textarea style="resize:none" class="form-control" id="index" name="index"
                                                   rows="8"
                                                   required></textarea>
                                     </div>
@@ -82,8 +82,8 @@
 
                                 <div class="col-sm-15">
                                     <div class="form-group">
-                                        <label for="bookContent">설명</label>
-                                        <textarea style="resize:none" class="form-control" id="bookContent"
+                                        <label for="content">설명</label>
+                                        <textarea style="resize:none" class="form-control" id="content"
                                                   name="content" rows="16"
                                                   required></textarea>
                                     </div>
@@ -95,10 +95,10 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group mb-0">
-                                            <label for="authors">저자</label>
+                                            <label for="authorList">저자</label>
                                         </div>
                                         <div class="form-group">
-                                            <select id="authors" name="authorList[]" multiple="multiple" size="10">
+                                            <select id="authorList" name="authorList" multiple="multiple" size="10">
                                                 <option th:each="author : ${authors}" th:value="${author.id}"
                                                         th:title="${author.content}" th:text="${author.name}"></option>
 
@@ -108,8 +108,8 @@
 
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="bookPage">페이지수</label>
-                                            <input class="form-control" type="number" id="bookPage" name="page" required
+                                            <label for="page">페이지수</label>
+                                            <input class="form-control" type="number" id="page" name="page" required
                                                    min="1">
                                         </div>
                                     </div>
@@ -118,15 +118,15 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="bookOriginalCost">정가</label>
-                                            <input class="form-control" type="number" id="bookOriginalCost"
+                                            <label for="originalCost">정가</label>
+                                            <input class="form-control" type="number" id="originalCost"
                                                    name="originalCost" required min="1">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="bookSaleCost">판매가</label>
-                                            <input class="form-control" type="number" id="bookSaleCost" name="saleCost"
+                                            <label for="saleCost">판매가</label>
+                                            <input class="form-control" type="number" id="saleCost" name="saleCost"
                                                    required min="1">
                                         </div>
                                     </div>
@@ -135,10 +135,10 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group mb-0">
-                                            <label for="bookStatus">도서 상태</label>
+                                            <label for="bookStatusId">도서 상태</label>
                                         </div>
                                         <div class="form-group">
-                                            <select class="form-select custom-select" id="bookStatus"
+                                            <select class="form-select custom-select" id="bookStatusId"
                                                     name="bookStatusId"
                                                     aria-label="bookStatus">
                                                 <option selected>도서 상태 선택</option>
@@ -149,8 +149,8 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="bookStock">재고</label>
-                                            <input class="form-control" type="number" id="bookStock" name="stock"
+                                            <label for="stock">재고</label>
+                                            <input class="form-control" type="number" id="stock" name="stock"
                                                    required min="0">
                                         </div>
                                     </div>
@@ -160,10 +160,10 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group mb-0">
-                                            <label for="categories">카테고리</label>
+                                            <label for="categoryList">카테고리</label>
                                         </div>
                                         <div class="form-group">
-                                            <select id="categories" name="categoryList[]" multiple="multiple" size="10">
+                                            <select id="categoryList" name="categoryList" multiple="multiple" size="10">
                                                 <option th:each="category : ${categories}" th:value="${category.id}"
                                                         th:text="${category.name}"></option>
                                             </select>
@@ -173,10 +173,10 @@
 
                                     <div class="col-sm-6">
                                         <div class="form-group mb-0">
-                                            <label for="tags">태그</label>
+                                            <label for="tagList">태그</label>
                                         </div>
                                         <div class="form-group">
-                                            <select id="tags" name="tags[]" multiple="multiple" size="10">
+                                            <select id="tagList" name="tagList" multiple="multiple" size="10">
                                                 <option th:each="tag : ${tags}" th:value="${tag.id}"
                                                         th:text="${tag.name}"></option>
                                             </select>
@@ -225,7 +225,7 @@
     </div>
     <script>
         $(document).ready(function () {
-            $('#authors').multiselect({
+            $('#authorList').multiselect({
                 nonSelectedText: '저자 선택',
                 maxHeight: 400,
                 includeSelectAllOption: false,
@@ -233,15 +233,30 @@
             });
         });
         $(document).ready(function () {
-            $('#categories').multiselect({
-                nonSelectedText: '카테고리 선택',
+            $('#categoryList').multiselect({
+                nonSelectedText: '카테고리 선택(최대 10개)',
                 maxHeight: 400,
                 includeSelectAllOption: false,
-                numberDisplayed: 1
+                numberDisplayed: 1,
+                onChange: function(option, checked) {
+                    var maxCount = 10;
+                    var selectedCount = $('#categoryList option:selected').length;
+
+                    if (selectedCount >= maxCount) {
+                        $('#categoryList option').each(function() {
+                            if (!$(this).is(':selected')) {
+                                $(this).prop('disabled', true);
+                            }
+                        });
+                    } else {
+                        $('#categoryList option').prop('disabled', false);
+                    }
+                    $('#categoryList').multiselect('refresh');
+                }
             });
         });
         $(document).ready(function () {
-            $('#tags').multiselect({
+            $('#tagList').multiselect({
                 nonSelectedText: '태그 선택',
                 maxHeight: 400,
                 includeSelectAllOption: false,
