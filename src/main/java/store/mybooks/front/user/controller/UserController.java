@@ -5,6 +5,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,6 +46,7 @@ public class UserController {
 
     private final TokenAdaptor tokenAdaptor;
 
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * methodName : loginUserForm
@@ -102,6 +104,9 @@ public class UserController {
     @PostMapping("/login")
     public String loginUser(@ModelAttribute UserLoginRequest userLoginRequest, HttpServletResponse response) {
 
+        // 비밀번호 암호화
+        userLoginRequest.setPassword(passwordEncoder.encode(userLoginRequest.getPassword()));
+
         // 여기서 검증받고
         UserLoginResponse loginResponse = userAdaptor.loginUser(userLoginRequest);
 
@@ -134,6 +139,10 @@ public class UserController {
      */
     @PostMapping("/user/register")
     public String createUser(@ModelAttribute UserCreateRequest userCreateRequest) {
+
+        // 비밀번호 암호화
+        userCreateRequest.setPassword(passwordEncoder.encode(userCreateRequest.getPassword()));
+
         userAdaptor.createUser(userCreateRequest);
         return "redirect:/";
     }
@@ -148,6 +157,9 @@ public class UserController {
      */
     @PostMapping("/user/modify/password")
     public String modifyUserPassword(@ModelAttribute UserPasswordModifyRequest modifyRequest) {
+
+        // 비밀번호 암호화
+        modifyRequest.setPassword(passwordEncoder.encode(modifyRequest.getPassword()));
 
         // todo JWT 비밀번호 변경됐으니까 로그아웃 시키고 새로 인증받도록
         userAdaptor.modifyUserPassword(1L, modifyRequest);

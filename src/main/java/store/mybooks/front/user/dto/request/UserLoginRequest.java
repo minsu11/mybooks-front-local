@@ -3,6 +3,7 @@ package store.mybooks.front.user.dto.request;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * packageName    : store.mybooks.resource.user.dto.request<br>
@@ -23,4 +24,8 @@ public class UserLoginRequest {
     private String email;
     private String password;
 
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
