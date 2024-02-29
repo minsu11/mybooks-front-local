@@ -32,6 +32,7 @@ import store.mybooks.front.user.dto.response.UserLoginResponse;
 import store.mybooks.front.user.dto.response.UserModifyResponse;
 import store.mybooks.front.user.dto.response.UserPasswordModifyResponse;
 import store.mybooks.front.user.dto.response.UserStatusModifyResponse;
+import store.mybooks.front.utils.Utils;
 
 /**
  * packageName    : store.mybooks.front.user.adaptor<br>
@@ -63,11 +64,7 @@ public class UserAdaptor {
     public UserLoginResponse loginUser(UserLoginRequest userLoginRequest) {
 
 
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-
+        HttpHeaders headers = Utils.getHttpHeader();
         HttpEntity<UserLoginRequest> requestEntity = new HttpEntity<>(userLoginRequest, headers);
 
         ResponseEntity<UserLoginResponse> responseEntity =
@@ -93,9 +90,7 @@ public class UserAdaptor {
      */
     public void createUser(UserCreateRequest createRequest) {
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        HttpHeaders headers = Utils.getHttpHeader();
 
         HttpEntity<UserCreateRequest> requestEntity = new HttpEntity<>(createRequest, headers);
 
@@ -122,24 +117,10 @@ public class UserAdaptor {
      */
     public UserGetResponse findUserById(Long userId,HttpServletRequest request) {
 
-        Cookie[] cookies = request.getCookies();
-        String token = null;
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("token".equals(cookie.getName())) { // 쿠키 이름이 "token"인 경우
-                    token = cookie.getValue(); // 쿠키의 값 가져오기
-                    break;
-                }
-            }
-        }
+        String token = Utils.getCookieValue(request.getCookies(),"token"); // todo 쿠키 이름 변경하기
 
-        System.out.println(token);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-        headers.set("token", token);
-
+        HttpHeaders headers = Utils.getHttpHeader();
+        headers.set("token", token); // todo 이름 변경하기
 
         HttpEntity<Void> httpEntity = new HttpEntity<>(null, headers);
 
@@ -168,9 +149,7 @@ public class UserAdaptor {
      */
     public void modifyUserPassword(Long userId, UserPasswordModifyRequest modifyRequest) {
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        HttpHeaders headers = Utils.getHttpHeader();
 
         HttpEntity<UserPasswordModifyRequest> requestEntity = new HttpEntity<>(modifyRequest, headers);
 
@@ -198,9 +177,7 @@ public class UserAdaptor {
      */
     public void modifyUserStatus(Long userId, UserStatusModifyRequest modifyRequest) {
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        HttpHeaders headers = Utils.getHttpHeader();
 
         HttpEntity<UserStatusModifyRequest> requestEntity = new HttpEntity<>(modifyRequest, headers);
 
@@ -228,9 +205,7 @@ public class UserAdaptor {
      */
     public void modifyUserGrade(Long userId, UserGradeModifyRequest modifyRequest) {
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        HttpHeaders headers = Utils.getHttpHeader();
 
         HttpEntity<UserGradeModifyRequest> requestEntity = new HttpEntity<>(modifyRequest, headers);
 
@@ -258,10 +233,7 @@ public class UserAdaptor {
      */
     public void modifyUser(Long userId, UserModifyRequest modifyRequest) {
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-
+        HttpHeaders headers = Utils.getHttpHeader();
         HttpEntity<UserModifyRequest> requestEntity = new HttpEntity<>(modifyRequest, headers);
 
         ResponseEntity<UserModifyResponse> responseEntity =

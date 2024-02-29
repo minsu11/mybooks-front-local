@@ -23,6 +23,7 @@ import store.mybooks.front.user.dto.request.UserPasswordModifyRequest;
 import store.mybooks.front.user.dto.request.UserStatusModifyRequest;
 import store.mybooks.front.user.dto.response.UserGetResponse;
 import store.mybooks.front.user.dto.response.UserLoginResponse;
+import store.mybooks.front.utils.Utils;
 
 /**
  * packageName    : store.mybooks.front.user.controller<br>
@@ -109,20 +110,10 @@ public class UserController {
             // 토큰 값 가져오고
 
             TokenCreateResponse tokenCreateResponse =
-                    tokenAdaptor.createToken(
-                            new TokenCreateRequest(loginResponse.getIsAdmin(), loginResponse.getUserId(),
+                    tokenAdaptor.createToken(new TokenCreateRequest(loginResponse.getIsAdmin(), loginResponse.getUserId(),
                                     loginResponse.getStatus()));
 
-            response.setHeader("Set-Cookie",
-                    "token=" + tokenCreateResponse.getAccessToken() + "; " +
-                            "Path=/; " +
-                            "Domain=localhost; " +
-                            "HttpOnly; " + // JavaScript에서 쿠키에 접근하는 것을 방지하기 위해 HttpOnly 속성을 설정합니다.
-                            "Max-Age=604800; " + //
-                            "SameSite=Strict; " +
-                            // SameSite 설정 (Strict, Lax, None 중 선택) Strict 쿠키가 같은 도메인에서만 , 요청보낼떄는 헤더에 담아 보낼꺼임
-                            "Secure" // Secure 설정
-            );
+            Utils.addJwtCookie(response, tokenCreateResponse.getAccessToken());
 
             return "redirect:/";
 
