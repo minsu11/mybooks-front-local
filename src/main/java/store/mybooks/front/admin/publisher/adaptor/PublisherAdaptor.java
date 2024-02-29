@@ -40,6 +40,8 @@ public class PublisherAdaptor {
     private final RestTemplate restTemplate;
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
+    private static final String URL = "/api/publishers";
+    private static final String URL_ID = "/api/publishers/{id}";
 
     /**
      * methodName : getAllPublishers
@@ -51,7 +53,8 @@ public class PublisherAdaptor {
     public List<PublisherResponse> getAllPublishers() {
         HttpEntity<PageResponse<PublisherResponse>> responseHttpEntity = new HttpEntity<>(Utils.getHttpHeader());
         ResponseEntity<List<PublisherResponse>> exchange =
-                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/publishers",
+                restTemplate.exchange(
+                        URL,
                         HttpMethod.GET,
                         responseHttpEntity,
                         new ParameterizedTypeReference<List<PublisherResponse>>() {
@@ -73,8 +76,8 @@ public class PublisherAdaptor {
     public PageResponse<PublisherResponse> getPagedPublishers(Pageable pageable) {
         HttpEntity<PageResponse<PublisherResponse>> responseHttpEntity = new HttpEntity<>(Utils.getHttpHeader());
         ResponseEntity<PageResponse<PublisherResponse>> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + "/api/publishers/page?page=" + pageable.getPageNumber() +
-                        "&size=" + pageable.getPageSize(),
+                gatewayAdaptorProperties.getAddress() + URL + "/page?page=" + pageable.getPageNumber()
+                        + "&size=" + pageable.getPageSize(),
                 HttpMethod.GET,
                 responseHttpEntity,
                 new ParameterizedTypeReference<PageResponse<PublisherResponse>>() {
@@ -87,7 +90,7 @@ public class PublisherAdaptor {
     /**
      * methodName : registerPublisher<br>
      * author : minsu11<br>
-     * description : 등록할 출판사 정보를 {@code resource}에 보낸 뒤 정상 등록이 된다면 응답 정보를 보냄
+     * description : 등록할 출판사 정보를 {@code resource}에 보낸 뒤 정상 등록이 된다면 응답 정보를 보냄.
      * <br> *
      *
      * @param publisherCreateRequest 등록할 출판사 DTO
@@ -95,18 +98,16 @@ public class PublisherAdaptor {
      * @throws RuntimeException {@code http status code created}가 아니면 예외를 던짐
      */
     public PublisherCreateResponse registerPublisher(PublisherCreateRequest publisherCreateRequest) {
-        String url = gatewayAdaptorProperties.getAddress() + "/api/publishers";
         HttpHeaders headers = Utils.getHttpHeader();
 
         HttpEntity<PublisherCreateRequest> request = new HttpEntity<>(publisherCreateRequest, headers);
-        ResponseEntity<PublisherCreateResponse> exchange = restTemplate.exchange(url,
+        ResponseEntity<PublisherCreateResponse> exchange = restTemplate.exchange(
+                URL,
                 HttpMethod.POST,
                 request,
                 new ParameterizedTypeReference<PublisherCreateResponse>() {
                 });
         return Utils.getResponseEntity(exchange, HttpStatus.CREATED);
-
-
     }
 
     /**
@@ -116,21 +117,18 @@ public class PublisherAdaptor {
      * <br> *
      *
      * @param publisherModifyRequest 출판사 수정 정보가 담긴 DTO
-     * @param id
+     * @param id PublisherId
      * @return publisher modify response
      */
     public PublisherModifyResponse updatePublisher(PublisherModifyRequest publisherModifyRequest, Integer id) {
-
-        HttpHeaders headers = Utils.getHttpHeader();
-
-        HttpEntity<PublisherModifyRequest> request = new HttpEntity<>(publisherModifyRequest, headers);
+        HttpEntity<PublisherModifyRequest> request = new HttpEntity<>(publisherModifyRequest, Utils.getHttpHeader());
         ResponseEntity<PublisherModifyResponse> exchange =
-                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/publishers/{id}",
+                restTemplate.exchange(
+                        URL_ID,
                         HttpMethod.PUT,
                         request,
                         new ParameterizedTypeReference<PublisherModifyResponse>() {
                         }, id);
-
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
 
     }
@@ -138,7 +136,7 @@ public class PublisherAdaptor {
     /**
      * methodName : deletePublisher<br>
      * author : minsu11<br>
-     * description : {@code id}에 맞는 저자의 정보를 삭제
+     * description : {@code id}에 맞는 저자의 정보를 삭제.
      * <br> *
      *
      * @param id 삭제할 저자의 id
@@ -146,14 +144,13 @@ public class PublisherAdaptor {
      */
     public PublisherDeleteResponse deletePublisher(Integer id) {
         ResponseEntity<PublisherDeleteResponse> exchange =
-                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/publishers/{id}",
+                restTemplate.exchange(
+                        URL_ID,
                         HttpMethod.DELETE,
                         null,
                         new ParameterizedTypeReference<PublisherDeleteResponse>() {
                         },
                         id);
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
-
     }
-
 }
