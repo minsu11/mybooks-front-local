@@ -220,7 +220,7 @@
 
     <script>
 
-        var phoneNumberAuth; // 전역 변수로 선언하여 다른 함수에서도 사용할 수 있도록 설정
+        var authNumber; // 전역 변수로 선언하여 다른 함수에서도 사용할 수 있도록 설정
 
         function confirmAndSubmit() {
             // 사용자에게 확인 창을 표시합니다.
@@ -281,12 +281,12 @@
         function requestAuthCode() {
 
             var xhr = new XMLHttpRequest();
-            xhr.open("GET", "/user/auth/phone", true);
+            xhr.open("GET", "/dooray", true);
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
                         var responseJson = JSON.parse(xhr.responseText); // JSON 문자열을 JavaScript 객체로 변환
-                        phoneNumberAuth = responseJson.randomNumber; // 서버로부터 받은 인증번호 중 randomNumber 값만 추출하여 저장
+                        authNumber = responseJson.randomNumber; // 서버로부터 받은 인증번호 중 randomNumber 값만 추출하여 저장
                         alert("인증번호를 전송했습니다.");
                     } else {
                         alert("인증번호 요청에 실패했습니다.");
@@ -301,7 +301,7 @@
             var verificationCode = document.getElementById('verificationCode').value;
 
 
-            if (verificationCode !== phoneNumberAuth) {
+            if (verificationCode !== authNumber) {
                 // 인증번호가 일치하지 않는 경우
                 alert("인증번호가 일치하지 않습니다.");
                 return false; // 회원가입 폼 제출 방지

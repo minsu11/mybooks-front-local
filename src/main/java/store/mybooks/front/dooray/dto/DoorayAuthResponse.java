@@ -1,6 +1,5 @@
-package store.mybooks.front.user.dto.response;
+package store.mybooks.front.dooray.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,7 +17,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class PhoneNumberAuthResponse {
+public class DoorayAuthResponse {
 
     private String randomNumber;
 

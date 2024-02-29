@@ -47,8 +47,8 @@ public class AuthorController {
      */
     @GetMapping
     public String viewAuthor(@PageableDefault Pageable pageable, ModelMap modelMap) {
-
         PageResponse<AuthorResponse> authorResponseList = authorService.getPageAuthors(pageable);
+      
         log.debug("=======> value:{}", authorResponseList);
         modelMap.put("authors", authorResponseList);
         return "admin/view/author-view-form";
