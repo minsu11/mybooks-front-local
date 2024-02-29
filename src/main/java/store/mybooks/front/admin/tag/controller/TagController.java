@@ -1,5 +1,6 @@
 package store.mybooks.front.admin.tag.controller;
 
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -108,7 +109,7 @@ public class TagController {
      * @return string
      */
     @PostMapping("/update/{id}")
-    public String updateTag(@PathVariable("id") Integer id, @ModelAttribute TagModifyRequest tagModifyRequest) {
+    public String updateTag(@PathVariable("id") Integer id, @Valid @ModelAttribute TagModifyRequest tagModifyRequest) {
         tagService.updateTag(id, tagModifyRequest);
         return "redirect:/admin/tag";
     }

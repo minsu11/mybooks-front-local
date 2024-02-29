@@ -4,6 +4,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
+import store.mybooks.front.global.exception.ValidationFailException;
 
 /**
  * packageName    : store.mybooks.front.global
@@ -24,11 +25,12 @@ public class GlobalControllerAdvice {
      * description : resource 서버에서 BadRequest, NotFound 상태코드가 오는 경우를 처리하는 ExceptionHandler.<br>
      *
      * @param exception HttpClientErrorException
-     * @param model Model
+     * @param model     Model
      * @return string
      */
-    @ExceptionHandler({HttpClientErrorException.BadRequest.class, HttpClientErrorException.NotFound.class})
-    public String badRequestException(HttpClientErrorException exception, Model model) {
+    @ExceptionHandler({HttpClientErrorException.BadRequest.class, HttpClientErrorException.NotFound.class,
+            ValidationFailException.class})
+    public String badRequestException(Exception exception, Model model) {
         if (exception.getMessage() != null) {
             model.addAttribute("message", exception.getMessage());
         }
