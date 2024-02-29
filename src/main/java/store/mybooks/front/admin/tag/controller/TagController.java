@@ -2,6 +2,8 @@ package store.mybooks.front.admin.tag.controller;
 
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,24 +38,14 @@ public class TagController {
      * author : damho-lee <br>
      * description : 사이드바에서 태그를 누르는 경우 나오는 페이지.<br>
      *
-     * @param page  Integer
-     * @param size  Integer
+     * @param pageable Pageable
      * @param model Model
      * @return string
      */
     @GetMapping
-    public String getTagPage(@RequestParam(value = "page", required = false) Integer page,
-                             @RequestParam(value = "size", required = false) Integer size,
+    public String getTagPage(@PageableDefault Pageable pageable,
                              Model model) {
-        if (page == null) {
-            page = 0;
-        }
-
-        if (size == null) {
-            size = 10;
-        }
-
-        model.addAttribute("tags", tagService.getTags(page, size).getContent());
+        model.addAttribute("tags", tagService.getTags(pageable));
 
         return "/admin/view/tag";
     }

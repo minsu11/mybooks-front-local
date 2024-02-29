@@ -47,7 +47,7 @@ public class CategoryController {
      */
     @GetMapping
     public String getCategoryPage(@PageableDefault Pageable pageable, Model model) {
-        model.addAttribute("categories", categoryService.getCategories(pageable).getContent());
+        model.addAttribute("categories", categoryService.getCategories(pageable));
 
         return "/admin/view/category";
     }
