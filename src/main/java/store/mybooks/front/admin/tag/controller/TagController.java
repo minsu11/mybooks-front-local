@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import store.mybooks.front.admin.tag.model.request.TagCreateRequest;
 import store.mybooks.front.admin.tag.model.request.TagModifyRequest;
 import store.mybooks.front.admin.tag.service.TagService;
+import store.mybooks.front.global.exception.ValidationFailException;
 
 /**
  * packageName    : store.mybooks.front.category.controller
@@ -71,7 +73,12 @@ public class TagController {
      * @return string
      */
     @PostMapping("/register")
-    public String createTag(@ModelAttribute TagCreateRequest tagCreateRequest) {
+    public String createTag(@ModelAttribute TagCreateRequest tagCreateRequest,
+                            BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new ValidationFailException(bindingResult);
+        }
+        
         tagService.createTag(tagCreateRequest);
         return "redirect:/admin/tag/register";
     }
