@@ -28,14 +28,14 @@
 <!-- Page Wrapper -->
 <div id="wrapper">
     <!-- 사이드 바 -->
-    <div th:replace="/common/fragment/admin/admin-sidebar::sidebarFragment"></div>
+    <div th:replace="common/fragment/admin/admin-sidebar::sidebarFragment"></div>
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
 
         <!-- Main Content -->
         <div id="content">
-            <header th:replace="/common/fragment/admin/admin-header::headerFragment"></header>
+            <header th:replace="common/fragment/admin/admin-header::headerFragment"></header>
             <!-- content의 내용이 들어갈 곳-->
             <div>
                 <!-- 밑에 부분에 파일이름이 바껴서 들어감 -->
@@ -45,7 +45,7 @@
             <!-- content의 내용이 끝나는 지점 -->
 
             <!-- Footer -->
-            <footer th:replace="/common/fragment/admin/admin-footer::footerFragment"></footer>
+            <footer th:replace="common/fragment/admin/admin-footer::footerFragment"></footer>
             <!-- End of Footer -->
 
         </div>

@@ -1,5 +1,6 @@
 package store.mybooks.front.admin.author.service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -34,6 +35,11 @@ public class AuthorService {
     private final AuthorAdaptor adaptor;
 
 
+
+    public List<AuthorResponse> getAllAuthors() {
+        return adaptor.getAllAuthors();
+    }
+
     /**
      * methodName : getAllAuthors<br>
      * author : minsu11<br>
@@ -43,7 +49,7 @@ public class AuthorService {
      * @return 모든 저자의 list
      */
     public PageResponse<AuthorResponse> getPageAuthors(Pageable pageable) {
-        return adaptor.getAuthors(pageable);
+        return adaptor.getPagedAuthors(pageable);
     }
 
     /**

@@ -1,5 +1,6 @@
 package store.mybooks.front.admin.tag.adaptor;
 
+import java.util.List;
 import store.mybooks.front.admin.tag.model.request.TagCreateRequest;
 import store.mybooks.front.admin.tag.model.request.TagModifyRequest;
 import store.mybooks.front.admin.tag.model.response.TagGetResponse;
@@ -20,6 +21,8 @@ public interface TagAdaptor {
     TagGetResponse getTag(Integer id);
 
     PageResponse<TagGetResponse> getTags(int page, int size);
+
+    List<TagGetResponse> getTags();
 
     void createTag(TagCreateRequest tagCreateRequest);
 

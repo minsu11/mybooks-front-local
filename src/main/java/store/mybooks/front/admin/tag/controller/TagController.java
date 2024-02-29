@@ -54,7 +54,7 @@ public class TagController {
 
         model.addAttribute("tags", tagService.getTags(page, size).getContent());
 
-        return "/admin/view/tag";
+        return "admin/view/tag";
     }
 
     /**
@@ -66,7 +66,7 @@ public class TagController {
      */
     @GetMapping("/register")
     public String getTagRegisterPage() {
-        return "/admin/view/tag-register";
+        return "admin/view/tag-register";
     }
 
     /**
@@ -95,7 +95,7 @@ public class TagController {
     @GetMapping("/update")
     public String getUpdatePage(@RequestParam("id") Integer id, Model model) {
         model.addAttribute("tag", tagService.getTag(id));
-        return "/admin/view/tag-update";
+        return "admin/view/tag-update";
     }
 
     /**
