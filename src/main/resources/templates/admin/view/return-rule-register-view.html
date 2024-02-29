@@ -7,18 +7,18 @@
     <p>출판사 등록 페이지 및 수정 페이지</p>
     <div class="input-group input-group-sm justify-content-center mb-3">
         <div th:if="${modifyReturnRule == null}">
-            <form method="post" th:action="@{'/admin/return-rules/register'}">
-                <input type="text" name="returnName" class="form-control" placeholder="반품 규정 명"/>
-                <input type="text" name="deliveryFee" class="form-control" placeholder="반품 시 배송 비"/>
-                <input type="text" name="term" class="form-control" placeholder="반품 유효 기간"/>
-                <button class="btn btn-outline-secondary" type="submit">등록
+            <form name="form" class="form" method="post" th:action="@{'/admin/return-rules/register'}">
+                <input type="text" name="returnName" class="form-control returnName" placeholder="반품 규정 명"/>
+                <input type="text" name="deliveryFee" class="form-control deliveryFee" placeholder="반품 시 배송 비"/>
+                <input type="text" name="term" class="form-control term" placeholder="반품 유효 기간"/>
+                <button name="submit" class="btn btn-outline-secondary" type="submit">등록
                 </button>
             </form>
         </div>
         <div th:if="${modifyReturnRule != null }">
-            <form method="post" th:action="@{'/admin/return-rules/update/'+${id}}">
+            <form method="post" class="form" th:action="@{'/admin/return-rules/update/'+${id}}">
                 <input type="text" name="returnName" class="form-control"
-                       th:value="${modifyReturnRule.returnName}"/>
+                       th:value="${modifyReturnRule.returnName}" minlength="4" maxlength="50"/>
                 <input type="text" name="deliveryFee" class="form-control"
                        th:value="${modifyReturnRule.deliveryFee}"/>
                 <input type="text" name="term" class="form-control"
@@ -28,5 +28,7 @@
             </form>
         </div>
     </div>
+    <script src="/admin/js/return-rule/return-rule-validation.js"></script>
+    <script src="/admin/js/return-rule/return-rule-register-validation.js"></script>
 </div>
 </html>
