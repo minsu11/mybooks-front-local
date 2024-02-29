@@ -1,6 +1,5 @@
 package store.mybooks.front.admin.author.controller;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +15,7 @@ import store.mybooks.front.admin.author.dto.request.AuthorDeleteRequest;
 import store.mybooks.front.admin.author.dto.request.AuthorRequest;
 import store.mybooks.front.admin.author.dto.response.AuthorResponse;
 import store.mybooks.front.admin.author.service.AuthorService;
+import store.mybooks.front.pageable.dto.response.PageResponse;
 
 /**
  * packageName    : store.mybooks.front.book.author.controller<br>
@@ -47,8 +47,8 @@ public class AuthorController {
      */
     @GetMapping
     public String viewAuthor(@PageableDefault Pageable pageable, ModelMap modelMap) {
-
-        List<AuthorResponse> authorResponseList = authorService.getPageAuthors(pageable).getContent();
+        PageResponse<AuthorResponse> authorResponseList = authorService.getPageAuthors(pageable);
+      
         log.debug("=======> value:{}", authorResponseList);
         modelMap.put("authors", authorResponseList);
         return "admin/view/author-view-form";

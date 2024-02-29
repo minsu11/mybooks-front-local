@@ -1,19 +1,23 @@
 package store.mybooks.front.admin.publisher.controller;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import store.mybooks.front.admin.publisher.dto.request.PublisherCreateRequest;
 import store.mybooks.front.admin.publisher.dto.request.PublisherDeleteRequest;
 import store.mybooks.front.admin.publisher.dto.request.PublisherModifyRequest;
 import store.mybooks.front.admin.publisher.dto.request.PublisherRequest;
 import store.mybooks.front.admin.publisher.dto.response.PublisherResponse;
 import store.mybooks.front.admin.publisher.service.PublisherService;
+import store.mybooks.front.pageable.dto.response.PageResponse;
 
 /**
  * packageName    : store.mybooks.front.book.publisher.controller<br>
@@ -33,6 +37,7 @@ import store.mybooks.front.admin.publisher.service.PublisherService;
 public class PublisherController {
     private final PublisherService publisherService;
 
+
     /**
      * methodName : viewPublisher<br>
      * author : minsu11<br>
@@ -44,7 +49,7 @@ public class PublisherController {
      */
     @GetMapping
     public String viewPublisher(@PageableDefault Pageable pageable, ModelMap modelMap) {
-        List<PublisherResponse> publisherResponseList = publisherService.getPublisherList(pageable).getContent();
+        PageResponse<PublisherResponse> publisherResponseList = publisherService.getPagedPublisher(pageable);
         modelMap.put("publisherList", publisherResponseList);
         return "admin/view/publisher-view";
     }

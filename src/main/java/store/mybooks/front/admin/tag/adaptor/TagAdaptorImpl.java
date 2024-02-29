@@ -66,7 +66,29 @@ public class TagAdaptorImpl implements TagAdaptor {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<PageResponse<TagGetResponse>> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + "/api/tags?page=" + page + "&size=" + size,
+                gatewayAdaptorProperties.getAddress() + "/api/tags/page?page=" + page + "&size=" + size,
+                HttpMethod.GET,
+                requestEntity,
+                new ParameterizedTypeReference<>() {
+                });
+
+        if (exchange.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException();
+        }
+
+        return exchange.getBody();
+    }
+
+    @Override
+    public List<TagGetResponse> getTags() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<List<TagGetResponse>> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + "/api/tags",
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
