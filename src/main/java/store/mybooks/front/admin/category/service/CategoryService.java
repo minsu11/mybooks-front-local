@@ -10,6 +10,7 @@ import store.mybooks.front.admin.category.model.request.CategoryCreateRequest;
 import store.mybooks.front.admin.category.model.request.CategoryCreateRequestForTransmission;
 import store.mybooks.front.admin.category.model.request.CategoryModifyRequest;
 import store.mybooks.front.admin.category.model.request.CategoryModifyRequestForTransmission;
+import store.mybooks.front.admin.category.model.response.CategoryGetResponseForBookCreate;
 import store.mybooks.front.admin.category.model.response.CategoryGetResponseForUpdate;
 import store.mybooks.front.admin.category.model.response.CategoryGetResponseForView;
 import store.mybooks.front.admin.category.model.response.CategoryIdAndName;
@@ -56,6 +57,18 @@ public class CategoryService {
                 pageResponse.isEmpty()
         );
     }
+
+    /**
+     * methodName : getHighestCategories <br>
+     * author : damho-lee <br>
+     * description : 최상위 카테고리들의 id 와 이름만 가져온다.<br>
+     *
+     * @return list
+     */
+    public List<CategoryGetResponseForBookCreate> getCategories() {
+        return categoryAdaptor.getCategories();
+    }
+
 
     /**
      * methodName : getHighestCategories <br>
