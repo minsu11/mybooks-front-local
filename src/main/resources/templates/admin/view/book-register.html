@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/admin-layout}">
+<head>
+    <style>
+        .custom-select {
+            width: 100%;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+</head>
+
+
+<div layout:fragment="content">
+    <div class="book-register section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="register-form">
+                        <div class="title">
+                            <h3>도서 추가</h3>
+                        </div>
+
+                        <form class="row" method="post" action="/admin/book/register">
+
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="name">도서명</label>
+                                            <input class="form-control" type="text" id="name" name="name" required
+                                                   minlength="1"
+                                                   maxlength="100">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="isbn">ISBN(13자리)</label>
+                                            <input class="form-control" type="text" id="isbn" name="isbn" required
+                                                   pattern="\d{13}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group mb-0">
+                                            <label for="publisherId">출판사</label>
+                                        </div>
+                                        <div class="form-group ">
+                                            <select class="form-select custom-select" id="publisherId"
+                                                    name="publisherId"
+                                                    aria-label="publisherId">
+                                                <option selected>출판사 선택</option>
+                                                <option th:each="publisher : ${publishers}"
+                                                        th:value="${publisher.id}" th:text="${publisher.name}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="publishDate">출판일자</label>
+                                            <input class="form-control" type="date" id="publishDate"
+                                                   name="publishDate" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-15">
+                                    <div class="form-group">
+                                        <label for="index">목차</label>
+                                        <textarea style="resize:none" class="form-control" id="index" name="index"
+                                                  rows="8"
+                                                  required></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-15">
+                                    <div class="form-group">
+                                        <label for="content">설명</label>
+                                        <textarea style="resize:none" class="form-control" id="content"
+                                                  name="content" rows="16"
+                                                  required></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group mb-0">
+                                            <label for="authorList">저자</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <select id="authorList" name="authorList" multiple="multiple" size="10">
+                                                <option th:each="author : ${authors}" th:value="${author.id}"
+                                                        th:title="${author.content}" th:text="${author.name}"></option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="page">페이지수</label>
+                                            <input class="form-control" type="number" id="page" name="page" required
+                                                   min="1">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="originalCost">정가</label>
+                                            <input class="form-control" type="number" id="originalCost"
+                                                   name="originalCost" required min="1">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="saleCost">판매가</label>
+                                            <input class="form-control" type="number" id="saleCost" name="saleCost"
+                                                   required min="1">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group mb-0">
+                                            <label for="bookStatusId">도서 상태</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <select class="form-select custom-select" id="bookStatusId"
+                                                    name="bookStatusId"
+                                                    aria-label="bookStatus">
+                                                <option selected>도서 상태 선택</option>
+                                                <option th:each="status : ${bookStatuses}" th:value="${status.id}"
+                                                        th:text="${status.id}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="stock">재고</label>
+                                            <input class="form-control" type="number" id="stock" name="stock"
+                                                   required min="0">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group mb-0">
+                                            <label for="categoryList">카테고리</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <select id="categoryList" name="categoryList" multiple="multiple" size="10">
+                                                <option th:each="category : ${categories}" th:value="${category.id}"
+                                                        th:text="${category.name}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group mb-0">
+                                            <label for="tagList">태그</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <select id="tagList" name="tagList" multiple="multiple" size="10">
+                                                <option th:each="tag : ${tags}" th:value="${tag.id}"
+                                                        th:text="${tag.name}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>포장가능여부</label>
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="isPacking"
+                                                           id="packTrue">
+                                                    <label class="form-check-label" for="packTrue">가능</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="isPacking"
+                                                           id="packFalse" checked>
+                                                    <label class="form-check-label" for="packFalse">불가능</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group row mt-5">
+                                    <div class="col-sm-auto">
+                                        <button class="btn btn-primary" type="submit">추가하기</button>
+                                    </div>
+                                    <div class="col-sm-auto">
+                                        <a th:href="@{/admin/book}" class="btn btn-secondary" role="button">뒤로가기</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#authorList').multiselect({
+                nonSelectedText: '저자 선택',
+                maxHeight: 400,
+                includeSelectAllOption: false,
+                numberDisplayed: 1
+            });
+        });
+        $(document).ready(function () {
+            $('#categoryList').multiselect({
+                nonSelectedText: '카테고리 선택(최대 10개)',
+                maxHeight: 400,
+                includeSelectAllOption: false,
+                numberDisplayed: 1,
+                onChange: function(option, checked) {
+                    var maxCount = 10;
+                    var selectedCount = $('#categoryList option:selected').length;
+
+                    if (selectedCount >= maxCount) {
+                        $('#categoryList option').each(function() {
+                            if (!$(this).is(':selected')) {
+                                $(this).prop('disabled', true);
+                            }
+                        });
+                    } else {
+                        $('#categoryList option').prop('disabled', false);
+                    }
+                    $('#categoryList').multiselect('refresh');
+                }
+            });
+        });
+        $(document).ready(function () {
+            $('#tagList').multiselect({
+                nonSelectedText: '태그 선택',
+                maxHeight: 400,
+                includeSelectAllOption: false,
+                numberDisplayed: 1
+            });
+        });
+
+    </script>
+</div>
+</html>
+
+
