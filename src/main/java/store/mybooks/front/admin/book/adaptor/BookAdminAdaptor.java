@@ -5,10 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -44,11 +42,7 @@ public class BookAdminAdaptor {
     private final String url = "/api/books";
 
     public PageResponse<BookBriefResponse> getPagedBriefBooks(Pageable pageable) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
-
-        HttpEntity<BookCreateRequest> requestHttpEntity = new HttpEntity<>(httpHeaders);
+        HttpEntity<BookCreateRequest> requestHttpEntity = new HttpEntity<>(Utils.getHttpHeader());
 
         ResponseEntity<PageResponse<BookBriefResponse>> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + url + "?page=" + pageable.getPageNumber() + "&size=" + pageable.getPageSize(),
@@ -61,11 +55,7 @@ public class BookAdminAdaptor {
     }
 
     public BookDetailResponse getDetailBook(Long bookId) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
-
-        HttpEntity<BookCreateRequest> requestHttpEntity = new HttpEntity<>(httpHeaders);
+        HttpEntity<BookCreateRequest> requestHttpEntity = new HttpEntity<>(Utils.getHttpHeader());
 
         ResponseEntity<BookDetailResponse> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + url + "/" + bookId,
@@ -74,16 +64,11 @@ public class BookAdminAdaptor {
                 new ParameterizedTypeReference<>() {
                 }
         );
-
         return Utils.getResponseEntity(exchange, HttpStatus.CREATED);
     }
 
     public BookCreateResponse createBook(BookCreateRequest bookCreateRequest) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
-
-        HttpEntity<BookCreateRequest> requestHttpEntity = new HttpEntity<>(bookCreateRequest, httpHeaders);
+        HttpEntity<BookCreateRequest> requestHttpEntity = new HttpEntity<>(bookCreateRequest, Utils.getHttpHeader());
 
         ResponseEntity<BookCreateResponse> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + url,
@@ -97,11 +82,7 @@ public class BookAdminAdaptor {
     }
 
     public void updateBook(Long bookId, BookModifyRequest modifyRequest) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
-
-        HttpEntity<BookModifyRequest> requestHttpEntity = new HttpEntity<>(modifyRequest, httpHeaders);
+        HttpEntity<BookModifyRequest> requestHttpEntity = new HttpEntity<>(modifyRequest, Utils.getHttpHeader());
 
         ResponseEntity<BookModifyResponse> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + url + bookId,
@@ -116,11 +97,7 @@ public class BookAdminAdaptor {
     }
 
     public List<BookStatusGetResponse> getBookStatus() {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setAccept(List.of(MediaType.APPLICATION_JSON));
-
-        HttpEntity<Void> requestHttpEntity = new HttpEntity<>(httpHeaders);
+        HttpEntity<Void> requestHttpEntity = new HttpEntity<>(Utils.getHttpHeader());
 
         ResponseEntity<List<BookStatusGetResponse>> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + "/api/books-statuses",
