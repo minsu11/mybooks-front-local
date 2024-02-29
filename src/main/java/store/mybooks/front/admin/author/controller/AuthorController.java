@@ -1,8 +1,9 @@
 package store.mybooks.front.admin.author.controller;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import store.mybooks.front.admin.author.dto.request.AuthorDeleteRequest;
 import store.mybooks.front.admin.author.dto.request.AuthorRequest;
 import store.mybooks.front.admin.author.dto.response.AuthorResponse;
 import store.mybooks.front.admin.author.service.AuthorService;
+import store.mybooks.front.pageable.dto.response.PageResponse;
 
 /**
  * packageName    : store.mybooks.front.book.author.controller<br>
@@ -44,9 +46,9 @@ public class AuthorController {
      * @return 모든 저자의 {@code list}를 보여주는 {@code view}의 경로
      */
     @GetMapping
-    public String viewAuthor(ModelMap modelMap) {
-
-        List<AuthorResponse> authorResponseList = authorService.getPageAuthors().getContent();
+    public String viewAuthor(@PageableDefault Pageable pageable, ModelMap modelMap) {
+        PageResponse<AuthorResponse> authorResponseList = authorService.getPageAuthors(pageable);
+      
         log.debug("=======> value:{}", authorResponseList);
         modelMap.put("authors", authorResponseList);
         return "admin/view/author-view-form";
