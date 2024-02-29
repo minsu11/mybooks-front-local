@@ -20,20 +20,21 @@ forms.forEach((form) => {
         } else if (deliveryFee < 0) {
             alert("양수로 입력하세요");
             e.preventDefault();
-        } else if (deliveryFee.size() > 50) {
-            alert("50글자 미만으로 입력하세요");
+        } else if (deliveryFee > 10000) {
+            alert("10000원 이하로 입력하세요");
+
             e.preventDefault()
         }
 
         if (term === "") {
-            alert("이름 공백입니다.");
+            alert("반품 기간이 공백입니다.");
             // returnName.focus();
             e.preventDefault();
-        } else if (term.size() < 4) {
-            alert("4글자 이상 입력하세요");
+        } else if (term < 1) {
+            alert("양수로 입력하세요");
             e.preventDefault();
-        } else if (term.size() > 50) {
-            alert("50글자 미만으로 입력하세요");
+        } else if (term < 366) {
+            alert("365일 이하로 입력하세요");
             e.preventDefault()
         }
     })

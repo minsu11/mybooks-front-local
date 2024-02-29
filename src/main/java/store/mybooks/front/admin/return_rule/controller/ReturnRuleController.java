@@ -31,6 +31,15 @@ import store.mybooks.front.admin.return_rule.service.ReturnRuleService;
 public class ReturnRuleController {
     private final ReturnRuleService returnRuleService;
 
+    /**
+     * methodName : viewReturnRule<br>
+     * author : minsu11<br>
+     * description : 반품 규정의 목록 관리자 view
+     * <br> *
+     *
+     * @param modelMap view에 보여줄 데이터
+     * @return string
+     */
     @GetMapping
     public String viewReturnRule(ModelMap modelMap) {
         List<ReturnRuleResponse> returnRuleResponseList = returnRuleService.getReturnRuleResponseList();
@@ -38,21 +47,39 @@ public class ReturnRuleController {
         return "admin/view/return-rule-view";
     }
 
+    /**
+     * methodName : registerViewReturnRule<br>
+     * author : minsu11<br>
+     * description : 반품 규정을 등록할 수 있는 관리자 view
+     * <br> *
+     *
+     * @return string
+     */
     @GetMapping("/register")
     public String registerViewReturnRule() {
 
         return "admin/view/return-rule-register-view";
     }
 
+    /**
+     * methodName : doRegister<br>
+     * author : minsu11<br>
+     * description : 등록 하기 기능
+     * <br> *
+     *
+     * @param redirectAttributes
+     * @param request
+     * @return string
+     */
     @PostMapping("/register")
     public String doRegister(
-            ModelMap modelMap,
+            RedirectAttributes redirectAttributes,
             @ModelAttribute ReturnRuleCreateRequest request) {
         if (returnRuleService.createReturnRule(request)) {
 
             return "redirect:/admin/return-rules";
         }
-        modelMap.put("registerReturnRule", request);
+        redirectAttributes.addFlashAttribute("registerReturnRule", request);
         return "redirect:/admin/return-rules/register";
     }
 
@@ -100,6 +127,6 @@ public class ReturnRuleController {
 
         return "redirect:/admin/return-rules";
     }
-    
+
 
 }
