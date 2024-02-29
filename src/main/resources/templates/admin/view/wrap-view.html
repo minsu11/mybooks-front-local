@@ -18,17 +18,18 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="publisher:${publisherList}">
-                <td th:text="${publisher.name}"></td>
+            <tr th:each="wrap:${wrapList}">
+                <td th:text="${wrap.name}"></td>
+                <td th:text="${wrap.cost}"></td>
                 <td>
-                    <form method="get" th:action="@{'/admin/publishers/'+${publisher.id}}">
-                        <input type="hidden" th:name="changeName" th:value="${publisher.name}"/>
+                    <form method="get" th:action="@{'/admin/wraps/'+${wrap.id}}">
+                        <!--                        <input type="hidden" th:name="changeName" th:value="${publisher.name}"/>-->
                         <button class="btn btn-outline-secondary" type="submit" id="button-addon2">수정하기</button>
                     </form>
                 </td>
                 <td>
-                    <form id="deleteForm" method="post" action="/admin/publishers/delete">
-                        <input type="hidden" th:name="id" th:value="${publisher.id}"/>
+                    <form id="deleteForm" method="post" action="/admin/wraps/delete">
+                        <!--                        <input type="hidden" th:name="id" th:value="${publisher.id}"/>-->
                         <button class="btn btn-outline-secondary" type="submit" id="button-delete">삭제
                         </button>
                     </form>
