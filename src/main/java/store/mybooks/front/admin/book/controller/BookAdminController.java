@@ -1,5 +1,6 @@
 package store.mybooks.front.admin.book.controller;
 
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -39,12 +40,29 @@ public class BookAdminController {
     private final TagService tagService;
     private final AuthorService authorService;
 
+    /**
+     * methodName : getBookPage
+     * author : newjaehun
+     * description : 사이드바에서 책을 눌렀을 때 페이지.
+     *
+     * @param pageable Pageable
+     * @param model Model
+     * @return string
+     */
     @GetMapping
     public String getBookPage(@PageableDefault(size = 8) Pageable pageable, Model model) {
         model.addAttribute("books", bookAdminService.getBooks(pageable));
         return "admin/view/book";
     }
 
+    /**
+     * methodName : getBookRegisterPage
+     * author : newjaehun
+     * description : 도서 등록 페이지
+     *
+     * @param model Model
+     * @return string
+     */
     @GetMapping("/register")
     public String getBookRegisterPage(Model model) {
         model.addAttribute("publishers", publisherService.getAllPublishers());
@@ -55,18 +73,43 @@ public class BookAdminController {
         return "admin/view/book-register";
     }
 
+    /**
+     * methodName : createBook
+     * author : newjaehun
+     * description : 도서 등록 요청 받는 메소드.
+     *
+     * @param bookCreateRequest BookCreateRequest
+     * @return string
+     */
     @PostMapping("/register")
-    public String createBook(@ModelAttribute BookCreateRequest bookCreateRequest) {
+    public String createBook(@Valid @ModelAttribute BookCreateRequest bookCreateRequest) {
         bookAdminService.createBook(bookCreateRequest);
         return "redirect:/admin/book/register";
     }
 
+    /**
+     * methodName : getBookUpdatePage
+     * author : newjaehun
+     * description : 도서 업데이트 페이지.
+     *
+     * @param bookId BookId
+     * @param model Model
+     * @return string
+     */
     @GetMapping("/update")
     public String getBookUpdatePage(@RequestParam("id") Long bookId, Model model) {
         model.addAttribute("book", bookAdminService.getBook(bookId));
         return "admin/view/book-update";
     }
 
+    /**
+     * methodName : updateBook
+     * author : newjaehun
+     * description : 도서 업데이트 요청.
+     *
+     * @param modifyRequest ModifyRequest
+     * @return string
+     */
     @PostMapping("/update")
     public String updateBook(@ModelAttribute BookModifyRequest modifyRequest) {
         bookAdminService.updateBook(modifyRequest);
