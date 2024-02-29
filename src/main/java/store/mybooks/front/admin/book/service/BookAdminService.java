@@ -4,7 +4,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import store.mybooks.front.admin.book.adaptor.BookAdminAdaptor;
 import store.mybooks.front.admin.book.model.request.BookCreateRequest;
 import store.mybooks.front.admin.book.model.request.BookModifyRequest;
@@ -37,13 +36,8 @@ public class BookAdminService {
         return bookAdminAdaptor.getDetailBook(bookId);
     }
 
-    @Transactional
-    public void createBook(BookCreateRequest bookCreateRequest, List<Integer> authorList, List<Integer> categoryList,
-                           List<Integer> tagList) {
-        Long bookId = bookAdminAdaptor.createBook(bookCreateRequest).getId();
-//        bookTagService.saveTags(bookId, tagList);
-//        bookCategoryService.saveCategory(bookId, categoryList);
-//        authorService.saveAuthor(bookId, authorList);
+    public void createBook(BookCreateRequest bookCreateRequest) {
+        bookAdminAdaptor.createBook(bookCreateRequest);
     }
 
 
