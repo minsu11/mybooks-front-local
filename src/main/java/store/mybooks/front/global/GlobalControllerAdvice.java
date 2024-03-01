@@ -32,6 +32,6 @@ public class GlobalControllerAdvice {
         if (exception.getMessage() != null) {
             model.addAttribute("message", exception.getMessage());
         }
-        return "/admin/view/error";
+        return "admin/view/error";
     }
 }
