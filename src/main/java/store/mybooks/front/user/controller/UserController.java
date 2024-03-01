@@ -1,15 +1,20 @@
 package store.mybooks.front.user.controller;
 
+import java.util.Enumeration;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import store.mybooks.front.jwt.adaptor.TokenAdaptor;
+import store.mybooks.front.jwt.dto.request.TokenCreateRequest;
+import store.mybooks.front.jwt.dto.response.TokenCreateResponse;
 import store.mybooks.front.user.adaptor.UserAdaptor;
 import store.mybooks.front.user.dto.request.UserCreateRequest;
 import store.mybooks.front.user.dto.request.UserGradeModifyRequest;
@@ -17,8 +22,9 @@ import store.mybooks.front.user.dto.request.UserLoginRequest;
 import store.mybooks.front.user.dto.request.UserModifyRequest;
 import store.mybooks.front.user.dto.request.UserPasswordModifyRequest;
 import store.mybooks.front.user.dto.request.UserStatusModifyRequest;
-import store.mybooks.front.user.dto.response.PhoneNumberAuthResponse;
 import store.mybooks.front.user.dto.response.UserGetResponse;
+import store.mybooks.front.user.dto.response.UserLoginResponse;
+import store.mybooks.front.utils.Utils;
 
 /**
  * packageName    : store.mybooks.front.user.controller<br>
@@ -38,6 +44,9 @@ public class UserController {
 
     private final UserAdaptor userAdaptor;
 
+    private final TokenAdaptor tokenAdaptor;
+
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * methodName : loginUserForm
@@ -61,6 +70,7 @@ public class UserController {
      */
     @GetMapping("/user/register")
     public String createUserForm() {
+
         return "register";
     }
 
@@ -74,25 +84,13 @@ public class UserController {
      * @return string
      */
     @GetMapping("/user")
-    public String myPageForm(Model model) {
+    public String myPageForm(Model model, HttpServletRequest request) {
         // todo JWT에서 id 꺼내쓰기
-        UserGetResponse userGetResponse = userAdaptor.findUserById(1L);
+
+        UserGetResponse userGetResponse = userAdaptor.findUserById(1L, request);
+
         model.addAttribute("user", userGetResponse);
         return "my-page";
-    }
-
-    /**
-     * methodName : userPhoneAuth
-     * author : masiljangajji
-     * description : 유저 회원가입 및 전화번호 변경에 필요한 인증메시지를 요청
-     *
-     * @return phone number auth response
-     */
-    @GetMapping("/user/auth/phone")
-    @ResponseBody
-    public PhoneNumberAuthResponse userPhoneAuth(){
-
-        return userAdaptor.getPhoneNumberAuthResponse();
     }
 
     /**
@@ -104,9 +102,31 @@ public class UserController {
      * @return string
      */
     @PostMapping("/login")
-    public String loginUser(@ModelAttribute UserLoginRequest userLoginRequest) {
-        userAdaptor.loginUser(userLoginRequest);
-        return "redirect:/";
+    public String loginUser(@ModelAttribute UserLoginRequest userLoginRequest, HttpServletResponse response) {
+
+        // 비밀번호 암호화
+        userLoginRequest.setPassword(passwordEncoder.encode(userLoginRequest.getPassword()));
+
+        // 여기서 검증받고
+        UserLoginResponse loginResponse = userAdaptor.loginUser(userLoginRequest);
+
+        // 검증됐으면
+        if (loginResponse.getIsValidUser()) {
+            // 토큰 값 가져오고
+
+            TokenCreateResponse tokenCreateResponse =
+                    tokenAdaptor.createToken(new TokenCreateRequest(loginResponse.getIsAdmin(), loginResponse.getUserId(),
+                                    loginResponse.getStatus()));
+
+            Utils.addJwtCookie(response, tokenCreateResponse.getAccessToken());
+
+            return "redirect:/";
+
+        } else {
+            // 실패하면 다시 로그인 창으로
+            return "redirect:/login";
+        }
+
     }
 
     /**
@@ -119,6 +139,10 @@ public class UserController {
      */
     @PostMapping("/user/register")
     public String createUser(@ModelAttribute UserCreateRequest userCreateRequest) {
+
+        // 비밀번호 암호화
+        userCreateRequest.setPassword(passwordEncoder.encode(userCreateRequest.getPassword()));
+
         userAdaptor.createUser(userCreateRequest);
         return "redirect:/";
     }
@@ -133,6 +157,9 @@ public class UserController {
      */
     @PostMapping("/user/modify/password")
     public String modifyUserPassword(@ModelAttribute UserPasswordModifyRequest modifyRequest) {
+
+        // 비밀번호 암호화
+        modifyRequest.setPassword(passwordEncoder.encode(modifyRequest.getPassword()));
 
         // todo JWT 비밀번호 변경됐으니까 로그아웃 시키고 새로 인증받도록
         userAdaptor.modifyUserPassword(1L, modifyRequest);
@@ -204,6 +231,8 @@ public class UserController {
         userAdaptor.deleteUser(2L);
         return "redirect:/";
     }
+
+
 
 
 }

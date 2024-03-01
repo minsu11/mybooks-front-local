@@ -4,7 +4,11 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.admin.return_rule.adaptor.ReturnRuleAdaptor;
+import store.mybooks.front.admin.return_rule.dto.request.ReturnRuleCreateRequest;
+import store.mybooks.front.admin.return_rule.dto.request.ReturnRuleDeleteRequest;
+import store.mybooks.front.admin.return_rule.dto.request.ReturnRuleModifyRequest;
 import store.mybooks.front.admin.return_rule.dto.response.ReturnRuleResponse;
+import store.mybooks.front.admin.return_rule.exception.ReturnRuleRegisterFailedException;
 
 /**
  * packageName    : store.mybooks.front.admin.return_rule.service<br>
@@ -25,5 +29,27 @@ public class ReturnRuleService {
     public List<ReturnRuleResponse> getReturnRuleResponseList() {
 
         return returnRuleAdaptor.getReturnRuleResponseList();
+    }
+
+    public void createReturnRule(ReturnRuleCreateRequest request) {
+        try {
+            returnRuleAdaptor.createReturnRule(request);
+        } catch (RuntimeException e) {
+            throw new ReturnRuleRegisterFailedException();
+        }
+    }
+
+    public void updateReturnRule(ReturnRuleModifyRequest request) {
+
+        try {
+            returnRuleAdaptor.modifyReturnRule(request, request.getId());
+        } catch (RuntimeException e) {
+            throw new ReturnRuleRegisterFailedException();
+        }
+    }
+
+    public void deleteReturnRule(ReturnRuleDeleteRequest request) {
+        returnRuleAdaptor.deleteReturnRule(request.getId());
+
     }
 }

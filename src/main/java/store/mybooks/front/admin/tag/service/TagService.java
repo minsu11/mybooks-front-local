@@ -1,5 +1,6 @@
 package store.mybooks.front.admin.tag.service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.admin.tag.adaptor.TagAdaptor;
@@ -23,6 +24,19 @@ import store.mybooks.front.pageable.dto.response.PageResponse;
 @RequiredArgsConstructor
 public class TagService {
     private final TagAdaptor tagAdaptor;
+
+
+    /**
+     * methodName : getTags <br>
+     * author : damho-lee <br>
+     * description : 전체 태그들을 찾는 메서드.<br>
+     *
+     * @return pageResponse
+     */
+    public List<TagGetResponse> getTags() {
+        return tagAdaptor.getTags();
+    }
+
 
     /**
      * methodName : getTags <br>

@@ -18,7 +18,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="author:${authors}">
+            <tr th:each="author:${authors.getContent()}">
                 <p th:text="${author.id}" hidden></p>
                 <td th:text="${author.name}"></td>
                 <td th:text="${author.content}"></td>
