@@ -54,7 +54,7 @@ public class TagController {
 
         model.addAttribute("tags", tagService.getTags(page, size).getContent());
 
-        return "admin/view/tag";
+        return "admin/view/tag/tag";
     }
 
     /**
