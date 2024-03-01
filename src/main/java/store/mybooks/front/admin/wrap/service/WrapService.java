@@ -1,7 +1,6 @@
 package store.mybooks.front.admin.wrap.service;
 
 import java.util.List;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +8,7 @@ import org.springframework.stereotype.Service;
 import store.mybooks.front.admin.wrap.adaptor.WrapAdaptor;
 import store.mybooks.front.admin.wrap.dto.request.WrapCreateRequest;
 import store.mybooks.front.admin.wrap.dto.response.WrapResponse;
+import store.mybooks.front.global.exception.RequestRegisterFailedException;
 import store.mybooks.front.pageable.dto.response.PageResponse;
 
 /**
@@ -53,8 +53,22 @@ public class WrapService {
         return wrapAdaptor.getWrapPage(pageable);
     }
 
-    public Boolean createWrap(WrapCreateRequest request) {
-        return Objects.nonNull(wrapAdaptor.createWrap(request));
+    /**
+     * methodName : createWrap<br>
+     * author : minsu11<br>
+     * description :
+     * <br> *
+     *
+     * @param request
+     * @param redirect url
+     */
+    public void createWrap(WrapCreateRequest request, String redirectUrl) {
+        try {
+            wrapAdaptor.createWrap(request);
+        } catch (RuntimeException e) {
+            throw new RequestRegisterFailedException(redirectUrl);
+
+        }
     }
 
 }

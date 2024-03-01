@@ -17,10 +17,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class ReturnRuleResponse {
-<<<<<<< HEAD
-=======
     private Integer id;
->>>>>>> dev
     private String returnName;
     private Integer deliveryFee;
     private Integer term;

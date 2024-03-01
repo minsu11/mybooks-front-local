@@ -33,6 +33,9 @@ import store.mybooks.front.pageable.dto.response.PageResponse;
 public class WrapAdminController {
     private final WrapService wrapService;
 
+
+    private static final String URL = "redirect:/admin/wraps";
+
     /**
      * methodName : viewWrap<br>
      * author : minsu11<br>
@@ -40,12 +43,12 @@ public class WrapAdminController {
      * <br> *
      *
      * @param pageable 페이징에 대한 정보
-     * @param modelMap
+     * @param modelMap model
      * @return string
      */
     @GetMapping
     public String viewWrap(
-            @PageableDefault(size = 2) Pageable pageable,
+            @PageableDefault(size = 3) Pageable pageable,
             ModelMap modelMap) {
 
         PageResponse<WrapResponse> wrapPage = wrapService.getWrapPage(pageable);
@@ -56,20 +59,35 @@ public class WrapAdminController {
         return "admin/view/wrap-view";
     }
 
+    /**
+     * methodName : viewRegister<br>
+     * author : minsu11<br>
+     * description : 포장지 등록하는 {@code view}.
+     * <br> *
+     *
+     * @param modelMap model
+     * @return string
+     */
     @GetMapping("/register")
     public String viewRegister(ModelMap modelMap) {
         modelMap.put("pathValue", "register");
         return "admin/view/wrap-register-view";
     }
 
+    /**
+     * methodName : doRegister<br>
+     * author : minsu11<br>
+     * description : 포장지 등록.
+     * <br> *
+     *
+     * @param request
+     * @return string
+     */
     @PostMapping("/register")
     public String doRegister(@ModelAttribute WrapCreateRequest request) {
-        log.info("등록할 request: {} ", request.getName());
-        log.info("등록할 request: {} ", request.getCost());
-        if (wrapService.createWrap(request)) {
-            return "redirect:/admin/wraps";
-        }
-        return "redirect:/admin/wraps/register";
+        String redirectUrl = URL + "/register";
+        wrapService.createWrap(request, redirectUrl);
+        return "redirect:/admin/wraps";
     }
 
 
