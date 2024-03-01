@@ -45,7 +45,7 @@ public class CategoryController {
     @GetMapping
     public String getCategoryPage(@PageableDefault Pageable pageable, Model model) {
         model.addAttribute("categories", categoryService.getCategories(pageable).getContent());
-        return "admin/view/category";
+        return "admin/view/category/category";
     }
 
     /**
@@ -59,7 +59,7 @@ public class CategoryController {
     @GetMapping("/register")
     public String getCategoryRegisterPage(Model model) {
         model.addAttribute(categoryService.getHighestCategories());
-        return "admin/view/category-register";
+        return "admin/view/category/category-register";
     }
 
     /**
@@ -73,7 +73,7 @@ public class CategoryController {
     @PostMapping("/register")
     public String categoryRegister(@ModelAttribute CategoryCreateRequest categoryCreateRequest) {
         categoryService.createCategory(categoryCreateRequest);
-        return "redirect:/admin/category/register";
+        return "redirect:/admin/category/category/register";
     }
 
     /**
@@ -106,7 +106,7 @@ public class CategoryController {
         model.addAttribute("levelOneCategoryName", categoryGetResponseForUpdate.getLevelOneCategoryName());
         model.addAttribute("levelTwoCategoryName", categoryGetResponseForUpdate.getLevelTwoCategoryName());
 
-        return "admin/view/category-update";
+        return "admin/view/category/category-update";
     }
 
     /**
