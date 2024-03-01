@@ -30,7 +30,7 @@
             </form>
         </div>
         <div th:if="${modifyReturnRule != null }">
-            <form method="post" class="form" th:action="@{'/admin/return-rules/update'}">
+            <form name="form" method="post" class="form" th:action="@{'/admin/return-rules/update'}">
 
 
                 <input type="hidden" name="id" class="form-control"

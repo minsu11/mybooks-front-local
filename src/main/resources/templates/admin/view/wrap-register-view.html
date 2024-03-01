@@ -5,23 +5,24 @@
 <div layout:fragment="content">
     <p>포장지 등록 페이지 및 수정 페이지</p>
     <div class="input-group input-group-sm justify-content-center mb-3">
-        <form method="post" th:action="@{'/admin/wraps/'+${pathValue}}">
+        <form name="form" method="post" class="form" th:action="@{'/admin/wraps/'+${pathValue}}">
             <div th:if="${modifyWrap == null}">
-                <input type="text" name="name" class="form-control" placeholder="포장지 명"/>
-                <input type="text" name="cost" class="form-control" placeholder="포장지 가격"/>
+                <input type="text" name="name" class="form-control name" placeholder="포장지 명"/>
+                <input type="text" name="cost" class="form-control cost" placeholder="포장지 가격"/>
                 <button class="btn btn-outline-secondary" type="submit" id="button-register">등록
                 </button>
             </div>
             <div th:if="${modifyWrap != null }">
                 <input type="hidden" name="id" th:value="${modifyWrap.id}"/>
-                <input type="text" id="name" name="name" class="form-control" placeholder="포장지 명"
+                <input type="text" id="name" name="name" class="form-control name" placeholder="포장지 명"
                        th:value="${modifyWrap.name}"/>
-                <input type="text" id="cost" name="cost" class="form-control" placeholder="포장지 가격"
+                <input type="text" id="cost" name="cost" class="form-control cost" placeholder="포장지 가격"
                        th:value="${modifyWrap.cost}"/>
                 <button class="btn btn-outline-secondary" type="submit" id="button-update">수정
                 </button>
             </div>
         </form>
     </div>
+    <script src="/admin/js/wrap/wrap-validation.js"></script>
 </div>
 </html>
