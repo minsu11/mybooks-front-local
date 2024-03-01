@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/admin-layout}">
+<div layout:fragment="content">
+    <h1>쿠폰 등록 페이지</h1>
+    <div>
+        <div>
+            <a th:href="@{/admin/coupon}" class="btn btn-primary" role="button">리스트로 돌아가기</a>
+        </div>
+        <div>
+            <a th:href="@{/admin/coupon/total-percentage-coupon-register}" class="btn btn-primary" role="button">전체 할인 쿠폰 추가하기</a>
+        </div>
+        <div>
+            <a th:href="@{/admin/coupon/flat-discount-coupon-register}" class="btn btn-primary" role="button">전체 정액 할인 쿠폰 추가하기</a>
+        </div>
+        <div>
+            <a th:href="@{/admin/coupon/book-percentage-coupon-register}" class="btn btn-primary" role="button">도서 할인 쿠폰</a>
+        </div>
+        <div>
+            <a th:href="@{/admin/coupon/book-flat-discount-coupon-register}" class="btn btn-primary" role="button">도서 정액 할인 쿠폰</a>
+        </div>
+        <div>
+            <a th:href="@{/admin/coupon/category-percentage-coupon-register}" class="btn btn-primary" role="button">카테고리 할인 쿠폰</a>
+        </div>
+        <div>
+            <a th:href="@{/admin/coupon/category-flat-discount-coupon-register}" class="btn btn-primary" role="button">카테고리 정액 할인 쿠폰</a>
+        </div>
+
+    </div>
+</div>
+</html>

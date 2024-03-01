@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/admin-layout}">
+<div layout:fragment="content">
+    <h1>도서할인쿠폰 생성 페이지</h1>
+    <div>
+        <a th:href="@{/admin/coupon}" class="btn btn-primary" role="button">리스트로 돌아가기</a>
+    </div>
+    <div>
+        <form name="form" method="post" th:action="@{/admin/coupon/register/book-percentage-coupon}">
+            <div class="col-auto">
+                <label for="name">쿠폰 이름</label>
+                <input type="text" id="name"  name="name" placeholder="쿠폰 이름">
+            </div>
+            <div class="col-auto">
+                <label for="bookId">도서 아이디</label>
+                <input type="text" id="bookId"  name="bookId" placeholder="도서 아이디">
+            </div>
+            <div class="col-auto">
+                <label for="orderMin">최소 주문 금액</label>
+                <input type="text" id="orderMin" name="orderMin" placeholder="최소 주문 금액">
+            </div>
+            <div class="col-auto">
+                <label for="maxDiscountCost">최대 할인 금액</label>
+                <input type="text" id="maxDiscountCost" name="maxDiscountCost" placeholder="최대 할인 금액">
+            </div>
+            <div class="col-auto">
+                <label for="discountRate">할인률</label>
+                <input type="text" id="discountRate" name="discountRate" placeholder="할인률">
+            </div>
+            <div class="col-auto">
+                <label for="startDate">시작일</label>
+                <input type="date" id="startDate" name="startDate" placeholder="시작일">
+            </div>
+            <div class="col-auto">
+                <label for="endDate">종료일</label>
+                <input type="date" id="endDate" name="endDate" placeholder="종료일">
+            </div>
+            <button type="submit" class="btn btn-primary">생성하기</button>
+        </form>
+    </div>
+</div>
+</html>
