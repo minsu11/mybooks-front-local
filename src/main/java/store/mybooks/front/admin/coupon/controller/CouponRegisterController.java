@@ -62,7 +62,8 @@ public class CouponRegisterController {
     }
 
     @PostMapping("/category-flat-discount-coupon")
-    public String createCategoryFlatDiscountCoupon(@ModelAttribute CategoryFlatDiscountCouponCreateRequest createRequest) {
+    public String createCategoryFlatDiscountCoupon(
+            @ModelAttribute CategoryFlatDiscountCouponCreateRequest createRequest) {
         couponService.createCategoryFlatDiscountCouponCreateRequest(createRequest);
         return CATEGORY_REGISTER_PAGE;
     }
