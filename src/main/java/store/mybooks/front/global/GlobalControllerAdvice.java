@@ -42,7 +42,7 @@ public class GlobalControllerAdvice {
 
     @ExceptionHandler({ReturnRuleRegisterFailedException.class})
     public ModelAndView registerFailedException(RuntimeException exception, RedirectAttributes redirectAttributes) {
-        ModelAndView modelAndView = new ModelAndView("admin/view/return-rule-register-view");
+        ModelAndView modelAndView = new ModelAndView("redirect:/admin/return-rules/register");
         modelAndView.addObject("msg", exception.getMessage());
         return modelAndView;
     }

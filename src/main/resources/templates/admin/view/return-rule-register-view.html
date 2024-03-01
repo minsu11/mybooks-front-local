@@ -8,8 +8,17 @@
     <div class="input-group input-group-sm justify-content-center mb-3">
         <div th:if="${modifyReturnRule == null}">
             <form name="form" class="form" method="post" th:action="@{'/admin/return-rules/register'}">
-                
-                <input type="text" name="returnName" class="form-control returnName" placeholder="반품 규정 명"/>
+                <span>반품 규정 명</span>
+                <br>
+
+                <th:block th:each="returnRuleName:${returnRuleNameList}">
+                    <label>
+                        <input type="radio" name="returnName" class="returnName" th:value="${returnRuleName.id}"/>
+                        <span th:text="${returnRuleName.id}"></span>
+                    </label>
+                    <br>
+
+                </th:block>
 
                 <input type="text" name="deliveryFee" class="form-control deliveryFee" placeholder="반품 시 배송 비"/>
                 <input type="text" name="term" class="form-control term" placeholder="반품 유효 기간"/>
@@ -21,13 +30,32 @@
             </form>
         </div>
         <div th:if="${modifyReturnRule != null }">
-            <form method="post" class="form" th:action="@{'/admin/return-rules/update/'+${id}}">
-                <input type="text" name="returnName" class="form-control"
-                       th:value="${modifyReturnRule.returnName}" minlength="4" maxlength="50"/>
-                <input type="text" name="deliveryFee" class="form-control"
+            <form method="post" class="form" th:action="@{'/admin/return-rules/update'}">
+
+
+                <input type="hidden" name="id" class="form-control"
+                       th:value="${modifyReturnRule.id}"/>
+
+
+                <th:block th:each="returnRuleName:${returnRuleNameList}">
+                    <label>
+                        <input type="radio" name="returnName" class="returnName" th:value="${returnRuleName.id}"
+                               th:checked="${returnRuleName.id eq modifyReturnRule.returnName}"/>
+
+                        <span th:text="${returnRuleName.id}"></span>
+                    </label>
+                    <br>
+                </th:block>
+
+
+                <input type="text" name="deliveryFee" class="form-control deliveryFee"
                        th:value="${modifyReturnRule.deliveryFee}"/>
-                <input type="text" name="term" class="form-control"
+
+
+                <input type="text" name="term" class="form-control term"
                        th:value="${modifyReturnRule.term}"/>
+
+
                 <button class="btn btn-outline-secondary" type="submit">수정
                 </button>
             </form>

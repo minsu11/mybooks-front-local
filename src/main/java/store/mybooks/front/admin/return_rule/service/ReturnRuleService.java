@@ -1,7 +1,6 @@
 package store.mybooks.front.admin.return_rule.service;
 
 import java.util.List;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.admin.return_rule.adaptor.ReturnRuleAdaptor;
@@ -40,9 +39,13 @@ public class ReturnRuleService {
         }
     }
 
-    public Boolean updateReturnRule(ReturnRuleModifyRequest request, Integer id) {
+    public void updateReturnRule(ReturnRuleModifyRequest request) {
 
-        return Objects.nonNull(returnRuleAdaptor.modifyReturnRule(request, id));
+        try {
+            returnRuleAdaptor.modifyReturnRule(request, request.getId());
+        } catch (RuntimeException e) {
+            throw new ReturnRuleRegisterFailedException();
+        }
     }
 
     public void deleteReturnRule(ReturnRuleDeleteRequest request) {

@@ -2,7 +2,6 @@ package store.mybooks.front.admin.return_rule.adaptor;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -29,7 +28,6 @@ import store.mybooks.front.utils.Utils;
  * -----------------------------------------------------------<br>
  * 2/28/24        minsu11       최초 생성<br>
  */
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class ReturnRuleAdaptor {
@@ -41,26 +39,26 @@ public class ReturnRuleAdaptor {
     /**
      * methodName : getReturnRuleResponseList<br>
      * author : minsu11<br>
-     * description : 반품 규정 전체 목록 조회
+     * description : 반품 규정 전체 목록 조회.
      * <br> *
      *
      * @return list
      */
     public List<ReturnRuleResponse> getReturnRuleResponseList() {
-        log.info("주소 값: {}", gatewayAdaptorProperties.getAddress());
 
-        ResponseEntity<List<ReturnRuleResponse>> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<ReturnRuleResponse>>() {
-                });
+        ResponseEntity<List<ReturnRuleResponse>> exchange =
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL,
+                        HttpMethod.GET,
+                        null,
+                        new ParameterizedTypeReference<List<ReturnRuleResponse>>() {
+                        });
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
     /**
      * methodName : createReturnRule<br>
      * author : minsu11<br>
-     * description : 반품 규정 등록
+     * description : 반품 규정 등록.
      * <br> *
      *
      * @param request
@@ -69,18 +67,19 @@ public class ReturnRuleAdaptor {
     public ReturnRuleCreateResponse createReturnRule(ReturnRuleCreateRequest request) {
 
         HttpEntity<ReturnRuleCreateRequest> requestHttpEntity = new HttpEntity<>(request, Utils.getHttpHeader());
-        ResponseEntity<ReturnRuleCreateResponse> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL,
-                HttpMethod.POST,
-                requestHttpEntity,
-                new ParameterizedTypeReference<ReturnRuleCreateResponse>() {
-                });
+        ResponseEntity<ReturnRuleCreateResponse> exchange =
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL,
+                        HttpMethod.POST,
+                        requestHttpEntity,
+                        new ParameterizedTypeReference<>() {
+                        });
         return exchange.getBody();
     }
 
     /**
      * methodName : modifyReturnRule<br>
      * author : minsu11<br>
-     * description : 반품 규정 수정
+     * description : 반품 규정 수정.
      * <br> *
      *
      * @param request 반품 규정 수정 데이터
@@ -89,11 +88,12 @@ public class ReturnRuleAdaptor {
      */
     public ReturnRuleModifyResponse modifyReturnRule(ReturnRuleModifyRequest request, Integer id) {
         HttpEntity<ReturnRuleModifyRequest> requestHttpEntity = new HttpEntity<>(request, Utils.getHttpHeader());
-        ResponseEntity<ReturnRuleModifyResponse> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL + "/{id}",
-                HttpMethod.PUT,
-                requestHttpEntity,
-                new ParameterizedTypeReference<ReturnRuleModifyResponse>() {
-                }, id);
+        ResponseEntity<ReturnRuleModifyResponse> exchange =
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL + "/{id}",
+                        HttpMethod.PUT,
+                        requestHttpEntity,
+                        new ParameterizedTypeReference<ReturnRuleModifyResponse>() {
+                        }, id);
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
