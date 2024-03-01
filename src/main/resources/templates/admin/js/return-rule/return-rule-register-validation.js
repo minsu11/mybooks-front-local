@@ -6,36 +6,49 @@ forms.forEach((form) => {
         const returnName = form.querySelector(".returnName").value;
         const deliveryFee = form.querySelector(".deliveryFee").value;
         const term = form.querySelector(".term").value;
-
+        console.log(returnName)
         if (returnName === "") {
             alert("이름 공백입니다.");
             returnName.focus();
             e.preventDefault();
+            return false
         }
 
         if (deliveryFee === "") {
             alert("배송 비용 공백입니다.");
-            returnName.focus();
+            deliveryFee.focus();
             e.preventDefault();
+            return false;
         } else if (deliveryFee < 0) {
             alert("양수로 입력하세요");
+            deliveryFee.focus
             e.preventDefault();
+            return false;
         } else if (deliveryFee > 10000) {
             alert("10000원 이하로 입력하세요");
-
+            deliveryFee.focus;
             e.preventDefault()
+            return false;
         }
 
         if (term === "") {
             alert("반품 기간이 공백입니다.");
-            // returnName.focus();
+            term.focus();
             e.preventDefault();
+            return false;
         } else if (term < 1) {
             alert("양수로 입력하세요");
+            term.focus;
             e.preventDefault();
-        } else if (term < 366) {
+            return false;
+        } else if (term > 365) {
             alert("365일 이하로 입력하세요");
+            term.focus;
             e.preventDefault()
+            return false;
         }
+        const message = document.getElementById("message").dataset.info;
+        alert(message)
+        return true
     })
 })

@@ -1,6 +1,8 @@
 package store.mybooks.front.admin.return_rule.adaptor;
 
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -27,15 +29,14 @@ import store.mybooks.front.utils.Utils;
  * -----------------------------------------------------------<br>
  * 2/28/24        minsu11       최초 생성<br>
  */
+@Slf4j
 @Component
+@RequiredArgsConstructor
 public class ReturnRuleAdaptor {
     private final RestTemplate restTemplate;
-    private final String url;
+    private final GatewayAdaptorProperties gatewayAdaptorProperties;
+    private static final String URL = "/api/return-rules";
 
-    public ReturnRuleAdaptor(RestTemplate restTemplate, GatewayAdaptorProperties gatewayAdaptorProperties) {
-        this.restTemplate = restTemplate;
-        this.url = gatewayAdaptorProperties.getAddress() + "/api/return-rules";
-    }
 
     /**
      * methodName : getReturnRuleResponseList<br>
@@ -46,8 +47,9 @@ public class ReturnRuleAdaptor {
      * @return list
      */
     public List<ReturnRuleResponse> getReturnRuleResponseList() {
+        log.info("주소 값: {}", gatewayAdaptorProperties.getAddress());
 
-        ResponseEntity<List<ReturnRuleResponse>> exchange = restTemplate.exchange(url,
+        ResponseEntity<List<ReturnRuleResponse>> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<ReturnRuleResponse>>() {
@@ -65,13 +67,14 @@ public class ReturnRuleAdaptor {
      * @return return rule create response
      */
     public ReturnRuleCreateResponse createReturnRule(ReturnRuleCreateRequest request) {
+
         HttpEntity<ReturnRuleCreateRequest> requestHttpEntity = new HttpEntity<>(request, Utils.getHttpHeader());
-        ResponseEntity<ReturnRuleCreateResponse> exchange = restTemplate.exchange(url,
+        ResponseEntity<ReturnRuleCreateResponse> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL,
                 HttpMethod.POST,
                 requestHttpEntity,
                 new ParameterizedTypeReference<ReturnRuleCreateResponse>() {
                 });
-        return Utils.getResponseEntity(exchange, HttpStatus.CREATED);
+        return exchange.getBody();
     }
 
     /**
@@ -86,7 +89,7 @@ public class ReturnRuleAdaptor {
      */
     public ReturnRuleModifyResponse modifyReturnRule(ReturnRuleModifyRequest request, Integer id) {
         HttpEntity<ReturnRuleModifyRequest> requestHttpEntity = new HttpEntity<>(request, Utils.getHttpHeader());
-        ResponseEntity<ReturnRuleModifyResponse> exchange = restTemplate.exchange(url + "/{id}",
+        ResponseEntity<ReturnRuleModifyResponse> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL + "/{id}",
                 HttpMethod.PUT,
                 requestHttpEntity,
                 new ParameterizedTypeReference<ReturnRuleModifyResponse>() {
@@ -95,7 +98,7 @@ public class ReturnRuleAdaptor {
     }
 
     public void deleteReturnRule(Integer id) {
-        ResponseEntity<Object> exchange = restTemplate.exchange(url + "/{id}",
+        ResponseEntity<Object> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL + "/{id}",
                 HttpMethod.DELETE,
                 null,
                 new ParameterizedTypeReference<>() {

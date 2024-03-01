@@ -9,6 +9,7 @@ import store.mybooks.front.admin.return_rule.dto.request.ReturnRuleCreateRequest
 import store.mybooks.front.admin.return_rule.dto.request.ReturnRuleDeleteRequest;
 import store.mybooks.front.admin.return_rule.dto.request.ReturnRuleModifyRequest;
 import store.mybooks.front.admin.return_rule.dto.response.ReturnRuleResponse;
+import store.mybooks.front.admin.return_rule.exception.ReturnRuleRegisterFailedException;
 
 /**
  * packageName    : store.mybooks.front.admin.return_rule.service<br>
@@ -31,8 +32,12 @@ public class ReturnRuleService {
         return returnRuleAdaptor.getReturnRuleResponseList();
     }
 
-    public Boolean createReturnRule(ReturnRuleCreateRequest request) {
-        return Objects.nonNull(returnRuleAdaptor.createReturnRule(request));
+    public void createReturnRule(ReturnRuleCreateRequest request) {
+        try {
+            returnRuleAdaptor.createReturnRule(request);
+        } catch (RuntimeException e) {
+            throw new ReturnRuleRegisterFailedException();
+        }
     }
 
     public Boolean updateReturnRule(ReturnRuleModifyRequest request, Integer id) {
@@ -42,6 +47,6 @@ public class ReturnRuleService {
 
     public void deleteReturnRule(ReturnRuleDeleteRequest request) {
         returnRuleAdaptor.deleteReturnRule(request.getId());
-        
+
     }
 }

@@ -8,9 +8,14 @@
     <div class="input-group input-group-sm justify-content-center mb-3">
         <div th:if="${modifyReturnRule == null}">
             <form name="form" class="form" method="post" th:action="@{'/admin/return-rules/register'}">
+                
                 <input type="text" name="returnName" class="form-control returnName" placeholder="반품 규정 명"/>
+
                 <input type="text" name="deliveryFee" class="form-control deliveryFee" placeholder="반품 시 배송 비"/>
                 <input type="text" name="term" class="form-control term" placeholder="반품 유효 기간"/>
+                <th:block th:if="${msg !=null}">
+                    <p id="message" th:data-info="${msg}"></p>
+                </th:block>
                 <button name="submit" class="btn btn-outline-secondary" type="submit">등록
                 </button>
             </form>
@@ -28,6 +33,7 @@
             </form>
         </div>
     </div>
+
     <script src="/admin/js/return-rule/return-rule-validation.js"></script>
     <script src="/admin/js/return-rule/return-rule-register-validation.js"></script>
 </div>

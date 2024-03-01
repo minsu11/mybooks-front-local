@@ -1,9 +1,13 @@
 package store.mybooks.front.global;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import store.mybooks.front.admin.return_rule.exception.ReturnRuleRegisterFailedException;
 
 /**
  * packageName    : store.mybooks.front.global
@@ -16,6 +20,7 @@ import org.springframework.web.client.HttpClientErrorException;
  * -----------------------------------------------------------
  * 2/27/24          damho-lee          최초 생성
  */
+@Slf4j
 @ControllerAdvice
 public class GlobalControllerAdvice {
     /**
@@ -24,7 +29,7 @@ public class GlobalControllerAdvice {
      * description : resource 서버에서 BadRequest, NotFound 상태코드가 오는 경우를 처리하는 ExceptionHandler.<br>
      *
      * @param exception HttpClientErrorException
-     * @param model Model
+     * @param model     Model
      * @return string
      */
     @ExceptionHandler({HttpClientErrorException.BadRequest.class, HttpClientErrorException.NotFound.class})
@@ -32,6 +37,16 @@ public class GlobalControllerAdvice {
         if (exception.getMessage() != null) {
             model.addAttribute("message", exception.getMessage());
         }
-        return "/admin/view/error";
+        return "admin/view/error";
     }
+
+    @ExceptionHandler({ReturnRuleRegisterFailedException.class})
+    public ModelAndView registerFailedException(RuntimeException exception, RedirectAttributes redirectAttributes) {
+        ModelAndView modelAndView = new ModelAndView("admin/view/return-rule-register-view");
+        modelAndView.addObject("msg", exception.getMessage());
+        return modelAndView;
+    }
+
 }
+
+

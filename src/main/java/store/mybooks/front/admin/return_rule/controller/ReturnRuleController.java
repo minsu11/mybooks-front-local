@@ -73,13 +73,8 @@ public class ReturnRuleController {
      */
     @PostMapping("/register")
     public String doRegister(
-            RedirectAttributes redirectAttributes,
             @ModelAttribute ReturnRuleCreateRequest request) {
-        if (returnRuleService.createReturnRule(request)) {
-
-            return "redirect:/admin/return-rules";
-        }
-        redirectAttributes.addFlashAttribute("registerReturnRule", request);
+        returnRuleService.createReturnRule(request);
         return "redirect:/admin/return-rules/register";
     }
 
