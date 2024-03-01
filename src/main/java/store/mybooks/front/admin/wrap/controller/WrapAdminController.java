@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import store.mybooks.front.admin.wrap.dto.request.WrapCreateRequest;
+import store.mybooks.front.admin.wrap.dto.request.WrapModifyRequest;
 import store.mybooks.front.admin.wrap.dto.response.WrapResponse;
 import store.mybooks.front.admin.wrap.service.WrapService;
 import store.mybooks.front.pageable.dto.response.PageResponse;
@@ -87,8 +89,30 @@ public class WrapAdminController {
     public String doRegister(@ModelAttribute WrapCreateRequest request) {
         String redirectUrl = URL + "/register";
         wrapService.createWrap(request, redirectUrl);
-        return "redirect:/admin/wraps";
+        return URL;
     }
 
+    @PostMapping("/update-view")
+    public String postUpdateForm(@ModelAttribute WrapModifyRequest request,
+                                 RedirectAttributes redirectAttributes) {
+        log.info("update-view: {}", request);
+        redirectAttributes.addFlashAttribute("WrapModifyRequest", request);
 
+        return URL + "/update";
+    }
+
+    @GetMapping("/update")
+    public String viewUpdateForm(@ModelAttribute(name = "WrapModifyRequest") WrapModifyRequest request,
+                                 ModelMap modelMap) {
+        modelMap.put("pathValue", "update");
+        modelMap.put("modifyWrap", request);
+        return "admin/view/wrap-register-view";
+    }
+
+    @PostMapping("/update")
+    public String doUpdate(@ModelAttribute WrapModifyRequest wrapModifyRequest) {
+        String redirectUrl = URL + "/update";
+        wrapService.updateWrap(wrapModifyRequest, redirectUrl);
+        return URL;
+    }
 }

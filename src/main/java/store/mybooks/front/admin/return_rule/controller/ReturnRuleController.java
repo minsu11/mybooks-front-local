@@ -106,7 +106,6 @@ public class ReturnRuleController {
             RedirectAttributes redirectAttributes) {
         log.info("update 전:{}", request);
         redirectAttributes.addFlashAttribute("returnRuleModifyRequest", request);
-        log.info("update 후:{}", request);
 
         return "redirect:/admin/return-rules/update-form";
     }

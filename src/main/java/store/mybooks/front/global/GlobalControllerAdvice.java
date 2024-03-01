@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import store.mybooks.front.global.exception.RequestRegisterFailedException;
+import store.mybooks.front.global.exception.ManageFailedException;
 
 /**
  * packageName    : store.mybooks.front.global
@@ -40,8 +40,8 @@ public class GlobalControllerAdvice {
         return "admin/view/error";
     }
 
-    @ExceptionHandler({RequestRegisterFailedException.class})
-    public ModelAndView registerFailedException(RequestRegisterFailedException exception, RedirectAttributes redirectAttributes) {
+    @ExceptionHandler({ManageFailedException.class})
+    public ModelAndView registerFailedException(ManageFailedException exception, RedirectAttributes redirectAttributes) {
         ModelAndView modelAndView = new ModelAndView(exception.getUrl());
         modelAndView.addObject("msg", exception.getMessage());
         return modelAndView;

@@ -8,7 +8,7 @@ import store.mybooks.front.admin.return_rule.dto.request.ReturnRuleCreateRequest
 import store.mybooks.front.admin.return_rule.dto.request.ReturnRuleDeleteRequest;
 import store.mybooks.front.admin.return_rule.dto.request.ReturnRuleModifyRequest;
 import store.mybooks.front.admin.return_rule.dto.response.ReturnRuleResponse;
-import store.mybooks.front.global.exception.RequestRegisterFailedException;
+import store.mybooks.front.global.exception.ManageFailedException;
 
 /**
  * packageName    : store.mybooks.front.admin.return_rule.service<br>
@@ -35,7 +35,7 @@ public class ReturnRuleService {
         try {
             returnRuleAdaptor.createReturnRule(request);
         } catch (RuntimeException e) {
-            throw new RequestRegisterFailedException(redirectUrl);
+            throw new ManageFailedException("등록 실패", redirectUrl);
         }
     }
 
@@ -44,7 +44,7 @@ public class ReturnRuleService {
         try {
             returnRuleAdaptor.modifyReturnRule(request, request.getId());
         } catch (RuntimeException e) {
-            throw new RequestRegisterFailedException(redirectUrl);
+            throw new ManageFailedException("수정 실패", redirectUrl);
         }
     }
 

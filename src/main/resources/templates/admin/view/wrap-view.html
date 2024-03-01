@@ -22,7 +22,8 @@
                 <td th:text="${wrap.name}"></td>
                 <td th:text="${wrap.cost}"></td>
                 <td>
-                    <form method="post" th:action="@{'/admin/wraps/'+${wrap.id}}">
+                    <form method="post" th:action="@{'/admin/wraps/update-view'}">
+                        <input type="hidden" th:name="id" th:value="${wrap.id}"/>
                         <input type="hidden" th:name="name" th:value="${wrap.name}"/>
                         <input type="hidden" th:name="cost" th:value="${wrap.cost}"/>
                         <button class="btn btn-outline-secondary" type="submit" id="button-update">수정하기</button>

@@ -14,11 +14,11 @@ import lombok.Getter;
  * 3/1/24        minsu11       최초 생성<br>
  */
 @Getter
-public class RequestRegisterFailedException extends RuntimeException {
+public class ManageFailedException extends RuntimeException {
     private final String url;
 
-    public RequestRegisterFailedException(String url) {
-        super("등록 실패");
+    public ManageFailedException(String message, String url) {
+        super(message);
         this.url = url;
     }
 }
