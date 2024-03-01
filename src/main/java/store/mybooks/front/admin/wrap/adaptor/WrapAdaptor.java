@@ -112,4 +112,23 @@ public class WrapAdaptor {
         Utils.getResponseEntity(responseEntity, HttpStatus.OK);
     }
 
+    /**
+     * methodName : deleteWrap<br>
+     * author : minsu11<br>
+     * description : 포장지 삭제 api
+     * <br> *
+     *
+     * @param id 삭제할 포장지 아이디
+     */
+    public void deleteWrap(Integer id) {
+        String url = gatewayAdaptorProperties.getAddress() + URL + "/{id}";
+        ResponseEntity<Object> responseEntity = restTemplate.exchange(url,
+                HttpMethod.DELETE,
+                null,
+                new ParameterizedTypeReference<Object>() {
+                },
+                id);
+        Utils.getResponseEntity(responseEntity, HttpStatus.NO_CONTENT);
+    }
+
 }

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.admin.wrap.adaptor.WrapAdaptor;
 import store.mybooks.front.admin.wrap.dto.request.WrapCreateRequest;
+import store.mybooks.front.admin.wrap.dto.request.WrapDeleteRequest;
 import store.mybooks.front.admin.wrap.dto.request.WrapModifyRequest;
 import store.mybooks.front.admin.wrap.dto.response.WrapResponse;
 import store.mybooks.front.global.exception.ManageFailedException;
@@ -89,5 +90,8 @@ public class WrapService {
         }
     }
 
+    public void deleteWrap(WrapDeleteRequest request) {
+        wrapAdaptor.deleteWrap(request.getId());
+    }
 
 }

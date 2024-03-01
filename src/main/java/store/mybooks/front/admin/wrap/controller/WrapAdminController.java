@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import store.mybooks.front.admin.wrap.dto.request.WrapCreateRequest;
+import store.mybooks.front.admin.wrap.dto.request.WrapDeleteRequest;
 import store.mybooks.front.admin.wrap.dto.request.WrapModifyRequest;
 import store.mybooks.front.admin.wrap.dto.response.WrapResponse;
 import store.mybooks.front.admin.wrap.service.WrapService;
@@ -110,9 +111,15 @@ public class WrapAdminController {
     }
 
     @PostMapping("/update")
-    public String doUpdate(@ModelAttribute WrapModifyRequest wrapModifyRequest) {
+    public String doUpdate(@ModelAttribute WrapModifyRequest request) {
         String redirectUrl = URL + "/update";
-        wrapService.updateWrap(wrapModifyRequest, redirectUrl);
+        wrapService.updateWrap(request, redirectUrl);
+        return URL;
+    }
+
+    @PostMapping("/delete")
+    public String doDelete(@ModelAttribute WrapDeleteRequest request) {
+        wrapService.deleteWrap(request);
         return URL;
     }
 }
