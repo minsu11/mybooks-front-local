@@ -1,13 +1,12 @@
 package store.mybooks.front.global;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
 import store.mybooks.front.auth.exception.AccessIdForbiddenException;
 import store.mybooks.front.auth.exception.AuthenticationIsNotValidException;
+import store.mybooks.front.auth.exception.StatusIsNotActiveException;
 
 /**
  * packageName    : store.mybooks.front.global
@@ -39,11 +38,14 @@ public class GlobalControllerAdvice {
         return "/admin/view/error";
     }
 
-    @ExceptionHandler({AuthenticationIsNotValidException.class, AccessIdForbiddenException.class})
+    @ExceptionHandler({AuthenticationIsNotValidException.class, AccessIdForbiddenException.class,
+            StatusIsNotActiveException.class})
     public String handleZZZException(RuntimeException ex) {
 
         if (ex instanceof AuthenticationIsNotValidException) {
             return "redirect:/login"; // 다시 로그인
+        }else if(ex instanceof StatusIsNotActiveException){
+            return "redirect:/휴대폰인증 url"; // todo 휴대폰인증 페이지로
         }
 
         // 권한없는 경우 index
