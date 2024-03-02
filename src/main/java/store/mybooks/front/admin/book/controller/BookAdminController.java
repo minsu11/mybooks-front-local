@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,7 +54,7 @@ public class BookAdminController {
     @GetMapping
     public String getBookPage(@PageableDefault(size = 8) Pageable pageable, Model model) {
         model.addAttribute("books", bookAdminService.getBooks(pageable));
-        return "admin/view/book";
+        return "admin/view/book/book";
     }
 
     /**
@@ -70,7 +72,7 @@ public class BookAdminController {
         model.addAttribute("tags", tagService.getTags());
         model.addAttribute("authors", authorService.getAllAuthors());
         model.addAttribute("bookStatuses", bookAdminService.getBookStatus());
-        return "admin/view/book-register";
+        return "admin/view/book/book-register";
     }
 
     /**
@@ -82,7 +84,11 @@ public class BookAdminController {
      * @return string
      */
     @PostMapping("/register")
-    public String createBook(@Valid @ModelAttribute BookCreateRequest bookCreateRequest) {
+    public String createBook(@Valid @ModelAttribute BookCreateRequest bookCreateRequest, BindingResult bindingResult)
+            throws BindException {
+        if (bindingResult.hasErrors()) {
+            throw new BindException(bindingResult);
+        }
         bookAdminService.createBook(bookCreateRequest);
         return "redirect:/admin/book/register";
     }
@@ -99,7 +105,7 @@ public class BookAdminController {
     @GetMapping("/update")
     public String getBookUpdatePage(@RequestParam("id") Long bookId, Model model) {
         model.addAttribute("book", bookAdminService.getBook(bookId));
-        return "admin/view/book-update";
+        return "admin/view/book/book-update";
     }
 
     /**
