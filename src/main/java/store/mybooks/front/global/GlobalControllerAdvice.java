@@ -1,9 +1,13 @@
 package store.mybooks.front.global;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
+import store.mybooks.front.auth.exception.AccessIdForbiddenException;
+import store.mybooks.front.auth.exception.AuthenticationIsNotValidException;
 
 /**
  * packageName    : store.mybooks.front.global
@@ -24,7 +28,7 @@ public class GlobalControllerAdvice {
      * description : resource 서버에서 BadRequest, NotFound 상태코드가 오는 경우를 처리하는 ExceptionHandler.<br>
      *
      * @param exception HttpClientErrorException
-     * @param model Model
+     * @param model     Model
      * @return string
      */
     @ExceptionHandler({HttpClientErrorException.BadRequest.class, HttpClientErrorException.NotFound.class})
@@ -34,4 +38,17 @@ public class GlobalControllerAdvice {
         }
         return "/admin/view/error";
     }
+
+    @ExceptionHandler({AuthenticationIsNotValidException.class, AccessIdForbiddenException.class})
+    public String handleZZZException(RuntimeException ex) {
+
+        if (ex instanceof AuthenticationIsNotValidException) {
+            return "redirect:/login"; // 다시 로그인
+        }
+
+        // 권한없는 경우 index
+        return "redirect:/";
+    }
+
+
 }
