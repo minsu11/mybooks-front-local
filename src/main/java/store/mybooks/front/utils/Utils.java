@@ -78,11 +78,19 @@ public class Utils {
      * description : 중복 코드
      * <br> *
      *
-     * @param exchange
-     * @param status
+     * @param <T>           the type parameter
+     * @param restTemplate  restTemplate
+     * @param url           api
+     * @param method        요청 방식
+     * @param requestEntity 요청할 데이터
+     * @param status        응답 받을 {@code Http status code}
+     * @param targetType    반환 받을 객체 타입
+     * @param id            api에 보낼 id
      * @return 반환 받을 타입 데이터
      */
     public static <T> T getResponseEntity(ResponseEntity<T> exchange, HttpStatus status) {
+
+
         if (exchange.getStatusCode() != status) {
             throw new RuntimeException();
         }
