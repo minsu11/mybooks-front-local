@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import store.mybooks.front.auth.exception.AuthenticationIsNotValidException;
 
 /**
  * packageName    : store.mybooks.front.util<br>
@@ -75,7 +76,6 @@ public class Utils {
     public static HttpHeaders getHttpHeader(HttpServletRequest request) {
 
         // todo 여기서부터 identityCookie 가 없으면 로그인하라고 보내기
-
         HttpHeaders headers = Utils.getHttpHeader();
         String token = Utils.getIdentityCookieValue(request.getCookies());
         headers.set("Authorization", token);
@@ -111,7 +111,7 @@ public class Utils {
                 }
             }
         }
-        throw new RuntimeException();
+        throw new AuthenticationIsNotValidException();
     }
 
     public static void addJwtCookie(HttpServletResponse response, String token) {
@@ -126,6 +126,16 @@ public class Utils {
                         // SameSite 설정 (Strict, Lax, None 중 선택) Strict 쿠키가 같은 도메인에서만 헤더로 넘어감, 요청보낼떄는 헤더에 담아 보낼꺼임
                         "Secure" // Secure 설정
         );
+    }
+
+    public static void deleteJwtCookie(HttpServletResponse response) {
+        response.setHeader("Set-Cookie",
+                "identity_cookie=; " +
+                        "Path=/; " +
+                        "Domain=localhost; " +
+                        "Max-Age=0; " + // 쿠키를 즉시 만료시킵니다.
+                        "SameSite=Strict; " +
+                        "Secure");
     }
 
 
