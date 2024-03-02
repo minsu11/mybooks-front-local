@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -14,6 +13,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import store.mybooks.front.auth.error.ErrorMessage;
 import store.mybooks.front.auth.exception.AccessIdForbiddenException;
 import store.mybooks.front.auth.exception.AuthenticationIsNotValidException;
+import store.mybooks.front.auth.exception.StatusIsNotActiveException;
 import store.mybooks.front.utils.Utils;
 
 /**
@@ -57,6 +57,8 @@ public class AuthorizationAspect {
             } else if (error.contains(ErrorMessage.INVALID_TOKEN.getMessage())) { // 토큰위조됨 쿠키삭제하기
                 Utils.deleteJwtCookie(response);
                 throw new AuthenticationIsNotValidException();
+            } else if(error.contains(ErrorMessage.INACTIVE_USER.getMessage())){ // 활성상태가 아님
+                throw new StatusIsNotActiveException();
             }
         }
 
