@@ -1,8 +1,5 @@
 package store.mybooks.front.user.adaptor;
 
-import java.util.Enumeration;
-import java.util.List;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -11,15 +8,13 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import store.mybooks.front.auth.Annotation.Trace;
 import store.mybooks.front.config.GatewayAdaptorProperties;
-import store.mybooks.front.dooray.dto.DoorayAuthResponse;
-import store.mybooks.front.jwt.dto.request.TokenCreateRequest;
-import store.mybooks.front.jwt.dto.response.TokenCreateResponse;
 import store.mybooks.front.user.dto.request.UserCreateRequest;
 import store.mybooks.front.user.dto.request.UserGradeModifyRequest;
 import store.mybooks.front.user.dto.request.UserLoginRequest;
@@ -97,7 +92,6 @@ public class UserAdaptor {
     public void createUser(UserCreateRequest createRequest) {
 
         HttpHeaders headers = Utils.getHttpHeader();
-
         HttpEntity<UserCreateRequest> requestEntity = new HttpEntity<>(createRequest, headers);
 
         ResponseEntity<UserCreateResponse> responseEntity =
@@ -120,10 +114,13 @@ public class UserAdaptor {
      *
      * @return user get response
      */
-    public UserGetResponse findUser(HttpServletRequest request) {
+    @Trace
+    public UserGetResponse findUser(HttpServletRequest request, HttpServletResponse response) {
 
-        HttpHeaders headers = Utils.getHttpHeader(request);
-        HttpEntity<Void> httpEntity = new HttpEntity<>(null, headers);
+        HttpHeaders headers = (HttpHeaders) RequestContextHolder.currentRequestAttributes()
+                .getAttribute("authHeader", RequestAttributes.SCOPE_REQUEST);
+
+        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
 
         ResponseEntity<UserGetResponse> responseEntity =
                 restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL_MEMBER,
@@ -131,11 +128,6 @@ public class UserAdaptor {
                         httpEntity,
                         new ParameterizedTypeReference<>() {
                         });
-
-
-        if (responseEntity.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException();
-        }
 
         return responseEntity.getBody();
     }

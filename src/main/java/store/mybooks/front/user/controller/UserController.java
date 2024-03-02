@@ -1,7 +1,5 @@
 package store.mybooks.front.user.controller;
 
-import java.util.Enumeration;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -13,10 +11,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import store.mybooks.front.jwt.adaptor.TokenAdaptor;
-import store.mybooks.front.jwt.dto.request.TokenCreateRequest;
-import store.mybooks.front.jwt.dto.response.TokenCreateResponse;
+import store.mybooks.front.auth.adaptor.TokenAdaptor;
+import store.mybooks.front.auth.dto.request.TokenCreateRequest;
+import store.mybooks.front.auth.dto.response.TokenCreateResponse;
 import store.mybooks.front.user.adaptor.UserAdaptor;
 import store.mybooks.front.user.dto.request.UserCreateRequest;
 import store.mybooks.front.user.dto.request.UserGradeModifyRequest;
@@ -86,9 +83,9 @@ public class UserController {
      * @return string
      */
     @GetMapping("/user")
-    public String myPageForm(Model model, HttpServletRequest request) {
+    public String myPageForm(Model model, HttpServletRequest request,HttpServletResponse response) {
 
-        UserGetResponse userGetResponse = userAdaptor.findUser(request);
+        UserGetResponse userGetResponse = userAdaptor.findUser(request,response);
 
         model.addAttribute("user", userGetResponse);
         return "my-page";
