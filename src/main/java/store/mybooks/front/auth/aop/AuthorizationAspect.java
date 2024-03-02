@@ -32,7 +32,7 @@ import store.mybooks.front.utils.Utils;
 @Slf4j
 public class AuthorizationAspect {
 
-    @Around(value = "@annotation(store.mybooks.front.auth.Annotation.Trace) && args(request, response,..)")
+    @Around(value = "@annotation(store.mybooks.front.auth.Annotation.Trace) && args(request, response,..)", argNames = "joinPoint,request,response")
     public Object afterMethod(ProceedingJoinPoint joinPoint, HttpServletRequest request, HttpServletResponse response)
             throws Throwable {
 
