@@ -92,19 +92,30 @@
                             <div class="bottom-content">
                                 <div class="row align-items-end">
                                     <div class="col-lg-4 col-md-4 col-12">
-                                        <div class="button cart-button">
-                                            <button class="btn" style="width: 100%;">Buy Now</button>
-                                        </div>
+                                        <form action="/order" method="post">
+                                            <input type="hidden" name="bookId" value="[[${book.id}]]">
+                                            <input type="hidden" id="buyNowQuantity" name="quantity">
+                                            <div class="button cart-button">
+                                                <button type="submit" class="btn" style="width: 100%;">바로구매</button>
+                                            </div>
+                                        </form>
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-12">
-                                        <div class="button cart-button">
-                                            <button class="btn" style="width: 100%;">Add to Cart</button>
-                                        </div>
+                                        <form action="/cart" method="post">
+                                            <input type="hidden" name="bookId" value="[[${book.id}]]">
+                                            <input type="hidden" id="cartQuantity" name="quantity">
+                                            <div class="button cart-button">
+                                                <button type="submit" class="btn" style="width: 100%;">장바구니 담기</button>
+                                            </div>
+                                        </form>
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-12">
-                                        <div class="wish-button">
-                                            <button class="btn"><i class="lni lni-heart"></i> To Wishlist</button>
-                                        </div>
+                                        <form action="/book-like" method="post">
+                                            <input type="hidden" name="bookId" value="[[${book.id}]]">
+                                            <div class="wish-button">
+                                                <button type="submit" class="btn"><i class="lni lni-heart"></i> To Wishlist</button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -358,6 +369,12 @@
                 //opacity
                 e.target.style.opacity = opacity;
             });
+        });
+
+        document.getElementById('quantity').addEventListener('change', function() {
+            var quantity = this.value;
+            document.getElementById('buyNowQuantity').value = quantity;
+            document.getElementById('cartQuantity').value = quantity;
         });
     </script>
 </div>
