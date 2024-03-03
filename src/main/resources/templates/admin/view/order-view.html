@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/admin-layout}">
+
+<div layout:fragment="content">
+    <div class="container mt-5">
+        <h2>회원 주문 내역</h2>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>주문 번호</th>
+                <th>주문 상태</th>
+                <th>송장 번호</th>
+                <th>출고일</th>
+                <th>주문일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="bookOrder:${bookOrderList}">
+                <td th:text="${bookOrder.number}"></td>
+                <td th:text="${bookOrder.statusId}"></td>
+                <td th:text="${bookOrder.invoiceNumber}"></td>
+                <td>
+
+                    <form method="post" th:action="@{'/admin/return-rules/update-form/'}">
+                        <button class="btn btn-outline-secondary" type="submit" id="button-modify">수정하기</button>
+                    </form>
+                </td>
+
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+</html>
