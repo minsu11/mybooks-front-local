@@ -1,4 +1,4 @@
-정package store.mybooks.front.admin.author.dto.response;
+package store.mybooks.front.admin.author.dto.response;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
