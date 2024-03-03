@@ -1,5 +1,6 @@
 package store.mybooks.front.admin.book.controller;
 
+import java.util.stream.Collectors;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -11,12 +12,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import store.mybooks.front.admin.author.dto.response.AuthorGetResponse;
 import store.mybooks.front.admin.author.service.AuthorService;
 import store.mybooks.front.admin.book.model.request.BookCreateRequest;
 import store.mybooks.front.admin.book.model.request.BookModifyRequest;
+import store.mybooks.front.admin.book.model.response.BookDetailResponse;
 import store.mybooks.front.admin.book.service.BookAdminService;
 import store.mybooks.front.admin.category.service.CategoryService;
 import store.mybooks.front.admin.publisher.service.PublisherService;
+import store.mybooks.front.admin.tag.model.response.TagGetResponseForBookDetail;
 import store.mybooks.front.admin.tag.service.TagService;
 
 /**
@@ -98,7 +102,17 @@ public class BookAdminController {
      */
     @GetMapping("/update")
     public String getBookUpdatePage(@RequestParam("id") Long bookId, Model model) {
-        model.addAttribute("book", bookAdminService.getBook(bookId));
+        BookDetailResponse book = bookAdminService.getBook(bookId);
+        model.addAttribute("book", book);
+        model.addAttribute("bookAuthorList", book.getAuthorList().stream().map(AuthorGetResponse::getId).collect(Collectors.toList()));
+        model.addAttribute("bookTagList",
+                book.getTagList().stream().map(TagGetResponseForBookDetail::getId).collect(Collectors.toList()));
+
+
+        model.addAttribute("categories", categoryService.getCategories());
+        model.addAttribute("tags", tagService.getTags());
+        model.addAttribute("authors", authorService.getAllAuthors());
+        model.addAttribute("bookStatuses", bookAdminService.getBookStatus());
         return "admin/view/book-update";
     }
 
