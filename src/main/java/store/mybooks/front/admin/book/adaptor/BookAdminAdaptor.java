@@ -39,39 +39,35 @@ public class BookAdminAdaptor {
 
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
-    private final String url = "/api/books";
+    private final String URL = "/api/books";
 
     public PageResponse<BookBriefResponse> getPagedBriefBooks(Pageable pageable) {
-        HttpEntity<BookCreateRequest> requestHttpEntity = new HttpEntity<>(Utils.getHttpHeader());
-
         ResponseEntity<PageResponse<BookBriefResponse>> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + url + "?page=" + pageable.getPageNumber() + "&size=" + pageable.getPageSize(),
+                gatewayAdaptorProperties.getAddress() + URL + "?page=" + pageable.getPageNumber() + "&size="
+                        + pageable.getPageSize(),
                 HttpMethod.GET,
-                requestHttpEntity,
+                null,
                 new ParameterizedTypeReference<>() {
-                }
-        );
+                });
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
     public BookDetailResponse getDetailBook(Long bookId) {
-        HttpEntity<BookCreateRequest> requestHttpEntity = new HttpEntity<>(Utils.getHttpHeader());
-
         ResponseEntity<BookDetailResponse> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + url + "/" + bookId,
+                gatewayAdaptorProperties.getAddress() + URL + "/{id}",
                 HttpMethod.GET,
-                requestHttpEntity,
+                null,
                 new ParameterizedTypeReference<>() {
-                }
-        );
-        return Utils.getResponseEntity(exchange, HttpStatus.CREATED);
+                },
+                bookId);
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
     public BookCreateResponse createBook(BookCreateRequest bookCreateRequest) {
         HttpEntity<BookCreateRequest> requestHttpEntity = new HttpEntity<>(bookCreateRequest, Utils.getHttpHeader());
 
         ResponseEntity<BookCreateResponse> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + url,
+                gatewayAdaptorProperties.getAddress() + URL,
                 HttpMethod.POST,
                 requestHttpEntity,
                 new ParameterizedTypeReference<>() {
@@ -85,7 +81,7 @@ public class BookAdminAdaptor {
         HttpEntity<BookModifyRequest> requestHttpEntity = new HttpEntity<>(modifyRequest, Utils.getHttpHeader());
 
         ResponseEntity<BookModifyResponse> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + url + bookId,
+                gatewayAdaptorProperties.getAddress() + URL + bookId,
                 HttpMethod.POST,
                 requestHttpEntity,
                 new ParameterizedTypeReference<>() {
@@ -97,12 +93,10 @@ public class BookAdminAdaptor {
     }
 
     public List<BookStatusGetResponse> getBookStatus() {
-        HttpEntity<Void> requestHttpEntity = new HttpEntity<>(Utils.getHttpHeader());
-
         ResponseEntity<List<BookStatusGetResponse>> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + "/api/books-statuses",
                 HttpMethod.GET,
-                requestHttpEntity,
+                null,
                 new ParameterizedTypeReference<>() {
                 }
         );
