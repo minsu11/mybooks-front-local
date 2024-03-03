@@ -2,13 +2,8 @@ package store.mybooks.front.admin.book.model.response;
 
 import java.time.LocalDate;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import store.mybooks.front.admin.author.dto.response.AuthorGetResponse;
-import store.mybooks.front.admin.publisher.dto.response.PublisherGetResponse;
-import store.mybooks.front.admin.tag.model.response.TagGetResponseForBookDetail;
 
 /**
  * packageName    : store.mybooks.front.admin.book.model.response <br/>
@@ -22,21 +17,17 @@ import store.mybooks.front.admin.tag.model.response.TagGetResponseForBookDetail;
  * 2/26/24        newjaehun       최초 생성<br/>
  */
 @Getter
-@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class BookDetailResponse {
     private Long id;
 
-//    private String bookImage;
+    private String bookImage;
 
     private String name;
 
-    private String bookStatus;
+    private String authorName;
 
-    private List<AuthorGetResponse> authorList;
-
-    private PublisherGetResponse publisher;
+    private String publisherName;
 
     private LocalDate publishDate;
 
@@ -44,11 +35,9 @@ public class BookDetailResponse {
 
     private Integer originalCost;
 
-    private Integer disCountRate;
+    private Double totalRate;
 
-//    private Double totalRate;
-
-//    private Integer reviewCount;
+    private Integer reviewCount;
 
     private Boolean isPacking;
 
@@ -56,9 +45,9 @@ public class BookDetailResponse {
 
     private String isbn;
 
-//    private List<CategoryGetResponseForBookCreate> categoryList;
+    private List<String> category;
 
-    private List<TagGetResponseForBookDetail> tagList;
+    private List<String> tag;
 
     private Integer stock;
 
@@ -66,9 +55,7 @@ public class BookDetailResponse {
 
     private String content;
 
-//    private String bookContentImage;
+    private String bookContentImage;
 
 //    private List<ReviewDetailResponse> review;
-
-
 }
