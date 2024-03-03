@@ -6,7 +6,7 @@
 <div layout:fragment="content">
     <div class="container mt-5">
         <h2>회원 주문 내역</h2>
-        <table class="table">
+        <table class="table" style="text-align: center;">
             <thead>
             <tr>
                 <th>주문 번호</th>
@@ -21,10 +21,13 @@
                 <td th:text="${bookOrder.number}"></td>
                 <td th:text="${bookOrder.statusId}"></td>
                 <td th:text="${bookOrder.invoiceNumber}"></td>
+                <td th:if="${bookOrder.outDate eq null}" th:text="'-'"></td>
+                <td th:unless="${bookOrder.outDate eq null}" th:text="${bookOrder.outDate}"></td>
+                <td th:text="${bookOrder.invoiceNumber}"></td>
                 <td>
 
-                    <form method="post" th:action="@{'/admin/return-rules/update-form/'}">
-                        <button class="btn btn-outline-secondary" type="submit" id="button-modify">수정하기</button>
+                    <form method="post" th:action="@{'/admin/order/update-form/'}">
+                        <button class="btn btn-outline-secondary" type="submit" id="button-modify">상태 변경</button>
                     </form>
                 </td>
 

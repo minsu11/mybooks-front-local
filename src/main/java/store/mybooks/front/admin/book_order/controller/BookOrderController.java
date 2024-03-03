@@ -7,7 +7,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import store.mybooks.front.admin.book_order.dto.request.BookOrderStatusModifyRequest;
 import store.mybooks.front.admin.book_order.dto.response.BookOrderAdminResponse;
 import store.mybooks.front.admin.book_order.service.BookOrderService;
 
@@ -42,10 +45,16 @@ public class BookOrderController {
     @GetMapping
     public String viewBookOrder(ModelMap modelMap, Pageable pageable) {
 //        Page<BookOrderAdminResponse> bookOrderAdminPage = bookOrderService.getBookOrderAdminPage(pageable);
-        List<BookOrderAdminResponse> bookOrderAdminPage = List.of(new BookOrderAdminResponse());
+        List<BookOrderAdminResponse> bookOrderAdminPage = List.of(getBookOrderAdminResponse());
         modelMap.put("bookOrderList", bookOrderAdminPage);
         return "admin/view/order-view";
     }
+
+    @PostMapping("/status")
+    public String doModifyStatus(@ModelAttribute BookOrderStatusModifyRequest request) {
+        
+    }
+
 
     private static BookOrderAdminResponse getBookOrderAdminResponse() {
         BookOrderAdminResponse bookOrderAdminResponse = new BookOrderAdminResponse();

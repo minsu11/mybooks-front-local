@@ -4,12 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import store.mybooks.front.admin.book_order.dto.request.BookOrderStatusModifyRequest;
 import store.mybooks.front.admin.book_order.dto.response.BookOrderAdminResponse;
+import store.mybooks.front.admin.book_order.dto.response.BookOrderStatusModifyResponse;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.utils.Utils;
 
@@ -29,7 +29,7 @@ import store.mybooks.front.utils.Utils;
 public class BookOrderAdaptor {
     private final RestTemplate restTemplate;
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
-    private static final String ADMIN_URL = "/admin/order";
+    private static final String URL = "/api/orders";
 
     /**
      * methodName : getAdminBookOrderList<br>
@@ -42,12 +42,35 @@ public class BookOrderAdaptor {
      */
     public Page<BookOrderAdminResponse> getAdminBookOrderList(Pageable pageable) {
         ResponseEntity<Page<BookOrderAdminResponse>> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + ADMIN_URL + "/admin?page={page}&size={size}",
+                gatewayAdaptorProperties.getAddress() + URL + "/admin?page={page}&size={size}",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<Page<BookOrderAdminResponse>>() {
                 }, pageable.getPageNumber(), pageable.getPageSize());
 
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
+
+
+    /**
+     * methodName : modifyOrderStatus<br>
+     * author : minsu11<br>
+     * description : 관리자가 주문 상태를 변경
+     * <br> *
+     *
+     * @param request
+     * @return book order status modify response
+     */
+    public BookOrderStatusModifyResponse modifyOrderStatus(BookOrderStatusModifyRequest request) {
+        HttpHeaders headers = Utils.getHttpHeader();
+        HttpEntity<BookOrderStatusModifyRequest> responseHttpEntity = new HttpEntity<>(request, headers);
+
+        ResponseEntity<BookOrderStatusModifyResponse> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL + "/admin/status",
+                HttpMethod.PUT,
+                responseHttpEntity,
+                new ParameterizedTypeReference<BookOrderStatusModifyResponse>() {
+                });
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
