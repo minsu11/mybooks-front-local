@@ -41,6 +41,14 @@ public class BookAdminAdaptor {
 
     private final String URL = "/api/books";
 
+    /**
+     * methodName : getPagedBriefBooks
+     * author : newjaehun
+     * description : 관리자 도서페이지에 보여줄 페이징된 도서정보.
+     *
+     * @param pageable Pageable
+     * @return pageResponse
+     */
     public PageResponse<BookBriefResponse> getPagedBriefBooks(Pageable pageable) {
         ResponseEntity<PageResponse<BookBriefResponse>> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + URL + "?page=" + pageable.getPageNumber() + "&size="
@@ -52,6 +60,14 @@ public class BookAdminAdaptor {
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
+    /**
+     * methodName : getDetailBook
+     * author : newjaehun
+     * description : 도서 ID로 도서 상세정보 가져오기.
+     *
+     * @param bookId Long
+     * @return bookDetailResponse BookDetailResponse
+     */
     public BookDetailResponse getDetailBook(Long bookId) {
         ResponseEntity<BookDetailResponse> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + URL + "/{id}",
@@ -63,6 +79,14 @@ public class BookAdminAdaptor {
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
+    /**
+     * methodName : createBook
+     * author : newjaehun
+     * description : 도서 추가.
+     *
+     * @param bookCreateRequest BookCreateRequest
+     * @return bookCreateResponse
+     */
     public BookCreateResponse createBook(BookCreateRequest bookCreateRequest) {
         HttpEntity<BookCreateRequest> requestHttpEntity = new HttpEntity<>(bookCreateRequest, Utils.getHttpHeader());
 
@@ -77,6 +101,15 @@ public class BookAdminAdaptor {
         return Utils.getResponseEntity(exchange, HttpStatus.CREATED);
     }
 
+    /**
+     * methodName : updateBook
+     * author : newjaehun
+     * description : 도서 수정.
+     *
+     * @param bookId Long
+     * @param modifyRequest BookModifyRequest
+     * @return bookModifyResponse
+     */
     public BookModifyResponse updateBook(Long bookId, BookModifyRequest modifyRequest) {
         HttpEntity<BookModifyRequest> requestHttpEntity = new HttpEntity<>(modifyRequest, Utils.getHttpHeader());
 
@@ -90,6 +123,13 @@ public class BookAdminAdaptor {
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
+    /**
+     * methodName : getBookStatus
+     * author : newjaehun
+     * description : 전체 도서상태 리스트 반환.
+     *
+     * @return list
+     */
     public List<BookStatusGetResponse> getBookStatus() {
         ResponseEntity<List<BookStatusGetResponse>> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + "/api/books-statuses",

@@ -34,6 +34,14 @@ public class BookAdaptor {
     private static final String URL = "/api/books";
 
 
+    /**
+     * methodName : getActiveBriefBook
+     * author : newjaehun
+     * description : 활성화된(판매중, 재고없음) 간단한 도서 정보.
+     *
+     * @param id Long
+     * @return page
+     */
     public Page<BookBriefResponse> getActiveBriefBook(Long id) {
         ResponseEntity<Page<BookBriefResponse>> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + URL + "/active",
@@ -46,6 +54,14 @@ public class BookAdaptor {
     }
 
 
+    /**
+     * methodName : getBook
+     * author : newjaehun
+     * description : 도서 상세정보.
+     *
+     * @param id Long
+     * @return bookDetailResponse
+     */
     public BookDetailResponse getBook(Long id) {
         ResponseEntity<BookDetailResponse> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + URL + "/{id}",
