@@ -1,16 +1,19 @@
 package store.mybooks.front.admin.book_order.adaptor;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import store.mybooks.front.admin.book_order.dto.request.BookOrderRegisterInvoiceNumberRequest;
 import store.mybooks.front.admin.book_order.dto.request.BookOrderStatusModifyRequest;
 import store.mybooks.front.admin.book_order.dto.response.BookOrderAdminResponse;
+import store.mybooks.front.admin.book_order.dto.response.BookOrderRegisterInvoiceNumberResponse;
 import store.mybooks.front.admin.book_order.dto.response.BookOrderStatusModifyResponse;
 import store.mybooks.front.config.GatewayAdaptorProperties;
+import store.mybooks.front.pageable.dto.response.PageResponse;
 import store.mybooks.front.utils.Utils;
 
 /**
@@ -24,6 +27,7 @@ import store.mybooks.front.utils.Utils;
  * -----------------------------------------------------------<br>
  * 3/3/24        minsu11       최초 생성<br>
  */
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class BookOrderAdaptor {
@@ -40,13 +44,13 @@ public class BookOrderAdaptor {
      * @param pageable 페이징
      * @return page
      */
-    public Page<BookOrderAdminResponse> getAdminBookOrderList(Pageable pageable) {
-        ResponseEntity<Page<BookOrderAdminResponse>> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL + "/admin?page={page}&size={size}",
+    public PageResponse<BookOrderAdminResponse> getAdminBookOrderList(Pageable pageable) {
+        ResponseEntity<PageResponse<BookOrderAdminResponse>> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL + "/admin?page=" + pageable.getPageNumber() + "&size=" + pageable.getPageSize(),
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<Page<BookOrderAdminResponse>>() {
-                }, pageable.getPageNumber(), pageable.getPageSize());
+                new ParameterizedTypeReference<PageResponse<BookOrderAdminResponse>>() {
+                });
 
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
@@ -74,5 +78,18 @@ public class BookOrderAdaptor {
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
+    public BookOrderRegisterInvoiceNumberResponse registerInvoiceNumberResponse(BookOrderRegisterInvoiceNumberRequest request) {
+        HttpHeaders headers = Utils.getHttpHeader();
+        HttpEntity<BookOrderRegisterInvoiceNumberRequest> requestHttpEntity = new HttpEntity<>(request, headers);
+        ResponseEntity<BookOrderRegisterInvoiceNumberResponse> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL + "/admin/invoiceNumber",
+                HttpMethod.PUT,
+                requestHttpEntity,
+                new ParameterizedTypeReference<BookOrderRegisterInvoiceNumberResponse>() {
+                });
+
+        log.info("exchange value: {}", exchange.getBody());
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
 
 }

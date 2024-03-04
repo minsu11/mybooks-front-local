@@ -1,12 +1,13 @@
 package store.mybooks.front.admin.book_order.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.admin.book_order.adaptor.BookOrderAdaptor;
+import store.mybooks.front.admin.book_order.dto.request.BookOrderRegisterInvoiceNumberRequest;
 import store.mybooks.front.admin.book_order.dto.request.BookOrderStatusModifyRequest;
 import store.mybooks.front.admin.book_order.dto.response.BookOrderAdminResponse;
+import store.mybooks.front.pageable.dto.response.PageResponse;
 
 /**
  * packageName    : store.mybooks.front.admin.book_order.service<br>
@@ -33,13 +34,38 @@ public class BookOrderService {
      * @param pageable 페이징
      * @return page
      */
-    public Page<BookOrderAdminResponse> getBookOrderAdminPage(Pageable pageable) {
+    public PageResponse<BookOrderAdminResponse> getBookOrderAdminPage(Pageable pageable) {
         return bookOrderAdaptor.getAdminBookOrderList(pageable);
     }
 
-    public void modifyAdminOrderStatus(BookOrderStatusModifyRequest request) {
+    /**
+     * methodName : modifyAdminOrderStatus<br>
+     * author : minsu11<br>
+     * description : 관리자가 주문 내역 상태를 변경
+     * <br> *
+     *
+     * @param request
+     */
+    public boolean modifyAdminOrderStatus(BookOrderStatusModifyRequest request) {
+        if (request.getInvoiceNumber().isEmpty()) {
+            return false; // wrap에 있는 코드가 merge되면 exception 바꿀 예정
+        }
         bookOrderAdaptor.modifyOrderStatus(request);
+
+        return true;
     }
 
+    /**
+     * methodName : registerInvoiceNumber<br>
+     * author : minsu11<br>
+     * description : 송장 번호 등록.
+     * <br> *
+     *
+     * @param request
+     */
+    public void registerInvoiceNumber(BookOrderRegisterInvoiceNumberRequest request) {
+        bookOrderAdaptor.registerInvoiceNumberResponse(request);
+
+    }
 
 }

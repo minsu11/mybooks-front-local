@@ -1,18 +1,16 @@
 package store.mybooks.front.admin.book_order.controller;
 
-import java.time.LocalDate;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import store.mybooks.front.admin.book_order.dto.request.BookOrderRegisterInvoiceNumberRequest;
 import store.mybooks.front.admin.book_order.dto.request.BookOrderStatusModifyRequest;
 import store.mybooks.front.admin.book_order.dto.response.BookOrderAdminResponse;
 import store.mybooks.front.admin.book_order.service.BookOrderService;
+import store.mybooks.front.pageable.dto.response.PageResponse;
 
 /**
  * packageName    : store.mybooks.front.admin.book_order.controller<br>
@@ -25,6 +23,7 @@ import store.mybooks.front.admin.book_order.service.BookOrderService;
  * -----------------------------------------------------------<br>
  * 3/3/24        minsu11       최초 생성<br>
  */
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin/order")
@@ -44,26 +43,49 @@ public class BookOrderController {
      */
     @GetMapping
     public String viewBookOrder(ModelMap modelMap, Pageable pageable) {
-//        Page<BookOrderAdminResponse> bookOrderAdminPage = bookOrderService.getBookOrderAdminPage(pageable);
-        List<BookOrderAdminResponse> bookOrderAdminPage = List.of(getBookOrderAdminResponse());
+        PageResponse<BookOrderAdminResponse> bookOrderAdminPage = bookOrderService.getBookOrderAdminPage(pageable);
         modelMap.put("bookOrderList", bookOrderAdminPage);
-        return "admin/view/order-view";
+        return "admin/view/book-order/order-view";
     }
 
+    /**
+     * methodName : doModifyStatus<br>
+     * author : minsu11<br>
+     * description : 주문 상태 변경.
+     * <br> *
+     *
+     * @param request
+     * @return string
+     */
     @PostMapping("/status")
     public String doModifyStatus(@ModelAttribute BookOrderStatusModifyRequest request) {
-        
+        bookOrderService.modifyAdminOrderStatus(request);
+        return "redirect:/admin/order";
+    }
+
+    @GetMapping("/{id}")
+    public String viewInvoiceNumberRegisterView(@PathVariable Long id, ModelMap modelMap) {
+        modelMap.put("id", id);
+        return "admin/view/book-order/invoiceNumber-register-view";
+    }
+
+    /**
+     * methodName : doRegisterInvoiceNumber<br>
+     * author : minsu11<br>
+     * description : 주문 상태의 송장 번호 등록.
+     * <br> *
+     *
+     * @param request
+     * @return string
+     */
+    @PostMapping("/invoiceNumber")
+    public String doRegisterInvoiceNumber(@ModelAttribute BookOrderRegisterInvoiceNumberRequest request) {
+        log.info("request value:{}", request.getId());
+        log.info("request value:{}", request.getInvoiceNumber());
+        bookOrderService.registerInvoiceNumber(request);
+
+        return "redirect:/admin/order";
     }
 
 
-    private static BookOrderAdminResponse getBookOrderAdminResponse() {
-        BookOrderAdminResponse bookOrderAdminResponse = new BookOrderAdminResponse();
-        bookOrderAdminResponse.setUserId(1L);
-        bookOrderAdminResponse.setStatusId("대기");
-        bookOrderAdminResponse.setDate(LocalDate.now());
-        bookOrderAdminResponse.setInvoiceNumber("124818247");
-        bookOrderAdminResponse.setOutDate(null);
-        bookOrderAdminResponse.setNumber("12124562456");
-        return bookOrderAdminResponse;
-    }
 }
