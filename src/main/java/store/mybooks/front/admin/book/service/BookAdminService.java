@@ -41,8 +41,8 @@ public class BookAdminService {
     }
 
 
-    public void updateBook(BookModifyRequest modifyRequest) {
-        bookAdminAdaptor.updateBook(modifyRequest.getBookId(), modifyRequest);
+    public void updateBook(Long bookId, BookModifyRequest modifyRequest) {
+        bookAdminAdaptor.updateBook(bookId, modifyRequest);
     }
 
     public List<BookStatusGetResponse> getBookStatus() {
