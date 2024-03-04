@@ -25,6 +25,7 @@ public class WrapCreateRequest {
     @Size(min = 2, max = 20)
     private String name;
 
+    @NotBlank
     @Positive
     @Max(100000)
     private Integer cost;
