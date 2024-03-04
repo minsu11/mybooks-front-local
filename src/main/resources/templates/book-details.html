@@ -94,7 +94,8 @@
                                 <div class="row align-items-end">
                                     <div class="col-lg-4 col-md-4 col-12">
                                         <form action="/order" method="post">
-                                            <input type="hidden" name="bookId" value="[[${book.id}]]">
+                                            <input type="hidden" name="id" th:value="${book.id}">
+                                            <input type="hidden" name="saleCost" th:value="${book.saleCost}">
                                             <input type="hidden" id="buyNowQuantity" name="quantity">
                                             <div class="button cart-button">
                                                 <button type="submit" class="btn" style="width: 100%;">바로구매</button>
@@ -103,7 +104,9 @@
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-12">
                                         <form action="/cart" method="post">
-                                            <input type="hidden" name="bookId" value="[[${book.id}]]">
+                                            <input type="hidden" name="id" th:value="${book.id}">
+                                            <input type="hidden" name="originalCost" th:value="${book.originalCost}">
+                                            <input type="hidden" name="saleCost" th:value="${book.saleCost}">
                                             <input type="hidden" id="cartQuantity" name="quantity">
                                             <div class="button cart-button">
                                                 <button type="submit" class="btn" style="width: 100%;">장바구니 담기</button>
@@ -112,7 +115,7 @@
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-12">
                                         <form action="/book-like" method="post">
-                                            <input type="hidden" name="bookId" value="[[${book.id}]]">
+                                            <input type="hidden" name="id" th:value="${book.id}">
                                             <div class="wish-button">
                                                 <button type="submit" class="btn"><i class="lni lni-heart"></i> To
                                                     Wishlist
