@@ -64,9 +64,11 @@ public class BookCreateRequest {
     @NotNull
     private Boolean isPacking;
 
-//    @NotNull
+    @NotNull
+    @Size(min = 1)
     private List<Integer> authorList;
     @NotNull
+    @Size(min = 1, max = 10)
     private List<Integer> categoryList;
 
     private List<Integer> tagList;
