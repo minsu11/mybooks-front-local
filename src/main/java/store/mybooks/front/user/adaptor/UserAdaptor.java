@@ -117,13 +117,10 @@ public class UserAdaptor {
     @RequiredAuthorization
     public UserGetResponse findUser() {
 
-        HttpHeaders headers = (HttpHeaders) RequestContextHolder.currentRequestAttributes()
-                .getAttribute("authHeader", RequestAttributes.SCOPE_REQUEST);
-
         ResponseEntity<UserGetResponse> responseEntity =
                 restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL_MEMBER,
                         HttpMethod.GET,
-                        new HttpEntity<>(headers),
+                        new HttpEntity<>(Utils.getAuthHeader()),
                         new ParameterizedTypeReference<>() {
                         });
 
@@ -138,16 +135,15 @@ public class UserAdaptor {
      *
      * @param modifyRequest request
      */
-    public void modifyUserPassword(HttpServletRequest request, UserPasswordModifyRequest modifyRequest) {
+    @RequiredAuthorization
+    public void modifyUserPassword(UserPasswordModifyRequest modifyRequest) {
 
-        HttpHeaders headers = Utils.getHttpHeader(request);
 
-        HttpEntity<UserPasswordModifyRequest> requestEntity = new HttpEntity<>(modifyRequest, headers);
 
         ResponseEntity<UserPasswordModifyResponse> responseEntity =
                 restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL_MEMBER + "/password",
                         HttpMethod.PUT,
-                        requestEntity,
+                        new HttpEntity<>(modifyRequest,Utils.getAuthHeader()),
                         new ParameterizedTypeReference<>() {
                         });
 
@@ -221,14 +217,14 @@ public class UserAdaptor {
      *
      * @param modifyRequest request
      */
-    public void modifyUser(HttpServletRequest request, UserModifyRequest modifyRequest) {
+    @RequiredAuthorization
+    public void modifyUser(UserModifyRequest modifyRequest) {
 
-        HttpHeaders headers = Utils.getHttpHeader(request);
-        HttpEntity<UserModifyRequest> requestEntity = new HttpEntity<>(modifyRequest, headers);
+
 
         ResponseEntity<UserModifyResponse> responseEntity =
                 restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL_MEMBER, HttpMethod.PUT,
-                        requestEntity,
+                        new HttpEntity<>(modifyRequest,Utils.getAuthHeader()),
                         new ParameterizedTypeReference<>() {
                         });
 
@@ -244,17 +240,14 @@ public class UserAdaptor {
      * author : masiljangajji
      * description : 회원탈퇴
      */
-    public void deleteUser(HttpServletRequest request) {
-
-        HttpHeaders headers = Utils.getHttpHeader(request);
-        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+    @RequiredAuthorization
+    public void deleteUser() {
 
         ResponseEntity<UserModifyResponse> responseEntity =
                 restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL_MEMBER, HttpMethod.DELETE,
-                        requestEntity,
+                        new HttpEntity<>(Utils.getAuthHeader()),
                         new ParameterizedTypeReference<>() {
                         });
-
 
         if (responseEntity.getStatusCode() != HttpStatus.OK) {
             throw new RuntimeException();
