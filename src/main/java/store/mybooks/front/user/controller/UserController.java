@@ -83,9 +83,9 @@ public class UserController {
      * @return string
      */
     @GetMapping("/user")
-    public String myPageForm(Model model, HttpServletRequest request,HttpServletResponse response) {
+    public String myPageForm(Model model) {
 
-        UserGetResponse userGetResponse = userAdaptor.findUser(request,response);
+        UserGetResponse userGetResponse = userAdaptor.findUser();
 
         model.addAttribute("user", userGetResponse);
         return "my-page";
@@ -153,13 +153,14 @@ public class UserController {
      * @return string
      */
     @PostMapping("/user/modify/password")
-    public String modifyUserPassword(HttpServletRequest request,@ModelAttribute UserPasswordModifyRequest modifyRequest) {
+    public String modifyUserPassword(HttpServletRequest request,
+                                     @ModelAttribute UserPasswordModifyRequest modifyRequest) {
 
         // 비밀번호 암호화
         modifyRequest.setPassword(passwordEncoder.encode(modifyRequest.getPassword()));
 
         // todo JWT 비밀번호 변경됐으니까 로그아웃 시키고 새로 인증받도록
-        userAdaptor.modifyUserPassword(request,modifyRequest);
+        userAdaptor.modifyUserPassword(request, modifyRequest);
         return "redirect:/";
     }
 

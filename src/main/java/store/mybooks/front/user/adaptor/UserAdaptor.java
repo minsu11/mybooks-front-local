@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
-import store.mybooks.front.auth.Annotation.Trace;
+import store.mybooks.front.auth.Annotation.RequiredAuthorization;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.user.dto.request.UserCreateRequest;
 import store.mybooks.front.user.dto.request.UserGradeModifyRequest;
@@ -114,18 +114,16 @@ public class UserAdaptor {
      *
      * @return user get response
      */
-    @Trace
-    public UserGetResponse findUser(HttpServletRequest request, HttpServletResponse response) {
+    @RequiredAuthorization
+    public UserGetResponse findUser() {
 
         HttpHeaders headers = (HttpHeaders) RequestContextHolder.currentRequestAttributes()
                 .getAttribute("authHeader", RequestAttributes.SCOPE_REQUEST);
 
-        HttpEntity<Void> httpEntity = new HttpEntity<>(headers);
-
         ResponseEntity<UserGetResponse> responseEntity =
                 restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL_MEMBER,
                         HttpMethod.GET,
-                        httpEntity,
+                        new HttpEntity<>(headers),
                         new ParameterizedTypeReference<>() {
                         });
 
