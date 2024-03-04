@@ -153,14 +153,13 @@ public class UserController {
      * @return string
      */
     @PostMapping("/user/modify/password")
-    public String modifyUserPassword(HttpServletRequest request,
-                                     @ModelAttribute UserPasswordModifyRequest modifyRequest) {
+    public String modifyUserPassword(@ModelAttribute UserPasswordModifyRequest modifyRequest) {
 
         // 비밀번호 암호화
         modifyRequest.setPassword(passwordEncoder.encode(modifyRequest.getPassword()));
 
         // todo JWT 비밀번호 변경됐으니까 로그아웃 시키고 새로 인증받도록
-        userAdaptor.modifyUserPassword(request, modifyRequest);
+        userAdaptor.modifyUserPassword(modifyRequest);
         return "redirect:/";
     }
 
@@ -208,8 +207,8 @@ public class UserController {
      * @return string
      */
     @PostMapping("/user/modify")
-    public String modifyUser(HttpServletRequest request, @ModelAttribute UserModifyRequest modifyRequest) {
-        userAdaptor.modifyUser(request, modifyRequest);
+    public String modifyUser(@ModelAttribute UserModifyRequest modifyRequest) {
+        userAdaptor.modifyUser(modifyRequest);
         return "redirect:/user";
     }
 
@@ -222,9 +221,9 @@ public class UserController {
      * @return string
      */
     @PostMapping("/user/delete")
-    public String deleteUser(HttpServletRequest request) {
+    public String deleteUser() {
         // todo JWT , 탈퇴했으니까 로그아웃시키고 상태관리 해줘야 함
-        userAdaptor.deleteUser(request);
+        userAdaptor.deleteUser();
         return "redirect:/";
     }
 
