@@ -2,19 +2,17 @@ package store.mybooks.front.admin.coupon.adaptor;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import store.mybooks.front.admin.coupon.model.request.BookFlatDiscountCouponCreateRequest;
-import store.mybooks.front.admin.coupon.model.request.BookPercentageCouponCreateRequest;
-import store.mybooks.front.admin.coupon.model.request.CategoryFlatDiscountCouponCreateRequest;
-import store.mybooks.front.admin.coupon.model.request.CategoryPercentageCouponCreateRequest;
-import store.mybooks.front.admin.coupon.model.request.FlatDiscountCouponCreateRequest;
-import store.mybooks.front.admin.coupon.model.request.TotalPercentageCouponCreateRequest;
+import store.mybooks.front.admin.coupon.model.request.CouponCreateRequest;
+import store.mybooks.front.admin.coupon.model.response.CouponGetResponse;
 import store.mybooks.front.config.GatewayAdaptorProperties;
+import store.mybooks.front.pageable.dto.response.PageResponse;
 import store.mybooks.front.utils.Utils;
 
 /**
@@ -37,88 +35,31 @@ public class CouponAdaptor {
 
     private static final String URL = "/api/coupons";
 
-    public void createTotalPercentageCoupon(TotalPercentageCouponCreateRequest createRequest) {
-        HttpEntity<TotalPercentageCouponCreateRequest> requestEntity =
-                new HttpEntity<>(createRequest, Utils.getHttpHeader());
+    public PageResponse<CouponGetResponse> getCouponPage(Pageable pageable) {
+        HttpEntity<Void> requestEntity = new HttpEntity<>(Utils.getHttpHeader());
+
+        ResponseEntity<PageResponse<CouponGetResponse>> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL + "/page?page="
+                        + pageable.getPageNumber() + "&size=" + pageable.getPageSize(),
+                HttpMethod.GET,
+                requestEntity,
+                new ParameterizedTypeReference<>() {}
+        );
+
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
+
+
+    public void createCoupon(CouponCreateRequest createRequest) {
+        HttpEntity<CouponCreateRequest> requestEntity = new HttpEntity<>(createRequest, Utils.getHttpHeader());
 
         ResponseEntity<Void> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL + "/total-percentage-coupon/register",
+                gatewayAdaptorProperties.getAddress() + URL,
                 HttpMethod.POST,
                 requestEntity,
-                new ParameterizedTypeReference<>() {
-                });
+                new ParameterizedTypeReference<>() {}
+        );
 
         Utils.getResponseEntity(exchange, HttpStatus.CREATED);
     }
-
-    public void createFlatDiscountCoupon(FlatDiscountCouponCreateRequest createRequest) {
-        HttpEntity<FlatDiscountCouponCreateRequest> requestEntity =
-                new HttpEntity<>(createRequest, Utils.getHttpHeader());
-
-        ResponseEntity<Void> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL + "/flat-discount-coupon/register",
-                HttpMethod.POST,
-                requestEntity,
-                new ParameterizedTypeReference<>() {
-                });
-
-        Utils.getResponseEntity(exchange, HttpStatus.CREATED);
-    }
-
-    public void createBookPercentageCoupon(BookPercentageCouponCreateRequest createRequest) {
-        HttpEntity<BookPercentageCouponCreateRequest> requestEntity =
-                new HttpEntity<>(createRequest, Utils.getHttpHeader());
-
-        ResponseEntity<Void> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL + "/book-percentage-coupon/register",
-                HttpMethod.POST,
-                requestEntity,
-                new ParameterizedTypeReference<>() {
-                });
-
-        Utils.getResponseEntity(exchange, HttpStatus.CREATED);
-    }
-
-    public void createBookFlatDiscountCoupon(BookFlatDiscountCouponCreateRequest createRequest) {
-        HttpEntity<BookFlatDiscountCouponCreateRequest> requestEntity =
-                new HttpEntity<>(createRequest, Utils.getHttpHeader());
-
-        ResponseEntity<Void> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL + "/book-flat-discount-coupon/register",
-                HttpMethod.POST,
-                requestEntity,
-                new ParameterizedTypeReference<>() {
-                });
-
-        Utils.getResponseEntity(exchange, HttpStatus.CREATED);
-    }
-
-    public void createCategoryPercentageCoupon(CategoryPercentageCouponCreateRequest createRequest) {
-        HttpEntity<CategoryPercentageCouponCreateRequest> requestEntity =
-                new HttpEntity<>(createRequest, Utils.getHttpHeader());
-
-        ResponseEntity<Void> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL + "/category-percentage-coupon/register",
-                HttpMethod.POST,
-                requestEntity,
-                new ParameterizedTypeReference<>() {
-                });
-
-        Utils.getResponseEntity(exchange, HttpStatus.CREATED);
-    }
-
-    public void createCategoryFlatDiscountCoupon(CategoryFlatDiscountCouponCreateRequest createRequest) {
-        HttpEntity<CategoryFlatDiscountCouponCreateRequest> requestEntity =
-                new HttpEntity<>(createRequest, Utils.getHttpHeader());
-
-        ResponseEntity<Void> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL + "/category-flat-discount-coupon/register",
-                HttpMethod.POST,
-                requestEntity,
-                new ParameterizedTypeReference<>() {
-                });
-
-        Utils.getResponseEntity(exchange, HttpStatus.CREATED);
-    }
-
 }

@@ -1,10 +1,18 @@
 package store.mybooks.front.admin.coupon.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import store.mybooks.front.admin.coupon.model.request.CouponCreateRequest;
+import store.mybooks.front.admin.coupon.model.response.CouponGetResponse;
 import store.mybooks.front.admin.coupon.service.CouponService;
+import store.mybooks.front.pageable.dto.response.PageResponse;
 
 /**
  * packageName    : store.mybooks.front.admin.coupon
@@ -24,7 +32,10 @@ public class CouponController {
     private final CouponService couponService;
 
     @GetMapping
-    public String getCategoryPage() {
+    public String getCouponPage(@PageableDefault Pageable pageable, Model model) {
+        PageResponse<CouponGetResponse> response = couponService.getCoupons(pageable);
+        model.addAttribute("coupons", response);
+        model.addAttribute("max", Math.min((response.getNumber() / 10 + 1) * 10 - 1, response.getTotalPages() - 1));
         return "admin/view/coupon/coupon";
     }
 
@@ -61,5 +72,11 @@ public class CouponController {
     @GetMapping("/category-flat-discount-coupon-register")
     public String getCategoryFlatDiscountCouponRegisterPage() {
         return "admin/view/coupon/category-flat-discount-coupon-register";
+    }
+
+    @PostMapping
+    public String createTotalPercentageCoupon(@ModelAttribute CouponCreateRequest createRequest) {
+        couponService.createCoupon(createRequest);
+        return "redirect:/admin/coupon/register";
     }
 }
