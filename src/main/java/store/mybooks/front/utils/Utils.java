@@ -116,7 +116,10 @@ public class Utils {
     }
 
 
-    
+    public static HttpHeaders getAuthHeader() {
+        return (HttpHeaders) RequestContextHolder.currentRequestAttributes()
+                .getAttribute("authHeader", RequestAttributes.SCOPE_REQUEST);
+    }
 
     public static void addJwtCookie(HttpServletResponse response, String token) {
 
