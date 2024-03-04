@@ -2,11 +2,13 @@ package store.mybooks.front.book.adaptor;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import store.mybooks.front.admin.book.model.response.BookBriefResponse;
 import store.mybooks.front.admin.book.model.response.BookDetailResponse;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.utils.Utils;
@@ -30,6 +32,19 @@ public class BookAdaptor {
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
     private static final String URL = "/api/books";
+
+
+    public Page<BookBriefResponse> getActiveBriefBook(Long id) {
+        ResponseEntity<Page<BookBriefResponse>> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL + "/active",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<Page<BookBriefResponse>>() {
+                },
+                id);
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
+
 
     public BookDetailResponse getBook(Long id) {
         ResponseEntity<BookDetailResponse> exchange = restTemplate.exchange(
