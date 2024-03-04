@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
+import store.mybooks.front.config.KeyConfig;
 import store.mybooks.front.user.dto.response.UserGetResponse;
 
 /**
@@ -28,13 +29,16 @@ public class OauthService {
 
     private final InMemoryProviderRepository inMemoryProviderRepository;
 
+    private final KeyConfig keyConfig;
+
     /**
      * Instantiates a new Oauth service.
      *
      * @param inMemoryProviderRepository the in memory provider repository
      */
-    public OauthService(InMemoryProviderRepository inMemoryProviderRepository) {
+    public OauthService(InMemoryProviderRepository inMemoryProviderRepository, KeyConfig keyConfig) {
         this.inMemoryProviderRepository = inMemoryProviderRepository;
+        this.keyConfig = keyConfig;
     }
 
 
@@ -43,12 +47,6 @@ public class OauthService {
         return WebClient.create()
                 .post()
                 .uri(provider.getTokenUrl())
-//                .headers(header -> {
-//                    header.setBasicAuth(provider.getClientId(), provider.getClientSecret());
-//                    header.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-//                    header.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-//                    header.setAcceptCharset(Collections.singletonList(StandardCharsets.UTF_8));
-//                })
                 .bodyValue(tokenRequest(code, provider))
                 .retrieve()
                 .bodyToMono(OauthTokenResponse.class)
@@ -61,11 +59,11 @@ public class OauthService {
         System.out.println(code);
 
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
-        formData.add("client_id", provider.getClientId());
-        formData.add("client_secret", provider.getClientSecret());
+        formData.add("client_id", keyConfig.keyStore(provider.getClientId()));
+        formData.add("client_secret", keyConfig.keyStore(provider.getClientSecret()));
         formData.add("grant_type", "authorization_code"); // 이건 고정값
         formData.add("code", code); // 페이코가 준 코드
-        formData.add("redirect_uri", provider.getRedirectUrl());
+        formData.add("redirect_uri", keyConfig.keyStore(provider.getRedirectUrl()));
         return formData;
     }
 
@@ -74,7 +72,6 @@ public class OauthService {
      * author : masiljangajji
      * description :
      *
-     * @param provider name
      * @param code
      * @return oauth login response
      */
@@ -127,8 +124,7 @@ public class OauthService {
     }
 
     private UserProfile getUserProfile(String providerName, OauthTokenResponse tokenResponse, OauthProvider provider) {
-        // 페이코에서 받아온 json 형식의 회원정보를 파싱하여 자바 객체로 변환
-        System.out.println(providerName);
+        // 페이코에서 받아온 json 형식의 회원정보를 파싱하여 자바 객체로 변환한 결과값을 반환받음
         Map<String, Object> userAttributes = getUserAttributes(provider, tokenResponse);
         return OauthAttributes.extract(providerName, userAttributes);
     }
@@ -140,9 +136,8 @@ public class OauthService {
                 .uri(provider.getUserInfoUrl())
                 .headers(headers -> {
                     headers.set("access_token", tokenResponse.getAccessToken());
-                    headers.set("client_id", provider.getClientId());
+                    headers.set("client_id", keyConfig.keyStore(provider.getClientId()));
                 })
-//                .headers(header -> header.setBearerAuth(tokenResponse.getAccessToken()))
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {
                 })
