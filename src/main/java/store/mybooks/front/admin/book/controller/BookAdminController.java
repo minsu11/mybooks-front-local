@@ -124,9 +124,9 @@ public class BookAdminController {
      * @param modifyRequest ModifyRequest
      * @return string
      */
-    @PostMapping("/update")
-    public String updateBook(@ModelAttribute BookModifyRequest modifyRequest) {
-        bookAdminService.updateBook(modifyRequest);
-        return "redirect:/admin/book";
+    @PostMapping("/update/{id}")
+    public String updateBook(@RequestParam("id") Long bookId, @ModelAttribute BookModifyRequest modifyRequest) {
+        bookAdminService.updateBook(bookId, modifyRequest);
+        return "redirect:/admin/book/update?id=" + bookId;
     }
 }
