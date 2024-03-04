@@ -1,5 +1,7 @@
 package store.mybooks.front.admin.wrap.dto.request;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -17,5 +19,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class WrapDeleteRequest {
+    @NotBlank
+    @PositiveOrZero
     private Integer id;
 }

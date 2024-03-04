@@ -1,5 +1,9 @@
 package store.mybooks.front.admin.wrap.dto.request;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -17,7 +21,16 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class WrapModifyRequest {
+    @NotBlank
+    @PositiveOrZero
     private Integer id;
+    
+    @NotBlank
+    @Size(min = 2, max = 20)
     private String name;
+
+    @NotBlank
+    @PositiveOrZero
+    @Max(100000)
     private Integer cost;
 }
