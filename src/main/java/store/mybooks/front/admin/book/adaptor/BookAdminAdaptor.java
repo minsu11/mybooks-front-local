@@ -77,19 +77,17 @@ public class BookAdminAdaptor {
         return Utils.getResponseEntity(exchange, HttpStatus.CREATED);
     }
 
-    public void updateBook(Long bookId, BookModifyRequest modifyRequest) {
+    public BookModifyResponse updateBook(Long bookId, BookModifyRequest modifyRequest) {
         HttpEntity<BookModifyRequest> requestHttpEntity = new HttpEntity<>(modifyRequest, Utils.getHttpHeader());
 
         ResponseEntity<BookModifyResponse> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL + bookId,
-                HttpMethod.POST,
+                gatewayAdaptorProperties.getAddress() + URL + "/{id}",
+                HttpMethod.PUT,
                 requestHttpEntity,
                 new ParameterizedTypeReference<>() {
-                }
-        );
-        if (exchange.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException();
-        }
+                }, bookId);
+
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
     public List<BookStatusGetResponse> getBookStatus() {
