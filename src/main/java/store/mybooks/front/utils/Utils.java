@@ -9,6 +9,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 import store.mybooks.front.auth.exception.AuthenticationIsNotValidException;
 
 /**
@@ -73,9 +75,8 @@ public class Utils {
         return headers;
     }
 
-    public static HttpHeaders getHttpHeader(HttpServletRequest request) {
+    public static HttpHeaders addAuthHeader(HttpServletRequest request) { // todo addHeader 이름변경하기
 
-        // todo 여기서부터 identityCookie 가 없으면 로그인하라고 보내기
         HttpHeaders headers = Utils.getHttpHeader();
         String token = Utils.getIdentityCookieValue(request.getCookies());
         headers.set("Authorization", token);
@@ -113,6 +114,9 @@ public class Utils {
         }
         throw new AuthenticationIsNotValidException();
     }
+
+
+    
 
     public static void addJwtCookie(HttpServletResponse response, String token) {
 
