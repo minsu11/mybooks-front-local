@@ -35,6 +35,14 @@ public class CouponAdaptor {
 
     private static final String URL = "/api/coupons";
 
+    /**
+     * methodName : getCouponPage <br>
+     * author : damho-lee <br>
+     * description : 쿠폰 페이지 출력.<br>
+     *
+     * @param pageable Pageable
+     * @return PageResponse
+     */
     public PageResponse<CouponGetResponse> getCouponPage(Pageable pageable) {
         HttpEntity<Void> requestEntity = new HttpEntity<>(Utils.getHttpHeader());
 
@@ -50,6 +58,13 @@ public class CouponAdaptor {
     }
 
 
+    /**
+     * methodName : createCoupon <br>
+     * author : damho-lee <br>
+     * description : 쿠폰 생성.<br>
+     *
+     * @param createRequest CouponCreateRequest
+     */
     public void createCoupon(CouponCreateRequest createRequest) {
         HttpEntity<CouponCreateRequest> requestEntity = new HttpEntity<>(createRequest, Utils.getHttpHeader());
 
