@@ -70,16 +70,16 @@
                     </div>
                     <div class="col-lg-6 col-md-12 col-12">
                         <div class="product-info">
-                            <h1 class="title">도서명: [[${book.name}]]</h1>
+                            <h1 class="title">도서명: <span th:text="${book.name}"></span></h1>
                             <p>저자: <span th:text="${authorNameList}"></span></p>
-                            <p>출판사: <span>[[${book.publisher.name}]]</span></p>
-                            <p>카테고리: <span></span></p>
+                            <p>출판사: <span th:text="${book.publisher.name}"></span></p>
+                            <p>카테고리: <span th:text="${categoryNameList}"></span></p>
                             <p>태그: <span th:text="${tagNameList}"></span></p>
                             <p>리뷰: <span></span></p>
                             <div class="price-info">
-                                <div class="original-price">정가: <span>[[${book.originalCost}]]원</span></div>
+                                <div class="original-price">정가: <span th:text="${book.originalCost}">원</span></div>
                                 <div class="sale-price">판매가:
-                                    <span>[[${book.saleCost}]]원 ([[${book.disCountRate}]]% 할인)</span></div>
+                                    <span th:text="${book.saleCost} + '원 (' + ${book.disCountRate} + '% 할인)'"></span>
                             </div>
                             <p>배송비: <span>무료</span></p>
                             <div class="quantity-input">
