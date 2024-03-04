@@ -24,7 +24,7 @@
                             <h3>도서 수정</h3>
                         </div>
 
-                        <form class="row" method="post" action="/admin/book/update">
+                        <form class="row" th:action="@{/admin/book/update/{id}(id=${book.id})}" method="post">
                             <div class="col-md-6">
                                 <div class="row">
                                     <div class="col-sm-6">
@@ -90,7 +90,7 @@
                                             <select id="authorList" name="authorList" multiple="multiple" size="10">
                                                 <option th:each="author : ${authors}" th:value="${author.id}"
                                                         th:title="${author.content}" th:text="${author.name}"
-                                                        th:selected="${#lists.contains(bookAuthorList, author.id)}">
+                                                        th:selected="${#lists.contains(bookAuthorList, author.id)}" readonly>
                                                 </option>
                                             </select>
                                         </div>
@@ -185,14 +185,14 @@
                                             <div class="col-4">
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="radio" name="isPacking"
-                                                           id="packTrue" th:checked="${book.isPacking}">
+                                                           id="packTrue" value = "true" th:checked="${book.isPacking}">
                                                     <label class="form-check-label" for="packTrue">가능</label>
                                                 </div>
                                             </div>
                                             <div class="col-4">
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="radio" name="isPacking"
-                                                           id="packFalse" th:checked="${!book.isPacking}">
+                                                           id="packFalse" value = "false" th:checked="${!book.isPacking}">
                                                     <label class="form-check-label" for="packFalse">불가능</label>
                                                 </div>
                                             </div>
@@ -203,6 +203,7 @@
 
                                 <div class="form-group row mt-5">
                                     <div class="col-sm-auto">
+                                        <input type="hidden" name="id" th:value="${book.id}">
                                         <button class="btn btn-primary" type="submit">수정하기</button>
                                     </div>
                                     <div class="col-sm-auto">
