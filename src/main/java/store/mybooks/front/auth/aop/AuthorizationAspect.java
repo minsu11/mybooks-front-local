@@ -50,7 +50,7 @@ public class AuthorizationAspect {
         // 요청이 처리되는 동안만 유효하며 , 요청이 끝난다면 정보는 자동으로 삭제됨
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
         RequestContextHolder.currentRequestAttributes()
-                .setAttribute("authHeader", Utils.getHttpHeader(request), RequestAttributes.SCOPE_REQUEST);
+                .setAttribute("authHeader", Utils.addAuthHeader(request), RequestAttributes.SCOPE_REQUEST);
 
         try {
             return joinPoint.proceed();
@@ -67,7 +67,7 @@ public class AuthorizationAspect {
                 // 리프래시 토큰 만료 아니면 토큰은 멀쩡하니 다시부르면 원래 요청대로 가짐
                 joinPoint.proceed();
             } else if (error.contains(ErrorMessage.INVALID_TOKEN.getMessage())) { // 토큰위조됨 쿠키삭제하기
-                Utils.deleteJwtCookie(response);
+                Utils.deleteJwtCookie(Objects.requireNonNull(response));
                 throw new AuthenticationIsNotValidException();
             } else if(error.contains(ErrorMessage.INACTIVE_USER.getMessage())){ // 활성상태가 아님 -> 인증사이트로
                 throw new StatusIsNotActiveException();
