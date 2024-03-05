@@ -36,8 +36,11 @@ import store.mybooks.front.admin.return_rule_name.service.ReturnRuleNameService;
 @RequiredArgsConstructor
 @RequestMapping("/admin/return-rules")
 public class ReturnRuleController {
+
     private final ReturnRuleService returnRuleService;
     private final ReturnRuleNameService returnRuleNameService;
+    private static final String PREFIX = "redirect:";
+    private static final String URL = "/admin/return-rules";
 
     /**
      * methodName : viewReturnRule<br>
@@ -82,8 +85,8 @@ public class ReturnRuleController {
     @PostMapping("/register")
     public String doRegister(
             @ModelAttribute ReturnRuleCreateRequest request) {
-
-        returnRuleService.createReturnRule(request);
+        String redirectUrl = PREFIX + URL + "/register";
+        returnRuleService.createReturnRule(request, redirectUrl);
         return "redirect:/admin/return-rules";
     }
 
@@ -103,7 +106,6 @@ public class ReturnRuleController {
             RedirectAttributes redirectAttributes) {
         log.info("update 전:{}", request);
         redirectAttributes.addFlashAttribute("returnRuleModifyRequest", request);
-        log.info("update 후:{}", request);
 
         return "redirect:/admin/return-rules/update-form";
     }
@@ -142,7 +144,8 @@ public class ReturnRuleController {
     public String doUpdate(
             @ModelAttribute ReturnRuleModifyRequest request,
             RedirectAttributes redirectAttributes) {
-        returnRuleService.updateReturnRule(request);
+        String redirectUrl = PREFIX + URL + "/update-form";
+        returnRuleService.updateReturnRule(request, redirectUrl);
 
         redirectAttributes.addFlashAttribute("modifyReturnRule", request);
         return "redirect:/admin/return-rules";
