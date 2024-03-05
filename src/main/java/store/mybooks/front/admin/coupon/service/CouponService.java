@@ -31,4 +31,8 @@ public class CouponService {
     public void createCoupon(CouponCreateRequest createRequest) {
         couponAdaptor.createCoupon(createRequest);
     }
+
+    public void deleteCoupon(Long id) {
+        couponAdaptor.deleteCoupon(id);
+    }
 }

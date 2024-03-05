@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class CouponGetResponse {
+    private Long id;
     private String name;
     private String range;
     private String target;

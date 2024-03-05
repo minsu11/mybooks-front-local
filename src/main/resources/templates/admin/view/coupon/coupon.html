@@ -8,6 +8,9 @@
         <div>
             <a th:href="@{/admin/coupon/register}" class="btn btn-primary" role="button">쿠폰 추가하기</a>
         </div>
+        <div>
+            <button id="btn-deleteAsk" type="button" class="btn btn-deleteAsk btn-danger" data-toggle="modal" data-target="#deleteConfirmationModal">쿠폰 나눠주기</button>
+        </div>
     </div>
     <div>
         <table class="table">
@@ -21,6 +24,7 @@
                 <th scope="col">최대 할인 금맥</th>
                 <th scope="col">시작일</th>
                 <th scope="col">종료일</th>
+                <th scope="col">삭제하기</th>
             </tr>
             </thead>
             <tbody>
@@ -34,6 +38,11 @@
                 <td th:text="${coupon.maxDiscountCost}"></td>
                 <td th:text="${coupon.startDate}"></td>
                 <td th:text="${coupon.endDate}"></td>
+                <td>
+                    <form th:method="post" th:action="@{/admin/coupon/delete/{id}(id=${coupon.id})}">
+                        <button class="btn btn-danger" type="submit">삭제</button>
+                    </form>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -48,5 +57,25 @@
             </nav>
         </div>
     </div>
+    <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteConfirmationModalLabel">삭제 확인</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>정말 삭제하시겠습니까? 삭제하면 복구되지 않아요.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">아니오</button>
+                    <a href="delete.board?bno=${bno}" class="btn btn-danger">네</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/admin/js/coupon/open-modal.js"></script>
 </div>
 </html>

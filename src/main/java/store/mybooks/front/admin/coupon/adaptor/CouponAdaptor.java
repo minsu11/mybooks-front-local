@@ -77,4 +77,17 @@ public class CouponAdaptor {
 
         Utils.getResponseEntity(exchange, HttpStatus.CREATED);
     }
+
+    public void deleteCoupon(Long id) {
+        HttpEntity<Void> requestEntity = new HttpEntity<>(Utils.getHttpHeader());
+
+        ResponseEntity<Void> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL + "/" + id,
+                HttpMethod.DELETE,
+                requestEntity,
+                new ParameterizedTypeReference<>() {}
+        );
+
+        Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
 }

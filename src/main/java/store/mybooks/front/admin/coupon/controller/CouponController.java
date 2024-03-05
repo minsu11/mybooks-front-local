@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import store.mybooks.front.admin.coupon.model.request.CouponCreateRequest;
@@ -144,5 +145,11 @@ public class CouponController {
     public String createTotalPercentageCoupon(@ModelAttribute CouponCreateRequest createRequest) {
         couponService.createCoupon(createRequest);
         return "redirect:/admin/coupon/register";
+    }
+
+    @PostMapping("/delete/{couponId}")
+    public String deleteCoupon(@PathVariable("couponId") Long id) {
+        couponService.deleteCoupon(id);
+        return "redirect:/admin/coupon";
     }
 }
