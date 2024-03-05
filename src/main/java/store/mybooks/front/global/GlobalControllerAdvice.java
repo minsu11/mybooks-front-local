@@ -40,7 +40,7 @@ public class GlobalControllerAdvice {
 
     @ExceptionHandler({AuthenticationIsNotValidException.class, AccessIdForbiddenException.class,
             StatusIsNotActiveException.class})
-    public String handleZZZException(RuntimeException ex) {
+    public String handleAuthException(RuntimeException ex) {
 
         if (ex instanceof AuthenticationIsNotValidException) {
             return "redirect:/login"; // 다시 로그인
