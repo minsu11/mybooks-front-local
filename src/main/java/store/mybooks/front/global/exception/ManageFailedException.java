@@ -1,4 +1,6 @@
-package store.mybooks.front.admin.return_rule.exception;
+package store.mybooks.front.global.exception;
+
+import lombok.Getter;
 
 /**
  * packageName    : store.mybooks.front.admin.return_rule.exception<br>
@@ -11,8 +13,12 @@ package store.mybooks.front.admin.return_rule.exception;
  * -----------------------------------------------------------<br>
  * 3/1/24        minsu11       최초 생성<br>
  */
-public class ReturnRuleRegisterFailedException extends RuntimeException {
-    public ReturnRuleRegisterFailedException() {
-        super("반품 규정 등록에 실패");
+@Getter
+public class ManageFailedException extends RuntimeException {
+    private final String url;
+
+    public ManageFailedException(String message, String url) {
+        super(message);
+        this.url = url;
     }
 }

@@ -7,6 +7,9 @@ import org.springframework.web.client.HttpClientErrorException;
 import store.mybooks.front.auth.exception.AccessIdForbiddenException;
 import store.mybooks.front.auth.exception.AuthenticationIsNotValidException;
 import store.mybooks.front.auth.exception.StatusIsNotActiveException;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import store.mybooks.front.global.exception.ManageFailedException;
 
 /**
  * packageName    : store.mybooks.front.global
@@ -38,7 +41,14 @@ public class GlobalControllerAdvice {
         return "/admin/view/error";
     }
 
-    @ExceptionHandler({AuthenticationIsNotValidException.class, AccessIdForbiddenException.class,
+    @ExceptionHandler({ManageFailedException.class})
+    public ModelAndView registerFailedException(ManageFailedException exception, RedirectAttributes redirectAttributes) {
+        ModelAndView modelAndView = new ModelAndView(exception.getUrl());
+        modelAndView.addObject("msg", exception.getMessage());
+        return modelAndView;
+    }
+
+      @ExceptionHandler({AuthenticationIsNotValidException.class, AccessIdForbiddenException.class,
             StatusIsNotActiveException.class})
     public String handleAuthException(RuntimeException ex) {
 
