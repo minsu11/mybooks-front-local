@@ -1,7 +1,5 @@
 package store.mybooks.front.user.controller;
 
-import java.util.Enumeration;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -10,11 +8,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import store.mybooks.front.jwt.adaptor.TokenAdaptor;
-import store.mybooks.front.jwt.dto.request.TokenCreateRequest;
-import store.mybooks.front.jwt.dto.response.TokenCreateResponse;
+import store.mybooks.front.auth.adaptor.TokenAdaptor;
+import store.mybooks.front.auth.dto.request.TokenCreateRequest;
+import store.mybooks.front.auth.dto.response.TokenCreateResponse;
 import store.mybooks.front.user.adaptor.UserAdaptor;
 import store.mybooks.front.user.dto.request.UserCreateRequest;
 import store.mybooks.front.user.dto.request.UserGradeModifyRequest;
@@ -84,10 +83,9 @@ public class UserController {
      * @return string
      */
     @GetMapping("/user")
-    public String myPageForm(Model model, HttpServletRequest request) {
-        // todo JWT에서 id 꺼내쓰기
+    public String myPageForm(Model model) {
 
-        UserGetResponse userGetResponse = userAdaptor.findUserById(1L, request);
+        UserGetResponse userGetResponse = userAdaptor.findUser();
 
         model.addAttribute("user", userGetResponse);
         return "my-page";
@@ -113,13 +111,12 @@ public class UserController {
         // 검증됐으면
         if (loginResponse.getIsValidUser()) {
             // 토큰 값 가져오고
-
             TokenCreateResponse tokenCreateResponse =
-                    tokenAdaptor.createToken(new TokenCreateRequest(loginResponse.getIsAdmin(), loginResponse.getUserId(),
+                    tokenAdaptor.createToken(
+                            new TokenCreateRequest(loginResponse.getIsAdmin(), loginResponse.getUserId(),
                                     loginResponse.getStatus()));
 
             Utils.addJwtCookie(response, tokenCreateResponse.getAccessToken());
-
             return "redirect:/";
 
         } else {
@@ -162,7 +159,7 @@ public class UserController {
         modifyRequest.setPassword(passwordEncoder.encode(modifyRequest.getPassword()));
 
         // todo JWT 비밀번호 변경됐으니까 로그아웃 시키고 새로 인증받도록
-        userAdaptor.modifyUserPassword(1L, modifyRequest);
+        userAdaptor.modifyUserPassword(modifyRequest);
         return "redirect:/";
     }
 
@@ -174,11 +171,12 @@ public class UserController {
      * @param modifyRequest request
      * @return string
      */
-    @PostMapping("/user/modify/status")
-    public String modifyUserStatus(@ModelAttribute UserStatusModifyRequest modifyRequest) {
+    @PostMapping("/user/{userId}/modify/status")
+    public String modifyUserStatus(@PathVariable(name = "userId") Long userId,
+                                   @ModelAttribute UserStatusModifyRequest modifyRequest) {
 
         // todo JWT 이건 관리자용
-        userAdaptor.modifyUserStatus(1L, modifyRequest);
+        userAdaptor.modifyUserStatus(userId, modifyRequest);
         return "redirect:/user";
     }
 
@@ -190,11 +188,12 @@ public class UserController {
      * @param modifyRequest request
      * @return string
      */
-    @PostMapping("/user/modify/grade")
-    public String modifyUserGrade(@ModelAttribute UserGradeModifyRequest modifyRequest) {
+    @PostMapping("/user/{userId}/modify/grade")
+    public String modifyUserGrade(@PathVariable(name = "userId") Long userId,
+                                  @ModelAttribute UserGradeModifyRequest modifyRequest) {
 
         // todo JWT 이건 관리자용
-        userAdaptor.modifyUserGrade(1L, modifyRequest);
+        userAdaptor.modifyUserGrade(userId, modifyRequest);
         return "redirect:/user";
     }
 
@@ -209,10 +208,7 @@ public class UserController {
      */
     @PostMapping("/user/modify")
     public String modifyUser(@ModelAttribute UserModifyRequest modifyRequest) {
-
-        // todo JWT 에서 뽑아오기
-
-        userAdaptor.modifyUser(1L, modifyRequest);
+        userAdaptor.modifyUser(modifyRequest);
         return "redirect:/user";
     }
 
@@ -226,13 +222,10 @@ public class UserController {
      */
     @PostMapping("/user/delete")
     public String deleteUser() {
-
         // todo JWT , 탈퇴했으니까 로그아웃시키고 상태관리 해줘야 함
-        userAdaptor.deleteUser(2L);
+        userAdaptor.deleteUser();
         return "redirect:/";
     }
-
-
 
 
 }

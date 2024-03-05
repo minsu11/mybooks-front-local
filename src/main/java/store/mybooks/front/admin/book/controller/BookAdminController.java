@@ -1,5 +1,7 @@
 package store.mybooks.front.admin.book.controller;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import store.mybooks.front.admin.author.dto.response.AuthorGetResponse;
+import org.springframework.web.multipart.MultipartFile;
 import store.mybooks.front.admin.author.service.AuthorService;
 import store.mybooks.front.admin.book.model.request.BookCreateRequest;
 import store.mybooks.front.admin.book.model.request.BookModifyRequest;
@@ -50,7 +53,7 @@ public class BookAdminController {
      * description : 사이드바에서 책을 눌렀을 때 페이지.
      *
      * @param pageable Pageable
-     * @param model Model
+     * @param model    Model
      * @return string
      */
     @GetMapping
@@ -86,8 +89,9 @@ public class BookAdminController {
      * @return string
      */
     @PostMapping("/register")
-    public String createBook(@Valid @ModelAttribute BookCreateRequest bookCreateRequest) {
-        bookAdminService.createBook(bookCreateRequest);
+    public String createBook(@Valid @ModelAttribute BookCreateRequest bookCreateRequest, @RequestParam("thumbnailImage")
+    MultipartFile thumbnailImage, @RequestParam("contentImage") List<MultipartFile> contentImages) throws IOException {
+        bookAdminService.createBook(bookCreateRequest, thumbnailImage, contentImages);
         return "redirect:/admin/book/register";
     }
 
@@ -97,7 +101,7 @@ public class BookAdminController {
      * description : 도서 업데이트 페이지.
      *
      * @param bookId BookId
-     * @param model Model
+     * @param model  Model
      * @return string
      */
     @GetMapping("/update")
