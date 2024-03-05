@@ -41,7 +41,7 @@ public class CouponAdaptor {
      * description : 쿠폰 페이지 출력.<br>
      *
      * @param pageable Pageable
-     * @return PageResponse
+     * @return PageResponse response
      */
     public PageResponse<CouponGetResponse> getCouponPage(Pageable pageable) {
         HttpEntity<Void> requestEntity = new HttpEntity<>(Utils.getHttpHeader());
@@ -78,6 +78,13 @@ public class CouponAdaptor {
         Utils.getResponseEntity(exchange, HttpStatus.CREATED);
     }
 
+    /**
+     * methodName : deleteCoupon <br>
+     * author : damho-lee <br>
+     * description : 쿠폰 삭제.<br>
+     *
+     * @param id Long
+     */
     public void deleteCoupon(Long id) {
         HttpEntity<Void> requestEntity = new HttpEntity<>(Utils.getHttpHeader());
 
