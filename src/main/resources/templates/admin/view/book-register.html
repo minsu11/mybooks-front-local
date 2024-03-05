@@ -24,7 +24,7 @@
                             <h3>도서 추가</h3>
                         </div>
 
-                        <form class="row" method="post" action="/admin/book/register">
+                        <form class="row" method="post" action="/admin/book/register" enctype="multipart/form-data">
 
                             <div class="col-md-6">
                                 <div class="row">
@@ -205,6 +205,20 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="col-sm-6">
+                                        <label>썸네일 이미지 업로드</label>
+                                        <div class="form-group">
+                                            <input id="thumbnailImage" name="thumbnailImage" type="file" class="file">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <label>본문 이미지 업로드</label>
+                                        <div class="form-group">
+                                            <input id="contentImage" name="contentImage" type="file" class="file" multiple>
+                                        </div>
+                                    </div>
                                 </div>
 
 
@@ -238,12 +252,12 @@
                 maxHeight: 400,
                 includeSelectAllOption: false,
                 numberDisplayed: 1,
-                onChange: function(option, checked) {
+                onChange: function (option, checked) {
                     var maxCount = 10;
                     var selectedCount = $('#categoryList option:selected').length;
 
                     if (selectedCount >= maxCount) {
-                        $('#categoryList option').each(function() {
+                        $('#categoryList option').each(function () {
                             if (!$(this).is(':selected')) {
                                 $(this).prop('disabled', true);
                             }

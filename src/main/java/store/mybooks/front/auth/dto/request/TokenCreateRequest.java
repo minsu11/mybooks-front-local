@@ -1,4 +1,4 @@
-package store.mybooks.front.jwt.dto.request;
+package store.mybooks.front.auth.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

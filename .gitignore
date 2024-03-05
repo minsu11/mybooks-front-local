@@ -170,7 +170,7 @@ Temporary Items
 # idea 전부 무시
 .idea/**
 
-*.http
 
-*.gz
+*.http
 *.log
+*.gz
