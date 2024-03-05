@@ -32,6 +32,7 @@ public class BookAdaptor {
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
     private static final String URL = "/api/books";
+    private static final String URL_ID = "/api/books/{id}";
 
 
     /**
@@ -64,7 +65,7 @@ public class BookAdaptor {
      */
     public BookDetailResponse getBook(Long id) {
         ResponseEntity<BookDetailResponse> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL + "/{id}",
+                gatewayAdaptorProperties.getAddress() + URL_ID,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<BookDetailResponse>() {
