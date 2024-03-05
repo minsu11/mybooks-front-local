@@ -13,9 +13,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.view.RedirectView;
 import store.mybooks.front.auth.adaptor.TokenAdaptor;
 import store.mybooks.front.auth.dto.request.TokenCreateRequest;
 import store.mybooks.front.auth.dto.response.TokenCreateResponse;
+import store.mybooks.front.config.KeyConfig;
+import store.mybooks.front.oauth2.InMemoryProviderRepository;
+import store.mybooks.front.oauth2.OauthProvider;
 import store.mybooks.front.user.adaptor.UserAdaptor;
 import store.mybooks.front.user.dto.request.UserCreateRequest;
 import store.mybooks.front.user.dto.request.UserGradeModifyRequest;
@@ -66,6 +70,13 @@ public class UserController {
         return "redirect:/";
     }
 
+    @GetMapping("/auth/payco/login")
+    public RedirectView paycoLoginForm() {
+
+        return new RedirectView(
+                "https://id.payco.com/oauth2.0/authorize?response_type=code&client_id=3RDcDAliu5lnErYbf72ZwqW&serviceProviderCode=FRIENDS&redirect_uri=http://test.localhost:8080/login/oauth2/code/payco&state=ab42ae&userLocale=ko_KR");
+    }
+
     @GetMapping("/logout")
     public String logout(HttpServletResponse response) {
         CookieUtils.deleteJwtCookie(response);
@@ -81,8 +92,11 @@ public class UserController {
      * @return string
      */
     @GetMapping("/user/register")
-    public String createUserForm() {
-        return "register";
+    public String createUserForm(HttpServletRequest request) {
+        if (Objects.isNull(request.getAttribute("identity_cookie_value"))) {
+            return "register";
+        }
+        return "redirect:/";
     }
 
 
