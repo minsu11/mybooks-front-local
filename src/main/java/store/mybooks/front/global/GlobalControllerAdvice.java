@@ -4,6 +4,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
+import store.mybooks.front.auth.exception.AccessIdForbiddenException;
+import store.mybooks.front.auth.exception.AuthenticationIsNotValidException;
+import store.mybooks.front.auth.exception.StatusIsNotActiveException;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import store.mybooks.front.global.exception.ManageFailedException;
 import store.mybooks.front.global.exception.ValidationFailException;
 
 /**
@@ -36,4 +42,27 @@ public class GlobalControllerAdvice {
         }
         return "/admin/view/error";
     }
+
+    @ExceptionHandler({ManageFailedException.class})
+    public ModelAndView registerFailedException(ManageFailedException exception, RedirectAttributes redirectAttributes) {
+        ModelAndView modelAndView = new ModelAndView(exception.getUrl());
+        modelAndView.addObject("msg", exception.getMessage());
+        return modelAndView;
+    }
+
+      @ExceptionHandler({AuthenticationIsNotValidException.class, AccessIdForbiddenException.class,
+            StatusIsNotActiveException.class})
+    public String handleAuthException(RuntimeException ex) {
+
+        if (ex instanceof AuthenticationIsNotValidException) {
+            return "redirect:/login"; // 다시 로그인
+        }else if(ex instanceof StatusIsNotActiveException){
+            return "redirect:/휴대폰인증 url"; // todo 휴대폰인증 페이지로
+        }
+
+        // 권한없는 경우 index
+        return "redirect:/";
+    }
+
+
 }

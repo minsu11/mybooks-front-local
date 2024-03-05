@@ -54,7 +54,7 @@ public class PublisherAdaptor {
         HttpEntity<PageResponse<PublisherResponse>> responseHttpEntity = new HttpEntity<>(Utils.getHttpHeader());
         ResponseEntity<List<PublisherResponse>> exchange =
                 restTemplate.exchange(
-                        URL,
+                        gatewayAdaptorProperties.getAddress() + URL,
                         HttpMethod.GET,
                         responseHttpEntity,
                         new ParameterizedTypeReference<List<PublisherResponse>>() {
@@ -102,7 +102,7 @@ public class PublisherAdaptor {
 
         HttpEntity<PublisherCreateRequest> request = new HttpEntity<>(publisherCreateRequest, headers);
         ResponseEntity<PublisherCreateResponse> exchange = restTemplate.exchange(
-                URL,
+                gatewayAdaptorProperties.getAddress() + URL,
                 HttpMethod.POST,
                 request,
                 new ParameterizedTypeReference<PublisherCreateResponse>() {
@@ -117,14 +117,14 @@ public class PublisherAdaptor {
      * <br> *
      *
      * @param publisherModifyRequest 출판사 수정 정보가 담긴 DTO
-     * @param id PublisherId
+     * @param id                     PublisherId
      * @return publisher modify response
      */
     public PublisherModifyResponse updatePublisher(PublisherModifyRequest publisherModifyRequest, Integer id) {
         HttpEntity<PublisherModifyRequest> request = new HttpEntity<>(publisherModifyRequest, Utils.getHttpHeader());
         ResponseEntity<PublisherModifyResponse> exchange =
                 restTemplate.exchange(
-                        URL_ID,
+                        gatewayAdaptorProperties.getAddress() + URL_ID,
                         HttpMethod.PUT,
                         request,
                         new ParameterizedTypeReference<PublisherModifyResponse>() {
@@ -145,7 +145,7 @@ public class PublisherAdaptor {
     public PublisherDeleteResponse deletePublisher(Integer id) {
         ResponseEntity<PublisherDeleteResponse> exchange =
                 restTemplate.exchange(
-                        URL_ID,
+                        gatewayAdaptorProperties.getAddress() + URL_ID,
                         HttpMethod.DELETE,
                         null,
                         new ParameterizedTypeReference<PublisherDeleteResponse>() {
