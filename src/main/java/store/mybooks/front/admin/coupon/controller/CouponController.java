@@ -38,14 +38,13 @@ public class CouponController {
      * description : 쿠폰 페이지 출력.<br>
      *
      * @param pageable Pageable
-     * @param model Model
+     * @param model    Model
      * @return string
      */
     @GetMapping
     public String getCouponPage(@PageableDefault Pageable pageable, Model model) {
         PageResponse<CouponGetResponse> response = couponService.getCoupons(pageable);
         model.addAttribute("coupons", response);
-        model.addAttribute("min", Math.min((response.getNumber() / 10 + 1) * 10 - 1, response.getTotalPages() - 1));
         return "admin/view/coupon/coupon";
     }
 
