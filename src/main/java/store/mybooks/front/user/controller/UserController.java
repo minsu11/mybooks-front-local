@@ -1,6 +1,7 @@
 package store.mybooks.front.user.controller;
 
 import java.util.Arrays;
+import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ import store.mybooks.front.user.dto.request.UserPasswordModifyRequest;
 import store.mybooks.front.user.dto.request.UserStatusModifyRequest;
 import store.mybooks.front.user.dto.response.UserGetResponse;
 import store.mybooks.front.user.dto.response.UserLoginResponse;
+import store.mybooks.front.utils.CookieUtils;
 import store.mybooks.front.utils.Utils;
 
 /**
@@ -56,13 +58,17 @@ public class UserController {
      * @return string
      */
     @GetMapping("/login")
-    public String loginUserForm() {
-        return "login";
+    public String loginUserForm(HttpServletRequest request) {
+
+        if (Objects.isNull(request.getAttribute("identity_cookie_value"))) {
+            return "login";
+        }
+        return "redirect:/";
     }
 
     @GetMapping("/logout")
     public String logout(HttpServletResponse response) {
-        Utils.deleteJwtCookie(response);
+        CookieUtils.deleteJwtCookie(response);
         return "redirect:/";
     }
 
@@ -121,7 +127,7 @@ public class UserController {
                             new TokenCreateRequest(loginResponse.getIsAdmin(), loginResponse.getUserId(),
                                     loginResponse.getStatus()));
 
-            Utils.addJwtCookie(response, tokenCreateResponse.getAccessToken());
+            CookieUtils.addJwtCookie(response, tokenCreateResponse.getAccessToken());
             return "redirect:/";
 
         } else {
