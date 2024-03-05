@@ -172,3 +172,5 @@ Temporary Items
 
 
 *.http
+*.log
+*.gz
