@@ -3,6 +3,7 @@ package store.mybooks.front.admin.tag.adaptor;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -35,6 +36,8 @@ public class TagAdaptorImpl implements TagAdaptor {
 
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
+    private static final String URL = "/api/tags/";
+
     @Override
     public TagGetResponse getTag(Integer id) {
         HttpHeaders headers = new HttpHeaders();
@@ -44,7 +47,7 @@ public class TagAdaptorImpl implements TagAdaptor {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<TagGetResponse> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + "/api/tags/" + id,
+                gatewayAdaptorProperties.getAddress() + URL + id,
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
@@ -58,7 +61,7 @@ public class TagAdaptorImpl implements TagAdaptor {
     }
 
     @Override
-    public PageResponse<TagGetResponse> getTags(int page, int size) {
+    public PageResponse<TagGetResponse> getTags(Pageable pageable) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
@@ -66,7 +69,8 @@ public class TagAdaptorImpl implements TagAdaptor {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<PageResponse<TagGetResponse>> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + "/api/tags/page?page=" + page + "&size=" + size,
+                gatewayAdaptorProperties.getAddress() + URL + "/page?page=" + pageable.getPageNumber() + "&size="
+                        + pageable.getPageSize(),
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
@@ -88,7 +92,7 @@ public class TagAdaptorImpl implements TagAdaptor {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<List<TagGetResponse>> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + "/api/tags",
+                gatewayAdaptorProperties.getAddress() + URL,
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
@@ -110,7 +114,7 @@ public class TagAdaptorImpl implements TagAdaptor {
         HttpEntity<TagCreateRequest> requestEntity = new HttpEntity<>(tagCreateRequest, headers);
 
         ResponseEntity<Void> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + "/api/tags",
+                gatewayAdaptorProperties.getAddress() + URL,
                 HttpMethod.POST,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
@@ -130,7 +134,7 @@ public class TagAdaptorImpl implements TagAdaptor {
         HttpEntity<TagModifyRequest> requestEntity = new HttpEntity<>(tagModifyRequest, headers);
 
         ResponseEntity<Void> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + "/api/tags/" + id,
+                gatewayAdaptorProperties.getAddress() + URL + "/" + id,
                 HttpMethod.PUT,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
@@ -150,7 +154,7 @@ public class TagAdaptorImpl implements TagAdaptor {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<Void> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + "/api/tags/" + id,
+                gatewayAdaptorProperties.getAddress() + URL + "/" + id,
                 HttpMethod.DELETE,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
