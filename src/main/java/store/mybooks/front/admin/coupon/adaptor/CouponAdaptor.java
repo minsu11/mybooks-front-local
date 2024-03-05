@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import store.mybooks.front.admin.coupon.model.request.CouponCreateRequest;
 import store.mybooks.front.admin.coupon.model.response.CouponGetResponse;
+import store.mybooks.front.auth.Annotation.RequiredAuthorization;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.pageable.dto.response.PageResponse;
 import store.mybooks.front.utils.Utils;
@@ -34,6 +35,7 @@ public class CouponAdaptor {
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
     private static final String URL = "/api/coupons";
+    private static final String URL_ADMIN = "/api/admin/coupons";
 
     /**
      * methodName : getCouponPage <br>
@@ -43,11 +45,12 @@ public class CouponAdaptor {
      * @param pageable Pageable
      * @return PageResponse response
      */
+    @RequiredAuthorization
     public PageResponse<CouponGetResponse> getCouponPage(Pageable pageable) {
         HttpEntity<Void> requestEntity = new HttpEntity<>(Utils.getHttpHeader());
 
         ResponseEntity<PageResponse<CouponGetResponse>> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL + "/page?page="
+                gatewayAdaptorProperties.getAddress() + URL_ADMIN + "/page?page="
                         + pageable.getPageNumber() + "&size=" + pageable.getPageSize(),
                 HttpMethod.GET,
                 requestEntity,
@@ -57,7 +60,6 @@ public class CouponAdaptor {
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
-
     /**
      * methodName : createCoupon <br>
      * author : damho-lee <br>
@@ -65,11 +67,12 @@ public class CouponAdaptor {
      *
      * @param createRequest CouponCreateRequest
      */
+    @RequiredAuthorization
     public void createCoupon(CouponCreateRequest createRequest) {
         HttpEntity<CouponCreateRequest> requestEntity = new HttpEntity<>(createRequest, Utils.getHttpHeader());
 
         ResponseEntity<Void> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL,
+                gatewayAdaptorProperties.getAddress() + URL_ADMIN,
                 HttpMethod.POST,
                 requestEntity,
                 new ParameterizedTypeReference<>() {}
@@ -85,11 +88,12 @@ public class CouponAdaptor {
      *
      * @param id Long
      */
+    @RequiredAuthorization
     public void deleteCoupon(Long id) {
         HttpEntity<Void> requestEntity = new HttpEntity<>(Utils.getHttpHeader());
 
         ResponseEntity<Void> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL + "/" + id,
+                gatewayAdaptorProperties.getAddress() + URL_ADMIN + "/" + id,
                 HttpMethod.DELETE,
                 requestEntity,
                 new ParameterizedTypeReference<>() {}
