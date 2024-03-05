@@ -128,7 +128,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
      * author : newjaehun
      * description : 카테고리 뷰를 위한 페이징된 카테고리들 요청.
      *
-     * @param pageable
+     * @param pageable Pageable
      * @return page response
      */
     @Override
