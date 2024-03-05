@@ -34,7 +34,6 @@ public class CouponAdaptor {
 
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
-    private static final String URL = "/api/coupons";
     private static final String URL_ADMIN = "/api/admin/coupons";
 
     /**
@@ -47,7 +46,7 @@ public class CouponAdaptor {
      */
     @RequiredAuthorization
     public PageResponse<CouponGetResponse> getCouponPage(Pageable pageable) {
-        HttpEntity<Void> requestEntity = new HttpEntity<>(Utils.getHttpHeader());
+        HttpEntity<Void> requestEntity = new HttpEntity<>(Utils.getAuthHeader());
 
         ResponseEntity<PageResponse<CouponGetResponse>> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + URL_ADMIN + "/page?page="
@@ -69,7 +68,7 @@ public class CouponAdaptor {
      */
     @RequiredAuthorization
     public void createCoupon(CouponCreateRequest createRequest) {
-        HttpEntity<CouponCreateRequest> requestEntity = new HttpEntity<>(createRequest, Utils.getHttpHeader());
+        HttpEntity<CouponCreateRequest> requestEntity = new HttpEntity<>(createRequest, Utils.getAuthHeader());
 
         ResponseEntity<Void> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + URL_ADMIN,
@@ -90,7 +89,7 @@ public class CouponAdaptor {
      */
     @RequiredAuthorization
     public void deleteCoupon(Long id) {
-        HttpEntity<Void> requestEntity = new HttpEntity<>(Utils.getHttpHeader());
+        HttpEntity<Void> requestEntity = new HttpEntity<>(Utils.getAuthHeader());
 
         ResponseEntity<Void> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + URL_ADMIN + "/" + id,
