@@ -17,6 +17,7 @@ import store.mybooks.front.auth.error.ErrorMessage;
 import store.mybooks.front.auth.exception.AccessIdForbiddenException;
 import store.mybooks.front.auth.exception.AuthenticationIsNotValidException;
 import store.mybooks.front.auth.exception.StatusIsNotActiveException;
+import store.mybooks.front.utils.CookieUtils;
 import store.mybooks.front.utils.Utils;
 
 /**
@@ -47,6 +48,8 @@ public class AuthorizationAspect {
         RequestContextHolder.currentRequestAttributes()
                 .setAttribute("authHeader", Utils.addAuthHeader(request), RequestAttributes.SCOPE_REQUEST);
 
+
+
         try {
             return joinPoint.proceed();
         } catch (RuntimeException e) {
@@ -61,7 +64,7 @@ public class AuthorizationAspect {
                 // 리프래시 토큰 만료 아니면 토큰은 멀쩡하니 다시부르면 원래 요청대로 가짐
                 joinPoint.proceed();
             } else if (error.contains(ErrorMessage.INVALID_TOKEN.getMessage())) { // 토큰위조됨 쿠키삭제하기
-                Utils.deleteJwtCookie(Objects.requireNonNull(response));
+                CookieUtils.deleteJwtCookie(Objects.requireNonNull(response));
                 throw new AuthenticationIsNotValidException();
             } else if (error.contains(ErrorMessage.INACTIVE_USER.getMessage())) { // 활성상태가 아님 -> 인증사이트로
                 throw new StatusIsNotActiveException();
