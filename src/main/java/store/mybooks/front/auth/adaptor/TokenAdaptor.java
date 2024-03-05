@@ -1,4 +1,4 @@
-package store.mybooks.front.jwt.adaptor;
+package store.mybooks.front.auth.adaptor;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import store.mybooks.front.config.GatewayAdaptorProperties;
-import store.mybooks.front.jwt.dto.request.TokenCreateRequest;
-import store.mybooks.front.jwt.dto.response.TokenCreateResponse;
+import store.mybooks.front.auth.dto.request.TokenCreateRequest;
+import store.mybooks.front.auth.dto.response.TokenCreateResponse;
 
 /**
  * packageName    : store.mybooks.front.jwt<br>

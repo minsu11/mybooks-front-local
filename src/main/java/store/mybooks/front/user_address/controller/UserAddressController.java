@@ -44,10 +44,7 @@ public class UserAddressController {
     @GetMapping("/user/address")
     public String userAddressForm(Model model) {
 
-        // todo 이건 JWT달면 거기서 인증정보를 가져와서 id를 넣어줄 것임
-        Long userId = 1L;
-
-        List<UserAddressGetResponse> list = userAddressAdaptor.findAllAddressByUserId(userId);
+        List<UserAddressGetResponse> list = userAddressAdaptor.findAllUserAddress();
 
         model.addAttribute("userAddressList", list);
 
@@ -64,8 +61,7 @@ public class UserAddressController {
      */
     @PostMapping("/address/delete")
     public String deleteAddress(@RequestParam(name="addressId")Long addressId) {
-        // todo userId는 토큰에거 꺼내 쓸 꺼야
-        userAddressAdaptor.deleteUserAddress(1L,addressId);
+        userAddressAdaptor.deleteUserAddress(addressId);
         return "redirect:/user/address";
     }
 
@@ -79,8 +75,7 @@ public class UserAddressController {
      */
     @PostMapping("/user/address/create")
     public String createUserAddress(@ModelAttribute UserAddressCreateRequest userAddressCreateRequest) {
-        // todo UserId는 토큰에서 꺼내 쓸 꺼야
-        userAddressAdaptor.createUserAddress(1L, userAddressCreateRequest);
+        userAddressAdaptor.createUserAddress(userAddressCreateRequest);
         return "redirect:/user/address";
     }
 
@@ -97,9 +92,7 @@ public class UserAddressController {
     public String modifyUserAddress(@RequestParam(name = "addressId") Long addressId,
                                     @ModelAttribute UserAddressModifyRequest userAddressModifyRequest) {
 
-        // todo UserId는 토큰에서 꺼내 쓸 꺼야
-
-        userAddressAdaptor.modifyUserAddress(1L, addressId, userAddressModifyRequest);
+        userAddressAdaptor.modifyUserAddress(addressId, userAddressModifyRequest);
         return "redirect:/user/address";
     }
 
