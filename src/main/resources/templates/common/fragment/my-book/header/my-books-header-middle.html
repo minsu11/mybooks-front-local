@@ -1,5 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thympleaf.org">
+
+<head>
+    <!-- 여기에 다른 헤더 정보 추가 -->
+</head>
+<body>
+
 <div th:fragment="myBooksHeaderMiddleFragment">
     <div class="header-middle">
         <div class="container">
@@ -41,12 +47,11 @@
                 </div>
                 <div class="col-lg-4 col-md-2 col-5">
                     <div class="middle-right-area">
-                        <div class="nav-hotline">
-                            <i class="lni lni-phone"></i>
-                            <h3>Hotline:
-                                <span>(+100) 123 456 7890</span>
-                            </h3>
-                        </div>
+<!--                        <div class="nav-hotline">-->
+<!--                            <a th:href="@{/login}" th:unless="${isCookiePresent}">로그인</a>-->
+<!--                            <a th:href="@{/logout}" th:if="${isCookiePresent}">로그아웃</a>-->
+<!--                            <a th:href="@{/user/register}" th:unless="${isCookiePresent}">회원가입</a>-->
+<!--                        </div>-->
                         <div class="navbar-cart">
                             <div class="wishlist">
                                 <a href="javascript:void(0)">
@@ -105,6 +110,11 @@
                                 </div>
                                 <!--/ End Shopping Item -->
                             </div>
+                            <div class="nav-hotline">
+                                <a th:href="@{/login}" th:unless="${identity_cookie_value}">로그인</a>
+                                <a th:href="@{/logout}" th:if="${identity_cookie_value}">로그아웃</a>
+                                <a th:href="@{/user/register}" th:unless="${identity_cookie_value}">회원가입</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -113,5 +123,7 @@
     </div>
     <!-- End Header Middle -->
 </div>
+</body>
+
 
 </html>
