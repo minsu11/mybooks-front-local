@@ -10,6 +10,7 @@ import store.mybooks.front.auth.exception.AccessIdForbiddenException;
 import store.mybooks.front.auth.exception.AuthenticationIsNotValidException;
 import store.mybooks.front.auth.exception.StatusIsNotActiveException;
 import store.mybooks.front.global.exception.ManageFailedException;
+import store.mybooks.front.global.exception.ValidationFailException;
 
 /**
  * packageName    : store.mybooks.front.global
@@ -33,8 +34,9 @@ public class GlobalControllerAdvice {
      * @param model     Model
      * @return string
      */
-    @ExceptionHandler({HttpClientErrorException.BadRequest.class, HttpClientErrorException.NotFound.class})
-    public String badRequestException(HttpClientErrorException exception, Model model) {
+    @ExceptionHandler({HttpClientErrorException.BadRequest.class, HttpClientErrorException.NotFound.class,
+            ValidationFailException.class})
+    public String badRequestException(Exception exception, Model model) {
         if (exception.getMessage() != null) {
             model.addAttribute("message", exception.getMessage());
         }
