@@ -45,7 +45,6 @@ public class UserAddressController {
     public String userAddressForm(Model model) {
 
         List<UserAddressGetResponse> list = userAddressAdaptor.findAllUserAddress();
-
         model.addAttribute("userAddressList", list);
 
         return "address";
@@ -59,7 +58,7 @@ public class UserAddressController {
      * @param addressId id
      * @return string
      */
-    @PostMapping("/address/delete")
+    @PostMapping("/user/address/delete")
     public String deleteAddress(@RequestParam(name="addressId")Long addressId) {
         userAddressAdaptor.deleteUserAddress(addressId);
         return "redirect:/user/address";
