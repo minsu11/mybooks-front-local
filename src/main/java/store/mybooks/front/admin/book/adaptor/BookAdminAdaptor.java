@@ -27,6 +27,7 @@ import store.mybooks.front.admin.book.model.response.BookCreateResponse;
 import store.mybooks.front.admin.book.model.response.BookDetailResponse;
 import store.mybooks.front.admin.book.model.response.BookModifyResponse;
 import store.mybooks.front.admin.book.model.response.BookStatusGetResponse;
+import store.mybooks.front.auth.Annotation.RequiredAuthorization;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.pageable.dto.response.PageResponse;
 import store.mybooks.front.utils.Utils;
@@ -50,6 +51,7 @@ public class BookAdminAdaptor {
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
     private final String URL = "/api/books";
+    private final String ADMIN_URL = "/api/admin/books";
 
     /**
      * methodName : getPagedBriefBooks
@@ -97,6 +99,7 @@ public class BookAdminAdaptor {
      * @param bookCreateRequest BookCreateRequest
      * @return bookCreateResponse
      */
+    @RequiredAuthorization
     public BookCreateResponse createBook(BookCreateRequest bookCreateRequest, MultipartFile thumbnailImage,
                                          List<MultipartFile> contentImages)
             throws IOException {
@@ -112,7 +115,7 @@ public class BookAdminAdaptor {
         HttpEntity<MultiValueMap<String, Object>> requestHttpEntity = new HttpEntity<>(parts, headers);
 
         ResponseEntity<BookCreateResponse> responseEntity =
-                restTemplate.postForEntity(gatewayAdaptorProperties.getAddress() + URL, requestHttpEntity,
+                restTemplate.postForEntity(gatewayAdaptorProperties.getAddress() + ADMIN_URL, requestHttpEntity,
                         BookCreateResponse.class);
 
         ResponseEntity<BookCreateResponse> exchange = restTemplate.exchange(
@@ -142,11 +145,12 @@ public class BookAdminAdaptor {
      * @param modifyRequest BookModifyRequest
      * @return bookModifyResponse
      */
+    @RequiredAuthorization
     public BookModifyResponse updateBook(Long bookId, BookModifyRequest modifyRequest) {
         HttpEntity<BookModifyRequest> requestHttpEntity = new HttpEntity<>(modifyRequest, Utils.getHttpHeader());
 
         ResponseEntity<BookModifyResponse> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL + "/{id}",
+                gatewayAdaptorProperties.getAddress() + ADMIN_URL + "/{id}",
                 HttpMethod.PUT,
                 requestHttpEntity,
                 new ParameterizedTypeReference<>() {

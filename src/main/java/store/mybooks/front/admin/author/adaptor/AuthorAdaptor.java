@@ -17,6 +17,7 @@ import store.mybooks.front.admin.author.dto.response.AuthorCreateResponse;
 import store.mybooks.front.admin.author.dto.response.AuthorDeleteResponse;
 import store.mybooks.front.admin.author.dto.response.AuthorModifyResponse;
 import store.mybooks.front.admin.author.dto.response.AuthorResponse;
+import store.mybooks.front.auth.Annotation.RequiredAuthorization;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.pageable.dto.response.PageResponse;
 import store.mybooks.front.utils.Utils;
@@ -40,7 +41,9 @@ public class AuthorAdaptor {
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
     private static final String URL = "/api/authors";
+    private static final String ADMIN_URL =  "/api/admin/authors";
     private static final String URL_ID = "/api/authors/{id}";
+    private static final String ADMIN_URL_ID = "/api/admin/authors/{id}";
 
 
     /**
@@ -111,10 +114,11 @@ public class AuthorAdaptor {
      * @param authorCreateRequest 등록할 저자
      * @return authorCreateResponse 등록하고 응답 받은 데이터
      */
+    @RequiredAuthorization
     public AuthorCreateResponse createAuthor(AuthorCreateRequest authorCreateRequest) {
         HttpEntity<AuthorCreateRequest> requestHttpEntity = new HttpEntity<>(authorCreateRequest, Utils.getHttpHeader());
         ResponseEntity<AuthorCreateResponse> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL,
+                gatewayAdaptorProperties.getAddress() + ADMIN_URL,
                 HttpMethod.PUT,
                 requestHttpEntity,
                 new ParameterizedTypeReference<AuthorCreateResponse>() {
@@ -132,11 +136,12 @@ public class AuthorAdaptor {
      * @return author modify response
      * @throws RuntimeException {@code HttpStatus code}가 200이 아닌 경우
      */
+    @RequiredAuthorization
     public AuthorModifyResponse modifyResponse(AuthorModifyRequest authorModifyRequest, Integer id) {
         HttpHeaders headers = Utils.getHttpHeader();
         HttpEntity<AuthorModifyRequest> requestHttpEntity = new HttpEntity<>(authorModifyRequest, headers);
         ResponseEntity<AuthorModifyResponse> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL_ID,
+                gatewayAdaptorProperties.getAddress() + ADMIN_URL_ID,
                 HttpMethod.PUT,
                 requestHttpEntity,
                 new ParameterizedTypeReference<AuthorModifyResponse>() {
@@ -156,9 +161,10 @@ public class AuthorAdaptor {
      * @return 삭제한 저자 이름이 담긴 dto
      * @throws RuntimeException 삭제 실패 시
      */
+    @RequiredAuthorization
     public AuthorDeleteResponse deleteAuthor(Integer id) {
         ResponseEntity<AuthorDeleteResponse> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL_ID,
+                gatewayAdaptorProperties.getAddress() + ADMIN_URL_ID,
                 HttpMethod.DELETE,
                 null,
                 new ParameterizedTypeReference<AuthorDeleteResponse>() {
