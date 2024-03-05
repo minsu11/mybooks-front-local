@@ -1,5 +1,6 @@
 package store.mybooks.front.user.controller;
 
+import java.util.Arrays;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -59,6 +60,12 @@ public class UserController {
         return "login";
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpServletResponse response) {
+        Utils.deleteJwtCookie(response);
+        return "redirect:/";
+    }
+
 
     /**
      * methodName : createUserForm
@@ -69,7 +76,6 @@ public class UserController {
      */
     @GetMapping("/user/register")
     public String createUserForm() {
-
         return "register";
     }
 
@@ -86,7 +92,6 @@ public class UserController {
     public String myPageForm(Model model) {
 
         UserGetResponse userGetResponse = userAdaptor.findUser();
-
         model.addAttribute("user", userGetResponse);
         return "my-page";
     }
