@@ -9,6 +9,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -34,20 +35,14 @@ import store.mybooks.front.utils.Utils;
 @Slf4j
 public class AuthorizationAspect {
 
-    // joint point 에서 request , response 찾는거 확인해보기
-
     @Around(value = "@annotation(store.mybooks.front.auth.Annotation.RequiredAuthorization)")
-    public Object afterMethod(ProceedingJoinPoint joinPoint)
-            throws Throwable {
+    public Object aroundMethod(ProceedingJoinPoint joinPoint) throws Throwable {
 
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(
                 RequestContextHolder.getRequestAttributes())).getRequest();
-        HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+        HttpServletResponse response =
+                ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
 
-
-        // RequestContextHolder = 스프링이 제공하는 RequestAttributes 의 구현체
-        // Spring Context 가 관리하는 것이 아님 , 현재 요청과 관련된 정보를 ThreadLocal에 저장해서 사용
-        // 요청이 처리되는 동안만 유효하며 , 요청이 끝난다면 정보는 자동으로 삭제됨
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
         RequestContextHolder.currentRequestAttributes()
                 .setAttribute("authHeader", Utils.addAuthHeader(request), RequestAttributes.SCOPE_REQUEST);
@@ -57,10 +52,9 @@ public class AuthorizationAspect {
         } catch (RuntimeException e) {
 
             String error = e.getMessage();
-
             log.warn(error);
 
-            if (error.contains(ErrorMessage.INVALID_ACCESS.getMessage())) { // 권한이 없음
+            if (ErrorMessage.INVALID_ACCESS.getMessage().contains(Objects.requireNonNull(error))) { // 권한이 없음
                 throw new AccessIdForbiddenException(); // 인덱스로 보내기
             } else if (error.contains(ErrorMessage.TOKEN_EXPIRED.getMessage())) { // 토큰만료 재발급 받고 다시 부르기
                 // 리프래시 토큰이 만료면 throw Authentication -> 로그인하세요
@@ -69,12 +63,14 @@ public class AuthorizationAspect {
             } else if (error.contains(ErrorMessage.INVALID_TOKEN.getMessage())) { // 토큰위조됨 쿠키삭제하기
                 Utils.deleteJwtCookie(Objects.requireNonNull(response));
                 throw new AuthenticationIsNotValidException();
-            } else if(error.contains(ErrorMessage.INACTIVE_USER.getMessage())){ // 활성상태가 아님 -> 인증사이트로
+            } else if (error.contains(ErrorMessage.INACTIVE_USER.getMessage())) { // 활성상태가 아님 -> 인증사이트로
                 throw new StatusIsNotActiveException();
             }
+
+            throw e; // 다른 에러인 경우 = 토큰관련 에러가 아닌경우 그대로 Exception 던진다
         }
 
-        throw new RuntimeException();
+
     }
 
 
