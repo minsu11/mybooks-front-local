@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -116,11 +115,10 @@ public class AuthorAdaptor {
      */
     @RequiredAuthorization
     public AuthorCreateResponse createAuthor(AuthorCreateRequest authorCreateRequest) {
-        HttpEntity<AuthorCreateRequest> requestHttpEntity = new HttpEntity<>(authorCreateRequest, Utils.getHttpHeader());
         ResponseEntity<AuthorCreateResponse> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + ADMIN_URL,
                 HttpMethod.PUT,
-                requestHttpEntity,
+                new HttpEntity<>(authorCreateRequest, Utils.getAuthHeader()),
                 new ParameterizedTypeReference<AuthorCreateResponse>() {
                 });
         return Utils.getResponseEntity(exchange, HttpStatus.CREATED);
@@ -138,12 +136,10 @@ public class AuthorAdaptor {
      */
     @RequiredAuthorization
     public AuthorModifyResponse modifyResponse(AuthorModifyRequest authorModifyRequest, Integer id) {
-        HttpHeaders headers = Utils.getHttpHeader();
-        HttpEntity<AuthorModifyRequest> requestHttpEntity = new HttpEntity<>(authorModifyRequest, headers);
         ResponseEntity<AuthorModifyResponse> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + ADMIN_URL_ID,
                 HttpMethod.PUT,
-                requestHttpEntity,
+                new HttpEntity<>(authorModifyRequest, Utils.getAuthHeader()),
                 new ParameterizedTypeReference<AuthorModifyResponse>() {
                 },
                 id);
@@ -166,7 +162,7 @@ public class AuthorAdaptor {
         ResponseEntity<AuthorDeleteResponse> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + ADMIN_URL_ID,
                 HttpMethod.DELETE,
-                null,
+                new HttpEntity<>(Utils.getAuthHeader()),
                 new ParameterizedTypeReference<AuthorDeleteResponse>() {
                 },
                 id);

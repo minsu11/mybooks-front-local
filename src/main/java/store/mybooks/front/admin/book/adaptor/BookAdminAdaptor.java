@@ -99,7 +99,6 @@ public class BookAdminAdaptor {
      * @param bookCreateRequest BookCreateRequest
      * @return bookCreateResponse
      */
-    @RequiredAuthorization
     public BookCreateResponse createBook(BookCreateRequest bookCreateRequest, MultipartFile thumbnailImage,
                                          List<MultipartFile> contentImages)
             throws IOException {
@@ -114,17 +113,11 @@ public class BookAdminAdaptor {
 
         HttpEntity<MultiValueMap<String, Object>> requestHttpEntity = new HttpEntity<>(parts, headers);
 
-        ResponseEntity<BookCreateResponse> responseEntity =
-                restTemplate.postForEntity(gatewayAdaptorProperties.getAddress() + ADMIN_URL, requestHttpEntity,
-                        BookCreateResponse.class);
-
-        ResponseEntity<BookCreateResponse> exchange = restTemplate.exchange(
+        ResponseEntity<BookCreateResponse> responseEntity = restTemplate.postForEntity(
                 gatewayAdaptorProperties.getAddress() + URL,
-                HttpMethod.POST,
                 requestHttpEntity,
-                new ParameterizedTypeReference<>() {
-                }
-        );
+                BookCreateResponse.class);
+
         return Utils.getResponseEntity(responseEntity, HttpStatus.CREATED);
     }
 
@@ -141,18 +134,16 @@ public class BookAdminAdaptor {
      * author : newjaehun
      * description : 도서 수정.
      *
-     * @param bookId Long
+     * @param bookId        Long
      * @param modifyRequest BookModifyRequest
      * @return bookModifyResponse
      */
     @RequiredAuthorization
     public BookModifyResponse updateBook(Long bookId, BookModifyRequest modifyRequest) {
-        HttpEntity<BookModifyRequest> requestHttpEntity = new HttpEntity<>(modifyRequest, Utils.getHttpHeader());
-
         ResponseEntity<BookModifyResponse> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + ADMIN_URL + "/{id}",
                 HttpMethod.PUT,
-                requestHttpEntity,
+                new HttpEntity<>(modifyRequest, Utils.getAuthHeader()),
                 new ParameterizedTypeReference<>() {
                 }, bookId);
 
