@@ -40,7 +40,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
 
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
-    private static final String URL = "/api/categories";
+    private static final String URL_ADMIN = "/api/admin/categories";
 
     /**
      * methodName : getHighestCategories
@@ -51,14 +51,12 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
      */
     @Override
     public List<CategoryGetResponse> getHighestCategories() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        HttpHeaders headers = Utils.getAuthHeader();
 
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<List<CategoryGetResponse>> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL + "/highest",
+                gatewayAdaptorProperties.getAddress() + URL_ADMIN + "/highest",
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
@@ -76,19 +74,17 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
      * author : newjaehun
      * description : 2단계 카테고리 리스트 조회.
      *
-     * @param parent category id
+     * @param parentCategoryId Long
      * @return list
      */
     @Override
     public List<CategoryGetResponse> getChildCategories(long parentCategoryId) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        HttpHeaders headers = Utils.getAuthHeader();
 
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<List<CategoryGetResponse>> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL + "/parentCategoryId/" + parentCategoryId,
+                gatewayAdaptorProperties.getAddress() + URL_ADMIN + "/parentCategoryId/" + parentCategoryId,
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
@@ -106,19 +102,17 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
      * author : newjaehun
      * description : 카테고리 생성 요청.
      *
-     * @param category create request
+     * @param categoryCreateRequest CategoryCreateRequestForTransmission
      */
     @Override
     public void createCategory(CategoryCreateRequestForTransmission categoryCreateRequest) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        HttpHeaders headers = Utils.getAuthHeader();
 
         HttpEntity<CategoryCreateRequestForTransmission> requestEntity =
                 new HttpEntity<>(categoryCreateRequest, headers);
 
         ResponseEntity<Void> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL,
+                gatewayAdaptorProperties.getAddress() + URL_ADMIN,
                 HttpMethod.POST,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
@@ -139,14 +133,12 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
      */
     @Override
     public PageResponse<CategoryGetResponseForView> getCategories(Pageable pageable) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        HttpHeaders headers = Utils.getAuthHeader();
 
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<PageResponse<CategoryGetResponseForView>> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL
+                gatewayAdaptorProperties.getAddress() + URL_ADMIN
                         + "/page?page=" + pageable.getPageNumber() + "&size=" + pageable.getPageSize(),
                 HttpMethod.GET,
                 requestEntity,
@@ -169,11 +161,13 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
      */
     @Override
     public List<CategoryGetResponseForBookCreate> getCategories() {
-        String url = gatewayAdaptorProperties.getAddress() + URL;
+        HttpHeaders headers = Utils.getAuthHeader();
+
+        String url = gatewayAdaptorProperties.getAddress() + URL_ADMIN;
         ResponseEntity<List<CategoryGetResponseForBookCreate>> exchange = restTemplate.exchange(
                 url,
                 HttpMethod.GET,
-                null,
+                new HttpEntity<>(headers),
                 new ParameterizedTypeReference<>() {
                 });
 
@@ -185,8 +179,8 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
      * author : newjaehun
      * description : 카테고리 업데이트 요청.
      *
-     * @param id
-     * @param category modify request for transmission
+     * @param id Integer
+     * @param categoryModifyRequestForTransmission CategoryModifyRequestForTransmission
      */
     @Override
     public void updateCategory(Integer id, CategoryModifyRequestForTransmission categoryModifyRequestForTransmission) {
@@ -198,7 +192,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
                 new HttpEntity<>(categoryModifyRequestForTransmission, headers);
 
         ResponseEntity<Void> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL + "/" + id,
+                gatewayAdaptorProperties.getAddress() + URL_ADMIN + "/" + id,
                 HttpMethod.PUT,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
@@ -214,7 +208,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
      * author : newjaehun
      * description : 카테고리 삭제 요창.
      *
-     * @param id
+     * @param id Integer
      */
     @Override
     public void deleteCategory(Integer id) {
@@ -225,7 +219,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<Void> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL + "/" + id,
+                gatewayAdaptorProperties.getAddress() + URL_ADMIN + "/" + id,
                 HttpMethod.DELETE,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
@@ -241,7 +235,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
      * author : newjaehun
      * description : 카테고리 업데이트에 사용할 카테고리 요청.
      *
-     * @param id
+     * @param id Integer
      * @return category get response for update
      */
     @Override
@@ -253,7 +247,7 @@ public class CategoryAdaptorImpl implements CategoryAdaptor {
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
         ResponseEntity<CategoryGetResponseForUpdate> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL + "/categoryId/" + id,
+                gatewayAdaptorProperties.getAddress() + URL_ADMIN + "/categoryId/" + id,
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<>() {
