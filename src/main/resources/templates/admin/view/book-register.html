@@ -80,7 +80,7 @@
                                     <div class="form-group">
                                         <label for="content">설명</label>
                                         <div id="editor"></div>
-                                        <textarea id="content" name="content" style="display:none;"></textarea>
+                                        <input type="hidden" id="content" name="content">
                                     </div>
                                 </div>
                             </div>
@@ -238,53 +238,68 @@
                     ['table', 'code', 'codeblock']
                 ]
             });
-
             $('#registerForm').on('submit', function (e) {
-                var htmlContent = editor.getHTML();
-                $('#content').val(htmlContent);
-                });
-            });
+                e.preventDefault(); // 기본 폼 제출 방지
+                var formData = new FormData(this);
+                formData.append('content', editor.getHTML());
 
-
-            $(document).ready(function () {
-                $('#authorList').multiselect({
-                    nonSelectedText: '저자 선택',
-                    maxHeight: 400,
-                    includeSelectAllOption: false,
-                    numberDisplayed: 1
-                });
-            });
-            $(document).ready(function () {
-                $('#categoryList').multiselect({
-                    nonSelectedText: '카테고리 선택(최대 10개)',
-                    maxHeight: 400,
-                    includeSelectAllOption: false,
-                    numberDisplayed: 1,
-                    onChange: function (option, checked) {
-                        var maxCount = 10;
-                        var selectedCount = $('#categoryList option:selected').length;
-
-                        if (selectedCount >= maxCount) {
-                            $('#categoryList option').each(function () {
-                                if (!$(this).is(':selected')) {
-                                    $(this).prop('disabled', true);
-                                }
-                            });
-                        } else {
-                            $('#categoryList option').prop('disabled', false);
-                        }
-                        $('#categoryList').multiselect('refresh');
+                $.ajax({
+                    url: '/admin/book/register',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        console.log('Success:', response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
                     }
                 });
             });
-            $(document).ready(function () {
-                $('#tagList').multiselect({
-                    nonSelectedText: '태그 선택',
-                    maxHeight: 400,
-                    includeSelectAllOption: false,
-                    numberDisplayed: 1
-                });
+        });
+
+
+
+        $(document).ready(function () {
+            $('#authorList').multiselect({
+                nonSelectedText: '저자 선택',
+                maxHeight: 400,
+                includeSelectAllOption: false,
+                numberDisplayed: 1
             });
+        });
+        $(document).ready(function () {
+            $('#categoryList').multiselect({
+                nonSelectedText: '카테고리 선택(최대 10개)',
+                maxHeight: 400,
+                includeSelectAllOption: false,
+                numberDisplayed: 1,
+                onChange: function (option, checked) {
+                    var maxCount = 10;
+                    var selectedCount = $('#categoryList option:selected').length;
+
+                    if (selectedCount >= maxCount) {
+                        $('#categoryList option').each(function () {
+                            if (!$(this).is(':selected')) {
+                                $(this).prop('disabled', true);
+                            }
+                        });
+                    } else {
+                        $('#categoryList option').prop('disabled', false);
+                    }
+                    $('#categoryList').multiselect('refresh');
+                }
+            });
+        });
+        $(document).ready(function () {
+            $('#tagList').multiselect({
+                nonSelectedText: '태그 선택',
+                maxHeight: 400,
+                includeSelectAllOption: false,
+                numberDisplayed: 1
+            });
+        });
     </script>
 </div>
 </html>
