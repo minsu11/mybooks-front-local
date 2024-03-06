@@ -2,6 +2,7 @@ package store.mybooks.front.oauth2;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.stereotype.Component;
 
 /**
  * packageName    : store.mybooks.front.oauth2<br>
@@ -14,6 +15,7 @@ import java.util.Map;
  * -----------------------------------------------------------
  * 3/3/24        masiljangajji       최초 생성
  */
+
 public class InMemoryProviderRepository {
     private final Map<String, OauthProvider> providers;
 
