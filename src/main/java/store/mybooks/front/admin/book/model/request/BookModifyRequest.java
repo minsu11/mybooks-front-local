@@ -34,10 +34,8 @@ public class BookModifyRequest {
     private Integer stock;
     @NotNull
     private Boolean isPacking;
-
     @NotNull
     @Size(min = 1)
     private List<Integer> categoryList;
-
     private List<Integer> tagList;
 }
