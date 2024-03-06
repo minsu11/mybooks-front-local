@@ -1,5 +1,6 @@
 package store.mybooks.front.admin.book.model.request;
 
+import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -23,16 +24,20 @@ import lombok.Getter;
 @AllArgsConstructor
 public class BookModifyRequest {
     @NotNull
-    private Long bookId;
+    @Positive
+    private Integer saleCost;
     @NotBlank
     @Size(min = 1, max = 20)
     private String bookStatusId;
-    @NotNull
-    @Positive
-    private Integer saleCost;
     @NotNull
     @PositiveOrZero
     private Integer stock;
     @NotNull
     private Boolean isPacking;
+
+    @NotNull
+    @Size(min = 1)
+    private List<Integer> categoryList;
+
+    private List<Integer> tagList;
 }

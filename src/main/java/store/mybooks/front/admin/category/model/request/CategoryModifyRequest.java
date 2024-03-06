@@ -1,5 +1,8 @@
 package store.mybooks.front.admin.category.model.request;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -17,6 +20,9 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class CategoryModifyRequest {
+    @PositiveOrZero
     private Integer id;
+    @NotBlank
+    @Size(min = 1, max = 20)
     private String name;
 }

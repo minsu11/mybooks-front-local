@@ -18,6 +18,7 @@ import store.mybooks.front.admin.publisher.dto.response.PublisherCreateResponse;
 import store.mybooks.front.admin.publisher.dto.response.PublisherDeleteResponse;
 import store.mybooks.front.admin.publisher.dto.response.PublisherModifyResponse;
 import store.mybooks.front.admin.publisher.dto.response.PublisherResponse;
+import store.mybooks.front.auth.Annotation.RequiredAuthorization;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.pageable.dto.response.PageResponse;
 import store.mybooks.front.utils.Utils;
@@ -41,7 +42,9 @@ public class PublisherAdaptor {
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
     private static final String URL = "/api/publishers";
+    private static final String ADMIN_URL = "/api/admin/publishers";
     private static final String URL_ID = "/api/publishers/{id}";
+    private static final String ADMIN_URL_ID = "/api/admin/publishers/{id}";
 
     /**
      * methodName : getAllPublishers
@@ -97,12 +100,13 @@ public class PublisherAdaptor {
      * @return publisher create response
      * @throws RuntimeException {@code http status code created}가 아니면 예외를 던짐
      */
+    @RequiredAuthorization
     public PublisherCreateResponse registerPublisher(PublisherCreateRequest publisherCreateRequest) {
         HttpHeaders headers = Utils.getHttpHeader();
 
         HttpEntity<PublisherCreateRequest> request = new HttpEntity<>(publisherCreateRequest, headers);
         ResponseEntity<PublisherCreateResponse> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL,
+                gatewayAdaptorProperties.getAddress() + ADMIN_URL,
                 HttpMethod.POST,
                 request,
                 new ParameterizedTypeReference<PublisherCreateResponse>() {
@@ -120,11 +124,12 @@ public class PublisherAdaptor {
      * @param id                     PublisherId
      * @return publisher modify response
      */
+    @RequiredAuthorization
     public PublisherModifyResponse updatePublisher(PublisherModifyRequest publisherModifyRequest, Integer id) {
         HttpEntity<PublisherModifyRequest> request = new HttpEntity<>(publisherModifyRequest, Utils.getHttpHeader());
         ResponseEntity<PublisherModifyResponse> exchange =
                 restTemplate.exchange(
-                        gatewayAdaptorProperties.getAddress() + URL_ID,
+                        gatewayAdaptorProperties.getAddress() + ADMIN_URL_ID,
                         HttpMethod.PUT,
                         request,
                         new ParameterizedTypeReference<PublisherModifyResponse>() {
@@ -142,10 +147,11 @@ public class PublisherAdaptor {
      * @param id 삭제할 저자의 id
      * @return publisher delete response
      */
+    @RequiredAuthorization
     public PublisherDeleteResponse deletePublisher(Integer id) {
         ResponseEntity<PublisherDeleteResponse> exchange =
                 restTemplate.exchange(
-                        gatewayAdaptorProperties.getAddress() + URL_ID,
+                        gatewayAdaptorProperties.getAddress() + ADMIN_URL_ID,
                         HttpMethod.DELETE,
                         null,
                         new ParameterizedTypeReference<PublisherDeleteResponse>() {
