@@ -29,12 +29,21 @@ public class WebClientConfig implements WebMvcConfigurer {
                 .setReadTimeout(Duration.ofSeconds(3L))
                 .build();
     }
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new CookieInterceptor())
                 .addPathPatterns("/user/**")
                 .addPathPatterns("/admin/**")
                 .addPathPatterns("/book/**")
-                .addPathPatterns("/login","/");
+                .addPathPatterns("/","/login","/signup")
+                .excludePathPatterns("/**/*.js")
+                .excludePathPatterns("/**/*.scss")
+                .excludePathPatterns("/**/*.css")
+                .excludePathPatterns("/**/*.json")
+                .excludePathPatterns("/**/*.svg")
+                .excludePathPatterns("/**/*.jpg")
+                .excludePathPatterns("/**/*.png")
+                .excludePathPatterns("/**/*.woff2");
     }
 }
