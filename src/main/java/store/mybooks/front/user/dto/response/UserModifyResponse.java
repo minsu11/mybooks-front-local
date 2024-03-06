@@ -1,8 +1,7 @@
 package store.mybooks.front.user.dto.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 /**
  * packageName    : store.mybooks.resource.user.dto.response<br>
@@ -18,8 +17,7 @@ import lombok.Setter;
 
 
 @Getter
-@Setter
-@AllArgsConstructor
+@NoArgsConstructor
 public class UserModifyResponse {
 
     private String name;
