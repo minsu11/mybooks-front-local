@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import store.mybooks.front.user_coupon.service.UserCouponService;
 
@@ -25,8 +26,8 @@ public class UserCouponController {
     private final UserCouponService userCouponService;
 
     @RequestMapping
-    public String getUserCouponPage(@PageableDefault Pageable pageable) {
-
+    public String getUserCouponPage(Model model, @PageableDefault Pageable pageable) {
+        model.addAttribute("userCoupons", userCouponService.getUserCoupons(pageable));
         return "user-coupon-page";
     }
 }
