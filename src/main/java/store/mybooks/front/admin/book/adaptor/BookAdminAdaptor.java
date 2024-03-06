@@ -27,6 +27,7 @@ import store.mybooks.front.admin.book.model.response.BookCreateResponse;
 import store.mybooks.front.admin.book.model.response.BookDetailResponse;
 import store.mybooks.front.admin.book.model.response.BookModifyResponse;
 import store.mybooks.front.admin.book.model.response.BookStatusGetResponse;
+import store.mybooks.front.auth.Annotation.RequiredAuthorization;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.pageable.dto.response.PageResponse;
 import store.mybooks.front.utils.Utils;
@@ -49,35 +50,55 @@ public class BookAdminAdaptor {
 
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
-    private final String url = "/api/books";
+    private final String URL = "/api/books";
+    private final String ADMIN_URL = "/api/admin/books";
 
+    /**
+     * methodName : getPagedBriefBooks
+     * author : newjaehun
+     * description : 관리자 도서페이지에 보여줄 페이징된 도서정보.
+     *
+     * @param pageable Pageable
+     * @return pageResponse
+     */
     public PageResponse<BookBriefResponse> getPagedBriefBooks(Pageable pageable) {
-        HttpEntity<BookCreateRequest> requestHttpEntity = new HttpEntity<>(Utils.getHttpHeader());
-
         ResponseEntity<PageResponse<BookBriefResponse>> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + url + "?page=" + pageable.getPageNumber() + "&size=" +
-                        pageable.getPageSize(),
+                gatewayAdaptorProperties.getAddress() + URL + "?page=" + pageable.getPageNumber() + "&size="
+                        + pageable.getPageSize(),
                 HttpMethod.GET,
-                requestHttpEntity,
+                null,
                 new ParameterizedTypeReference<>() {
-                }
-        );
+                });
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
+    /**
+     * methodName : getDetailBook
+     * author : newjaehun
+     * description : 도서 ID로 도서 상세정보 가져오기.
+     *
+     * @param bookId Long
+     * @return bookDetailResponse BookDetailResponse
+     */
     public BookDetailResponse getDetailBook(Long bookId) {
-        HttpEntity<BookCreateRequest> requestHttpEntity = new HttpEntity<>(Utils.getHttpHeader());
-
         ResponseEntity<BookDetailResponse> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + url + "/" + bookId,
+                gatewayAdaptorProperties.getAddress() + URL + "/{id}",
                 HttpMethod.GET,
-                requestHttpEntity,
+                null,
                 new ParameterizedTypeReference<>() {
-                }
-        );
-        return Utils.getResponseEntity(exchange, HttpStatus.CREATED);
+                },
+                bookId);
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
+    /**
+     * methodName : createBook
+     * author : newjaehun
+     * description : 도서 추가.
+     *
+     * @param bookCreateRequest BookCreateRequest
+     * @return bookCreateResponse
+     */
     public BookCreateResponse createBook(BookCreateRequest bookCreateRequest, MultipartFile thumbnailImage,
                                          List<MultipartFile> contentImages)
             throws IOException {
@@ -92,9 +113,10 @@ public class BookAdminAdaptor {
 
         HttpEntity<MultiValueMap<String, Object>> requestHttpEntity = new HttpEntity<>(parts, headers);
 
-        ResponseEntity<BookCreateResponse> responseEntity =
-                restTemplate.postForEntity(gatewayAdaptorProperties.getAddress() + url, requestHttpEntity,
-                        BookCreateResponse.class);
+        ResponseEntity<BookCreateResponse> responseEntity = restTemplate.postForEntity(
+                gatewayAdaptorProperties.getAddress() + URL,
+                requestHttpEntity,
+                BookCreateResponse.class);
 
         return Utils.getResponseEntity(responseEntity, HttpStatus.CREATED);
     }
@@ -107,28 +129,39 @@ public class BookAdminAdaptor {
         return convFile;
     }
 
-    public void updateBook(Long bookId, BookModifyRequest modifyRequest) {
-        HttpEntity<BookModifyRequest> requestHttpEntity = new HttpEntity<>(modifyRequest, Utils.getHttpHeader());
-
+    /**
+     * methodName : updateBook
+     * author : newjaehun
+     * description : 도서 수정.
+     *
+     * @param bookId        Long
+     * @param modifyRequest BookModifyRequest
+     * @return bookModifyResponse
+     */
+    @RequiredAuthorization
+    public BookModifyResponse updateBook(Long bookId, BookModifyRequest modifyRequest) {
         ResponseEntity<BookModifyResponse> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + url + bookId,
-                HttpMethod.POST,
-                requestHttpEntity,
+                gatewayAdaptorProperties.getAddress() + ADMIN_URL + "/{id}",
+                HttpMethod.PUT,
+                new HttpEntity<>(modifyRequest, Utils.getAuthHeader()),
                 new ParameterizedTypeReference<>() {
-                }
-        );
-        if (exchange.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException();
-        }
+                }, bookId);
+
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
+    /**
+     * methodName : getBookStatus
+     * author : newjaehun
+     * description : 전체 도서상태 리스트 반환.
+     *
+     * @return list
+     */
     public List<BookStatusGetResponse> getBookStatus() {
-        HttpEntity<Void> requestHttpEntity = new HttpEntity<>(Utils.getHttpHeader());
-
         ResponseEntity<List<BookStatusGetResponse>> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + "/api/books-statuses",
                 HttpMethod.GET,
-                requestHttpEntity,
+                null,
                 new ParameterizedTypeReference<>() {
                 }
         );

@@ -21,6 +21,14 @@ import store.mybooks.front.book.adaptor.BookAdaptor;
 public class BookService {
     private final BookAdaptor bookAdaptor;
 
+    /**
+     * methodName : getBook
+     * author : newjaehun
+     * description : 도서 상세정보 가져오는 서비스.
+     *
+     * @param bookId Long
+     * @return bookDetailResponse
+     */
     public BookDetailResponse getBook(Long bookId) {
         return bookAdaptor.getBook(bookId);
     }

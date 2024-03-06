@@ -1,7 +1,7 @@
 package store.mybooks.front.admin.book.model.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * packageName    : store.mybooks.front.admin.book.model.response <br/>
@@ -15,7 +15,7 @@ import lombok.Getter;
  * 2/26/24        newjaehun       최초 생성<br/>
  */
 @Getter
-@AllArgsConstructor
+@NoArgsConstructor
 public class BookModifyResponse {
     private String name;
 

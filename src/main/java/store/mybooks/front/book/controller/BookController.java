@@ -30,6 +30,15 @@ public class BookController {
     private final BookService bookService;
 
 
+    /**
+     * methodName : getBookDetailPage
+     * author : newjaehun
+     * description : 도서 상세페이지 호출.
+     *
+     * @param bookId Long
+     * @param model Model
+     * @return string
+     */
     @GetMapping("/{id}")
     public String getBookDetailPage(@PathVariable("id") Long bookId, Model model) {
         BookDetailResponse book = bookService.getBook(bookId);
