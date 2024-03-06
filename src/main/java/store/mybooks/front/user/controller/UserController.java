@@ -91,10 +91,10 @@ public class UserController {
      *
      * @return string
      */
-    @GetMapping("/user/register")
+    @GetMapping("/signup")
     public String createUserForm(HttpServletRequest request) {
         if (Objects.isNull(request.getAttribute("identity_cookie_value"))) {
-            return "register";
+            return "signup";
         }
         return "redirect:/";
     }
@@ -159,7 +159,7 @@ public class UserController {
      * @param userCreateRequest create request
      * @return string
      */
-    @PostMapping("/user/register")
+    @PostMapping("/signup")
     public String createUser(@ModelAttribute UserCreateRequest userCreateRequest) {
 
         // 비밀번호 암호화
