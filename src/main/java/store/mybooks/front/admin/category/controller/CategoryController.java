@@ -80,7 +80,7 @@ public class CategoryController {
             throw new ValidationFailException(bindingResult);
         }
         categoryService.createCategory(categoryCreateRequest);
-        return "redirect:/admin/category/register";
+        return "redirect:/admin/category/category/register";
     }
 
     /**

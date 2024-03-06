@@ -48,7 +48,6 @@ public class TagController {
     public String getTagPage(@PageableDefault Pageable pageable,
                              Model model) {
         model.addAttribute("tags", tagService.getTags(pageable));
-
         return "admin/view/tag/tag-admin-page";
     }
 
