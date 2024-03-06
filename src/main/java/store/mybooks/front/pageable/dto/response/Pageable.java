@@ -2,6 +2,7 @@ package store.mybooks.front.pageable.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
 /**
  * packageName    : store.mybooks.front.pageable.dto.response<br>
@@ -15,11 +16,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * 2/24/24        minsu11       최초 생성<br>
  */
 
-
-class Pageable {
-
+@Getter
+public class Pageable {
     @JsonIgnore
-    Sort sort;
+    private Sort sort;
 
     @JsonProperty("offset")
     private int offset;
@@ -32,7 +32,6 @@ class Pageable {
 
     @JsonProperty(value = "paged")
     private boolean paged;
-
 
     @JsonProperty(value = "unpaged")
     private boolean unPaged;

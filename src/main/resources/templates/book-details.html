@@ -62,23 +62,24 @@
                         <div class="product-images">
                             <main id="gallery">
                                 <div class="main-img">
-                                    <img src="https://via.placeholder.com/1000x670" id="current" alt="#">
+                                    <img src="https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_e805e9a72d2f47338a0a463196c36314/my-books-container/7a9644b8-fdb9-425e-821a-abbc6eb77335.png"
+                                         id="bookImage" alt="#">
                                 </div>
                             </main>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-12 col-12">
                         <div class="product-info">
-                            <h1 class="title">도서명: [[${book.name}]]</h1>
+                            <h1 class="title">도서명: <span th:text="${book.name}"></span></h1>
                             <p>저자: <span th:text="${authorNameList}"></span></p>
-                            <p>출판사: <span>[[${book.publisher.name}]]</span></p>
-                            <p>카테고리: <span></span></p>
+                            <p>출판사: <span th:text="${book.publisher.name}"></span></p>
+                            <p>카테고리: <span th:text="${categoryNameList}"></span></p>
                             <p>태그: <span th:text="${tagNameList}"></span></p>
                             <p>리뷰: <span></span></p>
                             <div class="price-info">
-                                <div class="original-price">정가: <span>[[${book.originalCost}]]원</span></div>
+                                <div class="original-price">정가: <span th:text="${book.originalCost}">원</span></div>
                                 <div class="sale-price">판매가:
-                                    <span>[[${book.saleCost}]]원 ([[${book.disCountRate}]]% 할인)</span></div>
+                                    <span th:text="${book.saleCost} + '원 (' + ${book.disCountRate} + '% 할인)'"></span>
                             </div>
                             <p>배송비: <span>무료</span></p>
                             <div class="quantity-input">
@@ -93,7 +94,8 @@
                                 <div class="row align-items-end">
                                     <div class="col-lg-4 col-md-4 col-12">
                                         <form action="/order" method="post">
-                                            <input type="hidden" name="bookId" value="[[${book.id}]]">
+                                            <input type="hidden" name="id" th:value="${book.id}">
+                                            <input type="hidden" name="saleCost" th:value="${book.saleCost}">
                                             <input type="hidden" id="buyNowQuantity" name="quantity">
                                             <div class="button cart-button">
                                                 <button type="submit" class="btn" style="width: 100%;">바로구매</button>
@@ -102,7 +104,9 @@
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-12">
                                         <form action="/cart" method="post">
-                                            <input type="hidden" name="bookId" value="[[${book.id}]]">
+                                            <input type="hidden" name="id" th:value="${book.id}">
+                                            <input type="hidden" name="originalCost" th:value="${book.originalCost}">
+                                            <input type="hidden" name="saleCost" th:value="${book.saleCost}">
                                             <input type="hidden" id="cartQuantity" name="quantity">
                                             <div class="button cart-button">
                                                 <button type="submit" class="btn" style="width: 100%;">장바구니 담기</button>
@@ -111,9 +115,11 @@
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-12">
                                         <form action="/book-like" method="post">
-                                            <input type="hidden" name="bookId" value="[[${book.id}]]">
+                                            <input type="hidden" name="id" th:value="${book.id}">
                                             <div class="wish-button">
-                                                <button type="submit" class="btn"><i class="lni lni-heart"></i> To Wishlist</button>
+                                                <button type="submit" class="btn"><i class="lni lni-heart"></i> To
+                                                    Wishlist
+                                                </button>
                                             </div>
                                         </form>
                                     </div>
@@ -127,40 +133,42 @@
                 <!-- 도서상세정보 시작 -->
                 <div class="single-block">
                     <div class="row">
-                        <div class="col-lg-6 col-12">
-                            <div class="info-body custom-responsive-margin">
-                                <h4>Details</h4>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                                    irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat.</p>
-                                <h4>Features</h4>
-                                <ul class="features">
-                                    <li>Capture 4K30 Video and 12MP Photos</li>
-                                    <li>Game-Style Controller with Touchscreen</li>
-                                    <li>View Live Camera Feed</li>
-                                    <li>Full Control of HERO6 Black</li>
-                                    <li>Use App for Dedicated Camera Operation</li>
-                                </ul>
-                            </div>
+                        <div class="col-4">
+                            <h2 style="font-size: 24px; margin-top: 20px;">도서정보</h2>
+                            <table class="table">
+                                <tr>
+                                    <th>출판일</th>
+                                    <td th:text="${book.publishDate}"></td>
+                                </tr>
+                                <tr>
+                                    <th>페이지수</th>
+                                    <td th:text="${book.page}"></td>
+                                </tr>
+                                <tr>
+                                    <th>ISBN</th>
+                                    <td th:text="${book.isbn}"></td>
+                                </tr>
+                                <tr>
+                                    <th>포장가능여부</th>
+                                    <td th:text="${book.isPacking}? '가능' : '불가능'"></td>
+                                </tr>
+                            </table>
                         </div>
-                        <div class="col-lg-6 col-12">
-                            <div class="info-body">
-                                <h4>Specifications</h4>
-                                <ul class="normal-list">
-                                    <li><span>Weight:</span> 35.5oz (1006g)</li>
-                                    <li><span>Maximum Speed:</span> 35 mph (15 m/s)</li>
-                                    <li><span>Maximum Distance:</span> Up to 9,840ft (3,000m)</li>
-                                    <li><span>Operating Frequency:</span> 2.4GHz</li>
-                                    <li><span>Manufacturer:</span> GoPro, USA</li>
-                                </ul>
-                                <h4>Shipping Options:</h4>
-                                <ul class="normal-list">
-                                    <li><span>Courier:</span> 2 - 4 days, $22.50</li>
-                                    <li><span>Local Shipping:</span> up to one week, $10.00</li>
-                                    <li><span>UPS Ground Shipping:</span> 4 - 6 days, $18.00</li>
-                                    <li><span>Unishop Global Export:</span> 3 - 4 days, $25.00</li>
-                                </ul>
+                        <div class="col-12">
+                            <h2 style="font-size: 24px; margin-top: 20px;">목차</h2>
+                            <div th:text="${book.index}"></div>
+
+                            <h2 style="font-size: 24px; margin-top: 20px;">설명</h2>
+                            <div th:text="${book.content}"></div>
+
+                            <h2 style="font-size: 24px; margin-top: 20px;">책소개</h2>
+                            <img src="https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_e805e9a72d2f47338a0a463196c36314/my-books-container/7a9644b8-fdb9-425e-821a-abbc6eb77335.png"
+                                 alt="책 소개 이미지">
+
+                            <h2 style="font-size: 24px; margin-top: 20px;">저자 소개</h2>
+                            <div th:each="author : ${book.authorList}">
+                                <p>저자명: <span th:text="${author.name}"></span></p>
+                                <p>저자소개: <span th:text="${author.content}"></span></p>
                             </div>
                         </div>
                     </div>
@@ -371,7 +379,7 @@
             });
         });
 
-        document.getElementById('quantity').addEventListener('change', function() {
+        document.getElementById('quantity').addEventListener('change', function () {
             var quantity = this.value;
             document.getElementById('buyNowQuantity').value = quantity;
             document.getElementById('cartQuantity').value = quantity;
