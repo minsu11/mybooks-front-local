@@ -109,27 +109,30 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="single-form form-default">
-                                                <label>City</label>
-                                                <div class="form-input form">
-                                                    <input type="text" placeholder="City">
+                                        <div>
+                                            <label>배송지 입력</label>
+                                            <div class="col-md-6">
+                                                <div class="single-form form-default">
+                                                    <label>City</label>
+                                                    <div class="form-input form">
+                                                        <input type="text" placeholder="City">
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="single-form form-default">
-                                                <label>Post Code</label>
-                                                <div class="form-input form">
-                                                    <input type="text" placeholder="Post Code">
+                                            <div class="col-md-6">
+                                                <div class="single-form form-default">
+                                                    <label>Post Code</label>
+                                                    <div class="form-input form">
+                                                        <input type="text" placeholder="Post Code">
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="single-form form-default">
-                                                <label>Country</label>
-                                                <div class="form-input form">
-                                                    <input type="text" placeholder="Country">
+                                            <div class="col-md-6">
+                                                <div class="single-form form-default">
+                                                    <label>Country</label>
+                                                    <div class="form-input form">
+                                                        <input type="text" placeholder="Country">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -149,37 +152,17 @@
 
                                                 <div id="wrap-view" class="payment-option-wrapper"
                                                      style="display: none">
-                                                    <div class="single-payment-option">
-                                                        <input type="radio" name="shipping" id="shipping-1">
-                                                        <label for="shipping-1">
-                                                            <!-- 포장 값 넣기 -->
-                                                            <p>Standerd Shipping</p>
-                                                            <span class="price">$10.50</span>
+                                                    <div class="single-payment-option"
+                                                         th:each="wrap, index:${wrapList}">
+                                                        <input type="radio" name="wrap-item"
+                                                               th:id="'wrap'+${index.count}"/>
+                                                        <label th:for="'wrap'+${index.count}">
+                                                            <span th:text="${index.count}"></span>
+                                                            <span th:text="${wrap.name}"></span>
+                                                            <span class="price" th:text="${wrap.cost}"></span>
                                                         </label>
-                                                    </div>
-                                                    <div class="single-payment-option">
-                                                        <input type="radio" name="shipping" id="shipping-2">
-                                                        <label for="shipping-2">
 
-                                                            <p>Standerd Shipping</p>
-                                                            <span class="price">$10.50</span>
-                                                        </label>
-                                                    </div>
-                                                    <div class="single-payment-option">
-                                                        <input type="radio" name="shipping" id="shipping-3">
-                                                        <label for="shipping-3">
-
-                                                            <p>Standerd Shipping</p>
-                                                            <span class="price">$10.50</span>
-                                                        </label>
-                                                    </div>
-                                                    <div class="single-payment-option">
-                                                        <input type="radio" name="shipping" id="shipping-4">
-                                                        <label for="shipping-4">
-
-                                                            <p>Standerd Shipping</p>
-                                                            <span class="price">$10.50</span>
-                                                        </label>
+                                                        <!-- 포장 값 넣기 -->
                                                     </div>
                                                 </div>
                                             </div>
@@ -240,36 +223,10 @@
                     </div>
                 </div>
 
-
             </div>
         </div>
     </section>
-    <script>
-        // $(document).ready(function () {
-        //     $('input[type="radio"][name="wrapRadio"]').on('click', function () {
-        //         const chkValue = $('input[id="wrap-used"]').prop('checked')
-        //         if (chkValue) {
-        //             $('div[id="wrap-view"]').css('display', 'block');
-        //         } else {
-        //             $('div[id="wrap-view"]').css('display', 'none');
-        //         }
-        //     });
-        //
-        // });
-        document.addEventListener('DOMContentLoaded', function () {
-            const radioInputs = document.querySelectorAll('input[type="radio"][name="wrapRadio"]');
-            radioInputs.forEach(function (input) {
-                input.addEventListener('click', function () {
-                    const chkValue = document.getElementById('wrap-used').checked;
-                    const wrapViewDiv = document.getElementById('wrap-view');
-                    if (chkValue) {
-                        wrapViewDiv.style.display = 'block';
-                    } else {
-                        wrapViewDiv.style.display = 'none';
-                    }
-                });
-            });
-        });
+    <script src="/assets/js/order/order.js">
     </script>
 </div>
 </html>
