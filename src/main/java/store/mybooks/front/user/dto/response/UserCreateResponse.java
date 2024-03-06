@@ -27,7 +27,9 @@ public class UserCreateResponse {
 
     private String email;
 
-    private LocalDate birth;
+    private Integer birthYear;
+
+    private String birthMonthDay;
 
     private String userStatusName;
 
