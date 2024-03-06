@@ -1,6 +1,5 @@
 package store.mybooks.front.user.controller;
 
-import java.util.Arrays;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,20 +16,18 @@ import org.springframework.web.servlet.view.RedirectView;
 import store.mybooks.front.auth.adaptor.TokenAdaptor;
 import store.mybooks.front.auth.dto.request.TokenCreateRequest;
 import store.mybooks.front.auth.dto.response.TokenCreateResponse;
-import store.mybooks.front.config.KeyConfig;
-import store.mybooks.front.oauth2.InMemoryProviderRepository;
-import store.mybooks.front.oauth2.OauthProvider;
 import store.mybooks.front.user.adaptor.UserAdaptor;
 import store.mybooks.front.user.dto.request.UserCreateRequest;
+import store.mybooks.front.user.dto.request.UserEmailRequest;
 import store.mybooks.front.user.dto.request.UserGradeModifyRequest;
 import store.mybooks.front.user.dto.request.UserLoginRequest;
 import store.mybooks.front.user.dto.request.UserModifyRequest;
 import store.mybooks.front.user.dto.request.UserPasswordModifyRequest;
 import store.mybooks.front.user.dto.request.UserStatusModifyRequest;
+import store.mybooks.front.user.dto.response.UserEncryptedPasswordResponse;
 import store.mybooks.front.user.dto.response.UserGetResponse;
 import store.mybooks.front.user.dto.response.UserLoginResponse;
 import store.mybooks.front.utils.CookieUtils;
-import store.mybooks.front.utils.Utils;
 
 /**
  * packageName    : store.mybooks.front.user.controller<br>
@@ -78,8 +75,7 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public String logout(HttpServletResponse response) {
-        CookieUtils.deleteJwtCookie(response);
+    public String logout() {
         return "redirect:/";
     }
 
@@ -127,15 +123,19 @@ public class UserController {
     @PostMapping("/login")
     public String loginUser(@ModelAttribute UserLoginRequest userLoginRequest, HttpServletResponse response) {
 
-        // 비밀번호 암호화
-        userLoginRequest.setPassword(passwordEncoder.encode(userLoginRequest.getPassword()));
+        UserEmailRequest emailRequest = new UserEmailRequest(userLoginRequest.getEmail());
 
-        // 여기서 검증받고
-        UserLoginResponse loginResponse = userAdaptor.loginUser(userLoginRequest);
+        // 이메일 존재하는지 , 탈퇴했는지
+        UserEncryptedPasswordResponse userEncryptedPasswordResponse =
+                userAdaptor.verifyUserStatus(emailRequest);
 
-        // 검증됐으면
-        if (loginResponse.getIsValidUser()) {
-            // 토큰 값 가져오고
+        // 비밀번호도 같으면 완료
+        if (passwordEncoder.matches(userLoginRequest.getPassword(),
+                userEncryptedPasswordResponse.getEncryptedPassword())) {
+
+            UserLoginResponse loginResponse = userAdaptor.completeLoginProcess(emailRequest);
+
+            // 쿠키추가
             TokenCreateResponse tokenCreateResponse =
                     tokenAdaptor.createToken(
                             new TokenCreateRequest(loginResponse.getIsAdmin(), loginResponse.getUserId(),
@@ -143,13 +143,11 @@ public class UserController {
 
             CookieUtils.addJwtCookie(response, tokenCreateResponse.getAccessToken());
             return "redirect:/";
-
-        } else {
-            // 실패하면 다시 로그인 창으로
-            return "redirect:/login";
         }
 
+        return "redirect:/login";
     }
+
 
     /**
      * methodName : createUser
@@ -182,8 +180,6 @@ public class UserController {
 
         // 비밀번호 암호화
         modifyRequest.setPassword(passwordEncoder.encode(modifyRequest.getPassword()));
-
-        // todo JWT 비밀번호 변경됐으니까 로그아웃 시키고 새로 인증받도록
         userAdaptor.modifyUserPassword(modifyRequest);
         return "redirect:/";
     }
@@ -247,7 +243,6 @@ public class UserController {
      */
     @PostMapping("/user/delete")
     public String deleteUser() {
-        // todo JWT , 탈퇴했으니까 로그아웃시키고 상태관리 해줘야 함
         userAdaptor.deleteUser();
         return "redirect:/";
     }
