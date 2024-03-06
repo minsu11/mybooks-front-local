@@ -1,6 +1,7 @@
 package store.mybooks.front.admin.tag.adaptor;
 
 import java.util.List;
+import org.springframework.data.domain.Pageable;
 import store.mybooks.front.admin.tag.model.request.TagCreateRequest;
 import store.mybooks.front.admin.tag.model.request.TagModifyRequest;
 import store.mybooks.front.admin.tag.model.response.TagGetResponse;
@@ -20,7 +21,7 @@ import store.mybooks.front.pageable.dto.response.PageResponse;
 public interface TagAdaptor {
     TagGetResponse getTag(Integer id);
 
-    PageResponse<TagGetResponse> getTags(int page, int size);
+    PageResponse<TagGetResponse> getTags(Pageable pageable);
 
     List<TagGetResponse> getTags();
 

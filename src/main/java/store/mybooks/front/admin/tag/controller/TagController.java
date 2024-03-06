@@ -1,8 +1,12 @@
 package store.mybooks.front.admin.tag.controller;
 
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import store.mybooks.front.admin.tag.model.request.TagCreateRequest;
 import store.mybooks.front.admin.tag.model.request.TagModifyRequest;
 import store.mybooks.front.admin.tag.service.TagService;
+import store.mybooks.front.global.exception.ValidationFailException;
 
 /**
  * packageName    : store.mybooks.front.category.controller
@@ -35,26 +40,15 @@ public class TagController {
      * author : damho-lee <br>
      * description : 사이드바에서 태그를 누르는 경우 나오는 페이지.<br>
      *
-     * @param page  Integer
-     * @param size  Integer
+     * @param pageable Pageable
      * @param model Model
      * @return string
      */
     @GetMapping
-    public String getTagPage(@RequestParam(value = "page", required = false) Integer page,
-                             @RequestParam(value = "size", required = false) Integer size,
+    public String getTagPage(@PageableDefault Pageable pageable,
                              Model model) {
-        if (page == null) {
-            page = 0;
-        }
-
-        if (size == null) {
-            size = 10;
-        }
-
-        model.addAttribute("tags", tagService.getTags(page, size).getContent());
-
-        return "admin/view/tag";
+        model.addAttribute("tags", tagService.getTags(pageable));
+        return "admin/view/tag/tag-admin-page";
     }
 
     /**
@@ -66,7 +60,7 @@ public class TagController {
      */
     @GetMapping("/register")
     public String getTagRegisterPage() {
-        return "admin/view/tag-register";
+        return "admin/view/tag/tag-register";
     }
 
     /**
@@ -78,7 +72,12 @@ public class TagController {
      * @return string
      */
     @PostMapping("/register")
-    public String createTag(@ModelAttribute TagCreateRequest tagCreateRequest) {
+    public String createTag(@ModelAttribute TagCreateRequest tagCreateRequest,
+                            BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new ValidationFailException(bindingResult);
+        }
+        
         tagService.createTag(tagCreateRequest);
         return "redirect:/admin/tag/register";
     }
@@ -95,7 +94,7 @@ public class TagController {
     @GetMapping("/update")
     public String getUpdatePage(@RequestParam("id") Integer id, Model model) {
         model.addAttribute("tag", tagService.getTag(id));
-        return "admin/view/tag-update";
+        return "admin/view/tag/tag-update";
     }
 
     /**
@@ -108,7 +107,7 @@ public class TagController {
      * @return string
      */
     @PostMapping("/update/{id}")
-    public String updateTag(@PathVariable("id") Integer id, @ModelAttribute TagModifyRequest tagModifyRequest) {
+    public String updateTag(@PathVariable("id") Integer id, @Valid @ModelAttribute TagModifyRequest tagModifyRequest) {
         tagService.updateTag(id, tagModifyRequest);
         return "redirect:/admin/tag";
     }
