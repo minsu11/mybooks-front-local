@@ -1,10 +1,12 @@
 package store.mybooks.front.admin.category.controller;
 
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +17,7 @@ import store.mybooks.front.admin.category.model.request.CategoryCreateRequest;
 import store.mybooks.front.admin.category.model.request.CategoryModifyRequest;
 import store.mybooks.front.admin.category.model.response.CategoryGetResponseForUpdate;
 import store.mybooks.front.admin.category.service.CategoryService;
+import store.mybooks.front.global.exception.ValidationFailException;
 
 /**
  * packageName    : store.mybooks.front.admin.controller
@@ -44,8 +47,8 @@ public class CategoryController {
      */
     @GetMapping
     public String getCategoryPage(@PageableDefault Pageable pageable, Model model) {
-        model.addAttribute("categories", categoryService.getCategories(pageable).getContent());
-        return "admin/view/category";
+        model.addAttribute("categories", categoryService.getCategories(pageable));
+        return "admin/view/category/category-admin-page";
     }
 
     /**
@@ -59,7 +62,7 @@ public class CategoryController {
     @GetMapping("/register")
     public String getCategoryRegisterPage(Model model) {
         model.addAttribute(categoryService.getHighestCategories());
-        return "admin/view/category-register";
+        return "admin/view/category/category-register";
     }
 
     /**
@@ -71,7 +74,11 @@ public class CategoryController {
      * @return string
      */
     @PostMapping("/register")
-    public String categoryRegister(@ModelAttribute CategoryCreateRequest categoryCreateRequest) {
+    public String categoryRegister(@Valid @ModelAttribute CategoryCreateRequest categoryCreateRequest,
+                                   BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new ValidationFailException(bindingResult);
+        }
         categoryService.createCategory(categoryCreateRequest);
         return "redirect:/admin/category/register";
     }
@@ -106,7 +113,7 @@ public class CategoryController {
         model.addAttribute("levelOneCategoryName", categoryGetResponseForUpdate.getLevelOneCategoryName());
         model.addAttribute("levelTwoCategoryName", categoryGetResponseForUpdate.getLevelTwoCategoryName());
 
-        return "admin/view/category-update";
+        return "admin/view/category/category-update";
     }
 
     /**
