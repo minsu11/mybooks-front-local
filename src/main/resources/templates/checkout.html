@@ -44,7 +44,8 @@
                                                 <div class="row">
                                                     <div class="col-md-6 form-input form">
                                                         <label>
-                                                            <input name="userId" type="text">
+                                                            <input name="userId" type="text" th:value="${user.name}"
+                                                                   readonly>
                                                         </label>
                                                     </div>
                                                 </div>
@@ -54,7 +55,7 @@
                                             <div class="single-form form-default">
                                                 <label>이메일</label>
                                                 <div class="col-md-6 form-input form">
-                                                    <input type="text" placeholder="이메일">
+                                                    <input type="text" th:value="${user.email}" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -62,17 +63,8 @@
                                             <div class="single-form form-default">
                                                 <label>휴대폰 번호</label>
                                                 <div class="col-md-6 form-input form">
-                                                    <input type="text" placeholder="휴대폰 번호">
+                                                    <input type="text" th:value="${user.phoneNumber}" readonly>
                                                 </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-12">
-                                            <div class="single-form button">
-                                                <button class="btn" data-bs-toggle="collapse"
-                                                        data-bs-target="#collapseFour" aria-expanded="false"
-                                                        aria-controls="collapseFour">다음 단계
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -101,37 +93,18 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
-                                            <div class="single-form form-default">
-                                                <label>이메일</label>
-                                                <div class="form-input form">
-                                                    <input type="text" placeholder="이메일">
-                                                </div>
-                                            </div>
-                                        </div>
+
                                         <div>
-                                            <label>배송지 입력</label>
-                                            <div class="col-md-6">
+                                            <div class="col-md-8">
                                                 <div class="single-form form-default">
-                                                    <label>City</label>
+                                                    <label>받는 주소
+                                                        <button class="btn btn-outline-secondary btn-sm" type="button"
+                                                                onclick="address()">배송지
+                                                        </button>
+                                                    </label>
                                                     <div class="form-input form">
-                                                        <input type="text" placeholder="City">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="single-form form-default">
-                                                    <label>Post Code</label>
-                                                    <div class="form-input form">
-                                                        <input type="text" placeholder="Post Code">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="single-form form-default">
-                                                    <label>Country</label>
-                                                    <div class="form-input form">
-                                                        <input type="text" placeholder="Country">
+                                                        <input id="delivery-address" type="text" placeholder="배송지"
+                                                               readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -226,7 +199,16 @@
             </div>
         </div>
     </section>
-    <script src="/assets/js/order/order.js">
+    <script src="/assets/js/order/order.js"></script>
+    <script>
+        function address() {
+            const width = 800
+            const height = 600
+            const left = Math.ceil((window.screen.width - width) / 2);
+            const top = Math.ceil((window.screen.height - height) / 2)
+            window.open("/address", "_blank", "toolbar=yes,scrollbars=yes,top=" + top + ",left=" + left + ",width=" + width + ",height=" + height)
+        }
     </script>
+
 </div>
 </html>
