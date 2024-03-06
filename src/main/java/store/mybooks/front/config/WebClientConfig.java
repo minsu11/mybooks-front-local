@@ -7,7 +7,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import store.mybooks.front.utils.interceptor.CookieInterceptor;
+import store.mybooks.front.auth.interceptor.CookieInterceptor;
+import store.mybooks.front.auth.interceptor.LogoutInterceptor;
 
 /**
  * packageName    : store.mybooks.front.config
@@ -36,7 +37,7 @@ public class WebClientConfig implements WebMvcConfigurer {
                 .addPathPatterns("/user/**")
                 .addPathPatterns("/admin/**")
                 .addPathPatterns("/book/**")
-                .addPathPatterns("/","/login","/signup")
+                .addPathPatterns("/", "/login", "/signup")
                 .excludePathPatterns("/**/*.js")
                 .excludePathPatterns("/**/*.scss")
                 .excludePathPatterns("/**/*.css")
@@ -45,5 +46,10 @@ public class WebClientConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/**/*.jpg")
                 .excludePathPatterns("/**/*.png")
                 .excludePathPatterns("/**/*.woff2");
+
+        registry.addInterceptor(new LogoutInterceptor())
+                .addPathPatterns("/logout")
+                .addPathPatterns("/user/delete")
+                .addPathPatterns("/user/modify/password");
     }
 }
