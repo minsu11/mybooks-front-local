@@ -1,8 +1,7 @@
-package store.mybooks.front.oauth2;
+package store.mybooks.front.oauth;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.springframework.stereotype.Component;
 
 /**
  * packageName    : store.mybooks.front.oauth2<br>

@@ -1,15 +1,10 @@
-package store.mybooks.front.oauth2;
+package store.mybooks.front.oauth;
 
-import java.security.Provider;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.web.bind.annotation.GetMapping;
-import store.mybooks.front.config.KeyConfig;
 
 /**
  * packageName    : store.mybooks.front.oauth2<br>

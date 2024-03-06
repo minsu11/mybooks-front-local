@@ -1,9 +1,7 @@
-package store.mybooks.front.oauth2;
+package store.mybooks.front.oauth;
 
 import java.util.Arrays;
 import java.util.Map;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 /**
  * packageName    : store.mybooks.front.oauth2<br>

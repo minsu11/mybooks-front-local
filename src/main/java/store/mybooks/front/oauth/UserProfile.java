@@ -1,7 +1,5 @@
-package store.mybooks.front.oauth2;
+package store.mybooks.front.oauth;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
