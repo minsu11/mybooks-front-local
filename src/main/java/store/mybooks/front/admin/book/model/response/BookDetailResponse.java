@@ -2,10 +2,8 @@ package store.mybooks.front.admin.book.model.response;
 
 import java.time.LocalDate;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import store.mybooks.front.admin.author.dto.response.AuthorGetResponse;
 import store.mybooks.front.admin.publisher.dto.response.PublisherGetResponse;
 import store.mybooks.front.admin.tag.model.response.TagGetResponseForBookDetail;
@@ -22,9 +20,7 @@ import store.mybooks.front.admin.tag.model.response.TagGetResponseForBookDetail;
  * 2/26/24        newjaehun       최초 생성<br/>
  */
 @Getter
-@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class BookDetailResponse {
     private Long id;
 
