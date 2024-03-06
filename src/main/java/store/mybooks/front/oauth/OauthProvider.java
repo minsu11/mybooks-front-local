@@ -1,4 +1,4 @@
-package store.mybooks.front.oauth2;
+package store.mybooks.front.oauth;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -16,6 +16,7 @@ import lombok.Getter;
  */
 @Getter
 public class OauthProvider {
+
     private final String clientId;
     private final String clientSecret;
     private final String redirectUrl;

@@ -1,4 +1,4 @@
-package store.mybooks.front.oauth2;
+package store.mybooks.front.oauth;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,9 +14,8 @@ import java.util.Map;
  * -----------------------------------------------------------
  * 3/3/24        masiljangajji       최초 생성
  */
-public class OauthAdapter {
 
-    private OauthAdapter() {}
+public class OauthAdapter {
 
     // OauthProperties를 OauthProvider로 변환해준다.
     public static Map<String, OauthProvider> getOauthProviders(OauthProperties properties) {
@@ -24,6 +23,7 @@ public class OauthAdapter {
 
         properties.getUser().forEach((key, value) -> oauthProvider.put(key,
                 new OauthProvider(value, properties.getProvider().get(key))));
+
         return oauthProvider;
     }
 }

@@ -57,8 +57,8 @@ public class GlobalControllerAdvice {
 
         if (ex instanceof AuthenticationIsNotValidException) {
             return "redirect:/login"; // 다시 로그인
-        } else if (ex instanceof StatusIsNotActiveException) {
-            return "redirect:/휴대폰인증 url"; // todo 휴대폰인증 페이지로
+        }else if(ex instanceof StatusIsNotActiveException){
+            return "redirect:/dormancy"; // todo 휴대폰인증 페이지로
         }
 
         // 권한없는 경우 index
