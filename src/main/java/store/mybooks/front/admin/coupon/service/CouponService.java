@@ -24,14 +24,36 @@ import store.mybooks.front.pageable.dto.response.PageResponse;
 public class CouponService {
     private final CouponAdaptor couponAdaptor;
 
+    /**
+     * methodName : getCoupons <br>
+     * author : damho-lee <br>
+     * description : 쿠폰 페이지 요청.<br>
+     *
+     * @param pageable Pageable
+     * @return PageResponse
+     */
     public PageResponse<CouponGetResponse> getCoupons(Pageable pageable) {
         return couponAdaptor.getCouponPage(pageable);
     }
 
+    /**
+     * methodName : createCoupon <br>
+     * author : damho-lee <br>
+     * description : 쿠폰 생성.<br>
+     *
+     * @param createRequest CouponCreateRequest
+     */
     public void createCoupon(CouponCreateRequest createRequest) {
         couponAdaptor.createCoupon(createRequest);
     }
 
+    /**
+     * methodName : deleteCoupon <br>
+     * author : damho-lee <br>
+     * description : 쿠폰 삭제.<br>
+     *
+     * @param id Long
+     */
     public void deleteCoupon(Long id) {
         couponAdaptor.deleteCoupon(id);
     }
