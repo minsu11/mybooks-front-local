@@ -22,6 +22,5 @@ public class TokenCreateResponse {
 
     private String accessToken;
 
-    private String refreshToken;
 
 }
