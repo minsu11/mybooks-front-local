@@ -164,11 +164,13 @@ public class CategoryAdaptor {
     public List<CategoryGetResponseForBookCreate> getCategories() {
         HttpHeaders headers = Utils.getAuthHeader();
 
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
         String url = gatewayAdaptorProperties.getAddress() + URL_ADMIN;
         ResponseEntity<List<CategoryGetResponseForBookCreate>> exchange = restTemplate.exchange(
                 url,
                 HttpMethod.GET,
-                new HttpEntity<>(headers),
+                requestEntity,
                 new ParameterizedTypeReference<>() {
                 });
 
@@ -185,9 +187,7 @@ public class CategoryAdaptor {
      */
     @RequiredAuthorization
     public void updateCategory(Integer id, CategoryModifyRequestForTransmission categoryModifyRequestForTransmission) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        HttpHeaders headers = Utils.getAuthHeader();
 
         HttpEntity<CategoryModifyRequestForTransmission> requestEntity =
                 new HttpEntity<>(categoryModifyRequestForTransmission, headers);
@@ -213,9 +213,7 @@ public class CategoryAdaptor {
      */
     @RequiredAuthorization
     public void deleteCategory(Integer id) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        HttpHeaders headers = Utils.getAuthHeader();
 
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
