@@ -181,7 +181,7 @@ public class BookAdminAdaptor {
         HttpEntity<Void> requestHttpEntity = new HttpEntity<>(Utils.getHttpHeader());
 
         ResponseEntity<BookCartResponse> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL + "/cartinbooks" + "/" + bookId,
+                gatewayAdaptorProperties.getAddress() + URL + "/cart-books" + "/" + bookId,
                 HttpMethod.GET,
                 requestHttpEntity,
                 new ParameterizedTypeReference<>() {
