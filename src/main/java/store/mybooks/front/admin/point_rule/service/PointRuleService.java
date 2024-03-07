@@ -53,4 +53,8 @@ public class PointRuleService {
     public void modifyPointRule(PointRuleModifyRequest request, Integer id) {
         pointAdminAdaptor.modifyPointRule(request, id);
     }
+
+    public void deletePointRule(Integer id) {
+        pointAdminAdaptor.deletePointRule(id);
+    }
 }

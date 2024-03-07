@@ -88,6 +88,7 @@ public class PointAdminAdaptor {
      * @param request 수정 요청 보낼 데이터
      * @return point rule modify response
      */
+    @RequiredAuthorization
     public PointRuleModifyResponse modifyPointRule(PointRuleModifyRequest request, Integer id) {
         HttpHeaders headers = Utils.getAuthHeader();
         HttpEntity<PointRuleModifyRequest> httpEntity = new HttpEntity<>(request, headers);
@@ -99,6 +100,20 @@ public class PointAdminAdaptor {
                 }, id
         );
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
+
+    @RequiredAuthorization
+    public void deletePointRule(Integer id) {
+        HttpHeaders headers = Utils.getAuthHeader();
+        HttpEntity<Object> httpEntity = new HttpEntity<>(headers);
+        ResponseEntity<Object> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL + "/{id}",
+                HttpMethod.DELETE,
+                httpEntity,
+                new ParameterizedTypeReference<Object>() {
+                }, id
+        );
+        Utils.getResponseEntity(exchange, HttpStatus.NO_CONTENT);
     }
 
 }

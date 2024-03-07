@@ -102,9 +102,13 @@ public class PointRuleController {
     @PostMapping("update/{id}")
     public String doUpdatePointRule(@ModelAttribute PointRuleModifyRequest request,
                                     @PathVariable Integer id) {
-        log.info("id value:{}", id);
-        log.info("modify request: {}", request.getPointRuleName());
         pointRuleService.modifyPointRule(request, id);
+        return "redirect:/admin/point-rule";
+    }
+
+    @PostMapping("/{id}")
+    public String doDeletePointRule(@PathVariable Integer id) {
+        pointRuleService.deletePointRule(id);
         return "redirect:/admin/point-rule";
     }
 }
