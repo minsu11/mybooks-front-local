@@ -1,12 +1,8 @@
 package store.mybooks.front.cart.domain;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 /**
  * packageName    : store.mybooks.front.cart <br/>
