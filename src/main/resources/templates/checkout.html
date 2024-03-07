@@ -80,7 +80,7 @@
                                                 <label>이름</label>
                                                 <div class="row">
                                                     <div class="col-md-6 form-input form">
-                                                        <input type="text" placeholder="이름">
+                                                        <input name="recipientName" type="text" placeholder="이름">
                                                     </div>
                                                 </div>
                                             </div>
@@ -89,7 +89,7 @@
                                             <div class="single-form form-default">
                                                 <label>휴대폰 번호</label>
                                                 <div class="form-input form">
-                                                    <input type="text" placeholder="휴대폰 번호">
+                                                    <input name="recipientPhoneNumber" type="text" placeholder="휴대폰 번호">
                                                 </div>
                                             </div>
                                         </div>
@@ -103,7 +103,8 @@
                                                         </button>
                                                     </label>
                                                     <div class="form-input form">
-                                                        <input id="delivery-address" type="text" placeholder="배송지"
+                                                        <input id="delivery-address" name="recipientAddress" type="text"
+                                                               placeholder="배송지"
                                                                readonly>
                                                     </div>
                                                 </div>
@@ -143,6 +144,47 @@
                                     </div>
                                 </section>
                             </li>
+                            <li>
+                                <h5>주문 내역
+                                </h5>
+                                <hr>
+                                <section class="form-content">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="p-3 m-3">
+                                                <table class="table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th class="col-4">책 이름</th>
+                                                        <th class="col-1">정가</th>
+                                                        <th class="col-1">판매가</th>
+                                                        <th class="col-1">수량</th>
+                                                        <th class="col-1">합계</th>
+                                                        <th class="col-1"></th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td th:text="${book.name}"></td>
+                                                        <td th:text="${book.originalCost}"></td>
+                                                        <td th:text="${book.saleCost}"></td>
+                                                        <td th:text="${quantity}"></td>
+                                                        <td th:text="${totalCost}"></td>
+                                                        <td>
+                                                            <button type="button" class="button btn-primary btn-sm">쿠폰
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </section>
+                            </li>
+
                             <li>
                                 <h5>결제</h5>
                                 <hr>
@@ -208,6 +250,23 @@
             const top = Math.ceil((window.screen.height - height) / 2)
             window.open("/address", "_blank", "toolbar=yes,scrollbars=yes,top=" + top + ",left=" + left + ",width=" + width + ",height=" + height)
         }
+
+        function clickCoupon() {
+            var couponCode = document.getElementById('couponCode').value;
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/applyCoupon?code=" + couponCode, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == XMLHttpRequest.DONE) {
+                    if (xhr.status == 200) {
+
+                    } else {
+                    }
+                }
+            };
+            xhr.send();
+        }
+
     </script>
 
 </div>

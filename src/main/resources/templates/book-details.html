@@ -93,10 +93,10 @@
                                 <div class="bottom-content">
                                     <div class="row align-items-end">
                                         <div class="col-lg-4 col-md-4 col-12">
-                                            <form action="/order" method="post">
+                                            <form action="/direct/checkout" method="get">
                                                 <input type="hidden" name="id" th:value="${book.id}">
                                                 <input type="hidden" name="saleCost" th:value="${book.saleCost}">
-                                                <input type="hidden" id="buyNowQuantity" name="quantity">
+                                                <input type="hidden" id="buyNowQuantity" name="quantity" value="1">
                                                 <div class="button cart-button">
                                                     <button type="submit" class="btn" style="width: 100%;">바로구매</button>
                                                 </div>
@@ -395,6 +395,7 @@
 
         function stepDown() {
             document.getElementById('quantity').stepDown()
+            document.getElementById('buyNowQuantity').value = document.getElementById('quantity').value
             document.getElementById('cartQuantity').value = document.getElementById('quantity').value
         }
 
