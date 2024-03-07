@@ -1,7 +1,7 @@
 package store.mybooks.front.user.dto.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * packageName    : store.mybooks.resource.user.dto.common<br>
@@ -16,7 +16,7 @@ import lombok.Getter;
  */
 
 
-@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 public class UserDeleteResponse {
 

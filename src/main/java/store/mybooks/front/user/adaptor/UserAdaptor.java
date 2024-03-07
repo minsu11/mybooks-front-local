@@ -1,7 +1,5 @@
 package store.mybooks.front.user.adaptor;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -11,21 +9,24 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
 import store.mybooks.front.auth.Annotation.RequiredAuthorization;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.user.dto.request.UserCreateRequest;
+import store.mybooks.front.user.dto.request.UserEmailRequest;
 import store.mybooks.front.user.dto.request.UserGradeModifyRequest;
 import store.mybooks.front.user.dto.request.UserLoginRequest;
 import store.mybooks.front.user.dto.request.UserModifyRequest;
+import store.mybooks.front.user.dto.request.UserOauthCreateRequest;
+import store.mybooks.front.user.dto.request.UserOauthLoginRequest;
 import store.mybooks.front.user.dto.request.UserPasswordModifyRequest;
 import store.mybooks.front.user.dto.request.UserStatusModifyRequest;
 import store.mybooks.front.user.dto.response.UserCreateResponse;
+import store.mybooks.front.user.dto.response.UserEncryptedPasswordResponse;
 import store.mybooks.front.user.dto.response.UserGetResponse;
 import store.mybooks.front.user.dto.response.UserGradeModifyResponse;
 import store.mybooks.front.user.dto.response.UserLoginResponse;
 import store.mybooks.front.user.dto.response.UserModifyResponse;
+import store.mybooks.front.user.dto.response.UserOauthCreateResponse;
 import store.mybooks.front.user.dto.response.UserPasswordModifyResponse;
 import store.mybooks.front.user.dto.response.UserStatusModifyResponse;
 import store.mybooks.front.utils.Utils;
@@ -81,6 +82,50 @@ public class UserAdaptor {
         return responseEntity.getBody();
     }
 
+    public UserEncryptedPasswordResponse verifyUserStatus(UserEmailRequest request) {
+
+        ResponseEntity<UserEncryptedPasswordResponse> responseEntity =
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL + "/verification", HttpMethod.POST,
+                        new HttpEntity<>(request,Utils.getHttpHeader()),
+                        new ParameterizedTypeReference<>() {
+                        });
+
+        if (responseEntity.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException();
+        }
+
+        return responseEntity.getBody();
+    }
+
+    public UserLoginResponse completeLoginProcess(UserEmailRequest request){
+        ResponseEntity<UserLoginResponse> responseEntity =
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL + "/verification/complete", HttpMethod.POST,
+                        new HttpEntity<>(request,Utils.getHttpHeader()),
+                        new ParameterizedTypeReference<>() {
+                        });
+
+        if (responseEntity.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException();
+        }
+
+        return responseEntity.getBody();
+    }
+
+    public UserLoginResponse loginOauthUser(UserOauthLoginRequest userLoginRequest) {
+
+        ResponseEntity<UserLoginResponse> responseEntity =
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL + "/oauth/login", HttpMethod.POST,
+                        new HttpEntity<>(userLoginRequest, Utils.getHttpHeader()),
+                        new ParameterizedTypeReference<>() {
+                        });
+
+        if (responseEntity.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException();
+        }
+
+        return responseEntity.getBody();
+    }
+
 
     /**
      * methodName : createUser
@@ -104,6 +149,20 @@ public class UserAdaptor {
         if (responseEntity.getStatusCode() != HttpStatus.CREATED) {
             throw new RuntimeException();
         }
+    }
+
+    public UserOauthCreateResponse createOauthUser(UserOauthCreateRequest createRequest) {
+
+        ResponseEntity<UserOauthCreateResponse> response =
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL + "/oauth", HttpMethod.POST,
+                        new HttpEntity<>(createRequest, Utils.getHttpHeader())
+                        , new ParameterizedTypeReference<>() {
+                        });
+
+        if (response.getStatusCode() != HttpStatus.CREATED) {
+            throw new RuntimeException();
+        }
+        return response.getBody();
     }
 
 
@@ -138,12 +197,10 @@ public class UserAdaptor {
     @RequiredAuthorization
     public void modifyUserPassword(UserPasswordModifyRequest modifyRequest) {
 
-
-
         ResponseEntity<UserPasswordModifyResponse> responseEntity =
                 restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL_MEMBER + "/password",
                         HttpMethod.PUT,
-                        new HttpEntity<>(modifyRequest,Utils.getAuthHeader()),
+                        new HttpEntity<>(modifyRequest, Utils.getAuthHeader()),
                         new ParameterizedTypeReference<>() {
                         });
 
@@ -221,10 +278,9 @@ public class UserAdaptor {
     public void modifyUser(UserModifyRequest modifyRequest) {
 
 
-
         ResponseEntity<UserModifyResponse> responseEntity =
                 restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL_MEMBER, HttpMethod.PUT,
-                        new HttpEntity<>(modifyRequest,Utils.getAuthHeader()),
+                        new HttpEntity<>(modifyRequest, Utils.getAuthHeader()),
                         new ParameterizedTypeReference<>() {
                         });
 

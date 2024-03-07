@@ -60,6 +60,7 @@ public class SecurityConfig {
                 .and()
                 .csrf().disable()
                 .formLogin().disable()
+                .logout().disable()
                 .httpBasic().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         return http.build();

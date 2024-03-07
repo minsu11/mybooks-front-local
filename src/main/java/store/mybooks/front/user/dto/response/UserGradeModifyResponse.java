@@ -1,8 +1,7 @@
 package store.mybooks.front.user.dto.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 /**
  * packageName    : store.mybooks.resource.user.dto.response<br>
@@ -16,8 +15,7 @@ import lombok.Setter;
  * 2/25/24        masiljangajji       최초 생성
  */
 @Getter
-@Setter
-@AllArgsConstructor
+@NoArgsConstructor
 public class UserGradeModifyResponse {
 
     private String userGradeName;
