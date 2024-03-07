@@ -102,6 +102,14 @@ public class PointAdminAdaptor {
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
+    /**
+     * methodName : deletePointRule<br>
+     * author : minsu11<br>
+     * description : 포인트 규정 삭제 요청.
+     * <br> *
+     *
+     * @param id 삭제할 포인트 규정 {@code id}
+     */
     @RequiredAuthorization
     public void deletePointRule(Integer id) {
         HttpHeaders headers = Utils.getAuthHeader();

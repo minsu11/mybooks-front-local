@@ -50,10 +50,27 @@ public class PointRuleService {
         pointAdminAdaptor.createPointRule(request);
     }
 
+    /**
+     * methodName : modifyPointRule<br>
+     * author : minsu11<br>
+     * description : 포인트 규정 수정.
+     * <br> *
+     *
+     * @param request 수정할 포인트 규정
+     * @param id      수정할 포인트 규정 {@code id}
+     */
     public void modifyPointRule(PointRuleModifyRequest request, Integer id) {
         pointAdminAdaptor.modifyPointRule(request, id);
     }
 
+    /**
+     * methodName : deletePointRule<br>
+     * author : minsu11<br>
+     * description : 포인트 규정 삭제.
+     * <br> *
+     *
+     * @param id 삭제할 포인트 규정 아이디
+     */
     public void deletePointRule(Integer id) {
         pointAdminAdaptor.deletePointRule(id);
     }

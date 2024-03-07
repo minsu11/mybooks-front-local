@@ -72,33 +72,68 @@ public class PointRuleController {
         return "admin/view/point-rule/point-rule-register-view";
     }
 
+    /**
+     * methodName : doRegisterPointRule<br>
+     * author : minsu11<br>
+     * description : 포인트 규정 등록.
+     * <br> *
+     *
+     * @param request 등록할 포인트 규정
+     * @return string
+     */
     @PostMapping("/register")
     public String doRegisterPointRule(@ModelAttribute PointRuleCreateRequest request) {
         pointRuleService.createPointRule(request);
         return "redirect:/admin/point-rule";
     }
 
+    /**
+     * methodName : postPointRuleUpdate<br>
+     * author : minsu11<br>
+     * description : 포인트 규정 수정 {@code view}로 {@code redirect}시켜줌
+     * <br> *
+     *
+     * @param request            수정할 데이터
+     * @param redirectAttributes {@code redirect}로 넘길 모델
+     * @return string
+     */
     @PostMapping("/update-form")
     public String postPointRuleUpdate(@ModelAttribute PointRuleRequest request,
                                       RedirectAttributes redirectAttributes) {
-        log.info("포인트 규정 명 등록: {}", request.getPointRuleName());
-
         redirectAttributes.addFlashAttribute("modifyPointRule", request);
         return "redirect:/admin/point-rule/update-form";
     }
 
+    /**
+     * methodName : viewPointRuleUpdate<br>
+     * author : minsu11<br>
+     * description : 포인트 규정 수정 {@code view}
+     * <br> *
+     *
+     * @param request  수정할 포인트 규정.
+     * @param modelMap 모델
+     * @return string
+     */
     @GetMapping("/update-form")
     public String viewPointRuleUpdate(@ModelAttribute(name = "modifyPointRule") PointRuleRequest request,
                                       ModelMap modelMap) {
-        log.info("포인트 규정 명 등록: {}", request.getPointRuleName());
 
         List<PointRuleNameResponse> pointRuleResponseList = pointRuleNameService.getPointRuleNameList();
-        log.info("수정하기 위한 값:{}", request.getPointRuleName());
         modelMap.put("pointRuleNameList", pointRuleResponseList);
         modelMap.put("modifyPointRule", request);
         return "admin/view/point-rule/point-rule-register-view";
     }
 
+    /**
+     * methodName : doUpdatePointRule<br>
+     * author : minsu11<br>
+     * description : 포인트 규정 수정.
+     * <br> *
+     *
+     * @param request 수정할 포인트 규정.
+     * @param id      수정할 포인트 규정 {@code id}
+     * @return string
+     */
     @PostMapping("update/{id}")
     public String doUpdatePointRule(@ModelAttribute PointRuleModifyRequest request,
                                     @PathVariable Integer id) {
@@ -106,6 +141,15 @@ public class PointRuleController {
         return "redirect:/admin/point-rule";
     }
 
+    /**
+     * methodName : doDeletePointRule<br>
+     * author : minsu11<br>
+     * description : 삭제할 포인트 규정.
+     * <br> *
+     *
+     * @param id 삭제할 포인트 규정 {@code id}
+     * @return string
+     */
     @PostMapping("/{id}")
     public String doDeletePointRule(@PathVariable Integer id) {
         pointRuleService.deletePointRule(id);
