@@ -33,34 +33,27 @@
             </div>
         </div>
         <div>
-            <div th:if="${modifyReturnRule != null }">
-                <form name="form" method="post" class="form" th:action="@{'/admin/return-rules/update'}">
+            <div th:if="${modifyPointRule != null }">
+                <form name="form" method="post" class="form"
+                      th:action="@{'/admin/point-rule/update/'+${modifyPointRule.id}}">
+                    <select class="form-select" name="pointRuleName" aria-label="Default select example">
+                        <option selected th:value="${modifyPointRule.pointRuleName}"
+                                th:text="${modifyPointRule.pointRuleName}">포인트 규정 명
+                        </option>
+                        <th:block th:each="pointRuleName:${pointRuleNameList}">
+                            <option th:value="${pointRuleName.id}"
+                                    th:text="${pointRuleName.id}"></option>
+                        </th:block>
+                    </select>
 
-
-                    <input type="hidden" name="id" class="form-control"
-                           th:value="${modifyReturnRule.id}"/>
-
-
-                    <th:block th:each="returnRuleName:${returnRuleNameList}">
-                        <label>
-                            <input type="radio" name="returnName" class="returnName" th:value="${returnRuleName.id}"
-                                   th:checked="${returnRuleName.id eq modifyReturnRule.returnName}"/>
-
-                            <span th:text="${returnRuleName.id}"></span>
-                        </label>
-                        <br>
-                    </th:block>
-
-
-                    <input type="text" name="deliveryFee" class="form-control deliveryFee"
-                           th:value="${modifyReturnRule.deliveryFee}"/>
-
-
-                    <input type="text" name="term" class="form-control term"
-                           th:value="${modifyReturnRule.term}"/>
-
-
-                    <button class="btn btn-outline-secondary" type="submit">수정
+                    <input type="text" name="rate" class="form-control rate" placeholder="적립률"
+                           th:value="${modifyPointRule.rate}"/>
+                    <input type="text" name="cost" class="form-control cost" placeholder="적립 금액"
+                           th:value="${modifyPointRule.cost}"/>
+                    <!--                    <th:block th:if="${msg !=null}">-->
+                    <!--                        <p id="message" th:data-info="${msg}"></p>-->
+                    <!--                    </th:block>-->
+                    <button name="submit" class="btn btn-outline-secondary" type="submit">수정
                     </button>
                 </form>
             </div>

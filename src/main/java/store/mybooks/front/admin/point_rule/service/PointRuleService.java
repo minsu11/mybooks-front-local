@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.admin.point_rule.adaptor.PointAdminAdaptor;
 import store.mybooks.front.admin.point_rule.dto.request.PointRuleCreateRequest;
+import store.mybooks.front.admin.point_rule.dto.request.PointRuleModifyRequest;
 import store.mybooks.front.admin.point_rule.dto.response.PointRuleResponse;
 import store.mybooks.front.pageable.dto.response.PageResponse;
 
@@ -47,5 +48,9 @@ public class PointRuleService {
      */
     public void createPointRule(PointRuleCreateRequest request) {
         pointAdminAdaptor.createPointRule(request);
+    }
+
+    public void modifyPointRule(PointRuleModifyRequest request, Integer id) {
+        pointAdminAdaptor.modifyPointRule(request, id);
     }
 }

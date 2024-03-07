@@ -7,11 +7,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import store.mybooks.front.admin.point_rule.dto.request.PointRuleCreateRequest;
+import store.mybooks.front.admin.point_rule.dto.request.PointRuleModifyRequest;
+import store.mybooks.front.admin.point_rule.dto.request.PointRuleRequest;
 import store.mybooks.front.admin.point_rule.dto.response.PointRuleResponse;
 import store.mybooks.front.admin.point_rule.service.PointRuleService;
 import store.mybooks.front.admin.point_rule_name.dto.response.PointRuleNameResponse;
@@ -74,8 +74,37 @@ public class PointRuleController {
 
     @PostMapping("/register")
     public String doRegisterPointRule(@ModelAttribute PointRuleCreateRequest request) {
-        log.info("포인트 규정 명 등록: {}", request.getPointRuleName());
         pointRuleService.createPointRule(request);
+        return "redirect:/admin/point-rule";
+    }
+
+    @PostMapping("/update-form")
+    public String postPointRuleUpdate(@ModelAttribute PointRuleRequest request,
+                                      RedirectAttributes redirectAttributes) {
+        log.info("포인트 규정 명 등록: {}", request.getPointRuleName());
+
+        redirectAttributes.addFlashAttribute("modifyPointRule", request);
+        return "redirect:/admin/point-rule/update-form";
+    }
+
+    @GetMapping("/update-form")
+    public String viewPointRuleUpdate(@ModelAttribute(name = "modifyPointRule") PointRuleRequest request,
+                                      ModelMap modelMap) {
+        log.info("포인트 규정 명 등록: {}", request.getPointRuleName());
+
+        List<PointRuleNameResponse> pointRuleResponseList = pointRuleNameService.getPointRuleNameList();
+        log.info("수정하기 위한 값:{}", request.getPointRuleName());
+        modelMap.put("pointRuleNameList", pointRuleResponseList);
+        modelMap.put("modifyPointRule", request);
+        return "admin/view/point-rule/point-rule-register-view";
+    }
+
+    @PostMapping("update/{id}")
+    public String doUpdatePointRule(@ModelAttribute PointRuleModifyRequest request,
+                                    @PathVariable Integer id) {
+        log.info("id value:{}", id);
+        log.info("modify request: {}", request.getPointRuleName());
+        pointRuleService.modifyPointRule(request, id);
         return "redirect:/admin/point-rule";
     }
 }

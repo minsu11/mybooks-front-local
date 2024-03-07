@@ -7,7 +7,9 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import store.mybooks.front.admin.point_rule.dto.request.PointRuleCreateRequest;
+import store.mybooks.front.admin.point_rule.dto.request.PointRuleModifyRequest;
 import store.mybooks.front.admin.point_rule.dto.response.PointRuleCreateResponse;
+import store.mybooks.front.admin.point_rule.dto.response.PointRuleModifyResponse;
 import store.mybooks.front.admin.point_rule.dto.response.PointRuleResponse;
 import store.mybooks.front.auth.Annotation.RequiredAuthorization;
 import store.mybooks.front.config.GatewayAdaptorProperties;
@@ -63,6 +65,7 @@ public class PointAdminAdaptor {
      * @param request 요청 보낼 데이터
      * @return point rule create response
      */
+    @RequiredAuthorization
     public PointRuleCreateResponse createPointRule(PointRuleCreateRequest request) {
         HttpHeaders headers = Utils.getAuthHeader();
         HttpEntity<PointRuleCreateRequest> httpEntity = new HttpEntity<>(request, headers);
@@ -76,5 +79,26 @@ public class PointAdminAdaptor {
         return Utils.getResponseEntity(exchange, HttpStatus.CREATED);
     }
 
+    /**
+     * methodName : modifyPointRule<br>
+     * author : minsu11<br>
+     * description : 포인트 규정 수정.
+     * <br> *
+     *
+     * @param request 수정 요청 보낼 데이터
+     * @return point rule modify response
+     */
+    public PointRuleModifyResponse modifyPointRule(PointRuleModifyRequest request, Integer id) {
+        HttpHeaders headers = Utils.getAuthHeader();
+        HttpEntity<PointRuleModifyRequest> httpEntity = new HttpEntity<>(request, headers);
+        ResponseEntity<PointRuleModifyResponse> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL + "/{id}",
+                HttpMethod.PUT,
+                httpEntity,
+                new ParameterizedTypeReference<PointRuleModifyResponse>() {
+                }, id
+        );
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
 
 }
