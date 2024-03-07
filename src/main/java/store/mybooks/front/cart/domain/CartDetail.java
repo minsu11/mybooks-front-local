@@ -20,7 +20,6 @@ import lombok.ToString;
  * 3/3/24        Fiat_lux       최초 생성<br/>
  */
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class CartDetail {
