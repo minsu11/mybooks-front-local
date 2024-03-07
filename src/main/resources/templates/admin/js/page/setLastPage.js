@@ -6,8 +6,6 @@
 document.addEventListener("DOMContentLoaded", function(){
     var page = currentPage;
 
-    console.log(((page / 10) >> 0));
-
     var pageNumContainer = document.getElementById("pageNumContainer");
     for (let i = ((page / 10) >> 0) * 10; i <= Math.min((((page / 10) >> 0) + 1) * 10 - 1, totalPages - 1); i++) {
         var pageNumElement = document.createElement("li");
