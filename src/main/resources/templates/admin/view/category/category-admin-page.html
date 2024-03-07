@@ -36,8 +36,10 @@
                             <button class="btn btn-primary" type="submit" th:text="수정하기"></button>
                         </form>
                     </th>
-                    <th><a th:href="@{/admin/category/delete/{id}(id=${category.id})}" class="btn btn-secondary"
-                           role="button">삭제하기</a></th>
+                    <th>
+                        <a th:href="@{/admin/category/delete/{id}(id=${category.id})}" class="btn btn-secondary"
+                           role="button">삭제하기</a>
+                    </th>
                 </tr>
                 </tbody>
             </table>
