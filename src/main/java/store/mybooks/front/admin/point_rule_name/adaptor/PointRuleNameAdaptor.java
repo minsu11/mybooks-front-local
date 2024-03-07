@@ -3,11 +3,11 @@ package store.mybooks.front.admin.point_rule_name.adaptor;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.*;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import store.mybooks.front.admin.point_rule_name.dto.request.PointRuleNameCreateRequest;
-import store.mybooks.front.admin.point_rule_name.dto.response.PointRuleNameCreateResponse;
 import store.mybooks.front.admin.point_rule_name.dto.response.PointRuleNameResponse;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.utils.Utils;
@@ -42,16 +42,5 @@ public class PointRuleNameAdaptor {
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
-    public PointRuleNameCreateResponse createPointRuleName(PointRuleNameCreateRequest request) {
-        HttpHeaders headers = Utils.getAuthHeader();
-        HttpEntity<PointRuleNameCreateRequest> httpEntity = new HttpEntity<>(request, headers);
-        ResponseEntity<PointRuleNameCreateResponse> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL,
-                HttpMethod.POST,
-                httpEntity,
-                new ParameterizedTypeReference<PointRuleNameCreateResponse>() {
-                }
-        );
-        return Utils.getResponseEntity(exchange, HttpStatus.CREATED);
-    }
+
 }

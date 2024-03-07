@@ -4,7 +4,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.admin.point_rule_name.adaptor.PointRuleNameAdaptor;
-import store.mybooks.front.admin.point_rule_name.dto.request.PointRuleNameCreateRequest;
 import store.mybooks.front.admin.point_rule_name.dto.response.PointRuleNameResponse;
 
 /**
@@ -27,7 +26,4 @@ public class PointRuleNameService {
         return pointRuleNameAdaptor.getPointRuleNameList();
     }
 
-    public void createPointRuleName(PointRuleNameCreateRequest request) {
-        pointRuleNameAdaptor.createPointRuleName(request);
-    }
 }

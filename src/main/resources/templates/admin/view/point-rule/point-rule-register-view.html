@@ -9,13 +9,6 @@
     <h5 th:if="${modifyPointRule != null}">포인트 수정 페이지</h5>
     <div class="input-group input-group-sm justify-content-center mb-3">
         <div>
-            <form method="get" action="/admin/point-rule-name/register">
-                <label>
-                    포인트 규정 명
-                    <button type="submit" class="btn-primary btn-sm">포인트 규정 명 등록</button>
-
-                </label>
-            </form>
             <div th:if="${modifyPointRule == null}">
                 <form name="form" class="form" method="post" th:action="@{'/admin/point-rule/register'}">
 
