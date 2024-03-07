@@ -14,7 +14,6 @@ import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.user.dto.request.UserCreateRequest;
 import store.mybooks.front.user.dto.request.UserEmailRequest;
 import store.mybooks.front.user.dto.request.UserGradeModifyRequest;
-import store.mybooks.front.user.dto.request.UserLoginRequest;
 import store.mybooks.front.user.dto.request.UserModifyRequest;
 import store.mybooks.front.user.dto.request.UserOauthCreateRequest;
 import store.mybooks.front.user.dto.request.UserOauthLoginRequest;
@@ -55,32 +54,6 @@ public class UserAdaptor {
     private static final String URL_ADMIN_ID = "/api/admin/users/{userId}";
     private static final String URL_ADMIN = "/api/admin/users/"; // todo 전체유저 조회
 
-
-    /**
-     * methodName : loginUser
-     * author : masiljangajji
-     * description : 유저의 로그인 요청을 처리함
-     *
-     * @param userLoginRequest login request
-     */
-    public UserLoginResponse loginUser(UserLoginRequest userLoginRequest) {
-
-
-        HttpHeaders headers = Utils.getHttpHeader();
-        HttpEntity<UserLoginRequest> requestEntity = new HttpEntity<>(userLoginRequest, headers);
-
-        ResponseEntity<UserLoginResponse> responseEntity =
-                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL + "/login", HttpMethod.POST,
-                        requestEntity,
-                        new ParameterizedTypeReference<>() {
-                        });
-
-        if (responseEntity.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException();
-        }
-
-        return responseEntity.getBody();
-    }
 
     public UserEncryptedPasswordResponse verifyUserStatus(UserEmailRequest request) {
 

@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import store.mybooks.front.admin.book.model.request.BookCreateRequest;
 import store.mybooks.front.admin.book.model.request.BookModifyRequest;
 import store.mybooks.front.admin.book.model.response.BookBriefResponse;
+import store.mybooks.front.admin.book.model.response.BookCartResponse;
 import store.mybooks.front.admin.book.model.response.BookCreateResponse;
 import store.mybooks.front.admin.book.model.response.BookDetailResponse;
 import store.mybooks.front.admin.book.model.response.BookGetResponseForCoupon;
@@ -166,6 +167,28 @@ public class BookAdminAdaptor {
                 new ParameterizedTypeReference<>() {
                 }
         );
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
+
+    /**
+     * methodName : getCartBook
+     * author : fiat_lux
+     * description : 카트의 책 정보 반환
+     *
+     * @param bookId the book id
+     * @return BookCartResponse
+     */
+    public BookCartResponse getCartBook(Long bookId) {
+        HttpEntity<Void> requestHttpEntity = new HttpEntity<>(Utils.getHttpHeader());
+
+        ResponseEntity<BookCartResponse> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL + "/cart-books" + "/" + bookId,
+                HttpMethod.GET,
+                requestHttpEntity,
+                new ParameterizedTypeReference<>() {
+                }
+        );
+
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 

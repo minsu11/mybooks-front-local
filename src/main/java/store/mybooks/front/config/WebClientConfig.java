@@ -1,7 +1,13 @@
 package store.mybooks.front.config;
 
 import java.time.Duration;
+import java.util.Collections;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.SessionCookieConfig;
+import javax.servlet.SessionTrackingMode;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
@@ -52,4 +58,17 @@ public class WebClientConfig implements WebMvcConfigurer {
                 .addPathPatterns("/user/delete")
                 .addPathPatterns("/user/modify/password");
     }
+
+    @Bean
+    public ServletContextInitializer clearJsession() {
+        return new ServletContextInitializer() {
+            @Override
+            public void onStartup(ServletContext servletContext) throws ServletException {
+                servletContext.setSessionTrackingModes(Collections.singleton(SessionTrackingMode.COOKIE));
+                SessionCookieConfig sessionCookieConfig=servletContext.getSessionCookieConfig();
+                sessionCookieConfig.setHttpOnly(true);
+            }
+        };
+    }
+
 }
