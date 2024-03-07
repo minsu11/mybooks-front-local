@@ -31,6 +31,14 @@ public class PointRuleNameAdaptor {
     private static final String URL = "/api/point-rule-names";
 
 
+    /**
+     * methodName : getPointRuleNameList<br>
+     * author : minsu11<br>
+     * description : 전체 포인트 규정 명 조회 요청.
+     * <br> *
+     *
+     * @return list
+     */
     public List<PointRuleNameResponse> getPointRuleNameList() {
         ResponseEntity<List<PointRuleNameResponse>> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + URL,

@@ -54,6 +54,15 @@ public class PointAdminAdaptor {
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
+    /**
+     * methodName : createPointRule<br>
+     * author : minsu11<br>
+     * description : 포인트 규정 등록 요청.
+     * <br> *
+     *
+     * @param request 요청 보낼 데이터
+     * @return point rule create response
+     */
     public PointRuleCreateResponse createPointRule(PointRuleCreateRequest request) {
         HttpHeaders headers = Utils.getAuthHeader();
         HttpEntity<PointRuleCreateRequest> httpEntity = new HttpEntity<>(request, headers);

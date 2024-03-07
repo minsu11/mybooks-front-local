@@ -37,6 +37,14 @@ public class PointRuleService {
         return pointAdminAdaptor.getPointRuleResponsePage(pageable);
     }
 
+    /**
+     * methodName : createPointRule<br>
+     * author : minsu11<br>
+     * description : 포인트 규정 등록.
+     * <br> *
+     *
+     * @param request 등록할 포인트 규정
+     */
     public void createPointRule(PointRuleCreateRequest request) {
         pointAdminAdaptor.createPointRule(request);
     }

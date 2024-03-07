@@ -22,6 +22,14 @@ import store.mybooks.front.admin.point_rule_name.dto.response.PointRuleNameRespo
 public class PointRuleNameService {
     private final PointRuleNameAdaptor pointRuleNameAdaptor;
 
+    /**
+     * methodName : getPointRuleNameList<br>
+     * author : minsu11<br>
+     * description : 전체 포인트 규정 명 조회.
+     * <br> *
+     *
+     * @return list
+     */
     public List<PointRuleNameResponse> getPointRuleNameList() {
         return pointRuleNameAdaptor.getPointRuleNameList();
     }
