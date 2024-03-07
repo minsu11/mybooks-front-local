@@ -1,9 +1,5 @@
 package store.mybooks.front.admin.point_rule.dto.request;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.PositiveOrZero;
-import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -21,15 +17,10 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class PointRuleCreateRequest {
-    @NotBlank
-    @Size(min = 5, max = 50)
+
     private String pointRuleName;
 
-    @PositiveOrZero
-    @Max(100)
     private Integer rate;
 
-    @PositiveOrZero
-    @Max(10000)
     private Integer cost;
 }
