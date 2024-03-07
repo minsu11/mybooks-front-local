@@ -51,8 +51,8 @@ public class BookAdminAdaptor {
 
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
-    private final String URL = "/api/books";
-    private final String ADMIN_URL = "/api/admin/books";
+    private static final String URL = "/api/books";
+    private static final String ADMIN_URL = "/api/admin/books";
 
     /**
      * methodName : getPagedBriefBooks
@@ -169,6 +169,14 @@ public class BookAdminAdaptor {
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
+    /**
+     * methodName : getCartBook
+     * author : fiat_lux
+     * description : 카트의 책 정보 반환
+     *
+     * @param bookId the book id
+     * @return BookCartResponse
+     */
     public BookCartResponse getCartBook(Long bookId) {
         HttpEntity<Void> requestHttpEntity = new HttpEntity<>(Utils.getHttpHeader());
 
