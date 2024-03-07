@@ -50,8 +50,6 @@ public class CartController {
             model.addAttribute(cartDetailList);
         } catch (JsonProcessingException e) {
             System.out.println(e.getMessage());
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
         }
 
         return "cart";
@@ -80,8 +78,6 @@ public class CartController {
             return "redirect:/cart";
 
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
     }
@@ -113,8 +109,6 @@ public class CartController {
             return "redirect:/cart";
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
         }
 
     }
@@ -132,8 +126,6 @@ public class CartController {
                 //TODO
             }
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
         return "";
