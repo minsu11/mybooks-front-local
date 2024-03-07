@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import store.mybooks.front.admin.book.model.request.BookCreateRequest;
 import store.mybooks.front.admin.book.model.request.BookModifyRequest;
 import store.mybooks.front.admin.book.model.response.BookBriefResponse;
+import store.mybooks.front.admin.book.model.response.BookCartResponse;
 import store.mybooks.front.admin.book.model.response.BookCreateResponse;
 import store.mybooks.front.admin.book.model.response.BookDetailResponse;
 import store.mybooks.front.admin.book.model.response.BookModifyResponse;
@@ -165,6 +166,20 @@ public class BookAdminAdaptor {
                 new ParameterizedTypeReference<>() {
                 }
         );
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
+
+    public BookCartResponse getCartBook(Long bookId) {
+        HttpEntity<Void> requestHttpEntity = new HttpEntity<>(Utils.getHttpHeader());
+
+        ResponseEntity<BookCartResponse> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL + "/cartinbooks" + "/" + bookId,
+                HttpMethod.GET,
+                requestHttpEntity,
+                new ParameterizedTypeReference<>() {
+                }
+        );
+
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 }
