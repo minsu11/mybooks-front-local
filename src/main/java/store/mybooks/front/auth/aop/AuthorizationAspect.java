@@ -3,6 +3,7 @@ package store.mybooks.front.auth.aop;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -11,10 +12,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import store.mybooks.front.auth.adaptor.TokenAdaptor;
+import store.mybooks.front.auth.dto.request.RefreshTokenRequest;
+import store.mybooks.front.auth.dto.response.RefreshTokenResponse;
 import store.mybooks.front.auth.error.ErrorMessage;
 import store.mybooks.front.auth.exception.AccessIdForbiddenException;
 import store.mybooks.front.auth.exception.AuthenticationIsNotValidException;
 import store.mybooks.front.auth.exception.StatusIsNotActiveException;
+import store.mybooks.front.auth.exception.TokenExpiredException;
 import store.mybooks.front.utils.CookieUtils;
 import store.mybooks.front.utils.Utils;
 
@@ -31,8 +36,11 @@ import store.mybooks.front.utils.Utils;
  */
 @Aspect
 @Component
+@RequiredArgsConstructor
 @Slf4j
 public class AuthorizationAspect {
+
+    private final TokenAdaptor tokenAdaptor;
 
     @Around(value = "@annotation(store.mybooks.front.auth.Annotation.RequiredAuthorization)")
     public Object aroundMethod(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -56,9 +64,22 @@ public class AuthorizationAspect {
             if (error.contains(ErrorMessage.INVALID_ACCESS.getMessage())) { // 권한이 없음
                 throw new AccessIdForbiddenException(); // 인덱스로 보내기
             } else if (error.contains(ErrorMessage.TOKEN_EXPIRED.getMessage())) { // 토큰만료 재발급 받고 다시 부르기
-                // 리프래시 토큰이 만료면 throw Authentication -> 로그인하세요
-                // 리프래시 토큰 만료 아니면 토큰은 멀쩡하니 다시부르면 원래 요청대로 가짐
-                joinPoint.proceed();
+
+                // 토큰을 갱신하는 요청을 보냄 (기존 엑세스 토큰을 보냄)
+                RefreshTokenResponse refreshTokenResponse =
+                        tokenAdaptor.refreshAccessToken(new RefreshTokenRequest(CookieUtils.getIdentityCookieValue(request)));
+
+                // 리프래시 토큰 만료 아니라서 재발급 했으면
+                if(refreshTokenResponse.getIsValid()){
+                    // 쿠키에 재발급한 엑세스토큰 넣어주고
+                    CookieUtils.addJwtCookie(Objects.requireNonNull(response),refreshTokenResponse.getAccessToken());
+                    // 기존 메서드 다시 불러
+                    joinPoint.proceed();
+                }
+
+                // 리프래시 토큰이 만료면 TokenExpiredException -> 로그인하세요
+                throw new TokenExpiredException();
+
             } else if (error.contains(ErrorMessage.INVALID_TOKEN.getMessage())) { // 토큰위조됨 쿠키삭제하기
                 CookieUtils.deleteJwtCookie(Objects.requireNonNull(response));
                 throw new AuthenticationIsNotValidException();
