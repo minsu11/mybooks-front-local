@@ -2,6 +2,14 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{common/layout/admin-layout}">
+<head>
+    <style>
+        .custom-select {
+            width: 20%;
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+</head>
 <div layout:fragment="content">
     <h1>도서정액할인쿠폰 생성 페이지</h1>
     <div>
@@ -13,9 +21,13 @@
                 <label for="name">쿠폰 이름</label>
                 <input type="text" id="name"  name="name" placeholder="쿠폰 이름">
             </div>
-            <div class="col-auto">
-                <label for="bookId">도서 아이디</label>
-                <input type="text" id="bookId"  name="bookId" placeholder="도서 아이디">
+            <div class="form-group">
+                <label for="bookId">도서</label>
+                <select class="form-select custom-select" id="bookId" name="bookId" aria-label="bookId">
+                    <option selected>도서 선택</option>
+                    <option th:each="book : ${books}" th:value="${book.id}"
+                            th:text="${book.name}"></option>
+                </select>
             </div>
             <div class="col-auto">
                 <label for="orderMin">최소 주문 금액</label>
@@ -36,5 +48,15 @@
             <button type="submit" class="btn btn-primary">생성하기</button>
         </form>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#bookId').select2({
+                placeholder: "도서 선택",
+                allowClear: true,
+                width: '20%'
+            });
+        });
+    </script>
 </div>
 </html>
