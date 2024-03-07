@@ -4,47 +4,59 @@
       layout:decorate="~{common/layout/admin-layout}">
 
 <div layout:fragment="content">
-  <h1>카테고리 페이지</h1>
-  <div>
+
+    <script>
+        let url = "/admin/category"
+        let currentPage = [[${categories.number}]]
+        let totalPages = [[${categories.totalPages}]]
+    </script>
+    <h1>카테고리 페이지</h1>
     <div>
-      <a th:href="@{/admin/category/register}" class="btn btn-primary" role="button">카테고리 추가하기</a>
+        <div>
+            <a th:href="@{/admin/category/register}" class="btn btn-primary" role="button">카테고리 추가하기</a>
+        </div>
+        <div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">부모 카테고리 이름</th>
+                    <th scope="col">카테고리 이름</th>
+                    <th scope="col">수정하기</th>
+                    <th scope="col">삭제하기</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="category : ${categories.content}">
+                    <th th:if="${category.parentCategoryName == null}"></th>
+                    <th th:unless="${category.parentCategoryName == null}"
+                        th:text="${category.parentCategoryName}"></th>
+                    <th th:text="${category.name}"></th>
+                    <th>
+                        <form action="/admin/category/update" method="get">
+                            <input hidden="hidden" name="id" th:value="${category.id}">
+                            <button class="btn btn-primary" type="submit" th:text="수정하기"></button>
+                        </form>
+                    </th>
+                    <th><a th:href="@{/admin/category/delete/{id}(id=${category.id})}" class="btn btn-secondary"
+                           role="button">삭제하기</a></th>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-    <div>
-      <table class="table">
-        <thead>
-        <tr>
-          <th scope="col">부모 카테고리 이름</th>
-          <th scope="col">카테고리 이름</th>
-          <th scope="col">수정하기</th>
-          <th scope="col">삭제하기</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="category : ${categories.content}">
-          <th th:if="${category.parentCategoryName == null}"></th>
-          <th th:unless="${category.parentCategoryName == null}" th:text="${category.parentCategoryName}"></th>
-          <th th:text="${category.name}"></th>
-          <th>
-            <form action="/admin/category/update" method="get">
-              <input hidden="hidden" name="id" th:value="${category.id}">
-              <button class="btn btn-primary" type="submit" th:text="수정하기"></button>
-            </form>
-          </th>
-          <th><a th:href="@{/admin/category/delete/{id}(id=${category.id})}" class="btn btn-secondary" role="button">삭제하기</a></th>
-        </tr>
-        </tbody>
-      </table>
+    <div class="mt-3">
+        <div class="pagination">
+            <div class="page-item">
+                <a class="page-link" id="prevLink" th:text="'<'" th:href="@{#}"></a>
+            </div>
+            <div class="pagination" id="pageNumContainer"></div>
+            <div class="page-item">
+                <a class="page-link" id="nextLink" th:text="'>'" th:href="@{#}"></a>
+            </div>
+        </div>
     </div>
-  </div>
-  <div class="mt-3">
-    <nav aria-label="admin-book-paging">
-      <ul class="pagination">
-        <li th:each="pageNum : ${#numbers.sequence(0, categories.totalPages - 1)}" class="page-item"
-            th:classappend="${pageNum + 1 == categories.number ? 'active' : ''}">
-          <a class="page-link" th:text="${pageNum + 1}" th:href="@{/admin/category(page=${pageNum})}"></a>
-        </li>
-      </ul>
-    </nav>
-  </div>
+    <script src="/admin/js/page/setPrevious.js"></script>
+    <script src="/admin/js/page/setNext.js"></script>
+    <script src="/admin/js/page/setLastPage.js"></script>
 </div>
 </html>

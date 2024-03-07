@@ -4,24 +4,30 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * packageName    : store.mybooks.resource.user.dto.response<br>
- * fileName       : UserModifyResponse<br>
+ * packageName    : store.mybooks.front.oauth.dto.request.dto.response<br>
+ * fileName       : UserOauthCreateResponse<br>
  * author         : masiljangajji<br>
- * date           : 2/13/24<br>
+ * date           : 3/6/24<br>
  * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2/13/24        masiljangajji       최초 생성
+ * 3/6/24        masiljangajji       최초 생성
  */
-
-
 @Getter
 @NoArgsConstructor
-public class UserModifyResponse {
+public class UserOauthCreateResponse {
 
     private String name;
 
-    private String phoneNumber;
+    private String email;
+
+    private String birthMonthDay;
+
+    private String userStatusName;
+
+    private String userGradeName;
+
+    private Long id;
 
 }

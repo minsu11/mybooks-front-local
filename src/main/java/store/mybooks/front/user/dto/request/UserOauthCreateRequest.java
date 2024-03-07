@@ -5,18 +5,27 @@ import lombok.Getter;
 
 /**
  * packageName    : store.mybooks.resource.user.dto.request<br>
- * fileName       : UserGradeModifyRequest<br>
+ * fileName       : UserOauthCreateRequest<br>
  * author         : masiljangajji<br>
- * date           : 2/25/24<br>
+ * date           : 3/6/24<br>
  * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2/25/24        masiljangajji       최초 생성
+ * 3/6/24        masiljangajji       최초 생성
  */
 @Getter
 @AllArgsConstructor
-public class UserGradeModifyRequest {
-    private String userGradeName;
+public class UserOauthCreateRequest {
+
+    private String name;
+
+    private String phoneNumber;
+
+    private String email;
+
+    private String birthMonthDay;
+
 
 }
+

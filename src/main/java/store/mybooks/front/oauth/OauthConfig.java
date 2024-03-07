@@ -1,4 +1,4 @@
-package store.mybooks.front.oauth2;
+package store.mybooks.front.oauth;
 
 import java.util.Map;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

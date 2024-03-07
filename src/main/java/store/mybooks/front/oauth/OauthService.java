@@ -1,17 +1,18 @@
-package store.mybooks.front.oauth2;
+package store.mybooks.front.oauth;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 import store.mybooks.front.config.KeyConfig;
-import store.mybooks.front.user.dto.response.UserGetResponse;
+import store.mybooks.front.user.adaptor.UserAdaptor;
+import store.mybooks.front.user.dto.request.UserOauthCreateRequest;
+import store.mybooks.front.user.dto.request.UserOauthLoginRequest;
+import store.mybooks.front.user.dto.response.UserLoginResponse;
+import store.mybooks.front.user.dto.response.UserOauthCreateResponse;
 
 /**
  * packageName    : store.mybooks.front.oauth2<br>
@@ -25,22 +26,14 @@ import store.mybooks.front.user.dto.response.UserGetResponse;
  * 3/3/24        masiljangajji       최초 생성
  */
 @Service
+@RequiredArgsConstructor
 public class OauthService {
 
     private final InMemoryProviderRepository inMemoryProviderRepository;
 
+    private final UserAdaptor userAdaptor;
+
     private final KeyConfig keyConfig;
-
-    /**
-     * Instantiates a new Oauth service.
-     *
-     * @param inMemoryProviderRepository the in memory provider repository
-     */
-    public OauthService(InMemoryProviderRepository inMemoryProviderRepository, KeyConfig keyConfig) {
-        this.inMemoryProviderRepository = inMemoryProviderRepository;
-        this.keyConfig = keyConfig;
-    }
-
 
     private OauthTokenResponse getToken(String code, OauthProvider provider) {
 
@@ -75,52 +68,34 @@ public class OauthService {
      * @param code
      * @return oauth login response
      */
-    public OauthLoginResponse login(String providerName, String code) {
-        // 프론트에서 넘어온 provider 이름을 통해 InMemoryProviderRepository에서 OauthProvider 가져오기
+    public UserLoginResponse oauthLogin(String providerName, String code) {
 
-        System.out.println("인메모리");
+        // 프론트에서 넘어온 provider 이름을 통해 InMemoryProviderRepository에서 OauthProvider 가져오기
         OauthProvider provider = inMemoryProviderRepository.findByProviderName(providerName);
 
-        System.out.println(provider.getTokenUrl() + "여기로보내");
-
-        System.out.println("토큰");
         // access token 가져오기
         OauthTokenResponse tokenResponse = getToken(code, provider);
 
-        System.out.println(tokenResponse.getAccessToken());
-        System.out.println(tokenResponse.getTokenType());
-
-        System.out.println("여기까지면 토큰있는거");
-
         // 유저 정보 가져오기
-        System.out.println("정보확인");
         UserProfile userProfile = getUserProfile(providerName, tokenResponse, provider);
 
         // 가져온걸로 db 긁어서 있는회원인지 확인
+        UserLoginResponse userLoginResponse =
+                userAdaptor.loginOauthUser(new UserOauthLoginRequest(userProfile.getEmail()));
 
-        // UserGetResponse userGetResponse= findByEmail
+        if (userLoginResponse.getIsValidUser()) { // 이미 존재하는 회원이면 그대로 로그인
+            return userLoginResponse;
+        }
 
-        // 만약 없으면? 그대로 회원가입 시키고
-        // 만약 있으면? 그냥 로그인 시키기
+        // 존재하는 회원 아니면 회원가입 시키기
+        UserOauthCreateRequest createRequest =
+                new UserOauthCreateRequest(userProfile.getName(), userProfile.getMobile(), userProfile.getEmail(),
+                        userProfile.getBirthday());
 
-        System.out.println(userProfile.getOauthId());
-        System.out.println(userProfile.getEmail());
-        System.out.println(userProfile.getName());
-        System.out.println(userProfile.getBirthYear());
-        System.out.println(userProfile.getBirthday());
-        System.out.println(userProfile.getMobile());
+        UserOauthCreateResponse createResponse=userAdaptor.createOauthUser(createRequest);
 
+        return new UserLoginResponse(true,false,createResponse.getId(),createResponse.getUserStatusName());
 
-        return null;
-//        return OauthLoginResponse.builder()
-//                .id(UserGetResponse.getId())
-//                .name(member.getName())
-//                .email(member.getEmail())
-//                .role(member.getRole())
-//                .tokenType("Bearer")
-//                .accessToken(accessToken)
-//                .refreshToken(refreshToken)
-//                .build();
     }
 
     private UserProfile getUserProfile(String providerName, OauthTokenResponse tokenResponse, OauthProvider provider) {

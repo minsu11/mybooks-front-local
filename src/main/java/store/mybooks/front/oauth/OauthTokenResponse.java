@@ -1,4 +1,4 @@
-package store.mybooks.front.oauth2;
+package store.mybooks.front.oauth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
