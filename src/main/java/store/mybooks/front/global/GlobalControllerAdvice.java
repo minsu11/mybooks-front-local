@@ -4,7 +4,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.servlet.ModelAndView;
 import store.mybooks.front.auth.exception.AccessIdForbiddenException;
 import store.mybooks.front.auth.exception.AuthenticationIsNotValidException;
 import store.mybooks.front.auth.exception.StatusIsNotActiveException;
@@ -25,6 +24,8 @@ public class GlobalControllerAdvice {
 
     private static final String REFERER = "referer";
 
+    private static final String domain = "http://localhost:8080";
+
     /**
      * methodName : badRequestException <br>
      * author : damho-lee <br>
@@ -35,11 +36,12 @@ public class GlobalControllerAdvice {
      */
     @ExceptionHandler({HttpClientErrorException.BadRequest.class, HttpClientErrorException.NotFound.class})
     // 400 404 이게 리소스에서 나오는 모든 예외
-    public ModelAndView handleBadRequestAndNotFoundException(Exception exception, HttpServletRequest request) {
+    public String handleBadRequestAndNotFoundException(Exception exception, HttpServletRequest request) {
 
-        ModelAndView modelAndView = new ModelAndView(request.getHeader(REFERER));
-        modelAndView.addObject("error", exception.getMessage());
-        return modelAndView;
+        String previousUrl = request.getHeader(REFERER);
+        request.getSession().setAttribute("error", exception.getMessage());
+
+        return previousUrl.replace(domain, "redirect:");
     }
 
     @ExceptionHandler({AuthenticationIsNotValidException.class, AccessIdForbiddenException.class,
