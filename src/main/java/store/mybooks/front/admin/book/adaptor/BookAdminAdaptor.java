@@ -25,6 +25,7 @@ import store.mybooks.front.admin.book.model.request.BookModifyRequest;
 import store.mybooks.front.admin.book.model.response.BookBriefResponse;
 import store.mybooks.front.admin.book.model.response.BookCreateResponse;
 import store.mybooks.front.admin.book.model.response.BookDetailResponse;
+import store.mybooks.front.admin.book.model.response.BookGetResponseForCoupon;
 import store.mybooks.front.admin.book.model.response.BookModifyResponse;
 import store.mybooks.front.admin.book.model.response.BookStatusGetResponse;
 import store.mybooks.front.auth.Annotation.RequiredAuthorization;
@@ -50,8 +51,8 @@ public class BookAdminAdaptor {
 
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
-    private final String URL = "/api/books";
-    private final String ADMIN_URL = "/api/admin/books";
+    private static final String URL = "/api/books";
+    private static final String ADMIN_URL = "/api/admin/books";
 
     /**
      * methodName : getPagedBriefBooks
@@ -162,6 +163,25 @@ public class BookAdminAdaptor {
                 gatewayAdaptorProperties.getAddress() + "/api/books-statuses",
                 HttpMethod.GET,
                 null,
+                new ParameterizedTypeReference<>() {
+                }
+        );
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
+
+    /**
+     * methodName : getBookForCoupon <br>
+     * author : damho-lee <br>
+     * description : BookId, Name 리스트 반환.<br>
+     *
+     * @return list
+     */
+    @RequiredAuthorization
+    public List<BookGetResponseForCoupon> getBookForCoupon() {
+        ResponseEntity<List<BookGetResponseForCoupon>> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + ADMIN_URL + "/for-coupon",
+                HttpMethod.GET,
+                new HttpEntity<>(Utils.getAuthHeader()),
                 new ParameterizedTypeReference<>() {
                 }
         );
