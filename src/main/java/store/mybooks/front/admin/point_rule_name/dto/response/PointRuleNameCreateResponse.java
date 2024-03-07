@@ -1,7 +1,7 @@
 package store.mybooks.front.admin.point_rule_name.dto.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
  * packageName    : store.mybooks.front.admin.point_rule_name.dto.response<br>
@@ -15,7 +15,7 @@ import lombok.Getter;
  * 3/7/24        minsu11       최초 생성<br>
  */
 @Getter
-@AllArgsConstructor
+@Setter
 public class PointRuleNameCreateResponse {
     private String id;
 }

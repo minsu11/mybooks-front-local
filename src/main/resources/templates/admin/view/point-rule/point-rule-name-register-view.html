@@ -1,10 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/admin-layout}">
 
-</body>
+<div layout:fragment="content">
+
+    <div class="input-group input-group-sm justify-content-center mb-3">
+        <div>
+            <form name="form" class="form" method="post" th:action="@{'/admin/point-rule-name/register'}">
+
+
+                <input type="text" name="id" class="form-control point-rule-name" placeholder="포인트 규정 명"/>
+                <th:block th:if="${msg !=null}">
+                    <p id="message" th:data-info="${msg}"></p>
+                </th:block>
+                <button name="submit" class="btn btn-outline-secondary" type="submit">등록
+                </button>
+            </form>
+        </div>
+    </div>
+    <script src="/admin/js/point-rule/point-rule-name-validation.js"></script>
+</div>
 </html>
