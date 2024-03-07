@@ -42,7 +42,6 @@ public class TokenAdaptor {
 
         HttpEntity<TokenCreateRequest> requestEntity = new HttpEntity<>(tokenCreateRequest, headers);
 
-        // todo 지금 로컬설정임 나중에 배포하고 바꾸기
         ResponseEntity<TokenCreateResponse> responseEntity =
                 restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/auth", HttpMethod.POST,
                         requestEntity,

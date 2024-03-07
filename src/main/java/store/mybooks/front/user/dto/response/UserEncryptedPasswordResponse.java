@@ -5,23 +5,20 @@ import lombok.NoArgsConstructor;
 
 /**
  * packageName    : store.mybooks.resource.user.dto.response<br>
- * fileName       : UserModifyResponse<br>
+ * fileName       : UserEmailResponse<br>
  * author         : masiljangajji<br>
- * date           : 2/13/24<br>
+ * date           : 3/6/24<br>
  * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 2/13/24        masiljangajji       최초 생성
+ * 3/6/24        masiljangajji       최초 생성
  */
 
-
-@Getter
 @NoArgsConstructor
-public class UserModifyResponse {
+@Getter
+public class UserEncryptedPasswordResponse {
 
-    private String name;
-
-    private String phoneNumber;
+    private String encryptedPassword;
 
 }

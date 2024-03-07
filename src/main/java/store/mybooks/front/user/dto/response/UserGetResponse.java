@@ -32,7 +32,9 @@ public class UserGetResponse {
 
     private String email;
 
-    private LocalDate birth;
+    private Integer birthYear;
+
+    private String birthMonthDay;
 
     private LocalDateTime createdAt;
 

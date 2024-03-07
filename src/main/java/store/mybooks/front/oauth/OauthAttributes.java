@@ -1,9 +1,7 @@
-package store.mybooks.front.oauth2;
+package store.mybooks.front.oauth;
 
 import java.util.Arrays;
 import java.util.Map;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 /**
  * packageName    : store.mybooks.front.oauth2<br>
@@ -27,6 +25,8 @@ public enum OauthAttributes {
         @Override
         public UserProfile of(Map<String, Object> attributes) {
 
+
+            // 페이코에서 보낸 json 형식을 자바 객체로 변환
             Map<String, Object> data = (Map<String, Object>) attributes.get("data");
             Map<String, Object> member = (Map<String, Object>) data.get("member");
 
@@ -51,13 +51,14 @@ public enum OauthAttributes {
      * author : masiljangajji
      * description :
      *
-     * @param providerName   name
-     * @param attributes     attributes
+     * @param providerName name
+     * @param attributes   attributes
      * @return user profile
      */
     public static UserProfile extract(String providerName, Map<String, Object> attributes) {
-        return Arrays.stream(values())
-                .filter(provider -> providerName.equals(provider.providerName))
+
+        return Arrays.stream(values()) // 모든 열거 상수 배열로 반환
+                .filter(provider -> providerName.equals(provider.providerName))// payco 찾기
                 .findFirst()
                 .orElseThrow(IllegalArgumentException::new)
                 .of(attributes);
