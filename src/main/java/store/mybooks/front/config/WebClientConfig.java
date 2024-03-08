@@ -2,8 +2,6 @@ package store.mybooks.front.config;
 
 import java.time.Duration;
 import java.util.Collections;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.SessionCookieConfig;
 import javax.servlet.SessionTrackingMode;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -29,6 +27,7 @@ import store.mybooks.front.auth.interceptor.LogoutInterceptor;
  */
 @Configuration
 public class WebClientConfig implements WebMvcConfigurer {
+
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder
@@ -61,13 +60,10 @@ public class WebClientConfig implements WebMvcConfigurer {
 
     @Bean
     public ServletContextInitializer clearJsession() {
-        return new ServletContextInitializer() {
-            @Override
-            public void onStartup(ServletContext servletContext) throws ServletException {
-                servletContext.setSessionTrackingModes(Collections.singleton(SessionTrackingMode.COOKIE));
-                SessionCookieConfig sessionCookieConfig=servletContext.getSessionCookieConfig();
-                sessionCookieConfig.setHttpOnly(true);
-            }
+        return servletContext -> {
+            servletContext.setSessionTrackingModes(Collections.singleton(SessionTrackingMode.COOKIE));
+            SessionCookieConfig sessionCookieConfig = servletContext.getSessionCookieConfig();
+            sessionCookieConfig.setHttpOnly(true);
         };
     }
 
