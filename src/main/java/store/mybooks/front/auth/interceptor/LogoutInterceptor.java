@@ -2,7 +2,7 @@ package store.mybooks.front.auth.interceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,10 +23,10 @@ import store.mybooks.front.utils.CookieUtils;
  */
 
 @Component
-@RequiredArgsConstructor
 public class LogoutInterceptor implements HandlerInterceptor {
 
-    private final TokenAdaptor tokenAdaptor;
+    @Autowired
+    private  TokenAdaptor tokenAdaptor;
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,

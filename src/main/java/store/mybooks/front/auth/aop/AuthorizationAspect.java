@@ -47,6 +47,7 @@ public class AuthorizationAspect {
 
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(
                 RequestContextHolder.getRequestAttributes())).getRequest();
+
         HttpServletResponse response =
                 ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
 
@@ -76,7 +77,7 @@ public class AuthorizationAspect {
                     // 기존 메서드 다시 불러
                     joinPoint.proceed();
                 }
-                // 리프래시 토큰 만료됐거나 , 유효하지 않음 
+                // 리프래시 토큰 만료됐거나 , 유효하지 않음
                 CookieUtils.deleteJwtCookie(Objects.requireNonNull(response));
                 // 리프래시 토큰이 만료면 TokenExpiredException -> 로그인하세요
                 throw new TokenExpiredException();
