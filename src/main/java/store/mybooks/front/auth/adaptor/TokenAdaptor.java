@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import store.mybooks.front.auth.dto.request.LogoutRequest;
 import store.mybooks.front.auth.dto.request.RefreshTokenRequest;
 import store.mybooks.front.auth.dto.request.TokenCreateRequest;
 import store.mybooks.front.auth.dto.response.RefreshTokenResponse;
@@ -62,7 +63,19 @@ public class TokenAdaptor {
         }
 
         return responseEntity.getBody();
+    }
 
+    public void deleteRefreshToken(LogoutRequest logoutRequest){
+
+        ResponseEntity<Void> responseEntity =
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/auth/logout", HttpMethod.DELETE,
+                        new HttpEntity<>(logoutRequest, Utils.getHttpHeader()),
+                        new ParameterizedTypeReference<>() {
+                        });
+
+        if (responseEntity.getStatusCode() != HttpStatus.NO_CONTENT) {
+            throw new RuntimeException();
+        }
     }
 
 
