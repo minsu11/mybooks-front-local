@@ -20,5 +20,5 @@ public class BookCartResponse {
     private Long id;
     private String name;
     private String bookImage;
-    private String saleCost;
+    private Integer saleCost;
 }
