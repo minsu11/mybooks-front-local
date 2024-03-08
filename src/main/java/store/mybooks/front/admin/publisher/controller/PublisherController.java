@@ -33,7 +33,7 @@ import store.mybooks.front.pageable.dto.response.PageResponse;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/admin/publishers")
+@RequestMapping("/admin/publisher")
 public class PublisherController {
     private final PublisherService publisherService;
 
@@ -51,7 +51,7 @@ public class PublisherController {
     public String viewPublisher(@PageableDefault Pageable pageable, ModelMap modelMap) {
         PageResponse<PublisherResponse> publisherResponseList = publisherService.getPagedPublisher(pageable);
         modelMap.put("publisherList", publisherResponseList);
-        return "admin/view/publisher-view";
+        return "admin/view/publisher/publisher-view";
     }
 
 
@@ -68,7 +68,7 @@ public class PublisherController {
     public String viewRegisterPublisher(ModelMap modelMap) {
         modelMap.put("pathValue", "register");
 
-        return "admin/view/publisher-register-view";
+        return "admin/view/publisher/publisher-register-view";
     }
 
     /**
@@ -86,7 +86,7 @@ public class PublisherController {
         if (publisherService.registerPublisher(request)) {
             return "redirect:/admin/publishers";
         }
-        return "redirect:/admin/publishers";
+        return "redirect:/admin/publisher";
     }
 
     /**
@@ -108,7 +108,7 @@ public class PublisherController {
         modelMap.put("id", id);
         modelMap.put("modifyPublisher", request);
         modelMap.put("pathValue", "update");
-        return "admin/view/publisher-register-view";
+        return "admin/view/publisher/publisher-register-view";
     }
 
     /**
@@ -128,11 +128,11 @@ public class PublisherController {
             ModelMap modelMap) {
         log.info("id value:{}", request.getId());
         if (publisherService.updatePublisher(request)) {
-            return "redirect:/admin/publishers";
+            return "redirect:/admin/publisher";
         }
         modelMap.put("id", request.getId());
         modelMap.put("modifyPublisher", request.getName());
-        return "redirect:/admin/publishers/" + request.getId();
+        return "redirect:/admin/publisher/" + request.getId();
 
     }
 
@@ -149,6 +149,6 @@ public class PublisherController {
     public String doDelete(@ModelAttribute PublisherDeleteRequest request) {
         log.info("delete value: {}", request.getId());
         publisherService.deletePublisher(request);
-        return "redirect:/admin/publishers";
+        return "redirect:/admin/publisher";
     }
 }

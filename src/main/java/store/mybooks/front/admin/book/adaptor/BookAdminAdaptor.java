@@ -159,11 +159,12 @@ public class BookAdminAdaptor {
      *
      * @return list
      */
+    @RequiredAuthorization
     public List<BookStatusGetResponse> getBookStatus() {
         ResponseEntity<List<BookStatusGetResponse>> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + "/api/books-statuses",
+                gatewayAdaptorProperties.getAddress() + "/api/admin/books-statuses",
                 HttpMethod.GET,
-                null,
+                new HttpEntity<>(Utils.getAuthHeader()),
                 new ParameterizedTypeReference<>() {
                 }
         );

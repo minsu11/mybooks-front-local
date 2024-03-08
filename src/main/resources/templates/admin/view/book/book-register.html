@@ -9,6 +9,7 @@
         }
     </style>
     <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
 </head>
 
 <div layout:fragment="content">
@@ -90,13 +91,11 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group mb-0">
-                                            <label for="authorList">저자</label>
+                                            <label for="authorList">저자 검색</label>
                                         </div>
                                         <div class="form-group">
-                                            <select id="authorList" name="authorList" multiple="multiple" size="10">
-                                                <option th:each="author : ${authors}" th:value="${author.id}"
-                                                        th:title="${author.content}" th:text="${author.name}"></option>
-
+                                            <select id="authorList" name="authorList" multiple="multiple" size="10" class="form-control">
+                                                <option th:each="author : ${authors}" th:value="${author.id}" th:title="${author.content}" th:text="${author.name}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -158,9 +157,8 @@
                                             <label for="categoryList">카테고리</label>
                                         </div>
                                         <div class="form-group">
-                                            <select id="categoryList" name="categoryList" multiple="multiple" size="10">
-                                                <option th:each="category : ${categories}" th:value="${category.id}"
-                                                        th:text="${category.name}"></option>
+                                            <select id="categoryList" name="categoryList" multiple="multiple" size="10" class="form-control">
+                                                <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -171,9 +169,8 @@
                                             <label for="tagList">태그</label>
                                         </div>
                                         <div class="form-group">
-                                            <select id="tagList" name="tagList" multiple="multiple" size="10">
-                                                <option th:each="tag : ${tags}" th:value="${tag.id}"
-                                                        th:text="${tag.name}"></option>
+                                            <select id="tagList" name="tagList" multiple="multiple" size="10" class="form-control">
+                                                <option th:each="tag : ${tags}" th:value="${tag.id}" th:text="${tag.name}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -202,6 +199,19 @@
                                     </div>
                                 </div>
 
+                                <div class="col-sm-6">
+                                    <label>썸네일 이미지 업로드</label>
+                                    <div class="form-group">
+                                        <input id="thumbnailImage" name="thumbnailImage" type="file" class="file">
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <label>본문 이미지 업로드</label>
+                                    <div class="form-group">
+                                        <input id="contentImage" name="contentImage" type="file" class="file" multiple>
+                                    </div>
+                                </div>
 
                                 <div class="form-group row mt-5">
                                     <div class="col-sm-auto">
@@ -223,7 +233,18 @@
 
     <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+
     <script>
+        $(document).ready(function() {
+            $('#publisherId').select2({
+                placeholder: "출판사 선택",
+                allowClear: true,
+                width: '100%'
+            });
+        });
+
         $(document).ready(function () {
             const editor = new toastui.Editor({
                 el: document.querySelector('#editor'),
@@ -239,7 +260,7 @@
                 ]
             });
             $('#registerForm').on('submit', function (e) {
-                e.preventDefault(); // 기본 폼 제출 방지
+                e.preventDefault();
                 var formData = new FormData(this);
                 formData.append('content', editor.getHTML());
 
@@ -249,8 +270,8 @@
                     data: formData,
                     processData: false,
                     contentType: false,
-                    success: function (response) {
-                        console.log('Success:', response);
+                    success: function () {
+                        window.location.href = '/admin/book/register';
                     },
                     error: function (xhr, status, error) {
                         console.error('Error:', error);
@@ -260,46 +281,79 @@
         });
 
 
-
         $(document).ready(function () {
             $('#authorList').multiselect({
                 nonSelectedText: '저자 선택',
                 maxHeight: 400,
                 includeSelectAllOption: false,
-                numberDisplayed: 1
+                numberDisplayed: 1,
+                enableFiltering: true,
+                enableCaseInsensitiveFiltering: true,
+                filterPlaceholder: '저자 검색'
+            });
+
+            $('#authorSearch').on('keyup', function() {
+                var searchTerm = $(this).val().toLowerCase();
+                $('#authorList option').each(function() {
+                    var text = $(this).text().toLowerCase();
+                    var match = text.indexOf(searchTerm) > -1;
+                });
+                $('#authorList').multiselect('rebuild');
             });
         });
+
+
         $(document).ready(function () {
             $('#categoryList').multiselect({
                 nonSelectedText: '카테고리 선택(최대 10개)',
                 maxHeight: 400,
                 includeSelectAllOption: false,
                 numberDisplayed: 1,
-                onChange: function (option, checked) {
-                    var maxCount = 10;
-                    var selectedCount = $('#categoryList option:selected').length;
-
-                    if (selectedCount >= maxCount) {
-                        $('#categoryList option').each(function () {
-                            if (!$(this).is(':selected')) {
-                                $(this).prop('disabled', true);
-                            }
-                        });
-                    } else {
-                        $('#categoryList option').prop('disabled', false);
+                enableFiltering: true,
+                enableCaseInsensitiveFiltering: true,
+                filterPlaceholder: '카테고리 검색',
+                onChange: function(option, checked) {
+                    var selectedOptions = $('#categoryList option:selected');
+                    var count = selectedOptions.length;
+                    if (count > 10) {
+                        alert('최대 10개의 카테고리만 선택할 수 있습니다.');
+                        $(option).prop('selected', false);
+                        $('#categoryList').multiselect('deselect', $(option).val());
                     }
-                    $('#categoryList').multiselect('refresh');
                 }
             });
+            $('#categorySearch').on('keyup', function() {
+                var searchTerm = $(this).val().toLowerCase();
+                $('#categoryList option').each(function() {
+                    var text = $(this).text().toLowerCase();
+                    var match = text.indexOf(searchTerm) > -1;
+                    $(this).toggle(match);
+                });
+                $('#categoryList').multiselect('rebuild');
+            });
         });
+
         $(document).ready(function () {
             $('#tagList').multiselect({
                 nonSelectedText: '태그 선택',
                 maxHeight: 400,
                 includeSelectAllOption: false,
-                numberDisplayed: 1
+                numberDisplayed: 1,
+                enableFiltering: true,
+                enableCaseInsensitiveFiltering: true,
+                filterPlaceholder: '태그 검색'
+            });
+            $('#tagSearch').on('keyup', function() {
+                var searchTerm = $(this).val().toLowerCase();
+                $('#tagList option').each(function() {
+                    var text = $(this).text().toLowerCase();
+                    var match = text.indexOf(searchTerm) > -1;
+                    $(this).toggle(match);
+                });
+                $('#tagList').multiselect('rebuild');
             });
         });
+
     </script>
 </div>
 </html>

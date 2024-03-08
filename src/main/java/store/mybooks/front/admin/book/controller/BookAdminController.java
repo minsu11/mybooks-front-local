@@ -21,6 +21,7 @@ import store.mybooks.front.admin.book.model.request.BookCreateRequest;
 import store.mybooks.front.admin.book.model.request.BookModifyRequest;
 import store.mybooks.front.admin.book.model.response.BookDetailResponse;
 import store.mybooks.front.admin.book.service.BookAdminService;
+import store.mybooks.front.admin.category.model.response.CategoryIdAndName;
 import store.mybooks.front.admin.category.service.CategoryService;
 import store.mybooks.front.admin.publisher.service.PublisherService;
 import store.mybooks.front.admin.tag.model.response.TagGetResponseForBookDetail;
@@ -59,7 +60,7 @@ public class BookAdminController {
     @GetMapping
     public String getBookPage(@PageableDefault(size = 8) Pageable pageable, Model model) {
         model.addAttribute("books", bookAdminService.getBooks(pageable));
-        return "admin/view/book";
+        return "admin/view/book/book";
     }
 
     /**
@@ -77,7 +78,7 @@ public class BookAdminController {
         model.addAttribute("tags", tagService.getTags());
         model.addAttribute("authors", authorService.getAllAuthors());
         model.addAttribute("bookStatuses", bookAdminService.getBookStatus());
-        return "admin/view/book-register";
+        return "admin/view/book/book-register";
     }
 
     /**
@@ -111,13 +112,13 @@ public class BookAdminController {
         model.addAttribute("bookAuthorList", book.getAuthorList().stream().map(AuthorGetResponse::getId).collect(Collectors.toList()));
         model.addAttribute("bookTagList",
                 book.getTagList().stream().map(TagGetResponseForBookDetail::getId).collect(Collectors.toList()));
-
+        model.addAttribute("bookCategoryList", book.getCategoryList().stream().map(CategoryIdAndName::getId).collect(Collectors.toList()));
 
         model.addAttribute("categories", categoryService.getCategories());
         model.addAttribute("tags", tagService.getTags());
         model.addAttribute("authors", authorService.getAllAuthors());
         model.addAttribute("bookStatuses", bookAdminService.getBookStatus());
-        return "admin/view/book-update";
+        return "admin/view/book/book-update";
     }
 
     /**
