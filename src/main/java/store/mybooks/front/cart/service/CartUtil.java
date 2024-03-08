@@ -13,11 +13,14 @@ import java.util.Objects;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.admin.book.adaptor.BookAdminAdaptor;
 import store.mybooks.front.admin.book.model.response.BookCartResponse;
 import store.mybooks.front.cart.domain.CartDetail;
 import store.mybooks.front.cart.exception.CookieParseException;
+import store.mybooks.front.user.adaptor.UserAdaptor;
+import store.mybooks.front.user.dto.response.UserGetResponse;
 
 /**
  * packageName    : store.mybooks.front.cart <br/>
@@ -34,8 +37,10 @@ import store.mybooks.front.cart.exception.CookieParseException;
 @RequiredArgsConstructor
 public class CartUtil {
     public static final String CART_COOKIE = "cart";
-    public final ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
     private final BookAdminAdaptor bookAdminAdaptor;
+    private final RedisTemplate<String, CartDetail> redisTemplate;
+    private final UserAdaptor userAdaptor;
 
     public List<CartDetail> getCartDetailList(Cookie cookie) {
         try {
@@ -84,13 +89,72 @@ public class CartUtil {
             }
 
             String cartJson = objectMapper.writeValueAsString(cartDetailList);
-            Cookie saveCookie = new Cookie(CartUtil.CART_COOKIE, cartJson);
+            String encode = URLEncoder.encode(cartJson, StandardCharsets.UTF_8);
+            Cookie saveCookie = new Cookie(CartUtil.CART_COOKIE, encode);
             response.addCookie(saveCookie);
         } catch (JsonProcessingException e) {
             throw new CookieParseException(e.getMessage());
         }
     }
 
+    public List<CartDetail> getBookFromCart() {
+        String cartKey = cartKey();
+        System.out.println(cartKey);
+        List<CartDetail> cartDetailList = redisTemplate.opsForList().range(cartKey, 0, -1);
+
+        if (Objects.isNull(cartDetailList) || cartDetailList.isEmpty()) {
+            return new ArrayList<>();
+        } else {
+            return cartDetailList;
+        }
+    }
+
+    public void addBookToCart(Long bookId, int amount) {
+        String cartKey = cartKey();
+        List<CartDetail> cartDetailList = redisTemplate.opsForList().range(cartKey, 0, -1);
+
+        if (Objects.isNull(cartDetailList)) {
+            cartDetailList = new ArrayList<>();
+        }
+
+        boolean isAlreadyInCart = false;
+
+        for (CartDetail cartDetail : cartDetailList) {
+            if (Objects.equals(bookId, cartDetail.getBookId())) {
+                cartDetail.amountUpdate(amount);
+                isAlreadyInCart = true;
+                redisTemplate.opsForList().set(cartKey, cartDetailList.indexOf(cartDetail), cartDetail);
+                break;
+            }
+        }
+
+        if (!isAlreadyInCart) {
+            BookCartResponse cartBook = bookAdminAdaptor.getCartBook(bookId);
+            CartDetail cartDetail =
+                    new CartDetail(cartBook.getId(), amount, cartBook.getName(), cartBook.getBookImage(),
+                            cartBook.getSaleCost());
+            cartDetailList.add(cartDetail);
+            redisTemplate.opsForList().rightPush(cartKey, cartDetail);
+        }
+    }
+
+    public void deleteBookFromCart(Long bookId) {
+        String cartKey = cartKey();
+        List<CartDetail> cartDetailList = redisTemplate.opsForList().range(cartKey, 0, -1);
+        if (Objects.nonNull(cartDetailList)) {
+            for (CartDetail cartDetail : cartDetailList) {
+                if (Objects.equals(bookId, cartDetail.getBookId())) {
+                    redisTemplate.opsForList().remove(cartKey, 1, cartDetail);
+                    break;
+                }
+            }
+        }
+    }
+
+    private String cartKey() {
+        UserGetResponse user = userAdaptor.findUser();
+        return CART_COOKIE + ":" + user.getEmail();
+    }
 
     private List<CartDetail> viewCart(Cookie cartCookie) throws JsonProcessingException {
         List<CartDetail> cartDetailList = new ArrayList<>();
