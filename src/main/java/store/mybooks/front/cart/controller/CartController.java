@@ -1,7 +1,9 @@
 package store.mybooks.front.cart.controller;
 
 import java.util.List;
+import java.util.Objects;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import store.mybooks.front.cart.domain.CartDetail;
 import store.mybooks.front.cart.service.CartUtil;
+import store.mybooks.front.utils.CookieUtils;
 
 /**
  * packageName    : store.mybooks.front.cart <br/>
@@ -30,30 +33,47 @@ public class CartController {
     private final CartUtil cartUtil;
 
     @GetMapping("/cart")
-    public String viewCart(@CookieValue(name = CartUtil.CART_COOKIE, required = false) Cookie cartCookie, Model model) {
-        List<CartDetail> cartDetailList = cartUtil.getCartDetailList(cartCookie);
-        model.addAttribute(cartDetailList);
+    public String viewCart(@CookieValue(name = CartUtil.CART_COOKIE, required = false) Cookie cartCookie,
+                           HttpServletRequest request, Model model) {
+        if (isUser(request)) {
+            List<CartDetail> bookFromCart = cartUtil.getBookFromCart();
 
+            model.addAttribute(bookFromCart);
+        } else {
+            List<CartDetail> cartDetailList = cartUtil.getCartDetailList(cartCookie);
+            model.addAttribute(cartDetailList);
+        }
         return "cart";
     }
 
     @GetMapping("/cart/delete")
     public String deleteItemFromCart(@CookieValue(name = CartUtil.CART_COOKIE, required = false) Cookie cartCookie,
-                                     HttpServletResponse response,
+                                     HttpServletResponse response, HttpServletRequest request,
                                      @RequestParam Long bookId) {
+        if (isUser(request)) {
+            cartUtil.deleteBookFromCart(bookId);
+        } else {
             cartUtil.deleteBookFromCart(cartCookie, response, bookId);
-
-            return "redirect:/cart";
-
-
+        }
+        return "redirect:/cart";
     }
 
     @PostMapping("/cart/add")
     public String addBookToCart(@CookieValue(name = CartUtil.CART_COOKIE, required = false) Cookie cartCookie,
-                                HttpServletResponse response, @RequestParam(name = "id") Long itemId,
+                                HttpServletResponse response, HttpServletRequest request,
+                                @RequestParam(name = "id") Long itemId,
                                 @RequestParam(name = "quantity") int amount) {
-        cartUtil.registerBookToCart(cartCookie, response, itemId, amount);
+
+        if (isUser(request)) {
+            cartUtil.addBookToCart(itemId, amount);
+        } else {
+            cartUtil.registerBookToCart(cartCookie, response, itemId, amount);
+        }
         return "redirect:/cart";
+    }
+
+    private boolean isUser(HttpServletRequest request) {
+        return Objects.nonNull(CookieUtils.getIdentityCookieValue(request));
     }
 
 
