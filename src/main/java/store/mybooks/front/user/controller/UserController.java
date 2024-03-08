@@ -71,7 +71,7 @@ public class UserController {
     public RedirectView paycoLoginForm() {
 
         return new RedirectView(
-                "https://id.payco.com/oauth2.0/authorize?response_type=code&client_id=3RDcDAliu5lnErYbf72ZwqW&serviceProviderCode=FRIENDS&redirect_uri=http://test.localhost:8080/login/oauth2/code/payco&state=ab42ae&userLocale=ko_KR");
+                "https://id.payco.com/oauth2.0/authorize?response_type=code&client_id=3RDktHA_exycIbutIzVLP3D&serviceProviderCode=FRIENDS&redirect_uri=https://www.my-books.store/login/oauth2/code/payco&state=ab42ae&userLocale=ko_KR");
     }
 
     @GetMapping("/logout")

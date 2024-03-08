@@ -11,6 +11,7 @@ import store.mybooks.front.admin.book.model.request.BookCreateRequest;
 import store.mybooks.front.admin.book.model.request.BookModifyRequest;
 import store.mybooks.front.admin.book.model.response.BookBriefResponse;
 import store.mybooks.front.admin.book.model.response.BookDetailResponse;
+import store.mybooks.front.admin.book.model.response.BookGetResponseForCoupon;
 import store.mybooks.front.admin.book.model.response.BookStatusGetResponse;
 import store.mybooks.front.pageable.dto.response.PageResponse;
 
@@ -50,5 +51,9 @@ public class BookAdminService {
 
     public List<BookStatusGetResponse> getBookStatus() {
         return bookAdminAdaptor.getBookStatus();
+    }
+
+    public List<BookGetResponseForCoupon> getBookForCoupon() {
+        return bookAdminAdaptor.getBookForCoupon();
     }
 }
