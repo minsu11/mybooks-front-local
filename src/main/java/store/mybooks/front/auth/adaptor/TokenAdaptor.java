@@ -52,13 +52,14 @@ public class TokenAdaptor {
 
     public RefreshTokenResponse refreshAccessToken(RefreshTokenRequest refreshTokenRequest) {
 
+        System.out.println("가보자고");
         ResponseEntity<RefreshTokenResponse> responseEntity =
                 restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/auth/refresh", HttpMethod.POST,
                         new HttpEntity<>(refreshTokenRequest, Utils.getHttpHeader()),
                         new ParameterizedTypeReference<>() {
                         });
 
-        if (responseEntity.getStatusCode() != HttpStatus.CREATED || responseEntity.getStatusCode() != HttpStatus.OK) {
+        if (!responseEntity.getStatusCode().is2xxSuccessful()) {
             throw new RuntimeException();
         }
 
@@ -72,6 +73,7 @@ public class TokenAdaptor {
                         new HttpEntity<>(logoutRequest, Utils.getHttpHeader()),
                         new ParameterizedTypeReference<>() {
                         });
+
 
         if (responseEntity.getStatusCode() != HttpStatus.NO_CONTENT) {
             throw new RuntimeException();
