@@ -1,7 +1,11 @@
 package store.mybooks.front.config;
 
 import java.time.Duration;
+import java.util.Collections;
+import javax.servlet.SessionCookieConfig;
+import javax.servlet.SessionTrackingMode;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
@@ -23,6 +27,7 @@ import store.mybooks.front.auth.interceptor.LogoutInterceptor;
  */
 @Configuration
 public class WebClientConfig implements WebMvcConfigurer {
+
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder
@@ -52,4 +57,14 @@ public class WebClientConfig implements WebMvcConfigurer {
                 .addPathPatterns("/user/delete")
                 .addPathPatterns("/user/modify/password");
     }
+
+    @Bean
+    public ServletContextInitializer clearJsession() {
+        return servletContext -> {
+            servletContext.setSessionTrackingModes(Collections.singleton(SessionTrackingMode.COOKIE));
+            SessionCookieConfig sessionCookieConfig = servletContext.getSessionCookieConfig();
+            sessionCookieConfig.setHttpOnly(true);
+        };
+    }
+
 }

@@ -376,10 +376,21 @@
             });
         });
 
-        document.getElementById('quantity').addEventListener('change', function () {
-            var quantity = this.value;
-            document.getElementById('buyNowQuantity').value = quantity;
-            document.getElementById('cartQuantity').value = quantity;
-        });
+        function stepUp() {
+            document.getElementById('quantity').stepUp()
+            document.getElementById('buyNowQuantity').value = document.getElementById('quantity').value
+            document.getElementById('cartQuantity').value = document.getElementById('quantity').value
+        }
+
+        function stepDown() {
+            document.getElementById('quantity').stepDown()
+            document.getElementById('cartQuantity').value = document.getElementById('quantity').value
+        }
+
+        function setting() {
+            document.getElementById('cartQuantity').value = 1
+        }
+
+        setting()
     </script>
 </div>
