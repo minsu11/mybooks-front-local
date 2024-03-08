@@ -50,8 +50,8 @@ public class BookAdminAdaptor {
 
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
-    private final String URL = "/api/books";
-    private final String ADMIN_URL = "/api/admin/books";
+    private static final String URL = "/api/books";
+    private static final String ADMIN_URL = "/api/admin/books";
 
     /**
      * methodName : getPagedBriefBooks
@@ -157,11 +157,12 @@ public class BookAdminAdaptor {
      *
      * @return list
      */
+    @RequiredAuthorization
     public List<BookStatusGetResponse> getBookStatus() {
         ResponseEntity<List<BookStatusGetResponse>> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + "/api/books-statuses",
+                gatewayAdaptorProperties.getAddress() + "/api/admin/books-statuses",
                 HttpMethod.GET,
-                null,
+                new HttpEntity<>(Utils.getAuthHeader()),
                 new ParameterizedTypeReference<>() {
                 }
         );
