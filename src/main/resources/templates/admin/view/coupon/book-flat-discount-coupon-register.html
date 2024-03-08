@@ -50,14 +50,7 @@
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script>
-        var errorMessage = [[${#session.getAttribute('error')}]];
-        if (errorMessage) {
-            alert(errorMessage);
-            [[${#session.removeAttribute('error')}]];
-        }
-    </script>
-    <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#bookId').select2({
                 placeholder: "도서 선택",
                 allowClear: true,
