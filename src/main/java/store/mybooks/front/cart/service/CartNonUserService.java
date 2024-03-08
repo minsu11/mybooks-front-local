@@ -16,7 +16,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.admin.book.adaptor.BookAdminAdaptor;
 import store.mybooks.front.admin.book.model.response.BookCartResponse;
+import store.mybooks.front.cart.controller.CartController;
 import store.mybooks.front.cart.domain.CartDetail;
+import store.mybooks.front.cart.domain.CartRegisterRequest;
 import store.mybooks.front.cart.exception.CookieParseException;
 
 /**
@@ -32,12 +34,17 @@ import store.mybooks.front.cart.exception.CookieParseException;
  */
 @Service
 @RequiredArgsConstructor
-public class CartUtil {
-    public static final String CART_COOKIE = "cart";
-    public final ObjectMapper objectMapper;
+public class CartNonUserService {
+    private final ObjectMapper objectMapper;
     private final BookAdminAdaptor bookAdminAdaptor;
 
-    public List<CartDetail> getCartDetailList(Cookie cookie) {
+    /**
+     * Gets book from cart.
+     *
+     * @param cookie the cookie
+     * @return the book from cart
+     */
+    public List<CartDetail> getBookFromCart(Cookie cookie) {
         try {
             return viewCart(cookie);
         } catch (JsonProcessingException e) {
@@ -45,32 +52,51 @@ public class CartUtil {
         }
     }
 
-    public void registerBookToCart(Cookie cookie, HttpServletResponse response, Long itemId, int amount) {
+    /**
+     * Register book to cart.
+     *
+     * @param cookie              the cookie
+     * @param response            the response
+     * @param cartRegisterRequest the cart register request
+     */
+    public void registerBookToCart(Cookie cookie, HttpServletResponse response,
+                                   CartRegisterRequest cartRegisterRequest) {
         try {
             List<CartDetail> cartDetailList = new ArrayList<>(viewCart(cookie));
-            BookCartResponse cartBook = bookAdminAdaptor.getCartBook(itemId);
+            BookCartResponse cartBook = bookAdminAdaptor.getCartBook(cartRegisterRequest.getId());
             boolean isAlreadyCart = false;
             for (CartDetail cartDetail : cartDetailList) {
                 if (Objects.equals(cartBook.getId(), cartDetail.getBookId())) {
-                    cartDetail.amountUpdate(amount);
+                    cartDetail.amountUpdate(cartRegisterRequest.getQuantity());
                     isAlreadyCart = true;
                     break;
                 }
             }
 
             if (!isAlreadyCart) {
-                cartDetailList.add(new CartDetail(cartBook.getId(), amount, cartBook.getName(), cartBook.getBookImage(),
+                cartDetailList.add(new CartDetail(
+                        cartBook.getId(),
+                        cartRegisterRequest.getQuantity(),
+                        cartBook.getName(),
+                        cartBook.getBookImage(),
                         cartBook.getSaleCost()));
             }
             String cartJson = objectMapper.writeValueAsString(cartDetailList);
             String encode = URLEncoder.encode(cartJson, StandardCharsets.UTF_8);
-            Cookie saveCookie = new Cookie(CartUtil.CART_COOKIE, encode);
+            Cookie saveCookie = new Cookie(CartController.CART_COOKIE_VALUE, encode);
             response.addCookie(saveCookie);
         } catch (JsonProcessingException e) {
             throw new CookieParseException(e.getMessage());
         }
     }
 
+    /**
+     * Delete book from cart.
+     *
+     * @param cookie   the cookie
+     * @param response the response
+     * @param bookId   the book id
+     */
     public void deleteBookFromCart(Cookie cookie, HttpServletResponse response, Long bookId) {
         try {
             List<CartDetail> cartDetailList = new ArrayList<>(viewCart(cookie));
@@ -84,13 +110,13 @@ public class CartUtil {
             }
 
             String cartJson = objectMapper.writeValueAsString(cartDetailList);
-            Cookie saveCookie = new Cookie(CartUtil.CART_COOKIE, cartJson);
+            String encode = URLEncoder.encode(cartJson, StandardCharsets.UTF_8);
+            Cookie saveCookie = new Cookie(CartController.CART_COOKIE_VALUE, encode);
             response.addCookie(saveCookie);
         } catch (JsonProcessingException e) {
             throw new CookieParseException(e.getMessage());
         }
     }
-
 
     private List<CartDetail> viewCart(Cookie cartCookie) throws JsonProcessingException {
         List<CartDetail> cartDetailList = new ArrayList<>();

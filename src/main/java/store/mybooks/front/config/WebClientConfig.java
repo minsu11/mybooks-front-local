@@ -42,6 +42,7 @@ public class WebClientConfig implements WebMvcConfigurer {
                 .addPathPatterns("/user/**")
                 .addPathPatterns("/admin/**")
                 .addPathPatterns("/book/**")
+                .addPathPatterns("/cart/**")
                 .addPathPatterns("/", "/login", "/signup")
                 .excludePathPatterns("/**/*.js")
                 .excludePathPatterns("/**/*.scss")
