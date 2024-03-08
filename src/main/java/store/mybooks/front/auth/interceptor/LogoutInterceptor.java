@@ -2,8 +2,12 @@ package store.mybooks.front.auth.interceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import store.mybooks.front.auth.adaptor.TokenAdaptor;
+import store.mybooks.front.auth.dto.request.LogoutRequest;
 import store.mybooks.front.utils.CookieUtils;
 
 /**
@@ -17,12 +21,21 @@ import store.mybooks.front.utils.CookieUtils;
  * -----------------------------------------------------------
  * 3/6/24        masiljangajji       최초 생성
  */
+
+@Component
 public class LogoutInterceptor implements HandlerInterceptor {
 
+    @Autowired
+    private  TokenAdaptor tokenAdaptor;
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
                            ModelAndView modelAndView) {
+
+        // 리프래시토큰 삭제
+        tokenAdaptor.deleteRefreshToken(new LogoutRequest(CookieUtils.getIdentityCookieValue(request)));
+        // 쿠키 삭제
         CookieUtils.deleteJwtCookie(response);
+
     }
 }
