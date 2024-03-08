@@ -1,7 +1,8 @@
 package store.mybooks.front.config;
 
 import javax.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
@@ -15,10 +16,15 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * -----------------------------------------------------------
  * 2/19/24        minsu11       최초 생성
  */
-@Data
+@Getter
 @ConfigurationProperties(prefix = "store.mybooks.front.config.gateway")
+@RequiredArgsConstructor
 public class GatewayAdaptorProperties {
     @NotNull
     private String address;
+    private final KeyConfig keyConfig;
 
+    public void setAddress(String address) {
+        this.address = keyConfig.keyStore(address);
+    }
 }

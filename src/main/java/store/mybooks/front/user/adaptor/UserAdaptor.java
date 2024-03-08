@@ -1,35 +1,31 @@
 package store.mybooks.front.user.adaptor;
 
-import java.util.Enumeration;
-import java.util.List;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.filter.OncePerRequestFilter;
+import store.mybooks.front.auth.Annotation.RequiredAuthorization;
 import store.mybooks.front.config.GatewayAdaptorProperties;
-import store.mybooks.front.dooray.dto.DoorayAuthResponse;
-import store.mybooks.front.jwt.dto.request.TokenCreateRequest;
-import store.mybooks.front.jwt.dto.response.TokenCreateResponse;
 import store.mybooks.front.user.dto.request.UserCreateRequest;
+import store.mybooks.front.user.dto.request.UserEmailRequest;
 import store.mybooks.front.user.dto.request.UserGradeModifyRequest;
-import store.mybooks.front.user.dto.request.UserLoginRequest;
 import store.mybooks.front.user.dto.request.UserModifyRequest;
+import store.mybooks.front.user.dto.request.UserOauthCreateRequest;
+import store.mybooks.front.user.dto.request.UserOauthLoginRequest;
 import store.mybooks.front.user.dto.request.UserPasswordModifyRequest;
 import store.mybooks.front.user.dto.request.UserStatusModifyRequest;
 import store.mybooks.front.user.dto.response.UserCreateResponse;
+import store.mybooks.front.user.dto.response.UserEncryptedPasswordResponse;
 import store.mybooks.front.user.dto.response.UserGetResponse;
 import store.mybooks.front.user.dto.response.UserGradeModifyResponse;
 import store.mybooks.front.user.dto.response.UserLoginResponse;
 import store.mybooks.front.user.dto.response.UserModifyResponse;
+import store.mybooks.front.user.dto.response.UserOauthCreateResponse;
 import store.mybooks.front.user.dto.response.UserPasswordModifyResponse;
 import store.mybooks.front.user.dto.response.UserStatusModifyResponse;
 import store.mybooks.front.utils.Utils;
@@ -53,23 +49,46 @@ public class UserAdaptor {
 
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
-
-    /**
-     * methodName : loginUser
-     * author : masiljangajji
-     * description : 유저의 로그인 요청을 처리함
-     *
-     * @param userLoginRequest login request
-     */
-    public UserLoginResponse loginUser(UserLoginRequest userLoginRequest) {
+    private static final String URL = "/api/users";
+    private static final String URL_MEMBER = "/api/member/users";
+    private static final String URL_ADMIN_ID = "/api/admin/users/{userId}";
+    private static final String URL_ADMIN = "/api/admin/users/"; // todo 전체유저 조회
 
 
-        HttpHeaders headers = Utils.getHttpHeader();
-        HttpEntity<UserLoginRequest> requestEntity = new HttpEntity<>(userLoginRequest, headers);
+    public UserEncryptedPasswordResponse verifyUserStatus(UserEmailRequest request) {
+
+        ResponseEntity<UserEncryptedPasswordResponse> responseEntity =
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL + "/verification", HttpMethod.POST,
+                        new HttpEntity<>(request,Utils.getHttpHeader()),
+                        new ParameterizedTypeReference<>() {
+                        });
+
+        if (responseEntity.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException();
+        }
+
+        return responseEntity.getBody();
+    }
+
+    public UserLoginResponse completeLoginProcess(UserEmailRequest request){
+        ResponseEntity<UserLoginResponse> responseEntity =
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL + "/verification/complete", HttpMethod.POST,
+                        new HttpEntity<>(request,Utils.getHttpHeader()),
+                        new ParameterizedTypeReference<>() {
+                        });
+
+        if (responseEntity.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException();
+        }
+
+        return responseEntity.getBody();
+    }
+
+    public UserLoginResponse loginOauthUser(UserOauthLoginRequest userLoginRequest) {
 
         ResponseEntity<UserLoginResponse> responseEntity =
-                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/users/login", HttpMethod.POST,
-                        requestEntity,
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL + "/oauth/login", HttpMethod.POST,
+                        new HttpEntity<>(userLoginRequest, Utils.getHttpHeader()),
                         new ParameterizedTypeReference<>() {
                         });
 
@@ -91,11 +110,10 @@ public class UserAdaptor {
     public void createUser(UserCreateRequest createRequest) {
 
         HttpHeaders headers = Utils.getHttpHeader();
-
         HttpEntity<UserCreateRequest> requestEntity = new HttpEntity<>(createRequest, headers);
 
         ResponseEntity<UserCreateResponse> responseEntity =
-                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/users", HttpMethod.POST,
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL, HttpMethod.POST,
                         requestEntity,
                         new ParameterizedTypeReference<>() {
                         });
@@ -106,34 +124,37 @@ public class UserAdaptor {
         }
     }
 
+    public UserOauthCreateResponse createOauthUser(UserOauthCreateRequest createRequest) {
+
+        ResponseEntity<UserOauthCreateResponse> response =
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL + "/oauth", HttpMethod.POST,
+                        new HttpEntity<>(createRequest, Utils.getHttpHeader())
+                        , new ParameterizedTypeReference<>() {
+                        });
+
+        if (response.getStatusCode() != HttpStatus.CREATED) {
+            throw new RuntimeException();
+        }
+        return response.getBody();
+    }
+
 
     /**
      * methodName : findUserById
      * author : masiljangajji
      * description : 유저의 Id로 유저의 정보를 가져옴
      *
-     * @param userId id
      * @return user get response
      */
-    public UserGetResponse findUserById(Long userId,HttpServletRequest request) {
-
-        String token = Utils.getCookieValue(request.getCookies(),"token"); // todo 쿠키 이름 변경하기
-
-        HttpHeaders headers = Utils.getHttpHeader();
-        headers.set("token", token); // todo 이름 변경하기
-
-        HttpEntity<Void> httpEntity = new HttpEntity<>(null, headers);
+    @RequiredAuthorization
+    public UserGetResponse findUser() {
 
         ResponseEntity<UserGetResponse> responseEntity =
-                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/users/{userId}", HttpMethod.GET,
-                        httpEntity,
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL_MEMBER,
+                        HttpMethod.GET,
+                        new HttpEntity<>(Utils.getAuthHeader()),
                         new ParameterizedTypeReference<>() {
-                        }, userId);
-
-
-        if (responseEntity.getStatusCode() != HttpStatus.OK) {
-            throw new RuntimeException();
-        }
+                        });
 
         return responseEntity.getBody();
     }
@@ -144,21 +165,17 @@ public class UserAdaptor {
      * author : masiljangajji
      * description : 유저의 비밀번호를 변경함
      *
-     * @param userId        id
      * @param modifyRequest request
      */
-    public void modifyUserPassword(Long userId, UserPasswordModifyRequest modifyRequest) {
-
-        HttpHeaders headers = Utils.getHttpHeader();
-
-        HttpEntity<UserPasswordModifyRequest> requestEntity = new HttpEntity<>(modifyRequest, headers);
+    @RequiredAuthorization
+    public void modifyUserPassword(UserPasswordModifyRequest modifyRequest) {
 
         ResponseEntity<UserPasswordModifyResponse> responseEntity =
-                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/users/{userId}/password",
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL_MEMBER + "/password",
                         HttpMethod.PUT,
-                        requestEntity,
+                        new HttpEntity<>(modifyRequest, Utils.getAuthHeader()),
                         new ParameterizedTypeReference<>() {
-                        }, userId);
+                        });
 
 
         if (responseEntity.getStatusCode() != HttpStatus.OK) {
@@ -182,7 +199,7 @@ public class UserAdaptor {
         HttpEntity<UserStatusModifyRequest> requestEntity = new HttpEntity<>(modifyRequest, headers);
 
         ResponseEntity<UserStatusModifyResponse> responseEntity =
-                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/users/{userId}/status",
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL_ADMIN_ID + "/status",
                         HttpMethod.PUT,
                         requestEntity,
                         new ParameterizedTypeReference<>() {
@@ -210,7 +227,7 @@ public class UserAdaptor {
         HttpEntity<UserGradeModifyRequest> requestEntity = new HttpEntity<>(modifyRequest, headers);
 
         ResponseEntity<UserGradeModifyResponse> responseEntity =
-                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/users/{userId}/grade",
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL_ADMIN_ID + "/grade",
                         HttpMethod.PUT,
                         requestEntity,
                         new ParameterizedTypeReference<>() {
@@ -228,19 +245,17 @@ public class UserAdaptor {
      * author : masiljangajji
      * description : 유저의 정보를 변경함 (이름,전화번호)
      *
-     * @param userId        id
      * @param modifyRequest request
      */
-    public void modifyUser(Long userId, UserModifyRequest modifyRequest) {
+    @RequiredAuthorization
+    public void modifyUser(UserModifyRequest modifyRequest) {
 
-        HttpHeaders headers = Utils.getHttpHeader();
-        HttpEntity<UserModifyRequest> requestEntity = new HttpEntity<>(modifyRequest, headers);
 
         ResponseEntity<UserModifyResponse> responseEntity =
-                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/users/{userId}", HttpMethod.PUT,
-                        requestEntity,
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL_MEMBER, HttpMethod.PUT,
+                        new HttpEntity<>(modifyRequest, Utils.getAuthHeader()),
                         new ParameterizedTypeReference<>() {
-                        }, userId);
+                        });
 
 
         if (responseEntity.getStatusCode() != HttpStatus.OK) {
@@ -253,17 +268,15 @@ public class UserAdaptor {
      * methodName : deleteUser
      * author : masiljangajji
      * description : 회원탈퇴
-     *
-     * @param userId id
      */
-    public void deleteUser(Long userId) {
+    @RequiredAuthorization
+    public void deleteUser() {
 
         ResponseEntity<UserModifyResponse> responseEntity =
-                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/users/{userId}", HttpMethod.DELETE,
-                        null,
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL_MEMBER, HttpMethod.DELETE,
+                        new HttpEntity<>(Utils.getAuthHeader()),
                         new ParameterizedTypeReference<>() {
-                        }, userId);
-
+                        });
 
         if (responseEntity.getStatusCode() != HttpStatus.OK) {
             throw new RuntimeException();

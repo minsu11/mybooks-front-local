@@ -2,6 +2,7 @@ package store.mybooks.front.admin.tag.service;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.admin.tag.adaptor.TagAdaptor;
 import store.mybooks.front.admin.tag.model.request.TagCreateRequest;
@@ -43,12 +44,11 @@ public class TagService {
      * author : damho-lee <br>
      * description : page, size 에 맞는 태그들을 찾는 메서드.<br>
      *
-     * @param page int
-     * @param size int
+     * @param pageable Pageable
      * @return pageResponse
      */
-    public PageResponse<TagGetResponse> getTags(int page, int size) {
-        return tagAdaptor.getTags(page, size);
+    public PageResponse<TagGetResponse> getTags(Pageable pageable) {
+        return tagAdaptor.getTags(pageable);
     }
 
     public TagGetResponse getTag(Integer id) {

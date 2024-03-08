@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/admin-layout}">
+<div layout:fragment="content">
+    <script>
+        let url = "/admin/coupon"
+        let currentPage = [[${coupons.number}]]
+        let totalPages = [[${coupons.totalPages}]]
+    </script>
+    <h1>쿠폰 페이지</h1>
+    <div>
+        <div>
+            <a th:href="@{/admin/coupon/register}" class="btn btn-primary" role="button">쿠폰 추가하기</a>
+        </div>
+        <div>
+            <button id="btn-deleteAsk" type="button" class="btn btn-deleteAsk btn-danger" data-toggle="modal"
+                    data-target="#deleteConfirmationModal">쿠폰 나눠주기
+            </button>
+        </div>
+        <div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">쿠폰 이름</th>
+                    <th scope="col">할인 범위</th>
+                    <th scope="col">할인 대상</th>
+                    <th scope="col">최소 주문 금액</th>
+                    <th scope="col">할인율 / 할인금액</th>
+                    <th scope="col">최대 할인 금맥</th>
+                    <th scope="col">시작일</th>
+                    <th scope="col">종료일</th>
+                    <th scope="col">삭제하기</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="coupon : ${coupons.getContent()}">
+                    <td th:text="${coupon.name}"></td>
+                    <td th:text="${coupon.range}"></td>
+                    <td th:text="${coupon.target}"></td>
+                    <td th:text="${coupon.orderMin}"></td>
+                    <td th:if="${coupon.isRate}" th:text="${coupon.discountRateOrCost} + '%'"></td>
+                    <td th:unless="${coupon.isRate}"
+                        th:text="'₩' + ${#numbers.formatInteger(coupon.discountRateOrCost, 3, 'COMMA')}"></td>
+                    <td th:text="${coupon.maxDiscountCost}"></td>
+                    <td th:text="${coupon.startDate}"></td>
+                    <td th:text="${coupon.endDate}"></td>
+                    <td>
+                        <form th:method="post" th:action="@{/admin/coupon/delete/{id}(id=${coupon.id})}">
+                            <button class="btn btn-danger" type="submit">삭제</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="mt-3">
+        <div class="pagination">
+            <div class="page-item">
+                <a class="page-link" id="prevLink" th:text="'<'" th:href="@{#}"></a>
+            </div>
+            <div class="pagination" id="pageNumContainer"></div>
+            <div class="page-item">
+                <a class="page-link" id="nextLink" th:text="'>'" th:href="@{#}"></a>
+            </div>
+        </div>
+    </div>
+    <script src="/admin/js/page/setPrevious.js"></script>
+    <script src="/admin/js/page/setNext.js"></script>
+    <script src="/admin/js/page/setLastPage.js"></script>
+</div>
+</html>
+
+<!--    <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog"-->
+<!--         aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">-->
+<!--        <div class="modal-dialog" role="document">-->
+<!--            <div class="modal-content">-->
+<!--                <div class="modal-header">-->
+<!--                    <h5 class="modal-title" id="deleteConfirmationModalLabel">삭제 확인</h5>-->
+<!--                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--                        <span aria-hidden="true">&times;</span>-->
+<!--                    </button>-->
+<!--                </div>-->
+<!--                <div class="modal-body">-->
+<!--                    <p>정말 삭제하시겠습니까? 삭제하면 복구되지 않아요.</p>-->
+<!--                </div>-->
+<!--                <div class="modal-footer">-->
+<!--                    <button type="button" class="btn btn-secondary" data-dismiss="modal">아니오</button>-->
+<!--                    <a href="delete.board?bno=${bno}" class="btn btn-danger">네</a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->

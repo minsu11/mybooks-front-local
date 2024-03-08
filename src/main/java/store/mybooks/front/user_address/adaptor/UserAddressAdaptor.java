@@ -2,6 +2,7 @@ package store.mybooks.front.user_address.adaptor;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -11,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import store.mybooks.front.auth.Annotation.RequiredAuthorization;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.user_address.request.UserAddressCreateRequest;
 import store.mybooks.front.user_address.request.UserAddressModifyRequest;
@@ -18,6 +20,7 @@ import store.mybooks.front.user_address.response.UserAddressCreateResponse;
 import store.mybooks.front.user_address.response.UserAddressDeleteResponse;
 import store.mybooks.front.user_address.response.UserAddressGetResponse;
 import store.mybooks.front.user_address.response.UserAddressModifyResponse;
+import store.mybooks.front.utils.Utils;
 
 /**
  * packageName    : store.mybooks.front.user.user_address.adaptor<br>
@@ -38,23 +41,27 @@ public class UserAddressAdaptor {
 
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
+    private static final String URL_MEMBER = "/api/member/users/addresses";
+    private static final String URL_MEMBER_ID = "/api/member/users/addresses/{addressId}";
+    private static final String URL_ADMIN_ID = "/api/admin/users/addresses";
+
+
     /**
      * methodName : findAllAddressByUserId
      * author : masiljangajji
      * description : 유저의 모든 주소를 찾음
      *
-     * @param userId id
      * @return list
      */
-    public List<UserAddressGetResponse> findAllAddressByUserId(Long userId) {
+    @RequiredAuthorization
+    public List<UserAddressGetResponse> findAllUserAddress() {
 
         ResponseEntity<List<UserAddressGetResponse>> responseEntity =
-                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/users/{userId}/addresses",
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL_MEMBER,
                         HttpMethod.GET,
-                        null,
+                        new HttpEntity<>(Utils.getAuthHeader()),
                         new ParameterizedTypeReference<>() {
-                        }, userId);
-
+                        });
 
         if (responseEntity.getStatusCode() != HttpStatus.OK) {
             throw new RuntimeException();
@@ -67,17 +74,17 @@ public class UserAddressAdaptor {
      * author : masiljangajji
      * description : 유저의 주소중 하나를 찾음
      *
-     * @param userId    id
      * @param addressId id
      */
-    public void deleteUserAddress(Long userId, Long addressId) {
+    @RequiredAuthorization
+    public void deleteUserAddress(Long addressId) {
 
         ResponseEntity<UserAddressDeleteResponse> responseEntity =
-                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/users/{userId}/addresses/{addressId}",
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL_MEMBER_ID,
                         HttpMethod.DELETE,
-                        null,
+                        new HttpEntity<>(Utils.getAuthHeader()),
                         new ParameterizedTypeReference<>() {
-                        }, userId, addressId);
+                        }, addressId);
 
         if (responseEntity.getStatusCode() != HttpStatus.OK) {
             throw new RuntimeException();
@@ -90,23 +97,17 @@ public class UserAddressAdaptor {
      * author : masiljangajji
      * description : 유저 주소를 생성
      *
-     * @param userId id
      * @param userAddressCreateRequest address create request
      */
-    public void createUserAddress(Long userId, UserAddressCreateRequest userAddressCreateRequest) {
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-
-        HttpEntity<UserAddressCreateRequest> requestEntity = new HttpEntity<>(userAddressCreateRequest, headers);
+    @RequiredAuthorization
+    public void createUserAddress(UserAddressCreateRequest userAddressCreateRequest) {
 
         ResponseEntity<UserAddressCreateResponse> responseEntity =
-                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + "/api/users/{userId}/addresses",
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL_MEMBER,
                         HttpMethod.POST,
-                        requestEntity,
-                        UserAddressCreateResponse.class,
-                        userId);
+                        new HttpEntity<>(userAddressCreateRequest, Utils.getAuthHeader()),
+                        UserAddressCreateResponse.class
+                );
 
         if (responseEntity.getStatusCode() != HttpStatus.CREATED) {
             throw new RuntimeException();
@@ -119,25 +120,19 @@ public class UserAddressAdaptor {
      * author : masiljangajji
      * description : 유저의 주소정보를 변경 (별명,상세주소)
      *
-     * @param userId    id
-     * @param addressId id
-     * @param userAddressModifyRequest    address modify request
+     * @param addressId                id
+     * @param userAddressModifyRequest address modify request
      */
-    public void modifyUserAddress(Long userId, Long addressId, UserAddressModifyRequest userAddressModifyRequest) {
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-
-        HttpEntity<UserAddressModifyRequest> requestEntity = new HttpEntity<>(userAddressModifyRequest, headers);
+    @RequiredAuthorization
+    public void modifyUserAddress(Long addressId, UserAddressModifyRequest userAddressModifyRequest) {
 
         ResponseEntity<UserAddressModifyResponse> responseEntity =
                 restTemplate.exchange(
-                        gatewayAdaptorProperties.getAddress() + "/api/users/{userId}/addresses/{addressId}",
+                        gatewayAdaptorProperties.getAddress() + URL_MEMBER_ID,
                         HttpMethod.PUT,
-                        requestEntity,
+                        new HttpEntity<>(userAddressModifyRequest, Utils.getAuthHeader()),
                         UserAddressModifyResponse.class,
-                        userId, addressId);
+                        addressId);
 
         if (responseEntity.getStatusCode() != HttpStatus.OK) {
             throw new RuntimeException();

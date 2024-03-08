@@ -4,6 +4,10 @@ import java.time.LocalDate;
 import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import store.mybooks.front.admin.author.dto.response.AuthorGetResponse;
+import store.mybooks.front.admin.category.model.response.CategoryIdAndName;
+import store.mybooks.front.admin.publisher.dto.response.PublisherGetResponse;
+import store.mybooks.front.admin.tag.model.response.TagGetResponseForBookDetail;
 
 /**
  * packageName    : store.mybooks.front.admin.book.model.response <br/>
@@ -21,13 +25,15 @@ import lombok.NoArgsConstructor;
 public class BookDetailResponse {
     private Long id;
 
-    private String bookImage;
+//    private String bookImage;
 
     private String name;
 
-    private String authorName;
+    private String bookStatus;
 
-    private String publisherName;
+    private List<AuthorGetResponse> authorList;
+
+    private PublisherGetResponse publisher;
 
     private LocalDate publishDate;
 
@@ -35,9 +41,13 @@ public class BookDetailResponse {
 
     private Integer originalCost;
 
-    private Double totalRate;
+    private Integer disCountRate;
 
-    private Integer reviewCount;
+//    private Double totalRate;
+
+//    private Integer reviewCount;
+
+    private Integer likeCount;
 
     private Boolean isPacking;
 
@@ -45,9 +55,9 @@ public class BookDetailResponse {
 
     private String isbn;
 
-    private List<String> category;
+    private List<CategoryIdAndName> categoryList;
 
-    private List<String> tag;
+    private List<TagGetResponseForBookDetail> tagList;
 
     private Integer stock;
 
@@ -55,7 +65,9 @@ public class BookDetailResponse {
 
     private String content;
 
-    private String bookContentImage;
+//    private String bookContentImage;
 
 //    private List<ReviewDetailResponse> review;
+
+
 }

@@ -31,7 +31,7 @@ import store.mybooks.front.pageable.dto.response.PageResponse;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/admin/authors")
+@RequestMapping("/admin/author")
 public class AuthorController {
     private final AuthorService authorService;
 
@@ -51,7 +51,7 @@ public class AuthorController {
       
         log.debug("=======> value:{}", authorResponseList);
         modelMap.put("authors", authorResponseList);
-        return "admin/view/author-view-form";
+        return "admin/view/author/author-view-form";
     }
 
     /**
@@ -66,7 +66,7 @@ public class AuthorController {
     public String viewAuthorRegister(ModelMap modelMap) {
         modelMap.put("pathValue", "register");
 
-        return "admin/view/author-register-view";
+        return "admin/view/author/author-register-view";
     }
 
 
@@ -85,9 +85,9 @@ public class AuthorController {
 
         log.debug("=======>value: {}", createRequest.getName());
         if (authorService.createAuthor(createRequest)) {
-            return "redirect:/admin/authors";
+            return "redirect:/admin/author";
         }
-        return "redirect:/admin/authors/register";
+        return "redirect:/admin/author/register";
     }
 
     /**
@@ -106,7 +106,7 @@ public class AuthorController {
         log.debug("author id value: {}", request);
         modelMap.put("modifyAuthor", request);
         modelMap.put("pathValue", "update");
-        return "admin/view/author-register-view";
+        return "admin/view/author/author-register-view";
     }
 
     /**
@@ -127,10 +127,10 @@ public class AuthorController {
 
         log.debug("modify request: {}", request);
         if (authorService.updateAuthor(request)) {
-            return "redirect:/admin/authors";
+            return "redirect:/admin/author";
         }
         modelMap.put("modifyAuthor", request);
-        return "redirect:/admin/authors/update-form";
+        return "redirect:/admin/author/update-form";
     }
 
     /**
@@ -147,6 +147,6 @@ public class AuthorController {
         log.debug("삭제할 id value: {}", id);
         authorService.deleteAuthor(id);
 
-        return "redirect:/admin/authors";
+        return "redirect:/admin/author";
     }
 }

@@ -38,7 +38,6 @@ public class PageResponse<T> {
     private boolean first;
     @JsonIgnore
     private int size;
-    @JsonIgnore
     private int number;
 
     @JsonIgnore

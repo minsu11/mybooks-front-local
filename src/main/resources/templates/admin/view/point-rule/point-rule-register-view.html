@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/admin-layout}">
+
+<div layout:fragment="content">
+    <h5 th:if="${modifyPointRule == null}">포인트 등록 페이지</h5>
+
+    <h5 th:if="${modifyPointRule != null}">포인트 수정 페이지</h5>
+    <div class="input-group input-group-sm justify-content-center mb-3">
+        <div>
+            <div th:if="${modifyPointRule == null}">
+                <form name="form" class="form" method="post" th:action="@{'/admin/point-rule/register'}">
+
+
+                    <select class="form-select" name="pointRuleName" aria-label="Default select example">
+                        <option selected>포인트 규정 명</option>
+                        <th:block th:each="pointRuleName:${pointRuleNameList}">
+                            <option th:value="${pointRuleName.id}"
+                                    th:text="${pointRuleName.id}"></option>
+                        </th:block>
+                    </select>
+
+
+                    <input type="text" name="rate" class="form-control rate" placeholder="적립률"/>
+                    <input type="text" name="cost" class="form-control cost" placeholder="적립 금액"/>
+                    <th:block th:if="${msg !=null}">
+                        <p id="message" th:data-info="${msg}"></p>
+                    </th:block>
+                    <button name="submit" class="btn btn-outline-secondary" type="submit">등록
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div>
+            <div th:if="${modifyPointRule != null }">
+                <form name="form" method="post" class="form"
+                      th:action="@{'/admin/point-rule/update/'+${modifyPointRule.id}}">
+                    <select class="form-select" name="pointRuleName" aria-label="Default select example">
+                        <option selected th:value="${modifyPointRule.pointRuleName}"
+                                th:text="${modifyPointRule.pointRuleName}">포인트 규정 명
+                        </option>
+                        <th:block th:each="pointRuleName:${pointRuleNameList}">
+                            <option th:value="${pointRuleName.id}"
+                                    th:text="${pointRuleName.id}"></option>
+                        </th:block>
+                    </select>
+
+                    <input type="text" name="rate" class="form-control rate" placeholder="적립률"
+                           th:value="${modifyPointRule.rate}"/>
+                    <input type="text" name="cost" class="form-control cost" placeholder="적립 금액"
+                           th:value="${modifyPointRule.cost}"/>
+                    <!--                    <th:block th:if="${msg !=null}">-->
+                    <!--                        <p id="message" th:data-info="${msg}"></p>-->
+                    <!--                    </th:block>-->
+                    <button name="submit" class="btn btn-outline-secondary" type="submit">수정
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="/admin/js/return-rule/return-rule-validation.js"></script>
+    <script src="/admin/js/return-rule/return-rule-register-validation.js"></script>
+</div>
+</html>

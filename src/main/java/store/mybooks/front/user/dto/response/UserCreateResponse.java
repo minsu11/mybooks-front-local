@@ -1,10 +1,7 @@
 package store.mybooks.front.user.dto.response;
 
-import java.time.LocalDate;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  * packageName    : store.mybooks.resource.user.dto.response<br>
@@ -19,7 +16,6 @@ import lombok.Setter;
  */
 
 @Getter
-@Setter
 @NoArgsConstructor
 public class UserCreateResponse {
 
@@ -27,11 +23,15 @@ public class UserCreateResponse {
 
     private String email;
 
-    private LocalDate birth;
+    private Integer birthYear;
+
+    private String birthMonthDay;
 
     private String userStatusName;
 
     private String userGradeName;
+
+
 
 
 }
