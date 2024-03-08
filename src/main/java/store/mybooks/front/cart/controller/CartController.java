@@ -10,10 +10,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import store.mybooks.front.cart.domain.CartDetail;
-import store.mybooks.front.cart.service.CartUtil;
+import store.mybooks.front.cart.domain.CartRegisterRequest;
+import store.mybooks.front.cart.service.CartUserService;
+import store.mybooks.front.cart.service.CartNonUserService;
 import store.mybooks.front.utils.CookieUtils;
 
 /**
@@ -30,44 +33,72 @@ import store.mybooks.front.utils.CookieUtils;
 @Controller
 @RequiredArgsConstructor
 public class CartController {
-    private final CartUtil cartUtil;
+    private final CartNonUserService cartNonUserService;
+    private final CartUserService cartUserService;
 
+    public static final String CART_COOKIE_VALUE = "cart";
+
+    /**
+     * View cart string.
+     *
+     * @param cartCookie the cart cookie
+     * @param request    the request
+     * @param model      the model
+     * @return the string
+     */
     @GetMapping("/cart")
-    public String viewCart(@CookieValue(name = CartUtil.CART_COOKIE, required = false) Cookie cartCookie,
+    public String viewCart(@CookieValue(name = CART_COOKIE_VALUE, required = false) Cookie cartCookie,
                            HttpServletRequest request, Model model) {
         if (isUser(request)) {
-            List<CartDetail> bookFromCart = cartUtil.getBookFromCart();
+            List<CartDetail> bookFromCart = cartUserService.getBookFromCart();
 
             model.addAttribute(bookFromCart);
         } else {
-            List<CartDetail> cartDetailList = cartUtil.getCartDetailList(cartCookie);
+            List<CartDetail> cartDetailList = cartNonUserService.getBookFromCart(cartCookie);
             model.addAttribute(cartDetailList);
         }
         return "cart";
     }
 
+    /**
+     * Delete item from cart string.
+     *
+     * @param cartCookie the cart cookie
+     * @param response   the response
+     * @param request    the request
+     * @param bookId     the book id
+     * @return the string
+     */
     @GetMapping("/cart/delete")
-    public String deleteItemFromCart(@CookieValue(name = CartUtil.CART_COOKIE, required = false) Cookie cartCookie,
+    public String deleteItemFromCart(@CookieValue(name = CART_COOKIE_VALUE, required = false) Cookie cartCookie,
                                      HttpServletResponse response, HttpServletRequest request,
                                      @RequestParam Long bookId) {
         if (isUser(request)) {
-            cartUtil.deleteBookFromCart(bookId);
+            cartUserService.deleteBookFromCart(bookId);
         } else {
-            cartUtil.deleteBookFromCart(cartCookie, response, bookId);
+            cartNonUserService.deleteBookFromCart(cartCookie, response, bookId);
         }
         return "redirect:/cart";
     }
 
+    /**
+     * Add book to cart string.
+     *
+     * @param cartCookie          the cart cookie
+     * @param response            the response
+     * @param request             the request
+     * @param cartRegisterRequest the cart register request
+     * @return the string
+     */
     @PostMapping("/cart/add")
-    public String addBookToCart(@CookieValue(name = CartUtil.CART_COOKIE, required = false) Cookie cartCookie,
+    public String addBookToCart(@CookieValue(name = CART_COOKIE_VALUE, required = false) Cookie cartCookie,
                                 HttpServletResponse response, HttpServletRequest request,
-                                @RequestParam(name = "id") Long itemId,
-                                @RequestParam(name = "quantity") int amount) {
+                                @ModelAttribute CartRegisterRequest cartRegisterRequest) {
 
         if (isUser(request)) {
-            cartUtil.addBookToCart(itemId, amount);
+            cartUserService.addBookToCart(cartRegisterRequest);
         } else {
-            cartUtil.registerBookToCart(cartCookie, response, itemId, amount);
+            cartNonUserService.registerBookToCart(cartCookie, response, cartRegisterRequest);
         }
         return "redirect:/cart";
     }
