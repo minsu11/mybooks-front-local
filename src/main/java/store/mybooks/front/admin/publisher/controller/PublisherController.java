@@ -51,7 +51,7 @@ public class PublisherController {
     public String viewPublisher(@PageableDefault Pageable pageable, ModelMap modelMap) {
         PageResponse<PublisherResponse> publisherResponseList = publisherService.getPagedPublisher(pageable);
         modelMap.put("publisherList", publisherResponseList);
-        return "admin/view/publisher-view";
+        return "admin/view/publisher/publisher-view";
     }
 
 
@@ -68,7 +68,7 @@ public class PublisherController {
     public String viewRegisterPublisher(ModelMap modelMap) {
         modelMap.put("pathValue", "register");
 
-        return "admin/view/publisher-register-view";
+        return "admin/view/publisher/publisher-register-view";
     }
 
     /**
@@ -108,7 +108,7 @@ public class PublisherController {
         modelMap.put("id", id);
         modelMap.put("modifyPublisher", request);
         modelMap.put("pathValue", "update");
-        return "admin/view/publisher-register-view";
+        return "admin/view/publisher/publisher-register-view";
     }
 
     /**
