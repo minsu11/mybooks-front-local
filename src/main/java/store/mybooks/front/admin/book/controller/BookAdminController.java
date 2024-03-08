@@ -60,7 +60,7 @@ public class BookAdminController {
     @GetMapping
     public String getBookPage(@PageableDefault(size = 8) Pageable pageable, Model model) {
         model.addAttribute("books", bookAdminService.getBooks(pageable));
-        return "admin/view/book";
+        return "admin/view/book/book";
     }
 
     /**
@@ -78,7 +78,7 @@ public class BookAdminController {
         model.addAttribute("tags", tagService.getTags());
         model.addAttribute("authors", authorService.getAllAuthors());
         model.addAttribute("bookStatuses", bookAdminService.getBookStatus());
-        return "admin/view/book-register";
+        return "admin/view/book/book-register";
     }
 
     /**
@@ -118,7 +118,7 @@ public class BookAdminController {
         model.addAttribute("tags", tagService.getTags());
         model.addAttribute("authors", authorService.getAllAuthors());
         model.addAttribute("bookStatuses", bookAdminService.getBookStatus());
-        return "admin/view/book-update";
+        return "admin/view/book/book-update";
     }
 
     /**
