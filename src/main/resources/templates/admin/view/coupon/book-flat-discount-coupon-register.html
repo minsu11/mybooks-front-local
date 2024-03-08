@@ -23,7 +23,7 @@
             </div>
             <div class="form-group">
                 <label for="bookId">도서</label>
-                <select class="form-select custom-select" id="bookId" name="categoryId" aria-label="bookId">
+                <select class="form-select custom-select" id="bookId" name="bookId" aria-label="bookId">
                     <option selected>도서 선택</option>
                     <option th:each="book : ${books}" th:value="${book.id}"
                             th:text="${book.name}"></option>
@@ -50,7 +50,7 @@
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#bookId').select2({
                 placeholder: "도서 선택",
                 allowClear: true,
