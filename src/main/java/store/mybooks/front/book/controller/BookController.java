@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import store.mybooks.front.admin.author.dto.response.AuthorGetResponse;
 import store.mybooks.front.admin.book.model.response.BookDetailResponse;
 import store.mybooks.front.admin.category.model.response.CategoryIdAndName;
@@ -34,14 +35,17 @@ public class BookController {
     /**
      * methodName : getBookDetailPage
      * author : newjaehun
-     * description : 도서 상세페이지 호출.
+     * description :도서 상세페이지 호출.
      *
-     * @param bookId Long
+     * @param bookId  Long
+     * @param likeCheck  boolean
      * @param model Model
      * @return string
      */
     @GetMapping("/{id}")
-    public String getBookDetailPage(@PathVariable("id") Long bookId, Model model) {
+    public String getBookDetailPage(@PathVariable("id") Long bookId,
+                                    @RequestParam(value = "like", required = false, defaultValue = "false")
+                                    boolean likeCheck, Model model) {
         BookDetailResponse book = bookService.getBook(bookId);
         model.addAttribute("book", book);
         model.addAttribute("authorNameList", book.getAuthorList().stream()
