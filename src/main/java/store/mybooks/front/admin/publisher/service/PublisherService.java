@@ -36,6 +36,7 @@ public class PublisherService {
      * author : newjaehun<br>
      * description : 전체 출판사 목록을 조회
      * <br> *
+     *
      * @return list
      */
     public List<PublisherResponse> getAllPublishers() {
@@ -55,14 +56,8 @@ public class PublisherService {
         return publisherAdaptor.getPagedPublishers(pageable);
     }
 
-    public boolean registerPublisher(PublisherCreateRequest request) {
-        try {
-            publisherAdaptor.registerPublisher(request);
-
-        } catch (RuntimeException e) {
-            return false;
-        }
-        return true;
+    public void registerPublisher(PublisherCreateRequest request) {
+        publisherAdaptor.registerPublisher(request);
     }
 
     /**
