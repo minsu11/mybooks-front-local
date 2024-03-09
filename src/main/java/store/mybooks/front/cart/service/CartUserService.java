@@ -102,7 +102,7 @@ public class CartUserService {
         }
     }
 
-    private String cartKey() {
+    public String cartKey() {
         UserGetResponse user = userAdaptor.findUser();
         return CartController.CART_COOKIE_VALUE + ":" + user.getEmail();
     }
