@@ -37,6 +37,7 @@ public class CookieUtils {
         response.setHeader("Set-Cookie",
                 "identity_cookie=" + token + "; " +
                         "Path=/; " + // 적용될 범위
+
                         "Domain=" + cookieConfig.getDomain() + ";" + // 적용될 도메인
                         "HttpOnly; " + // JavaScript에서 쿠키에 접근하는 것을 방지하기 위해 HttpOnly 속성을 설정합니다.
                         "Max-Age=604800; " + // 쿠키 생존시간
@@ -50,7 +51,7 @@ public class CookieUtils {
         response.setHeader("Set-Cookie",
                 "identity_cookie=; " +
                         "Path=/; " +
-                        "Domain=" + cookieConfig.getDomain() + ";" +
+                        "Domain=" + cookieConfig.getDomain() + ";" +           
                         "Max-Age=0; " + // 쿠키를 즉시 만료시킵니다.
                         "SameSite=Strict; " +
                         "Secure");
