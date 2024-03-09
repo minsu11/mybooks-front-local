@@ -6,7 +6,7 @@
 <div layout:fragment="content">
     <p>출판사 등록 페이지 및 수정 페이지</p>
     <div class="input-group input-group-sm justify-content-center mb-3">
-        <form method="post" th:action="@{'/admin/publishers/'+${pathValue}}">
+        <form method="post" th:action="@{'/admin/publisher/'+${pathValue}}">
             <div th:if="${modifyPublisher == null}">
                 <input type="text" name="name" class="form-control" placeholder="출판사 명"/>
                 <button class="btn btn-outline-secondary" type="submit">등록

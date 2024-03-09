@@ -2,7 +2,6 @@ package store.mybooks.front.auth.interceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import store.mybooks.front.utils.CookieUtils;
 
@@ -19,7 +18,6 @@ import store.mybooks.front.utils.CookieUtils;
  */
 
 
-@Component
 public class CookieInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {

@@ -73,8 +73,7 @@
                                 <div class="col-sm-15">
                                     <div class="form-group">
                                         <label for="content">설명</label>
-                                        <textarea class="form-control" id="content" name="content" readonly
-                                                  th:text="${book.content}" rows="16"></textarea>
+                                        <div id="content" class="form-control" style="height: auto; min-height: 32rem;" readonly th:utext="${book.content}"></div>
                                     </div>
                                 </div>
                             </div>
@@ -87,10 +86,12 @@
                                             <label for="authorList">저자</label>
                                         </div>
                                         <div class="form-group">
-                                            <select id="authorList" name="authorList" multiple="multiple" size="10">
-                                                <option th:each="author : ${authors}" th:value="${author.id}"
-                                                        th:title="${author.content}" th:text="${author.name}"
-                                                        th:selected="${#lists.contains(bookAuthorList, author.id)}" readonly>
+                                            <select id="authorList" class="form-control">
+                                                <option value="">저자 목록</option>
+                                                <option th:each="author : ${authors}"
+                                                        th:if="${#lists.contains(bookAuthorList, author.id)}"
+                                                        th:text="${author.name + ': ' + (author.content.length() > 10 ? author.content.substring(0, 10) + '...' : author.content)}"
+                                                        disabled>
                                                 </option>
                                             </select>
                                         </div>
@@ -156,8 +157,8 @@
                                         </div>
                                         <div class="form-group">
                                             <select id="categoryList" name="categoryList" multiple="multiple" size="10">
-                                                <option th:each="category : ${categories}" th:value="${category.id}"
-                                                        th:text="${category.name}"></option>
+                                                <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"
+                                                        th:selected="${#lists.contains(bookCategoryList, category.id)}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -168,10 +169,11 @@
                                             <label for="tagList">태그</label>
                                         </div>
                                         <div class="form-group">
-                                            <select id="tagList" name="tagList" multiple="multiple" size="10">
-                                                <option th:each="tag : ${tags}" th:value="${tag.id}"
+                                            <select id="tagList" name="tagList" multiple="multiple" size="10" class="form-control">
+                                                <option th:each="tag : ${tags}"
+                                                        th:value="${tag.id}"
                                                         th:text="${tag.name}"
-                                                        th:selected="${#lists.contains(bookTagList, tag.id)}"></option>
+                                                        th:selected="${#lists.contains(bookTagList, tag.id)}">
                                                 </option>
                                             </select>
                                         </div>
@@ -219,42 +221,53 @@
     </div>
     <script>
         $(document).ready(function () {
-            $('#authorList').multiselect({
-                nonSelectedText: '저자 선택',
-                maxHeight: 400,
-                includeSelectAllOption: false,
-                numberDisplayed: 1
-            });
-        });
-        $(document).ready(function () {
             $('#categoryList').multiselect({
                 nonSelectedText: '카테고리 선택(최대 10개)',
                 maxHeight: 400,
                 includeSelectAllOption: false,
                 numberDisplayed: 1,
-                onChange: function (option, checked) {
-                    var maxCount = 10;
-                    var selectedCount = $('#categoryList option:selected').length;
-
-                    if (selectedCount >= maxCount) {
-                        $('#categoryList option').each(function () {
-                            if (!$(this).is(':selected')) {
-                                $(this).prop('disabled', true);
-                            }
-                        });
-                    } else {
-                        $('#categoryList option').prop('disabled', false);
+                enableFiltering: true,
+                enableCaseInsensitiveFiltering: true,
+                filterPlaceholder: '카테고리 검색',
+                onChange: function(option, checked) {
+                    var selectedOptions = $('#categoryList option:selected');
+                    var count = selectedOptions.length;
+                    if (count > 10) {
+                        alert('최대 10개의 카테고리만 선택할 수 있습니다.');
+                        $(option).prop('selected', false);
+                        $('#categoryList').multiselect('deselect', $(option).val());
                     }
-                    $('#categoryList').multiselect('refresh');
                 }
             });
+            $('#categorySearch').on('keyup', function() {
+                var searchTerm = $(this).val().toLowerCase();
+                $('#categoryList option').each(function() {
+                    var text = $(this).text().toLowerCase();
+                    var match = text.indexOf(searchTerm) > -1;
+                    $(this).toggle(match);
+                });
+                $('#categoryList').multiselect('rebuild');
+            });
         });
+
         $(document).ready(function () {
             $('#tagList').multiselect({
                 nonSelectedText: '태그 선택',
                 maxHeight: 400,
                 includeSelectAllOption: false,
-                numberDisplayed: 1
+                numberDisplayed: 1,
+                enableFiltering: true,
+                enableCaseInsensitiveFiltering: true,
+                filterPlaceholder: '태그 검색'
+            });
+            $('#tagSearch').on('keyup', function() {
+                var searchTerm = $(this).val().toLowerCase();
+                $('#tagList option').each(function() {
+                    var text = $(this).text().toLowerCase();
+                    var match = text.indexOf(searchTerm) > -1;
+                    $(this).toggle(match);
+                });
+                $('#tagList').multiselect('rebuild');
             });
         });
 

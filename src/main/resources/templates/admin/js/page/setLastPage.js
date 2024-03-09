@@ -1,8 +1,3 @@
-// document.addEventListener("DOMContentLoaded", function(){
-//     page = Math.min((currentPage / 10 + 1) * 10 - 1, totalPages - 1)
-//
-//     return page;
-// });
 document.addEventListener("DOMContentLoaded", function(){
     var page = currentPage;
 

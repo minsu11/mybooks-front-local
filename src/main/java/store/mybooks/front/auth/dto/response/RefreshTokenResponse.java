@@ -1,6 +1,5 @@
 package store.mybooks.front.auth.dto.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,7 +15,6 @@ import lombok.NoArgsConstructor;
  * 3/8/24        masiljangajji       최초 생성
  */
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
 public class RefreshTokenResponse {
 

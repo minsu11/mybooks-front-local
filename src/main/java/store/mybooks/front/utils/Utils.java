@@ -2,9 +2,7 @@ package store.mybooks.front.utils;
 
 import java.util.List;
 import java.util.Objects;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -84,7 +82,13 @@ public class Utils {
         if (Objects.isNull(token)) {
             throw new AuthenticationIsNotValidException();
         }
-        headers.set("Authorization", (String) request.getAttribute("identity_cookie_value"));
+        headers.set("Authorization", token);
+        return headers;
+    }
+
+    public static HttpHeaders refreshAuthHeader(String newAccessToken) {
+        HttpHeaders headers = Utils.getAuthHeader();
+        headers.set("Authorization", newAccessToken);
         return headers;
     }
 
@@ -109,14 +113,10 @@ public class Utils {
     }
 
 
-
-
     public static HttpHeaders getAuthHeader() {
         return (HttpHeaders) RequestContextHolder.currentRequestAttributes()
                 .getAttribute("authHeader", RequestAttributes.SCOPE_REQUEST);
     }
-
-
 
 
 }

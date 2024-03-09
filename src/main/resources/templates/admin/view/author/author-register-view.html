@@ -6,7 +6,7 @@
 <div layout:fragment="content">
     <p>저자 등록 페이지 및 수정 페이지</p>
     <div class="input-group input-group-sm justify-content-center mb-3">
-        <form method="post" th:action="@{'/admin/authors/'+${pathValue}}">
+        <form method="post" th:action="@{'/admin/author/'+${pathValue}}">
             <div th:if="${modifyAuthor == null}">
                 <input type="text" name="name" class="form-control" placeholder="저자 명"/>
                 <input type="text" name="content" class="form-control" placeholder="저자 설명"/>

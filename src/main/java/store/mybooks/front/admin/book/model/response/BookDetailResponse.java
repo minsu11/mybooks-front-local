@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.mybooks.front.admin.author.dto.response.AuthorGetResponse;
+import store.mybooks.front.admin.category.model.response.CategoryIdAndName;
 import store.mybooks.front.admin.publisher.dto.response.PublisherGetResponse;
 import store.mybooks.front.admin.tag.model.response.TagGetResponseForBookDetail;
 
@@ -46,13 +47,15 @@ public class BookDetailResponse {
 
 //    private Integer reviewCount;
 
+    private Integer likeCount;
+
     private Boolean isPacking;
 
     private Integer page;
 
     private String isbn;
 
-//    private List<CategoryGetResponseForBookCreate> categoryList;
+    private List<CategoryIdAndName> categoryList;
 
     private List<TagGetResponseForBookDetail> tagList;
 

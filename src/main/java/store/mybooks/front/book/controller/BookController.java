@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import store.mybooks.front.admin.author.dto.response.AuthorGetResponse;
 import store.mybooks.front.admin.book.model.response.BookDetailResponse;
+import store.mybooks.front.admin.category.model.response.CategoryIdAndName;
 import store.mybooks.front.admin.tag.model.response.TagGetResponseForBookDetail;
 import store.mybooks.front.book.service.BookService;
 
@@ -49,8 +50,9 @@ public class BookController {
         model.addAttribute("tagNameList", book.getTagList().stream()
                 .map(TagGetResponseForBookDetail::getName)
                 .collect(Collectors.joining(", ")));
-
-//        model.addAttribute("categoryList", )
+        model.addAttribute("categoryNameList", book.getCategoryList().stream()
+                .map(CategoryIdAndName::getName)
+                .collect(Collectors.joining(", ")));
         return "book-details";
     }
 

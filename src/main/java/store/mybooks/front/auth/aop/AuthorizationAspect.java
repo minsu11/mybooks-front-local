@@ -55,6 +55,8 @@ public class AuthorizationAspect {
         RequestContextHolder.currentRequestAttributes()
                 .setAttribute("authHeader", Utils.addAuthHeader(request), RequestAttributes.SCOPE_REQUEST);
 
+        System.out.println("안녕안녕 이거 두번하니?");
+
         try {
             return joinPoint.proceed();
         } catch (RuntimeException e) {
@@ -70,18 +72,22 @@ public class AuthorizationAspect {
                 RefreshTokenResponse refreshTokenResponse =
                         tokenAdaptor.refreshAccessToken(new RefreshTokenRequest(CookieUtils.getIdentityCookieValue(request)));
 
+
                 // 리프래시 토큰 만료 아니고 유효해서 재발급 됐음
                 if(refreshTokenResponse.getIsValid()){
                     // 쿠키에 재발급한 엑세스토큰 넣어주고
                     CookieUtils.addJwtCookie(Objects.requireNonNull(response),refreshTokenResponse.getAccessToken());
-                    // 기존 메서드 다시 불러
-                    joinPoint.proceed();
+                    // 헤더 설정해주고 기존 메서드 다시 불러
+                    RequestContextHolder.currentRequestAttributes()
+                            .setAttribute("authHeader", Utils.refreshAuthHeader(refreshTokenResponse.getAccessToken()), RequestAttributes.SCOPE_REQUEST);
+                    return joinPoint.proceed();
                 }
-                // 리프래시 토큰 만료됐거나 , 유효하지 않음
-                CookieUtils.deleteJwtCookie(Objects.requireNonNull(response));
-                // 리프래시 토큰이 만료면 TokenExpiredException -> 로그인하세요
-                throw new TokenExpiredException();
-
+                else{
+                    // 리프래시 토큰 만료됐거나 , 유효하지 않음
+                    CookieUtils.deleteJwtCookie(Objects.requireNonNull(response));
+                    // 리프래시 토큰이 만료면 TokenExpiredException -> 로그인하세요
+                    throw new TokenExpiredException();
+                }
             } else if (error.contains(ErrorMessage.INVALID_TOKEN.getMessage())) { // 토큰위조됨 쿠키삭제하기
                 CookieUtils.deleteJwtCookie(Objects.requireNonNull(response));
                 throw new AuthenticationIsNotValidException();
