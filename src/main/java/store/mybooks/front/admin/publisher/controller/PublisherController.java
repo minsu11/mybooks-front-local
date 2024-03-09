@@ -41,7 +41,7 @@ public class PublisherController {
     /**
      * methodName : viewPublisher<br>
      * author : minsu11<br>
-     * description : 출판사의 정보를 {@code view}에 보여줌
+     * description : 출판사의 정보를 {@code view}에 보여줌.
      * <br> *
      *
      * @param modelMap {@code view}에 보여줄 출판사의 정보를 담는 {@code model}
@@ -58,7 +58,7 @@ public class PublisherController {
     /**
      * methodName : viewRegisterPublisher<br>
      * author : minsu11<br>
-     * description : 출판사를 등록하는 {@code view}의 경로를 반환
+     * description : 출판사를 등록하는 {@code view}의 경로를 반환.
      * <br> *
      *
      * @param modelMap {@code view}에 보낼 정보를 담고 있음
@@ -83,9 +83,7 @@ public class PublisherController {
      */
     @PostMapping("/register")
     public String doRegisterPublisher(@ModelAttribute PublisherCreateRequest request) {
-        if (publisherService.registerPublisher(request)) {
-            return "redirect:/admin/publishers";
-        }
+        publisherService.registerPublisher(request);
         return "redirect:/admin/publisher";
     }
 

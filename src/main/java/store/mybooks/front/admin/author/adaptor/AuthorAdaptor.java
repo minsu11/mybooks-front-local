@@ -117,7 +117,7 @@ public class AuthorAdaptor {
     public AuthorCreateResponse createAuthor(AuthorCreateRequest authorCreateRequest) {
         ResponseEntity<AuthorCreateResponse> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + ADMIN_URL,
-                HttpMethod.PUT,
+                HttpMethod.POST,
                 new HttpEntity<>(authorCreateRequest, Utils.getAuthHeader()),
                 new ParameterizedTypeReference<AuthorCreateResponse>() {
                 });

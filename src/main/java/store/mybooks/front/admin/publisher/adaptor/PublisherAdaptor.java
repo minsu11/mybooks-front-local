@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -102,13 +101,10 @@ public class PublisherAdaptor {
      */
     @RequiredAuthorization
     public PublisherCreateResponse registerPublisher(PublisherCreateRequest publisherCreateRequest) {
-        HttpHeaders headers = Utils.getHttpHeader();
-
-        HttpEntity<PublisherCreateRequest> request = new HttpEntity<>(publisherCreateRequest, headers);
         ResponseEntity<PublisherCreateResponse> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + ADMIN_URL,
                 HttpMethod.POST,
-                request,
+                new HttpEntity<>(publisherCreateRequest, Utils.getAuthHeader()),
                 new ParameterizedTypeReference<PublisherCreateResponse>() {
                 });
         return Utils.getResponseEntity(exchange, HttpStatus.CREATED);
@@ -126,12 +122,11 @@ public class PublisherAdaptor {
      */
     @RequiredAuthorization
     public PublisherModifyResponse updatePublisher(PublisherModifyRequest publisherModifyRequest, Integer id) {
-        HttpEntity<PublisherModifyRequest> request = new HttpEntity<>(publisherModifyRequest, Utils.getHttpHeader());
         ResponseEntity<PublisherModifyResponse> exchange =
                 restTemplate.exchange(
                         gatewayAdaptorProperties.getAddress() + ADMIN_URL_ID,
                         HttpMethod.PUT,
-                        request,
+                        new HttpEntity<>(publisherModifyRequest, Utils.getAuthHeader()),
                         new ParameterizedTypeReference<PublisherModifyResponse>() {
                         }, id);
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
@@ -153,7 +148,7 @@ public class PublisherAdaptor {
                 restTemplate.exchange(
                         gatewayAdaptorProperties.getAddress() + ADMIN_URL_ID,
                         HttpMethod.DELETE,
-                        null,
+                        new HttpEntity<>(Utils.getAuthHeader()),
                         new ParameterizedTypeReference<PublisherDeleteResponse>() {
                         },
                         id);
