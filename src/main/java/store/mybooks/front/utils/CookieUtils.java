@@ -3,6 +3,10 @@ package store.mybooks.front.utils;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import store.mybooks.front.config.CookieConfig;
 
 /**
  * packageName    : store.mybooks.front.utils<br>
@@ -15,14 +19,25 @@ import javax.servlet.http.HttpServletResponse;
  * -----------------------------------------------------------
  * 3/5/24        masiljangajji       최초 생성
  */
+
+
+@Component
+@RequiredArgsConstructor
 public class CookieUtils {
+
+    private static CookieConfig cookieConfig = null;
+
+    @Autowired
+    public CookieUtils(CookieConfig cookieConfig) {
+        CookieUtils.cookieConfig = cookieConfig;
+    }
 
     public static void addJwtCookie(HttpServletResponse response, String token) {
 
         response.setHeader("Set-Cookie",
                 "identity_cookie=" + token + "; " +
                         "Path=/; " + // 적용될 범위
-                        "Domain=my-books.store; " + // 적용될 도메인
+                        "Domain=" + cookieConfig.getDomain() + ";" + // 적용될 도메인
                         "HttpOnly; " + // JavaScript에서 쿠키에 접근하는 것을 방지하기 위해 HttpOnly 속성을 설정합니다.
                         "Max-Age=604800; " + // 쿠키 생존시간
                         "SameSite=Strict; " +
@@ -35,7 +50,7 @@ public class CookieUtils {
         response.setHeader("Set-Cookie",
                 "identity_cookie=; " +
                         "Path=/; " +
-                        "Domain=my-books.store; " +
+                        "Domain=" + cookieConfig.getDomain() + ";" +
                         "Max-Age=0; " + // 쿠키를 즉시 만료시킵니다.
                         "SameSite=Strict; " +
                         "Secure");
