@@ -23,7 +23,7 @@
     <script src="/admin/vendor/jquery/jquery.min.js"></script>
 </head>
 
-<body id="page-top">
+<body class="d-flex flex-column min-vh-100">
 
 <!-- Page Wrapper -->
 <div id="wrapper">
@@ -44,11 +44,11 @@
             </div>
             <!-- content의 내용이 끝나는 지점 -->
 
-            <!-- Footer -->
-            <footer th:replace="common/fragment/admin/admin-footer::footerFragment"></footer>
-            <!-- End of Footer -->
 
         </div>
+        <!-- Footer -->
+        <th:block th:replace="common/fragment/admin/admin-footer::footerFragment"></th:block>
+        <!-- End of Footer -->
         <!-- End of Content Wrapper -->
 
     </div>

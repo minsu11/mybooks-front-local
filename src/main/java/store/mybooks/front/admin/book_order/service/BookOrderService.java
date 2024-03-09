@@ -46,13 +46,10 @@ public class BookOrderService {
      *
      * @param request
      */
-    public boolean modifyAdminOrderStatus(BookOrderStatusModifyRequest request) {
-        if (request.getInvoiceNumber().isEmpty()) {
-            return false; // wrap에 있는 코드가 merge되면 exception 바꿀 예정
-        }
+    public void modifyAdminOrderStatus(BookOrderStatusModifyRequest request) {
+
         bookOrderAdaptor.modifyOrderStatus(request);
 
-        return true;
     }
 
     /**

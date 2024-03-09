@@ -10,7 +10,6 @@ import store.mybooks.front.admin.book_order.dto.request.BookOrderRegisterInvoice
 import store.mybooks.front.admin.book_order.dto.request.BookOrderStatusModifyRequest;
 import store.mybooks.front.admin.book_order.dto.response.BookOrderAdminResponse;
 import store.mybooks.front.admin.book_order.service.BookOrderService;
-import store.mybooks.front.auth.Annotation.RequiredAuthorization;
 import store.mybooks.front.pageable.dto.response.PageResponse;
 
 /**
@@ -42,7 +41,6 @@ public class BookOrderController {
      * @param pageable page
      * @return string
      */
-    @RequiredAuthorization
     @GetMapping
     public String viewBookOrder(ModelMap modelMap, Pageable pageable) {
         PageResponse<BookOrderAdminResponse> bookOrderAdminPage = bookOrderService.getBookOrderAdminPage(pageable);
@@ -59,14 +57,12 @@ public class BookOrderController {
      * @param request
      * @return string
      */
-    @RequiredAuthorization
     @PostMapping("/status")
     public String doModifyStatus(@ModelAttribute BookOrderStatusModifyRequest request) {
         bookOrderService.modifyAdminOrderStatus(request);
         return "redirect:/admin/order";
     }
 
-    @RequiredAuthorization
     @GetMapping("/{id}")
     public String viewInvoiceNumberRegisterView(@PathVariable Long id, ModelMap modelMap) {
         modelMap.put("id", id);
@@ -82,7 +78,6 @@ public class BookOrderController {
      * @param request
      * @return string
      */
-    @RequiredAuthorization
     @PostMapping("/invoiceNumber")
     public String doRegisterInvoiceNumber(@ModelAttribute BookOrderRegisterInvoiceNumberRequest request) {
         log.info("request value:{}", request.getId());
