@@ -11,9 +11,9 @@
         }
 
         .quantity-input .form-control.quantity {
-            width: 60px; /* 입력 칸 크기 조정 */
+            width: 60px;
             text-align: center;
-            margin: 0 5px; /* 버튼과의 간격 */
+            margin: 0 5px;
         }
 
         .quantity-input button {
@@ -140,9 +140,6 @@
             document.getElementById('totalAmount').innerText = total;
         }
 
-        // window.onload = function () {
-        //     updateTotalAmount();
-        // };
 
 
     </script>
@@ -156,11 +153,9 @@
                     <h4>Total Amount:</h4>
                 </div>
                 <div class="col-lg-2 col-md-2 col-12">
-                    <!-- 여기서 Thymeleaf를 사용하여 총 주문 금액을 표시 -->
                     <p th:text="${totalAmount}" id="totalAmount"></p>
                 </div>
                 <div class="col-lg-1 col-md-1 col-12">
-                    <!-- 주문 버튼 -->
                     <form action="/order/place" method="post">
                         <button type="submit" class="btn">주문</button>
                     </form>
