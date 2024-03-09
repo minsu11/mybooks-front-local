@@ -27,7 +27,7 @@ import store.mybooks.front.auth.interceptor.LogoutInterceptor;
  */
 @Configuration
 public class WebClientConfig implements WebMvcConfigurer {
-
+    
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder
