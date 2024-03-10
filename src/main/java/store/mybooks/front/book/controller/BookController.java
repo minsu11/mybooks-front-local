@@ -55,17 +55,9 @@ public class BookController {
                 .map(CategoryIdAndName::getName)
                 .collect(Collectors.joining(", ")));
 
-
-//        if () {      로그인 확인하고
-//            if (bookLikeService.isUserLikeCheck(bookId)) {
-//                model.addAttribute("userBookLikeCheck", true);
-//            } else {
-//                model.addAttribute("userBookLikeCheck", false);
-//            }
-//        }else{
-//            model.addAttribute("userBookLikeCheck", null);
+//        if () {  로그인 확인하고
+//            model.addAttribute("userBookLikeCheck", bookLikeService.isUserLikeCheck(bookId));
 //        }
-
 
         return "book-details";
     }
