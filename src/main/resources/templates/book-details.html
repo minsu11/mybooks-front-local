@@ -80,45 +80,52 @@
                                 <div class="original-price">정가: <span th:text="${book.originalCost}">원</span></div>
                                 <div class="sale-price">판매가:
                                     <span th:text="${book.saleCost} + '원 (' + ${book.disCountRate} + '% 할인)'"></span>
-                            </div>
-                            <p>배송비: <span>무료</span></p>
-                            <div class="quantity-input">
-                                <button onclick="document.getElementById('quantity').stepDown()" class="minus-btn">-
-                                </button>
-                                <input type="number" id="quantity" name="quantity" min="1" value="1"
-                                       class="form-control quantity">
-                                <button onclick="document.getElementById('quantity').stepUp()" class="plus-btn">+
-                                </button>
-                            </div>
-                            <div class="bottom-content">
-                                <div class="row align-items-end">
-                                    <div class="col-lg-4 col-md-4 col-12">
-                                        <form action="/direct" method="get">
-                                            <input type="hidden" name="id" th:value="${book.id}">
-                                            <input type="hidden" id="buyNowQuantity" name="quantity">
-                                            <div class="button cart-button">
-                                                <button type="submit" class="btn" style="width: 100%;">바로구매</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 col-12">
-                                        <form action="/cart" method="post">
-                                            <input type="hidden" name="id" th:value="${book.id}">
-                                            <input type="hidden" id="cartQuantity" name="quantity">
-                                            <div class="button cart-button">
-                                                <button type="submit" class="btn" style="width: 100%;">장바구니 담기</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 col-12">
-                                        <form action="/book-like" method="post">
-                                            <input type="hidden" name="id" th:value="${book.id}">
-                                            <div class="wish-button">
-                                                <button type="submit" class="btn"><i class="lni lni-heart"></i> To
-                                                    Wishlist
-                                                </button>
-                                            </div>
-                                        </form>
+                                    <<<<<<< HEAD
+                                </div>
+                                <p>배송비: <span>무료</span></p>
+                                <div class="quantity-input">
+                                    <button onclick="stepDown()" class="minus-btn">-
+                                    </button>
+                                    <input type="number" id="quantity" name="quantity" min="1" value="1"
+                                           class="form-control quantity">
+                                    <button onclick="stepUp()" class="plus-btn">+
+                                    </button>
+                                </div>
+                                <div class="bottom-content">
+                                    <div class="row align-items-end">
+                                        <div class="col-lg-4 col-md-4 col-12">
+                                            <form action="/direct/checkout" method="get">
+                                                <input type="hidden" name="id" th:value="${book.id}">
+                                                <input type="hidden" name="saleCost" th:value="${book.saleCost}">
+                                                <input type="hidden" id="buyNowQuantity" name="quantity" value="1">
+                                                <div class="button cart-button">
+                                                    <button type="submit" class="btn" style="width: 100%;">바로구매</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-12">
+                                            <form action="/cart/add" method="post">
+                                                <input type="hidden" name="id" th:value="${book.id}">
+                                                <input type="hidden" name="originalCost"
+                                                       th:value="${book.originalCost}">
+                                                <input type="hidden" name="saleCost" th:value="${book.saleCost}">
+                                                <input type="hidden" id="cartQuantity" name="quantity">
+                                                <div class="button cart-button">
+                                                    <button type="submit" class="btn" style="width: 100%;">장바구니 담기
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-12">
+                                            <form action="/book-like" method="post">
+                                                <input type="hidden" name="id" th:value="${book.id}">
+                                                <div class="wish-button">
+                                                    <button type="submit" class="btn"><i class="lni lni-heart"></i> To
+                                                        Wishlist
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -384,6 +391,7 @@
 
         function stepDown() {
             document.getElementById('quantity').stepDown()
+            document.getElementById('buyNowQuantity').value = document.getElementById('quantity').value
             document.getElementById('cartQuantity').value = document.getElementById('quantity').value
         }
 

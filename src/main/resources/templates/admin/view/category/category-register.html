@@ -12,15 +12,18 @@
         <form name="form" method="post" action="/admin/category/register">
             <div class="col-auto">
                 <label for="firstParentCategoryId" class="form-label">1단계 카테고리 선택</label>
-                <select class="form-select" id="firstParentCategoryId" name="firstParentCategoryId" aria-label="Default select example">
+                <select class="form-select" id="firstParentCategoryId" name="firstParentCategoryId"
+                        aria-label="Default select example">
                     <option selected th:value="null" th:text="없음"></option>
-                    <option th:each="category : ${categoryIdAndNameList}" th:value="${category.id}" th:text="${category.name}">
+                    <option th:each="category : ${categoryIdAndNameList}" th:value="${category.id}"
+                            th:text="${category.name}">
                     </option>
                 </select>
             </div>
             <div class="col-auto">
                 <label for="secondParentCategoryId" class="form-label">2단계 카테고리 선택</label>
-                <select class="form-select" id="secondParentCategoryId" name="secondParentCategoryId" aria-label="Default select example">
+                <select class="form-select" id="secondParentCategoryId" name="secondParentCategoryId"
+                        aria-label="Default select example">
                     <option selected th:value="null" th:text="없음"></option>
                     <option th:each="category : ${childCategory}" th:value="${category.id}" th:text="${category.name}">
                     </option>

@@ -1,6 +1,7 @@
 package store.mybooks.front.book.adaptor;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpMethod;
@@ -24,6 +25,7 @@ import store.mybooks.front.utils.Utils;
  * -----------------------------------------------------------<br/>
  * 3/1/24        newjaehun       최초 생성<br/>
  */
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class BookAdaptor {
@@ -64,6 +66,7 @@ public class BookAdaptor {
      * @return bookDetailResponse
      */
     public BookDetailResponse getBook(Long id) {
+        log.info("getBook: {}", id);
         ResponseEntity<BookDetailResponse> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + URL_ID,
                 HttpMethod.GET,
