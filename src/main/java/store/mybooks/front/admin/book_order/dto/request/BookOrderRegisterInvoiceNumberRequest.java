@@ -21,7 +21,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class BookOrderRegisterInvoiceNumberRequest {
 
-    @NotBlank
     @Positive
     private Long id;
 

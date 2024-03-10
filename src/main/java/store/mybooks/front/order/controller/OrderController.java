@@ -67,6 +67,15 @@ public class OrderController {
         return "checkout";
     }
 
+    /**
+     * methodName : viewCheckAddress<br>
+     * author : minsu11<br>
+     * description : 회원의 주소 목록만 나오는 view.
+     * <br> *
+     *
+     * @param modelMap model
+     * @return string
+     */
     @GetMapping("/address")
     public String viewCheckAddress(ModelMap modelMap) {
         List<UserAddressGetResponse> list = userAddressAdaptor.findAllUserAddress();

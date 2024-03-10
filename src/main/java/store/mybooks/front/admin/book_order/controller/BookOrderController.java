@@ -80,10 +80,7 @@ public class BookOrderController {
      */
     @PostMapping("/invoiceNumber")
     public String doRegisterInvoiceNumber(@ModelAttribute BookOrderRegisterInvoiceNumberRequest request) {
-        log.info("request value:{}", request.getId());
-        log.info("request value:{}", request.getInvoiceNumber());
         bookOrderService.registerInvoiceNumber(request);
-
         return "redirect:/admin/order";
     }
 

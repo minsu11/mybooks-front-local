@@ -44,7 +44,7 @@ public class BookOrderService {
      * description : 관리자가 주문 내역 상태를 변경
      * <br> *
      *
-     * @param request
+     * @param request 주문 상태 변경 DTO
      */
     public void modifyAdminOrderStatus(BookOrderStatusModifyRequest request) {
 
@@ -58,7 +58,7 @@ public class BookOrderService {
      * description : 송장 번호 등록.
      * <br> *
      *
-     * @param request
+     * @param request 등록할 송장 번호
      */
     public void registerInvoiceNumber(BookOrderRegisterInvoiceNumberRequest request) {
         bookOrderAdaptor.registerInvoiceNumberResponse(request);

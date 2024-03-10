@@ -19,10 +19,9 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class BookOrderStatusModifyRequest {
-    @NotBlank
     @Positive
     private Long id;
 
     @NotBlank
-    private String invoiceNumber;
+    private String statusId;
 }
