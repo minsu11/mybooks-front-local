@@ -1,10 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/my-books-layout}">
 
-</body>
-</html>
+<div layout:fragment="content">
+
+    <!-- Start Breadcrumbs -->
+    <div class="breadcrumbs">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6 col-12">
+                </div>
+                <div class="col-lg-6 col-md-6 col-12">
+                    <ul class="breadcrumb-nav">
+                        <li><a href="/"><i class="lni lni-home"></i>Home</a></li>
+                        <li>나의 좋아요</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Breadcrumbs -->
+
+    <!-- Start Faq Area -->
+    <section class="faq section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-title">
+                        <h2>나의 좋아요</h2>
+                    </div>
+                </div>
+            </div>
+<!--            <div>-->
+<!--                <div>-->
+<!--                    <a th:href="@{/admin/book/register}" class="btn btn-primary" role="button">도서 추가</a>-->
+<!--                </div>-->
+<!--                <div class="row mt-3">-->
+<!--                    <div th:each="book : ${books.content}" class="col-md-3 mb-3">-->
+<!--                        <div class="card h-100">-->
+<!--                            &lt;!&ndash;                        <img th:src="@{${book.bookImage}}" alt="Book Image" class="card-img-top" src="https://via.placeholder.com/150">&ndash;&gt;-->
+<!--                            <div class="card-body">-->
+<!--                                <a th:href="@{/admin/book/update(id=${book.id})}">-->
+<!--                                    <h5 class="card-title" th:text="${book.name}">도서명</h5>-->
+<!--                                </a>-->
+<!--                                <p class="card-text">평점: 5점</p>-->
+<!--                                <p class="card-text" th:text="${book.saleCost} + '원'">가격</p>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="mt-3">-->
+<!--                <div class="pagination">-->
+<!--                    <div class="page-item">-->
+<!--                        <a class="page-link" id="prevLink" th:text="'<'" th:href="@{#}"></a>-->
+<!--                    </div>-->
+<!--                    <div class="pagination" id="pageNumContainer"></div>-->
+<!--                    <div class="page-item">-->
+<!--                        <a class="page-link" id="nextLink" th:text="'>'" th:href="@{#}"></a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+
+        </div>
+    </section>
+    <!-- End About Area -->
+</div>
