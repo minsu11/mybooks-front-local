@@ -7,12 +7,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import store.mybooks.front.admin.author.dto.response.AuthorGetResponse;
 import store.mybooks.front.admin.book.model.response.BookDetailResponse;
 import store.mybooks.front.admin.category.model.response.CategoryIdAndName;
 import store.mybooks.front.admin.tag.model.response.TagGetResponseForBookDetail;
 import store.mybooks.front.book.service.BookService;
+import store.mybooks.front.booklike.service.BookLikeService;
 
 /**
  * packageName    : store.mybooks.front.book.controller <br/>
@@ -30,22 +30,19 @@ import store.mybooks.front.book.service.BookService;
 @RequestMapping("/book")
 public class BookController {
     private final BookService bookService;
-
+    private final BookLikeService bookLikeService;
 
     /**
      * methodName : getBookDetailPage
      * author : newjaehun
      * description :도서 상세페이지 호출.
      *
-     * @param bookId  Long
-     * @param likeCheck  boolean
-     * @param model Model
+     * @param bookId Long
+     * @param model  Model
      * @return string
      */
     @GetMapping("/{id}")
-    public String getBookDetailPage(@PathVariable("id") Long bookId,
-                                    @RequestParam(value = "like", required = false, defaultValue = "false")
-                                    boolean likeCheck, Model model) {
+    public String getBookDetailPage(@PathVariable("id") Long bookId, Model model) {
         BookDetailResponse book = bookService.getBook(bookId);
         model.addAttribute("book", book);
         model.addAttribute("authorNameList", book.getAuthorList().stream()
@@ -57,6 +54,19 @@ public class BookController {
         model.addAttribute("categoryNameList", book.getCategoryList().stream()
                 .map(CategoryIdAndName::getName)
                 .collect(Collectors.joining(", ")));
+
+
+//        if () {      로그인 확인하고
+//            if (bookLikeService.isUserLikeCheck(bookId)) {
+//                model.addAttribute("userBookLikeCheck", true);
+//            } else {
+//                model.addAttribute("userBookLikeCheck", false);
+//            }
+//        }else{
+//            model.addAttribute("userBookLikeCheck", null);
+//        }
+
+
         return "book-details";
     }
 
