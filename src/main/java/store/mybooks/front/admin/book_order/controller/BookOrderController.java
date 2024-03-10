@@ -54,7 +54,7 @@ public class BookOrderController {
      * description : 주문 상태 변경.
      * <br> *
      *
-     * @param request
+     * @param request 주문 상태 변경 할 DTO
      * @return string
      */
     @PostMapping("/status")

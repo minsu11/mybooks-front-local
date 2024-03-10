@@ -1,7 +1,6 @@
 package store.mybooks.front.admin.book_order.adaptor;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
@@ -30,7 +29,6 @@ import store.mybooks.front.utils.Utils;
  * -----------------------------------------------------------<br>
  * 3/3/24        minsu11       최초 생성<br>
  */
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class BookOrderAdaptor {
@@ -90,7 +88,6 @@ public class BookOrderAdaptor {
                 responseHttpEntity,
                 new ParameterizedTypeReference<BookOrderStatusModifyResponse>() {
                 });
-        log.info("값: {}", exchange.getBody().getId());
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
