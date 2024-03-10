@@ -75,7 +75,7 @@ public class BookOrderAdaptor {
      * description : 관리자가 주문 상태를 변경.
      * <br> *
      *
-     * @param request
+     * @param request 주문 상태 수정 dto
      * @return book order status modify response
      */
     @RequiredAuthorization

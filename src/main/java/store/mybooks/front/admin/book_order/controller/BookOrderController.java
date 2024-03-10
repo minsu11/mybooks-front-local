@@ -75,7 +75,7 @@ public class BookOrderController {
      * description : 주문 상태의 송장 번호 등록.
      * <br> *
      *
-     * @param request
+     * @param request 등록할 송장 번호 DTO
      * @return string
      */
     @PostMapping("/invoiceNumber")
