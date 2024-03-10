@@ -73,4 +73,22 @@ public class BookLikeAdaptor {
                 }, bookId);
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
+
+    /**
+     * methodName : isUserLikeCheck
+     * author : newjaehun
+     * description : 도서별 회원의 좋아요 유무.
+     *
+     * @param bookId Long
+     * @return boolean
+     */
+    public boolean isUserLikeCheck(Long bookId) {
+        ResponseEntity<Boolean> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL + "/{bookId}",
+                HttpMethod.GET,
+                new HttpEntity<>(Utils.getAuthHeader()),
+                new ParameterizedTypeReference<>() {
+                }, bookId);
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
 }
