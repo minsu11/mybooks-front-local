@@ -14,6 +14,7 @@ import store.mybooks.front.admin.return_rule.dto.request.ReturnRuleModifyRequest
 import store.mybooks.front.admin.return_rule.dto.response.ReturnRuleCreateResponse;
 import store.mybooks.front.admin.return_rule.dto.response.ReturnRuleModifyResponse;
 import store.mybooks.front.admin.return_rule.dto.response.ReturnRuleResponse;
+import store.mybooks.front.auth.Annotation.RequiredAuthorization;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.utils.Utils;
 
@@ -44,12 +45,14 @@ public class ReturnRuleAdaptor {
      *
      * @return list
      */
+    @RequiredAuthorization
     public List<ReturnRuleResponse> getReturnRuleResponseList() {
+
 
         ResponseEntity<List<ReturnRuleResponse>> exchange =
                 restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL,
                         HttpMethod.GET,
-                        null,
+                        new HttpEntity<>(Utils.getAuthHeader()),
                         new ParameterizedTypeReference<List<ReturnRuleResponse>>() {
                         });
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
@@ -64,6 +67,7 @@ public class ReturnRuleAdaptor {
      * @param request
      * @return return rule create response
      */
+    @RequiredAuthorization
     public ReturnRuleCreateResponse createReturnRule(ReturnRuleCreateRequest request) {
 
         HttpEntity<ReturnRuleCreateRequest> requestHttpEntity = new HttpEntity<>(request, Utils.getHttpHeader());
@@ -86,6 +90,7 @@ public class ReturnRuleAdaptor {
      * @param id      수정할 반품 규정 아이디
      * @return return rule modify response
      */
+    @RequiredAuthorization
     public ReturnRuleModifyResponse modifyReturnRule(ReturnRuleModifyRequest request, Integer id) {
         HttpEntity<ReturnRuleModifyRequest> requestHttpEntity = new HttpEntity<>(request, Utils.getHttpHeader());
         ResponseEntity<ReturnRuleModifyResponse> exchange =
@@ -97,6 +102,7 @@ public class ReturnRuleAdaptor {
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
+    @RequiredAuthorization
     public void deleteReturnRule(Integer id) {
         ResponseEntity<Object> exchange = restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL + "/{id}",
                 HttpMethod.DELETE,

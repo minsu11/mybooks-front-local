@@ -2,6 +2,7 @@ package store.mybooks.front.booklike.adaptor;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,6 @@ import store.mybooks.front.admin.book.model.response.BookBriefResponse;
 import store.mybooks.front.auth.Annotation.RequiredAuthorization;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.pageable.dto.response.PageResponse;
-import store.mybooks.front.pageable.dto.response.Pageable;
 import store.mybooks.front.utils.Utils;
 
 /**

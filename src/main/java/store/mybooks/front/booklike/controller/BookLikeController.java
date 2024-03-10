@@ -1,6 +1,7 @@
 package store.mybooks.front.booklike.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import store.mybooks.front.admin.book.model.response.BookBriefResponse;
 import store.mybooks.front.booklike.service.BookLikeService;
 import store.mybooks.front.pageable.dto.response.PageResponse;
-import store.mybooks.front.pageable.dto.response.Pageable;
 
 /**
  * packageName    : store.mybooks.front.booklike.controller <br/>
