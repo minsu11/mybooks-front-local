@@ -13,7 +13,6 @@ import store.mybooks.front.admin.wrap.service.WrapService;
 import store.mybooks.front.order.dto.request.BookOrderDirectRequest;
 import store.mybooks.front.order.service.OrderService;
 import store.mybooks.front.user.adaptor.UserAdaptor;
-import store.mybooks.front.user.dto.response.UserGetResponse;
 import store.mybooks.front.user_address.adaptor.UserAddressAdaptor;
 import store.mybooks.front.user_address.response.UserAddressGetResponse;
 
@@ -56,14 +55,13 @@ public class OrderController {
         log.info("request id:{}", request.getId());
         log.info("request id:{}", request.getSaleCost());
         log.info("request id:{}", request.getQuantity());
-        UserGetResponse user = userAdaptor.findUser();
+//        UserGetResponse user = userAdaptor.findUser();
         Integer totalCost = bookDetailResponse.getSaleCost() * request.getQuantity();
         modelMap.put("book", bookDetailResponse);
         modelMap.put("totalCost", totalCost);
         modelMap.put("wrapList", wrapResponses);
-        modelMap.put("user", user);
+//        modelMap.put("user", user);
         modelMap.put("quantity", request.getQuantity());
-
         return "checkout";
     }
 
