@@ -64,6 +64,7 @@ public class BookLikeAdaptor {
      * @param bookId Long
      * @return boolean
      */
+    @RequiredAuthorization
     public boolean updateBookLike(Long bookId) {
         ResponseEntity<Boolean> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + URL + "/{bookId}",
@@ -82,6 +83,7 @@ public class BookLikeAdaptor {
      * @param bookId Long
      * @return boolean
      */
+    @RequiredAuthorization
     public boolean isUserLikeCheck(Long bookId) {
         ResponseEntity<Boolean> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + URL + "/{bookId}",
