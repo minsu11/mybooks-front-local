@@ -1,11 +1,11 @@
 package store.mybooks.front.booklike.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.admin.book.model.response.BookBriefResponse;
 import store.mybooks.front.booklike.adaptor.BookLikeAdaptor;
 import store.mybooks.front.pageable.dto.response.PageResponse;
-import store.mybooks.front.pageable.dto.response.Pageable;
 
 /**
  * packageName    : store.mybooks.front.booklike.service <br/>
@@ -45,5 +45,17 @@ public class BookLikeService {
      */
     public boolean updateBookLike(Long bookId) {
         return bookLikeAdaptor.updateBookLike(bookId);
+    }
+
+    /**
+     * methodName : isUserLikeCheck
+     * author : newjaehun
+     * description : 사용자의 도서 좋아요 유무.
+     *
+     * @param bookId Long
+     * @return boolean
+     */
+    public boolean isUserLikeCheck(Long bookId) {
+        return bookLikeAdaptor.isUserLikeCheck(bookId);
     }
 }
