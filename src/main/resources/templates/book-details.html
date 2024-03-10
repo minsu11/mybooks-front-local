@@ -80,222 +80,232 @@
                                 <div class="original-price">정가: <span th:text="${book.originalCost}">원</span></div>
                                 <div class="sale-price">판매가:
                                     <span th:text="${book.saleCost} + '원 (' + ${book.disCountRate} + '% 할인)'"></span>
-                            </div>
-                            <p>배송비: <span>무료</span></p>
-                            <div class="quantity-input">
-                                <button onclick="document.getElementById('quantity').stepDown()" class="minus-btn">-
-                                </button>
-                                <input type="number" id="quantity" name="quantity" min="1" value="1"
-                                       class="form-control quantity">
-                                <button onclick="document.getElementById('quantity').stepUp()" class="plus-btn">+
-                                </button>
-                            </div>
-                            <div class="bottom-content">
-                                <div class="row align-items-end">
-                                    <div class="col-lg-4 col-md-4 col-12">
-                                        <form action="/direct" method="get">
-                                            <input type="hidden" name="id" th:value="${book.id}">
-                                            <input type="hidden" id="buyNowQuantity" name="quantity">
-                                            <div class="button cart-button">
-                                                <button type="submit" class="btn" style="width: 100%;">바로구매</button>
+                                </div>
+                                <p>배송비: <span>무료</span></p>
+                                <div class="quantity-input">
+                                    <button onclick="document.getElementById('quantity').stepDown()" class="minus-btn">-
+                                    </button>
+                                    <input type="number" id="quantity" name="quantity" min="1" value="1"
+                                           class="form-control quantity">
+                                    <button onclick="document.getElementById('quantity').stepUp()" class="plus-btn">+
+                                    </button>
+                                </div>
+                                <div class="bottom-content">
+                                    <div class="row align-items-end">
+                                        <div class="col-lg-4 col-md-4 col-12">
+                                            <form action="/direct" method="get">
+                                                <input type="hidden" name="id" th:value="${book.id}">
+                                                <input type="hidden" id="buyNowQuantity" name="quantity">
+                                                <div class="button cart-button">
+                                                    <button type="submit" class="btn" style="width: 100%;">바로구매</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-12">
+                                            <form action="/cart" method="post">
+                                                <input type="hidden" name="id" th:value="${book.id}">
+                                                <input type="hidden" id="cartQuantity" name="quantity">
+                                                <div class="button cart-button">
+                                                    <button type="submit" class="btn" style="width: 100%;">장바구니 담기
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-12">
+                                            <div th:if="${userBookLikeCheck} != null">
+                                                <form action="/book-like" method="post">
+                                                    <input type="hidden" name="id" th:value="${book.id}">
+                                                    <div class="wish-button">
+                                                        <button type="submit" class="btn">
+                                                            <i class="lni lni-heart" th:style="${userBookLikeCheck} ? 'color: red;' : ''"></i> Like <span th:text="${book.likeCount}">0</span>
+                                                        </button>
+                                                    </div>
+                                                </form>
                                             </div>
-                                        </form>
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 col-12">
-                                        <form action="/cart" method="post">
-                                            <input type="hidden" name="id" th:value="${book.id}">
-                                            <input type="hidden" id="cartQuantity" name="quantity">
-                                            <div class="button cart-button">
-                                                <button type="submit" class="btn" style="width: 100%;">장바구니 담기</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="col-lg-4 col-md-4 col-12">
-                                        <form action="/book-like" method="post">
-                                            <input type="hidden" name="id" th:value="${book.id}">
-                                            <div class="wish-button">
-                                                <button type="submit" class="btn"><i class="lni lni-heart"></i> To
-                                                    Wishlist
+                                            <div th:if="${userBookLikeCheck} == null">
+                                                <button class="btn" disabled>
+                                                    <i class="lni lni-heart"></i>
+                                                    <span th:text="'Like (' + ${book.likeCount} + ')'">Like (0)</span>
                                                 </button>
                                             </div>
-                                        </form>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="product-details-info">
-                <!-- 도서상세정보 시작 -->
-                <div class="single-block">
+                <div class="product-details-info">
+                    <!-- 도서상세정보 시작 -->
+                    <div class="single-block">
+                        <div class="row">
+                            <div class="col-4">
+                                <h2 style="font-size: 24px; margin-top: 20px;">도서정보</h2>
+                                <table class="table">
+                                    <tr>
+                                        <th>출판일</th>
+                                        <td th:text="${book.publishDate}"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>페이지수</th>
+                                        <td th:text="${book.page}"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>ISBN</th>
+                                        <td th:text="${book.isbn}"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>포장가능여부</th>
+                                        <td th:text="${book.isPacking}? '가능' : '불가능'"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-12">
+                                <h2 style="font-size: 24px; margin-top: 20px;">목차</h2>
+                                <div th:text="${book.index}"></div>
+
+                                <h2 style="font-size: 24px; margin-top: 20px;">설명</h2>
+                                <div th:utext="${book.content}"></div>
+
+                                <h2 style="font-size: 24px; margin-top: 20px;">책소개</h2>
+                                <img src="https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_e805e9a72d2f47338a0a463196c36314/my-books-container/7a9644b8-fdb9-425e-821a-abbc6eb77335.png"
+                                     alt="책 소개 이미지">
+
+                                <h2 style="font-size: 24px; margin-top: 20px;">저자 소개</h2>
+                                <div th:each="author : ${book.authorList}">
+                                    <p>저자명: <span th:text="${author.name}"></span></p>
+                                    <p>저자소개: <span th:text="${author.content}"></span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 도서상세정보 끝 -->
+
+
                     <div class="row">
-                        <div class="col-4">
-                            <h2 style="font-size: 24px; margin-top: 20px;">도서정보</h2>
-                            <table class="table">
-                                <tr>
-                                    <th>출판일</th>
-                                    <td th:text="${book.publishDate}"></td>
-                                </tr>
-                                <tr>
-                                    <th>페이지수</th>
-                                    <td th:text="${book.page}"></td>
-                                </tr>
-                                <tr>
-                                    <th>ISBN</th>
-                                    <td th:text="${book.isbn}"></td>
-                                </tr>
-                                <tr>
-                                    <th>포장가능여부</th>
-                                    <td th:text="${book.isPacking}? '가능' : '불가능'"></td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="col-12">
-                            <h2 style="font-size: 24px; margin-top: 20px;">목차</h2>
-                            <div th:text="${book.index}"></div>
-
-                            <h2 style="font-size: 24px; margin-top: 20px;">설명</h2>
-                            <div th:utext="${book.content}"></div>
-
-                            <h2 style="font-size: 24px; margin-top: 20px;">책소개</h2>
-                            <img src="https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_e805e9a72d2f47338a0a463196c36314/my-books-container/7a9644b8-fdb9-425e-821a-abbc6eb77335.png"
-                                 alt="책 소개 이미지">
-
-                            <h2 style="font-size: 24px; margin-top: 20px;">저자 소개</h2>
-                            <div th:each="author : ${book.authorList}">
-                                <p>저자명: <span th:text="${author.name}"></span></p>
-                                <p>저자소개: <span th:text="${author.content}"></span></p>
+                        <div class="col-lg-4 col-12">
+                            <div class="single-block give-review">
+                                <h4>4.5 (Overall)</h4>
+                                <ul>
+                                    <li>
+                                        <span>5 stars - 38</span>
+                                        <i class="lni lni-star-filled"></i>
+                                        <i class="lni lni-star-filled"></i>
+                                        <i class="lni lni-star-filled"></i>
+                                        <i class="lni lni-star-filled"></i>
+                                        <i class="lni lni-star-filled"></i>
+                                    </li>
+                                    <li>
+                                        <span>4 stars - 10</span>
+                                        <i class="lni lni-star-filled"></i>
+                                        <i class="lni lni-star-filled"></i>
+                                        <i class="lni lni-star-filled"></i>
+                                        <i class="lni lni-star-filled"></i>
+                                        <i class="lni lni-star"></i>
+                                    </li>
+                                    <li>
+                                        <span>3 stars - 3</span>
+                                        <i class="lni lni-star-filled"></i>
+                                        <i class="lni lni-star-filled"></i>
+                                        <i class="lni lni-star-filled"></i>
+                                        <i class="lni lni-star"></i>
+                                        <i class="lni lni-star"></i>
+                                    </li>
+                                    <li>
+                                        <span>2 stars - 1</span>
+                                        <i class="lni lni-star-filled"></i>
+                                        <i class="lni lni-star-filled"></i>
+                                        <i class="lni lni-star"></i>
+                                        <i class="lni lni-star"></i>
+                                        <i class="lni lni-star"></i>
+                                    </li>
+                                    <li>
+                                        <span>1 star - 0</span>
+                                        <i class="lni lni-star-filled"></i>
+                                        <i class="lni lni-star"></i>
+                                        <i class="lni lni-star"></i>
+                                        <i class="lni lni-star"></i>
+                                        <i class="lni lni-star"></i>
+                                    </li>
+                                </ul>
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn review-btn" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal">
+                                    Leave a Review
+                                </button>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <!-- 도서상세정보 끝 -->
-
-
-                <div class="row">
-                    <div class="col-lg-4 col-12">
-                        <div class="single-block give-review">
-                            <h4>4.5 (Overall)</h4>
-                            <ul>
-                                <li>
-                                    <span>5 stars - 38</span>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star-filled"></i>
-                                </li>
-                                <li>
-                                    <span>4 stars - 10</span>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star"></i>
-                                </li>
-                                <li>
-                                    <span>3 stars - 3</span>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star"></i>
-                                    <i class="lni lni-star"></i>
-                                </li>
-                                <li>
-                                    <span>2 stars - 1</span>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star"></i>
-                                    <i class="lni lni-star"></i>
-                                    <i class="lni lni-star"></i>
-                                </li>
-                                <li>
-                                    <span>1 star - 0</span>
-                                    <i class="lni lni-star-filled"></i>
-                                    <i class="lni lni-star"></i>
-                                    <i class="lni lni-star"></i>
-                                    <i class="lni lni-star"></i>
-                                    <i class="lni lni-star"></i>
-                                </li>
-                            </ul>
-                            <!-- Button trigger modal -->
-                            <button type="button" class="btn review-btn" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal">
-                                Leave a Review
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-lg-8 col-12">
-                        <div class="single-block">
-                            <div class="reviews">
-                                <h4 class="title">Latest Reviews</h4>
-                                <!-- Start Single Review -->
-                                <div class="single-review">
-                                    <img src="https://via.placeholder.com/150x150" alt="#">
-                                    <div class="review-info">
-                                        <h4>Awesome quality for the price
-                                            <span>Jacob Hammond
+                        <div class="col-lg-8 col-12">
+                            <div class="single-block">
+                                <div class="reviews">
+                                    <h4 class="title">Latest Reviews</h4>
+                                    <!-- Start Single Review -->
+                                    <div class="single-review">
+                                        <img src="https://via.placeholder.com/150x150" alt="#">
+                                        <div class="review-info">
+                                            <h4>Awesome quality for the price
+                                                <span>Jacob Hammond
                                             </span>
-                                        </h4>
-                                        <ul class="stars">
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                        </ul>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                            tempor...</p>
+                                            </h4>
+                                            <ul class="stars">
+                                                <li><i class="lni lni-star-filled"></i></li>
+                                                <li><i class="lni lni-star-filled"></i></li>
+                                                <li><i class="lni lni-star-filled"></i></li>
+                                                <li><i class="lni lni-star-filled"></i></li>
+                                                <li><i class="lni lni-star-filled"></i></li>
+                                            </ul>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                                tempor...</p>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- End Single Review -->
-                                <!-- Start Single Review -->
-                                <div class="single-review">
-                                    <img src="https://via.placeholder.com/150x150" alt="#">
-                                    <div class="review-info">
-                                        <h4>My husband love his new...
-                                            <span>Alex Jaza
+                                    <!-- End Single Review -->
+                                    <!-- Start Single Review -->
+                                    <div class="single-review">
+                                        <img src="https://via.placeholder.com/150x150" alt="#">
+                                        <div class="review-info">
+                                            <h4>My husband love his new...
+                                                <span>Alex Jaza
                                             </span>
-                                        </h4>
-                                        <ul class="stars">
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star"></i></li>
-                                        </ul>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                            tempor...</p>
+                                            </h4>
+                                            <ul class="stars">
+                                                <li><i class="lni lni-star-filled"></i></li>
+                                                <li><i class="lni lni-star-filled"></i></li>
+                                                <li><i class="lni lni-star-filled"></i></li>
+                                                <li><i class="lni lni-star-filled"></i></li>
+                                                <li><i class="lni lni-star"></i></li>
+                                            </ul>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                                tempor...</p>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- End Single Review -->
-                                <!-- Start Single Review -->
-                                <div class="single-review">
-                                    <img src="https://via.placeholder.com/150x150" alt="#">
-                                    <div class="review-info">
-                                        <h4>I love the built quality...
-                                            <span>Jacob Hammond
+                                    <!-- End Single Review -->
+                                    <!-- Start Single Review -->
+                                    <div class="single-review">
+                                        <img src="https://via.placeholder.com/150x150" alt="#">
+                                        <div class="review-info">
+                                            <h4>I love the built quality...
+                                                <span>Jacob Hammond
                                             </span>
-                                        </h4>
-                                        <ul class="stars">
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                            <li><i class="lni lni-star-filled"></i></li>
-                                        </ul>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                            tempor...</p>
+                                            </h4>
+                                            <ul class="stars">
+                                                <li><i class="lni lni-star-filled"></i></li>
+                                                <li><i class="lni lni-star-filled"></i></li>
+                                                <li><i class="lni lni-star-filled"></i></li>
+                                                <li><i class="lni lni-star-filled"></i></li>
+                                                <li><i class="lni lni-star-filled"></i></li>
+                                            </ul>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                                                tempor...</p>
+                                        </div>
                                     </div>
+                                    <!-- End Single Review -->
                                 </div>
-                                <!-- End Single Review -->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
     </section>
     <!-- End Item Details -->
 
