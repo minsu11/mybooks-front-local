@@ -39,11 +39,8 @@ public class WebClientConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new CookieInterceptor())
-                .addPathPatterns("/user/**")
-                .addPathPatterns("/admin/**")
-                .addPathPatterns("/book/**")
-                .addPathPatterns("/cart/**")
-                .addPathPatterns("/", "/login", "/signup")
+                .addPathPatterns("/**")
+                .excludePathPatterns("/**/*.tgz")
                 .excludePathPatterns("/**/*.js")
                 .excludePathPatterns("/**/*.scss")
                 .excludePathPatterns("/**/*.css")
@@ -56,7 +53,9 @@ public class WebClientConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LogoutInterceptor())
                 .addPathPatterns("/logout")
                 .addPathPatterns("/user/delete")
-                .addPathPatterns("/user/modify/password");
+                .addPathPatterns("/user/modify/password")
+                .addPathPatterns("/dormancy")
+                .addPathPatterns("/lock");
     }
 
     @Bean
