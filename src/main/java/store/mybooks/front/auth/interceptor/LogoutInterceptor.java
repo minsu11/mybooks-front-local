@@ -37,6 +37,7 @@ public class LogoutInterceptor implements HandlerInterceptor {
 
         // 쿠키 삭제
         CookieUtils.deleteJwtCookie(response);
+        CookieUtils.deleteAdminCookie(response);
 
     }
 }
