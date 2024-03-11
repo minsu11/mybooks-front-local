@@ -37,10 +37,10 @@ public class BookController {
     /**
      * methodName : getBookDetailPage
      * author : newjaehun
-     * description :도서 상세페이지 호출.
+     * description : 도서 상세페이지 호출.
      *
      * @param bookId Long
-     * @param model  Model
+     * @param model Model
      * @return string
      */
     @GetMapping("/{id}")
