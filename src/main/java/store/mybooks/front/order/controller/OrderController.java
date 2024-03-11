@@ -52,7 +52,7 @@ public class OrderController {
      * description : 바로 구매.
      * <br> *
      *
-     * @param model map
+     * @param modelMap model
      * @return string
      */
     @GetMapping("/direct/checkout")
@@ -104,11 +104,20 @@ public class OrderController {
         return "wrap-list-view";
     }
 
+    /**
+     * methodName : viewCoupon<br>
+     * author : minsu11<br>
+     * description : 주문 페이지에서 사용 가능한 쿠폰 페이지.
+     * <br> *
+     *
+     * @param modelMap model
+     * @param bookId   쿠폰 적용할 도서 아이디
+     * @return string
+     */
     @GetMapping("/checkout/coupon/{bookId}")
     public String viewCoupon(ModelMap modelMap,
                              @PathVariable Long bookId) {
         List<UserCouponGetResponseForOrder> useCoupon = userCouponService.getUsableUserCoupon(bookId);
-        log.info("쿠폰 리스트: {}", useCoupon.size());
         modelMap.put("couponList", useCoupon);
         return "checkout-coupon";
     }
