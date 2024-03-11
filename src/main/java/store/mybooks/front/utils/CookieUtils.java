@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import store.mybooks.front.config.CookieConfig;
 
+
 /**
  * packageName    : store.mybooks.front.utils<br>
  * fileName       : CookieUtils<br>
@@ -34,27 +35,38 @@ public class CookieUtils {
 
     public static void addJwtCookie(HttpServletResponse response, String token) {
 
-        response.setHeader("Set-Cookie",
-                "identity_cookie=" + token + "; " +
-                        "Path=/; " + // 적용될 범위
+        Cookie cookie= new Cookie("identity_cookie",token);
+        cookie.setHttpOnly(true);
+        cookie.setDomain(cookieConfig.getDomain());
+        cookie.setPath("/");
+        cookie.setSecure(true);
+        cookie.setMaxAge(7 * 24 * 60 * 60);
+        response.addCookie(cookie);
+    }
 
-                        "Domain=" + cookieConfig.getDomain() + ";" + // 적용될 도메인
-                        "HttpOnly; " + // JavaScript에서 쿠키에 접근하는 것을 방지하기 위해 HttpOnly 속성을 설정합니다.
-                        "Max-Age=604800; " + // 쿠키 생존시간
-                        "SameSite=Strict; " +
-                        // SameSite 설정 (Strict, Lax, None 중 선택) Strict 쿠키가 같은 도메인에서만 헤더로 넘어감, 요청보낼떄는 헤더에 담아 보낼꺼임
-                        "Secure" // Secure 설정
-        );
+    public static void addAdminCookie(HttpServletResponse response) {
+
+        Cookie cookie= new Cookie("admin_cookie","admin");
+        cookie.setHttpOnly(true);
+        cookie.setDomain(cookieConfig.getDomain());
+        cookie.setPath("/");
+        cookie.setSecure(true);
+        cookie.setMaxAge(7 * 24 * 60 * 60);
+        response.addCookie(cookie);
     }
 
     public static void deleteJwtCookie(HttpServletResponse response) {
-        response.setHeader("Set-Cookie",
-                "identity_cookie=; " +
-                        "Path=/; " +
-                        "Domain=" + cookieConfig.getDomain() + ";" +           
-                        "Max-Age=0; " + // 쿠키를 즉시 만료시킵니다.
-                        "SameSite=Strict; " +
-                        "Secure");
+
+        Cookie cookie= new Cookie("identity_cookie",null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+    }
+
+    public static void deleteAdminCookie(HttpServletResponse response) {
+
+        Cookie cookie= new Cookie("admin_cookie",null);
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
     }
 
     public static String getIdentityCookieValue(HttpServletRequest request) {
@@ -63,6 +75,18 @@ public class CookieUtils {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if ("identity_cookie".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
+    }
+
+    public static String getAdminCookieValue(HttpServletRequest request){
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("admin_cookie".equals(cookie.getName())) {
                     return cookie.getValue();
                 }
             }
