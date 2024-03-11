@@ -36,7 +36,7 @@ public class BookLikeController {
      * description : 회원이 좋아요한 페이징된 도서목록 반환.
      *
      * @param pageable Pageable
-     * @param model Model
+     * @param model    Model
      * @return string
      */
     @GetMapping
@@ -56,9 +56,7 @@ public class BookLikeController {
      */
     @PostMapping("/{bookId}")
     public String updateBookLike(@PathVariable("bookId") Long bookId) {
-        if (bookLikeService.updateBookLike(bookId)) {
-            return "redirect:/book/" + bookId + "?like=true";
-        }
-        return "redirect:/book/bookId";
+        bookLikeService.updateBookLike(bookId);
+        return "redirect:/book/" + bookId;
     }
 }
