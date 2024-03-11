@@ -66,7 +66,7 @@ public class BookAdminController {
     /**
      * methodName : getBookRegisterPage
      * author : newjaehun
-     * description : 도서 등록 페이지
+     * description : 도서 등록 페이지.
      *
      * @param model Model
      * @return string
