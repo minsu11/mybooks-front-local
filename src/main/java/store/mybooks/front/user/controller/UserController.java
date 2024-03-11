@@ -95,6 +95,32 @@ public class UserController {
         return "redirect:/";
     }
 
+    // 휴면계정인 사람 휴면인증 페이지로
+    @GetMapping("/verification/dormancy")
+    public String dormancyUserForm() {
+        return "dormancy";
+    }
+
+    // 휴면계정 dooray 인증 받겠다.
+    @PostMapping("/dormancy")
+    public String verifyDormancyUser() {
+        userAdaptor.verifyDormancyUser();
+        return "redirect:/";
+    }
+
+    @GetMapping("/verification/lock")
+    public String lockUserForm() {
+        return "lock";
+    }
+
+    @PostMapping("/lock")
+    public String verifyLockUser(@ModelAttribute UserPasswordModifyRequest request) {
+
+        request.setPassword(passwordEncoder.encode(request.getPassword()));
+        userAdaptor.verifyLockUser(request);
+        return "redirect:/";
+    }
+
 
     /**
      * methodName : myPageForm
@@ -177,6 +203,7 @@ public class UserController {
      */
     @PostMapping("/user/modify/password")
     public String modifyUserPassword(@ModelAttribute UserPasswordModifyRequest modifyRequest) {
+
 
         // 비밀번호 암호화
         modifyRequest.setPassword(passwordEncoder.encode(modifyRequest.getPassword()));
