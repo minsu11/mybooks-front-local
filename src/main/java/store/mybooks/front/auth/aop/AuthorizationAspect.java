@@ -18,7 +18,8 @@ import store.mybooks.front.auth.dto.response.RefreshTokenResponse;
 import store.mybooks.front.auth.error.ErrorMessage;
 import store.mybooks.front.auth.exception.AccessIdForbiddenException;
 import store.mybooks.front.auth.exception.AuthenticationIsNotValidException;
-import store.mybooks.front.auth.exception.StatusIsNotActiveException;
+import store.mybooks.front.auth.exception.StatusIsDormancyException;
+import store.mybooks.front.auth.exception.StatusIsLockException;
 import store.mybooks.front.auth.exception.TokenExpiredException;
 import store.mybooks.front.utils.CookieUtils;
 import store.mybooks.front.utils.Utils;
@@ -55,8 +56,6 @@ public class AuthorizationAspect {
         RequestContextHolder.currentRequestAttributes()
                 .setAttribute("authHeader", Utils.addAuthHeader(request), RequestAttributes.SCOPE_REQUEST);
 
-        System.out.println("안녕안녕 이거 두번하니?");
-
         try {
             return joinPoint.proceed();
         } catch (RuntimeException e) {
@@ -70,19 +69,19 @@ public class AuthorizationAspect {
 
                 // 토큰을 갱신하는 요청을 보냄 (기존 엑세스 토큰을 보냄)
                 RefreshTokenResponse refreshTokenResponse =
-                        tokenAdaptor.refreshAccessToken(new RefreshTokenRequest(CookieUtils.getIdentityCookieValue(request)));
-
+                        tokenAdaptor.refreshAccessToken(
+                                new RefreshTokenRequest(CookieUtils.getIdentityCookieValue(request)));
 
                 // 리프래시 토큰 만료 아니고 유효해서 재발급 됐음
-                if(refreshTokenResponse.getIsValid()){
+                if (refreshTokenResponse.getIsValid()) {
                     // 쿠키에 재발급한 엑세스토큰 넣어주고
-                    CookieUtils.addJwtCookie(Objects.requireNonNull(response),refreshTokenResponse.getAccessToken());
+                    CookieUtils.addJwtCookie(Objects.requireNonNull(response), refreshTokenResponse.getAccessToken());
                     // 헤더 설정해주고 기존 메서드 다시 불러
                     RequestContextHolder.currentRequestAttributes()
-                            .setAttribute("authHeader", Utils.refreshAuthHeader(refreshTokenResponse.getAccessToken()), RequestAttributes.SCOPE_REQUEST);
+                            .setAttribute("authHeader", Utils.refreshAuthHeader(refreshTokenResponse.getAccessToken()),
+                                    RequestAttributes.SCOPE_REQUEST);
                     return joinPoint.proceed();
-                }
-                else{
+                } else {
                     // 리프래시 토큰 만료됐거나 , 유효하지 않음
                     CookieUtils.deleteJwtCookie(Objects.requireNonNull(response));
                     // 리프래시 토큰이 만료면 TokenExpiredException -> 로그인하세요
@@ -91,8 +90,10 @@ public class AuthorizationAspect {
             } else if (error.contains(ErrorMessage.INVALID_TOKEN.getMessage())) { // 토큰위조됨 쿠키삭제하기
                 CookieUtils.deleteJwtCookie(Objects.requireNonNull(response));
                 throw new AuthenticationIsNotValidException();
-            } else if (error.contains(ErrorMessage.INACTIVE_USER.getMessage())) { // 활성상태가 아님 -> 인증사이트로
-                throw new StatusIsNotActiveException();
+            } else if (error.contains(ErrorMessage.STATUS_IS_DORMANT_EXCEPTION.getMessage())) { // 휴면상태 -> 휴면인증사이트로
+                throw new StatusIsDormancyException();
+            } else if (error.contains(ErrorMessage.STATUS_IS_LOCK_EXCEPTION.getMessage())) { // 잠금상태 -> 잠금인증 페이지로
+                throw new StatusIsLockException();
             }
 
             throw e; // 다른 에러인 경우 = 토큰관련 에러가 아닌경우 그대로 Exception 던진다
