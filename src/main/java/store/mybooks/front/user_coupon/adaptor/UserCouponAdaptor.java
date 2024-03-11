@@ -37,6 +37,14 @@ public class UserCouponAdaptor {
 
     private static final String URL_USER = "/api/member/user-coupon";
 
+    /**
+     * methodName : getUserCoupons <br>
+     * author : damho-lee <br>
+     * description : 마이페이지 회원 쿠폰함에서 사용할 조회 메서드.<br>
+     *
+     * @param pageable Pageable
+     * @return page response
+     */
     @RequiredAuthorization
     public PageResponse<UserCouponGetResponse> getUserCoupons(Pageable pageable) {
         HttpEntity<Void> requestEntity = new HttpEntity<>(Utils.getAuthHeader());
@@ -53,6 +61,14 @@ public class UserCouponAdaptor {
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
+    /**
+     * methodName : getUsableUserCoupon <br>
+     * author : damho-lee <br>
+     * description : 도서에 적용할 수 있는 회원 쿠폰 리스트 조회.<br>
+     *
+     * @param bookId Long
+     * @return list
+     */
     @RequiredAuthorization
     public List<UserCouponGetResponseForOrder> getUsableUserCoupon(Long bookId) {
         HttpEntity<Void> requestEntity = new HttpEntity<>(Utils.getAuthHeader());
@@ -68,6 +84,13 @@ public class UserCouponAdaptor {
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
+    /**
+     * methodName : getUsableUserTotalCoupon <br>
+     * author : damho-lee <br>
+     * description : 주문 전체에 적용할 수 있는 회원 쿠폰 리스트 조회.<br>
+     *
+     * @return list
+     */
     @RequiredAuthorization
     public List<UserCouponGetResponseForOrder> getUsableUserTotalCoupon() {
         HttpEntity<Void> requestEntity = new HttpEntity<>(Utils.getAuthHeader());
