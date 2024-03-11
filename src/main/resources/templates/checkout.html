@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/my-books-layout}">
+
+<div layout:fragment="content">
+
+    <!-- Start Breadcrumbs -->
+    <div class="breadcrumbs">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="breadcrumbs-content">
+                        <h1 class="page-title">주문/결제</h1>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-12">
+                    <ul class="breadcrumb-nav">
+                        <li><a href="/"><i class="lni lni-home"></i> Home</a></li>
+                        <li><a href="index.html">Shop</a></li>
+                        <li>주문/결제</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Breadcrumbs -->
+
+    <!--====== Checkout Form Steps Part Start ======-->
+    <section class="checkout-wrapper section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="checkout-steps-form-style-1">
+                        <ul id="accordionExample">
+                            <li>
+                                <h5>구매자 정보 </h5>
+                                <section>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="single-form form-default">
+                                                <!-- 로그인 된 회원의 데이터 -->
+                                                <label>이름</label>
+                                                <div class="row">
+                                                    <div class="col-md-6 form-input form">
+                                                        <label>
+                                                            <!--                                                            <input name="userId" type="text" th:value="${user.name}"-->
+                                                            <!--                                                                   readonly>-->
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="single-form form-default">
+                                                <label>이메일</label>
+                                                <div class="col-md-6 form-input form">
+                                                    <!--                                                    <input type="text" th:value="${user.email}" readonly>-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="single-form form-default">
+                                                <label>휴대폰 번호</label>
+                                                <div class="col-md-6 form-input form">
+                                                    <!--                                                    <input type="text" th:value="${user.phoneNumber}" readonly>-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            </li>
+                            <li>
+                                <h5>받는 사람 정보</h5>
+                                <hr>
+                                <section>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="single-form form-default">
+                                                <label>이름</label>
+                                                <div class="row">
+                                                    <div class="col-md-6 form-input form">
+                                                        <input name="recipientName" type="text" placeholder="이름">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="single-form form-default">
+                                                <label>휴대폰 번호</label>
+                                                <div class="form-input form">
+                                                    <input name="recipientPhoneNumber" type="text" placeholder="휴대폰 번호">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <div class="col-md-8">
+                                                <div class="single-form form-default">
+                                                    <label>받는 주소
+                                                        <button class="btn btn-outline-secondary btn-sm" type="button"
+                                                                onclick="address()">배송지
+                                                        </button>
+                                                    </label>
+                                                    <div class="form-input form">
+                                                        <input id="delivery-address" name="recipientAddress" type="text"
+                                                               placeholder="배송지"
+                                                               readonly>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            </li>
+                            <li>
+                                <h5>주문 내역
+                                </h5>
+                                <section class="form-content">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="p-3 m-3">
+                                                <table class="table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th class="col-4">책 이름</th>
+                                                        <th class="col-1">정가</th>
+                                                        <th class="col-1">판매가</th>
+                                                        <th class="col-1">수량</th>
+                                                        <th class="col-1">합계</th>
+                                                        <th class="col-1">포장</th>
+                                                        <th class="col-1">쿠폰</th>
+                                                        <th class="col-1"></th>
+                                                        <th class="col-1"></th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td th:text="${book.name}"></td>
+                                                        <td th:text="${book.originalCost}"></td>
+                                                        <td th:text="${book.saleCost}"></td>
+                                                        <td th:text="${quantity}"></td>
+                                                        <td th:text="${totalCost}"></td>
+                                                        <td class="form-input">
+                                                            <span id="wrap-name"></span>
+                                                            <input class="select-wrap"
+                                                                   name="select-wrap-id"
+                                                                   type="hidden"
+                                                                   readonly>
+                                                            <input class="select-wrap-cost" name="select-wrap-cost"
+                                                                   type="hidden">
+                                                        </td>
+                                                        <td>
+
+                                                        </td>
+                                                        <td>
+                                                            <button id="coupon-button" type="button"
+                                                                    class="button btn-primary btn-sm"
+                                                                    th:value="${book.id}"
+                                                                    onclick="clickCoupon()">쿠폰
+                                                            </button>
+                                                        </td>
+                                                        <td>
+                                                            <button id="wrap-button" type="button" onclick="wrap()"
+                                                                    class="button btn-primary btn-sm">포장
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            </li>
+                            <li>
+                                <h5>포인트 사용</h5>
+                                <section class="form-control">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div>
+                                                <label>
+                                                    <p th:text="'보유 포인트: '+ ${point}"></p>
+                                                    <input id="user-point" type="text" placeholder="포인트 사용"
+                                                           min="0" value="0"
+                                                           th:max="${point}">
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            </li>
+
+                            <li>
+                                <h5>결제</h5>
+                                <hr>
+                                <section class="form-content">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="checkout-payment-form">
+                                                <div class="single-form form-default">
+                                                    <label>결제 금액</label>
+                                                    <div class="form-text">
+                                                        <span id="totalCost" th:text="${totalCost}"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="single-form form-default">
+                                                    <label>포장 비용</label>
+                                                    <div class="form-text">
+                                                        <span id="wrap-total-cost"></span>
+                                                        <input type="text"/>
+                                                    </div>
+                                                </div>
+                                                <div class="single-form form-default">
+                                                    <label>할인 금액</label>
+                                                    <div class="form-input form">
+                                                        <input id="discount-cost" type="text"
+                                                               placeholder="0000 0000 0000 0000">
+                                                    </div>
+                                                </div>
+
+                                                <div class="single-form form-default button">
+                                                    <form>
+                                                        <button class="btn">pay now</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <script src="/assets/js/order/order.js"></script>
+
+
+</div>
+</html>

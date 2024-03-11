@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/admin-layout}">
+<head>
+    <style>
+        .custom-select {
+            width: 100%;
+        }
+    </style>
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+</head>
+
+<div layout:fragment="content">
+    <div class="book-register section">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="register-form">
+                        <div class="title">
+                            <h3>도서 추가</h3>
+                        </div>
+
+                        <form id="registerForm" class="row" method="post" action="/admin/book/register" enctype="multipart/form-data">
+
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="name">도서명</label>
+                                            <input class="form-control" type="text" id="name" name="name" required
+                                                   minlength="1"
+                                                   maxlength="100">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="isbn">ISBN(13자리)</label>
+                                            <input class="form-control" type="text" id="isbn" name="isbn" required
+                                                   pattern="\d{13}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group mb-0">
+                                            <label for="publisherId">출판사</label>
+                                        </div>
+                                        <div class="form-group ">
+                                            <select class="form-select custom-select" id="publisherId"
+                                                    name="publisherId"
+                                                    aria-label="publisherId">
+                                                <option selected>출판사 선택</option>
+                                                <option th:each="publisher : ${publishers}"
+                                                        th:value="${publisher.id}" th:text="${publisher.name}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="publishDate">출판일자</label>
+                                            <input class="form-control" type="date" id="publishDate"
+                                                   name="publishDate" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-15">
+                                    <div class="form-group">
+                                        <label for="index">목차</label>
+                                        <textarea style="resize:none" class="form-control" id="index" name="index"
+                                                  rows="8" required></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-15">
+                                    <div class="form-group">
+                                        <label for="explanation">설명</label>
+                                        <div id="editor"></div>
+                                        <input type="hidden" id="explanation" name="explanation">
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group mb-0">
+                                            <label for="authorList">저자 검색</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <select id="authorList" name="authorList" multiple="multiple" size="10" class="form-control">
+                                                <option th:each="author : ${authors}" th:value="${author.id}" th:title="${author.content}" th:text="${author.name}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="page">페이지수</label>
+                                            <input class="form-control" type="number" id="page" name="page" required
+                                                   min="1">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="originalCost">정가</label>
+                                            <input class="form-control" type="number" id="originalCost"
+                                                   name="originalCost" required min="1">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="saleCost">판매가</label>
+                                            <input class="form-control" type="number" id="saleCost" name="saleCost"
+                                                   required min="1">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group mb-0">
+                                            <label for="bookStatusId">도서 상태</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <select class="form-select custom-select" id="bookStatusId"
+                                                    name="bookStatusId"
+                                                    aria-label="bookStatus">
+                                                <option selected>도서 상태 선택</option>
+                                                <option th:each="status : ${bookStatuses}" th:value="${status.id}"
+                                                        th:text="${status.id}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="stock">재고</label>
+                                            <input class="form-control" type="number" id="stock" name="stock"
+                                                   required min="0">
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group mb-0">
+                                            <label for="categoryList">카테고리</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <select id="categoryList" name="categoryList" multiple="multiple" size="10" class="form-control">
+                                                <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group mb-0">
+                                            <label for="tagList">태그</label>
+                                        </div>
+                                        <div class="form-group">
+                                            <select id="tagList" name="tagList" multiple="multiple" size="10" class="form-control">
+                                                <option th:each="tag : ${tags}" th:value="${tag.id}" th:text="${tag.name}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>포장가능여부</label>
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="isPacking"
+                                                           id="packTrue" value="true">
+                                                    <label class="form-check-label" for="packTrue">가능</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="isPacking"
+                                                           id="packFalse" value="false" checked>
+                                                    <label class="form-check-label" for="packFalse">불가능</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <label>썸네일 이미지 업로드</label>
+                                    <div class="form-group">
+                                        <input id="thumbnailImage" name="thumbnailImage" type="file" class="file">
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <label>본문 이미지 업로드</label>
+                                    <div class="form-group">
+                                        <input id="contentImage" name="contentImage" type="file" class="file" multiple>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row mt-5">
+                                    <div class="col-sm-auto">
+                                        <button class="btn btn-primary" type="submit">추가하기</button>
+                                    </div>
+                                    <div class="col-sm-auto">
+                                        <a th:href="@{/admin/book}" class="btn btn-secondary" role="button">뒤로가기</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+            $('#publisherId').select2({
+                placeholder: "출판사 선택",
+                allowClear: true,
+                width: '100%'
+            });
+        });
+
+        $(document).ready(function () {
+            const editor = new toastui.Editor({
+                el: document.querySelector('#editor'),
+                height: '500px',
+                initialEditType: 'wysiwyg',
+                previewStyle: 'vertical',
+                usageStatistics: false,
+                toolbarItems: [
+                    ['heading', 'bold', 'italic', 'strike'],
+                    ['hr', 'quote'],
+                    ['ul', 'ol', 'task', 'indent', 'outdent'],
+                    ['table', 'code', 'codeblock']
+                ]
+            });
+            $('#registerForm').on('submit', function (e) {
+                document.getElementById('explanation').value = editor.getHTML();
+            });
+        });
+
+
+        $(document).ready(function () {
+            $('#authorList').multiselect({
+                nonSelectedText: '저자 선택',
+                maxHeight: 400,
+                includeSelectAllOption: false,
+                numberDisplayed: 1,
+                enableFiltering: true,
+                enableCaseInsensitiveFiltering: true,
+                filterPlaceholder: '저자 검색'
+            });
+
+            $('#authorSearch').on('keyup', function() {
+                var searchTerm = $(this).val().toLowerCase();
+                $('#authorList option').each(function() {
+                    var text = $(this).text().toLowerCase();
+                    var match = text.indexOf(searchTerm) > -1;
+                });
+                $('#authorList').multiselect('rebuild');
+            });
+        });
+
+
+        $(document).ready(function () {
+            $('#categoryList').multiselect({
+                nonSelectedText: '카테고리 선택(최대 10개)',
+                maxHeight: 400,
+                includeSelectAllOption: false,
+                numberDisplayed: 1,
+                enableFiltering: true,
+                enableCaseInsensitiveFiltering: true,
+                filterPlaceholder: '카테고리 검색',
+                onChange: function(option, checked) {
+                    var selectedOptions = $('#categoryList option:selected');
+                    var count = selectedOptions.length;
+                    if (count > 10) {
+                        alert('최대 10개의 카테고리만 선택할 수 있습니다.');
+                        $(option).prop('selected', false);
+                        $('#categoryList').multiselect('deselect', $(option).val());
+                    }
+                }
+            });
+            $('#categorySearch').on('keyup', function() {
+                var searchTerm = $(this).val().toLowerCase();
+                $('#categoryList option').each(function() {
+                    var text = $(this).text().toLowerCase();
+                    var match = text.indexOf(searchTerm) > -1;
+                    $(this).toggle(match);
+                });
+                $('#categoryList').multiselect('rebuild');
+            });
+        });
+
+        $(document).ready(function () {
+            $('#tagList').multiselect({
+                nonSelectedText: '태그 선택',
+                maxHeight: 400,
+                includeSelectAllOption: false,
+                numberDisplayed: 1,
+                enableFiltering: true,
+                enableCaseInsensitiveFiltering: true,
+                filterPlaceholder: '태그 검색'
+            });
+            $('#tagSearch').on('keyup', function() {
+                var searchTerm = $(this).val().toLowerCase();
+                $('#tagList option').each(function() {
+                    var text = $(this).text().toLowerCase();
+                    var match = text.indexOf(searchTerm) > -1;
+                    $(this).toggle(match);
+                });
+                $('#tagList').multiselect('rebuild');
+            });
+        });
+
+    </script>
+</div>
+</html>
+
+

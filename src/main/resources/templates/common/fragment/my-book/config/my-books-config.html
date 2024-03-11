@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thympleaf.org">
+<!-- 공통으로 사용되는 config-->
+<th:block th:fragment="configFragment1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge"/>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/images/favicon.svg"/>
+
+    <!-- ========================= CSS here ========================= -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/assets/css/LineIcons.3.0.css"/>
+    <link rel="stylesheet" href="/assets/css/tiny-slider.css"/>
+    <link rel="stylesheet" href="/assets/css/glightbox.min.css"/>
+    <link rel="stylesheet" href="/assets/css/main.css"/>
+
+    <!-- ========================= JS here ========================= -->
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script src="/assets/js/tiny-slider.js"></script>
+    <script src="/assets/js/glightbox.min.js"></script>
+    <script src="/assets/js/main.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+    <!-- 이 영역에 공통으로 사용할 css, js library를 선언한다. -->
+    <!--  <link rel="stylesheet" th:href="@{/css/common/common.css}" >-->
+
+    <!--  <script th:src="@{/js/common/common.js}"></script>-->
+
+    <!--  &lt;!&ndash; Content Page의 CSS fragment 삽입 &ndash;&gt;-->
+    <!--  <th:block layout:fragment="css"></th:block>-->
+
+    <!--  &lt;!&ndash; Content Page의 script fragment 삽입 &ndash;&gt;-->
+    <!--  <th:block layout:fragment="script"></th:block>-->
+
+</th:block>
+</html>

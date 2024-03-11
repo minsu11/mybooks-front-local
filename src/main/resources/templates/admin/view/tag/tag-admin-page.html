@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/admin-layout}">
+<div layout:fragment="content">
+    <h1>태그 페이지</h1>
+    <div>
+        <div>
+            <a th:href="@{/admin/tag/register}" class="btn btn-primary" role="button">태그 추가하기</a>
+        </div>
+        <div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">태그 이름</th>
+                    <th scope="col">수정하기</th>
+                    <th scope="col">삭제하기</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="tag : ${tags.content}">
+                    <th th:text="${tag.name}"></th>
+                    <th>
+                        <form action="/admin/tag/update" method="get">
+                            <input hidden="hidden" name="id" th:value="${tag.id}">
+                            <button class="btn btn-primary" type="submit" th:text="수정하기"></button>
+                        </form>
+                    </th>
+                    <th><a th:href="@{/admin/tag/delete/{id}(id=${tag.id})}" class="btn btn-secondary" role="button">삭제하기</a>
+                    </th>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="mt-3">
+        <nav aria-label="admin-book-paging">
+            <ul class="pagination">
+                <li th:each="pageNum : ${#numbers.sequence(0, tags.totalPages - 1)}" class="page-item"
+                    th:classappend="${pageNum + 1 == tags.number ? 'active' : ''}">
+                    <a class="page-link" th:text="${pageNum + 1}" th:href="@{/admin/tag(page=${pageNum})}"></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+</html>

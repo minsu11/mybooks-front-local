@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/admin-layout}">
+
+<div layout:fragment="content">
+    <p>저자 등록 페이지 및 수정 페이지</p>
+    <div class="input-group input-group-sm justify-content-center mb-3">
+        <form method="post" th:action="@{'/admin/author/'+${pathValue}}">
+            <div th:if="${modifyAuthor == null}">
+                <input type="text" name="name" class="form-control" placeholder="저자 명"/>
+                <input type="text" name="content" class="form-control" placeholder="저자 설명"/>
+                <button class="btn btn-outline-secondary" type="submit" id="button-register">등록
+                </button>
+            </div>
+            <div th:if="${modifyAuthor != null }">
+                <input type="hidden" name="id" th:value="${modifyAuthor.id}"/>
+                <input type="text" id="name" name="name" class="form-control" placeholder="저자 명"
+                       th:value="${modifyAuthor.name}"/>
+                <input type="text" id="content" name="content" class="form-control" placeholder="저자 설명"
+                       th:value="${modifyAuthor.content}"/>
+                <button class="btn btn-outline-secondary" type="submit" id="button-update">수정
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+</html>

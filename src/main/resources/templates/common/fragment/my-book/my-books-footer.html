@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thympleaf.org">
+<div th:fragment="myBooksFooterFragment">
+    <!-- Start Footer Area -->
+    <footer class="footer">
+        <div th:replace="common/fragment/my-book/footer/my-books-footer-top :: myBooksFooterFragment"></div>
+        <div th:replace="common/fragment/my-book/footer/my-books-footer-middle::myBooksFooterMiddleFragment"></div>
+        <div th:replace="common/fragment/my-book/footer/my-books-footer-bottom::myBooksFooterBottomFragment"></div>
+
+    </footer>
+    <!--/ End Footer Area -->
+</div>
+</html>
