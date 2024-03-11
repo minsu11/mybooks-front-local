@@ -41,10 +41,12 @@ public class CookieUtils {
                 .from("identity_cookie", token)
                 .secure(true)
                 .httpOnly(true)
+                .domain(cookieConfig.getDomain())
                 .path("/")
                 .maxAge(7*24*60*60)
                 .sameSite("Strict")
                 .build();
+
         response.addHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
     }
 
@@ -54,6 +56,7 @@ public class CookieUtils {
                 .from("admin_cookie", "admin")
                 .secure(true)
                 .httpOnly(true)
+                .domain(cookieConfig.getDomain())
                 .path("/")
                 .maxAge(7*24*60*60)
                 .sameSite("Strict")
