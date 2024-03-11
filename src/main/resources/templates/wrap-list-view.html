@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>포장지 선택</title>
+    <th:block th:replace="common/fragment/my-book/config/my-books-config::configFragment1"/>
+
+</head>
+<body>
+<div class="checkout-payment-option">
+    <div id="wrap-view" class="payment-option-wrapper">
+        <div class="single-payment-option" th:each="wrap, index:${wrapList}">
+            <label>
+                <input type="radio" class="border-1" th:id="'wrap-'+${index.count}" name="wrap-radio"
+                       th:value="${wrap.id}">
+                <label th:for="'wrap'+${index.count}">
+                    <span th:text="${index.count}"></span>
+                    <span th:text="${wrap.name}"></span>
+                    <span class="price" th:text="${wrap.cost}"></span>
+                </label>
+            </label>
+        </div>
+        <button type="button" id="wrap-btn" class="btn btn-outline-primary btn-sm"
+                onclick="sendWrap()">선택
+        </button>
+    </div>
+</div>
+<script>
+    function sendWrap(bookId) {
+        alert("확인 ")
+        const wrap = document.getElementById(bookId).parentElement.querySelector("#wrap-radio");
+        alert(wrap.id)
+        opener.document.getElementsByClassName("select-wrap").value = wrap.value
+        alert(wrap.value)
+        window.close()
+    }
+</script>
+</body>
+</html>

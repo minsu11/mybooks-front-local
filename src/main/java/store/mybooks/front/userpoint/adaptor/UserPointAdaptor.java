@@ -1,10 +1,15 @@
 package store.mybooks.front.userpoint.adaptor;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import store.mybooks.front.auth.Annotation.RequiredAuthorization;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.userpoint.dto.response.PointResponse;
 import store.mybooks.front.utils.Utils;
@@ -20,24 +25,26 @@ import store.mybooks.front.utils.Utils;
  * -----------------------------------------------------------<br>
  * 3/10/24        minsu11       최초 생성<br>
  */
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class UserPointAdaptor {
     private final RestTemplate restTemplate;
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
     private static final String URL = "/api/point-histories";
+    private static final String ADMIN = "/api/admin/point-histories";
+    private static final String MEMBER = "/api/member/point-histories";
 
+    @RequiredAuthorization
     public PointResponse getPointsHeld() {
-        // 인증 어노테이션 달기
-        HttpHeaders headers = Utils.getAuthHeader();
-        HttpEntity<Object> httpEntity = new HttpEntity(headers);
         ResponseEntity<PointResponse> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL + "/point",
+                gatewayAdaptorProperties.getAddress() + MEMBER + "/points",
                 HttpMethod.GET,
-                httpEntity,
-                new ParameterizedTypeReference<PointResponse>() {
+                new HttpEntity<>(Utils.getAuthHeader()),
+                new ParameterizedTypeReference<>() {
                 }
         );
+        log.info("log 끝남 {}", exchange.getBody().getRemainingPoint());
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
 
     }

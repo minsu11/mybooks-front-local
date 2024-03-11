@@ -27,7 +27,7 @@ import store.mybooks.front.auth.interceptor.LogoutInterceptor;
  */
 @Configuration
 public class WebClientConfig implements WebMvcConfigurer {
-    
+
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder
@@ -43,6 +43,7 @@ public class WebClientConfig implements WebMvcConfigurer {
                 .addPathPatterns("/admin/**")
                 .addPathPatterns("/book/**")
                 .addPathPatterns("/cart/**")
+                .addPathPatterns("/**/**")
                 .addPathPatterns("/", "/login", "/signup")
                 .excludePathPatterns("/**/*.js")
                 .excludePathPatterns("/**/*.scss")

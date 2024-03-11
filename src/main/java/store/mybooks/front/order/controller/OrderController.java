@@ -13,8 +13,11 @@ import store.mybooks.front.admin.wrap.service.WrapService;
 import store.mybooks.front.order.dto.request.BookOrderDirectRequest;
 import store.mybooks.front.order.service.OrderService;
 import store.mybooks.front.user.adaptor.UserAdaptor;
+import store.mybooks.front.user.dto.response.UserGetResponse;
 import store.mybooks.front.user_address.adaptor.UserAddressAdaptor;
 import store.mybooks.front.user_address.response.UserAddressGetResponse;
+import store.mybooks.front.userpoint.dto.response.PointResponse;
+import store.mybooks.front.userpoint.service.UserPointService;
 
 /**
  * packageName    : store.mybooks.front.order.controller<br>
@@ -36,6 +39,7 @@ public class OrderController {
     private final UserAddressAdaptor userAddressAdaptor;
     private final UserAdaptor userAdaptor;
     private final OrderService orderService;
+    private final UserPointService userPointService;
 
 
     /**
@@ -50,17 +54,20 @@ public class OrderController {
     @GetMapping("/direct/checkout")
     public String viewOrderPage(@ModelAttribute BookOrderDirectRequest request,
                                 ModelMap modelMap) {
-        List<WrapResponse> wrapResponses = wrapService.getWrapResponse();
         BookDetailResponse bookDetailResponse = orderService.getBook(request);
+        // 인증 쪽 마무리 되면 point 적용
+        log.info("point before");
+        PointResponse pointResponse = userPointService.getPointsHeld();
+        log.info("point:{}", pointResponse.getRemainingPoint());
         log.info("request id:{}", request.getId());
         log.info("request id:{}", request.getSaleCost());
         log.info("request id:{}", request.getQuantity());
-//        UserGetResponse user = userAdaptor.findUser();
+        UserGetResponse user = userAdaptor.findUser();
         Integer totalCost = bookDetailResponse.getSaleCost() * request.getQuantity();
         modelMap.put("book", bookDetailResponse);
         modelMap.put("totalCost", totalCost);
-        modelMap.put("wrapList", wrapResponses);
-//        modelMap.put("user", user);
+        modelMap.put("point", pointResponse.getRemainingPoint());
+        modelMap.put("user", user);
         modelMap.put("quantity", request.getQuantity());
         return "checkout";
     }
@@ -83,4 +90,20 @@ public class OrderController {
         return "mini-address";
     }
 
+    /**
+     * methodName : viewCheckOutWrap<br>
+     * author : minsu11<br>
+     * description : 포장 선택 창.
+     * <br> *
+     *
+     * @param modelMap model
+     * @return string
+     */
+    @GetMapping("/checkout/wraps")
+    public String viewCheckOutWrap(ModelMap modelMap) {
+        List<WrapResponse> wrapResponses = wrapService.getWrapResponse();
+        modelMap.put("wrapList", wrapResponses);
+        log.info("wrap value: {}", wrapResponses.size());
+        return "wrap-list-view";
+    }
 }
