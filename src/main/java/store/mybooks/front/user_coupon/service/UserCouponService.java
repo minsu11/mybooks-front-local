@@ -1,11 +1,13 @@
 package store.mybooks.front.user_coupon.service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.pageable.dto.response.PageResponse;
 import store.mybooks.front.user_coupon.adaptor.UserCouponAdaptor;
 import store.mybooks.front.user_coupon.model.response.UserCouponGetResponse;
+import store.mybooks.front.user_coupon.model.response.UserCouponGetResponseForOrder;
 
 /**
  * packageName    : store.mybooks.front.user_coupon.service
@@ -25,5 +27,13 @@ public class UserCouponService {
 
     public PageResponse<UserCouponGetResponse> getUserCoupons(Pageable pageable) {
         return userCouponAdaptor.getUserCoupons(pageable);
+    }
+
+    public List<UserCouponGetResponseForOrder> getUsableUserCoupon(Long bookId) {
+        return userCouponAdaptor.getUsableUserCoupon(bookId);
+    }
+
+    public List<UserCouponGetResponseForOrder> getUsableUserTotalCoupon() {
+        return userCouponAdaptor.getUsableUserTotalCoupon();
     }
 }
