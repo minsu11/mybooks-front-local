@@ -2,7 +2,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const radioInputs = document.querySelectorAll('input[type="radio"][name="wrapRadio"]');
     const wrapItem = document.querySelectorAll('input[type=radio][name="wrap-item"]')
     const point = document.querySelector('input[id="user-point"][type="text"]')
-
+    const total = document.querySelector('span[id="totalCost"]')
+    const totalCost = total.textContent
     radioInputs.forEach(function (input) {
         input.addEventListener('click', function () {
             const chkValue = document.getElementById('wrap-used').checked;
@@ -30,9 +31,13 @@ document.addEventListener('DOMContentLoaded', function () {
             } else if (inputValue < 0) {
                 alert("0원 미만을 입력하셨습니다.")
             }
-            point.value = inputValue;
+            updateTotalCost(inputValue)
         }
     })
+
+    function updateTotalCost(num) {
+        total.textContent = parseInt(totalCost) - num;
+    }
 
 
 });
@@ -49,7 +54,7 @@ function clickCoupon() {
     var couponCode = document.getElementById('couponCode').value;
 
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", "/applyCoupon?code=" + couponCode, true);
+    xhr.open("GET", "/", true);
     xhr.onreadystatechange = function () {
         if (xhr.readyState == XMLHttpRequest.DONE) {
             if (xhr.status == 200) {
@@ -70,9 +75,7 @@ function wrap() {
 }
 
 
-function updateTotalCost(num) {
-    totalCost.textContent = num;
-}
+
 
 
 

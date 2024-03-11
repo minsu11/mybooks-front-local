@@ -55,15 +55,11 @@ public class OrderController {
     public String viewOrderPage(@ModelAttribute BookOrderDirectRequest request,
                                 ModelMap modelMap) {
         BookDetailResponse bookDetailResponse = orderService.getBook(request);
-        // 인증 쪽 마무리 되면 point 적용
-        log.info("point before");
         PointResponse pointResponse = userPointService.getPointsHeld();
-        log.info("point:{}", pointResponse.getRemainingPoint());
-        log.info("request id:{}", request.getId());
-        log.info("request id:{}", request.getSaleCost());
-        log.info("request id:{}", request.getQuantity());
         UserGetResponse user = userAdaptor.findUser();
         Integer totalCost = bookDetailResponse.getSaleCost() * request.getQuantity();
+        log.info("인증");
+        log.info("total cost:{}", request.getQuantity());
         modelMap.put("book", bookDetailResponse);
         modelMap.put("totalCost", totalCost);
         modelMap.put("point", pointResponse.getRemainingPoint());
