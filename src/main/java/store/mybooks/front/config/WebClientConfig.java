@@ -1,11 +1,7 @@
 package store.mybooks.front.config;
 
 import java.time.Duration;
-import java.util.Collections;
-import javax.servlet.SessionCookieConfig;
-import javax.servlet.SessionTrackingMode;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
@@ -56,15 +52,6 @@ public class WebClientConfig implements WebMvcConfigurer {
                 .addPathPatterns("/user/modify/password")
                 .addPathPatterns("/dormancy")
                 .addPathPatterns("/lock");
-    }
-
-    @Bean
-    public ServletContextInitializer clearJsession() {
-        return servletContext -> {
-            servletContext.setSessionTrackingModes(Collections.singleton(SessionTrackingMode.COOKIE));
-            SessionCookieConfig sessionCookieConfig = servletContext.getSessionCookieConfig();
-            sessionCookieConfig.setHttpOnly(true);
-        };
     }
 
 }
