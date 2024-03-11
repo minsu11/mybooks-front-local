@@ -6,7 +6,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
@@ -29,13 +28,13 @@ public class DeliveryRuleModifyRequest {
 
     @NotBlank
     @Size(min = 1, max = 20)
-    private String companyName;
+    private String deliveryRuleCompanyName;
 
     @NotNull
     @Min(0)
-    private Integer cost;
+    private Integer deliveryCost;
 
     @NotNull
     @Min(0)
-    private Integer ruleCost;
+    private Integer deliveryRuleCost;
 }

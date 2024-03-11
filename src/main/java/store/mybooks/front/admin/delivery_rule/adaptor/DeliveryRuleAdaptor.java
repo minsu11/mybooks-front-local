@@ -34,6 +34,7 @@ public class DeliveryRuleAdaptor {
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
     private static final String URL = "/api/delivery-rules";
+    private static final String ADMIN = "/api/admin/delivery-rules";
 
     public List<DeliveryRuleResponse> getAllDeliveryRule() {
         ResponseEntity<List<DeliveryRuleResponse>> exchange = restTemplate.exchange(
@@ -74,7 +75,7 @@ public class DeliveryRuleAdaptor {
     public void modifyDeliveryRule(DeliveryRuleModifyRequest deliveryRuleModifyRequest) {
         System.out.println("asdf : " + deliveryRuleModifyRequest.toString());
         ResponseEntity<Void> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL + "/modify",
+                gatewayAdaptorProperties.getAddress() + ADMIN + "/modify",
                 HttpMethod.PUT,
                 new HttpEntity<>(deliveryRuleModifyRequest, Utils.getAuthHeader()),
                 new ParameterizedTypeReference<Void>() {

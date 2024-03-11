@@ -6,24 +6,25 @@
 <div layout:fragment="content">
     <p>배송 규칙 수정 페이지</p>
     <div class="input-group input-group-sm justify-content-center mb-3">
-        <form method="post" action="/admin/delivery-rule/modify" >
-            <input type="hidden" name="id" th:value="${id}" />
+        <form method="post" action="/admin/delivery-rule/modify">
+            <input type="hidden" name="id" th:value="${id}"/>
 
             <div class="form-group">
                 <label for="companyName">회사 이름:</label>
-                <input type="text" class="form-control" id="companyName" name="companyName"
+                <input type="text" class="form-control" id="companyName" name="deliveryRuleCompanyName"
                        th:value="${deliveryRule.companyName}" required/>
             </div>
 
             <div class="form-group">
                 <label for="cost">가격:</label>
-                <input type="number" class="form-control" id="cost" name="cost" th:value="${deliveryRule.cost}" min="0"
+                <input type="number" class="form-control" id="cost" name="deliveryCost" th:value="${deliveryRule.cost}"
+                       min="0"
                        required/>
             </div>
 
             <div class="form-group">
                 <label for="ruleCost">가격 규칙:</label>
-                <input type="number" class="form-control" id="ruleCost" name="ruleCost" min="0"
+                <input type="number" class="form-control" id="ruleCost" name="deliveryRuleCost" min="0"
                        th:value="${deliveryRule.ruleCost}" required/>
             </div>
 

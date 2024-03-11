@@ -2,14 +2,10 @@ package store.mybooks.front.admin.delivery_rule.controller;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import store.mybooks.front.admin.delivery_rule.dto.DeliveryRuleModifyRequest;
 import store.mybooks.front.admin.delivery_rule.dto.DeliveryRuleRegisterRequest;
 import store.mybooks.front.admin.delivery_rule.dto.DeliveryRuleResponse;
@@ -28,6 +24,7 @@ import store.mybooks.front.admin.delivery_rule_name.service.DeliveryRuleNameServ
  * -----------------------------------------------------------<br/>
  * 3/11/24        Fiat_lux       최초 생성<br/>
  */
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin/delivery-rule")
