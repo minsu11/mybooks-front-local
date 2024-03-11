@@ -161,6 +161,9 @@ public class UserController {
 
             UserLoginResponse loginResponse = userAdaptor.completeLoginProcess(emailRequest);
 
+            if (loginResponse.getIsAdmin()) {
+                CookieUtils.addAdminCookie(response);
+            }
             // 쿠키추가
             TokenCreateResponse tokenCreateResponse =
                     tokenAdaptor.createToken(
