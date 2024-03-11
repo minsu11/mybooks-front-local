@@ -43,7 +43,7 @@ public class CookieUtils {
                 .httpOnly(true)
                 .domain(cookieConfig.getDomain())
                 .path("/")
-                .maxAge(7*24*60*60)
+                .maxAge(7 * 24 * 60 * 60)
                 .sameSite("Strict")
                 .build();
 
@@ -58,7 +58,7 @@ public class CookieUtils {
                 .httpOnly(true)
                 .domain(cookieConfig.getDomain())
                 .path("/")
-                .maxAge(7*24*60*60)
+                .maxAge(7 * 24 * 60 * 60)
                 .sameSite("Strict")
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
@@ -66,14 +66,14 @@ public class CookieUtils {
 
     public static void deleteJwtCookie(HttpServletResponse response) {
 
-        Cookie cookie= new Cookie("identity_cookie",null);
+        Cookie cookie = new Cookie("identity_cookie", null);
         cookie.setMaxAge(0);
         response.addCookie(cookie);
     }
 
     public static void deleteAdminCookie(HttpServletResponse response) {
 
-        Cookie cookie= new Cookie("admin_cookie",null);
+        Cookie cookie = new Cookie("admin_cookie", null);
         cookie.setMaxAge(0);
         response.addCookie(cookie);
     }
@@ -91,7 +91,7 @@ public class CookieUtils {
         return null;
     }
 
-    public static String getAdminCookieValue(HttpServletRequest request){
+    public static String getAdminCookieValue(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
