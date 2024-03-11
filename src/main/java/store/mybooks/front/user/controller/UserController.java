@@ -1,6 +1,7 @@
 package store.mybooks.front.user.controller;
 
 import java.util.Objects;
+import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -168,7 +169,7 @@ public class UserController {
             TokenCreateResponse tokenCreateResponse =
                     tokenAdaptor.createToken(
                             new TokenCreateRequest(loginResponse.getIsAdmin(), loginResponse.getUserId(),
-                                    loginResponse.getStatus()));
+                                    loginResponse.getStatus(), String.valueOf(UUID.randomUUID())));
 
             CookieUtils.addJwtCookie(response, tokenCreateResponse.getAccessToken());
             return "redirect:/";
