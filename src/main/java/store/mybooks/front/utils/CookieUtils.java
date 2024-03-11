@@ -5,6 +5,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 import store.mybooks.front.config.CookieConfig;
 
@@ -35,24 +37,28 @@ public class CookieUtils {
 
     public static void addJwtCookie(HttpServletResponse response, String token) {
 
-        Cookie cookie= new Cookie("identity_cookie",token);
-        cookie.setHttpOnly(true);
-        cookie.setDomain(cookieConfig.getDomain());
-        cookie.setPath("/");
-        cookie.setSecure(true);
-        cookie.setMaxAge(7 * 24 * 60 * 60);
-        response.addCookie(cookie);
+        final ResponseCookie responseCookie = ResponseCookie
+                .from("identity_cookie", token)
+                .secure(true)
+                .httpOnly(true)
+                .path("/")
+                .maxAge(7*24*60*60)
+                .sameSite("Strict")
+                .build();
+        response.addHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
     }
 
     public static void addAdminCookie(HttpServletResponse response) {
 
-        Cookie cookie= new Cookie("admin_cookie","admin");
-        cookie.setHttpOnly(true);
-        cookie.setDomain(cookieConfig.getDomain());
-        cookie.setPath("/");
-        cookie.setSecure(true);
-        cookie.setMaxAge(7 * 24 * 60 * 60);
-        response.addCookie(cookie);
+        final ResponseCookie responseCookie = ResponseCookie
+                .from("admin_cookie", "admin")
+                .secure(true)
+                .httpOnly(true)
+                .path("/")
+                .maxAge(7*24*60*60)
+                .sameSite("Strict")
+                .build();
+        response.addHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
     }
 
     public static void deleteJwtCookie(HttpServletResponse response) {
