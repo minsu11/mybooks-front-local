@@ -1,6 +1,7 @@
 package store.mybooks.front.book.controller;
 
 import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import store.mybooks.front.admin.category.model.response.CategoryIdAndName;
 import store.mybooks.front.admin.tag.model.response.TagGetResponseForBookDetail;
 import store.mybooks.front.book.service.BookService;
 import store.mybooks.front.booklike.service.BookLikeService;
+import store.mybooks.front.utils.CookieUtils;
 
 /**
  * packageName    : store.mybooks.front.book.controller <br/>
@@ -42,7 +44,7 @@ public class BookController {
      * @return string
      */
     @GetMapping("/{id}")
-    public String getBookDetailPage(@PathVariable("id") Long bookId, Model model) {
+    public String getBookDetailPage(HttpServletRequest request, @PathVariable("id") Long bookId, Model model) {
         BookDetailResponse book = bookService.getBook(bookId);
         model.addAttribute("book", book);
         model.addAttribute("authorNameList", book.getAuthorList().stream()
@@ -55,9 +57,9 @@ public class BookController {
                 .map(CategoryIdAndName::getName)
                 .collect(Collectors.joining(", ")));
 
-//        if () {  로그인 확인하고
-//            model.addAttribute("userBookLikeCheck", bookLikeService.isUserLikeCheck(bookId));
-//        }
+        if (CookieUtils.getIdentityCookieValue(request) != null) {
+            model.addAttribute("userBookLikeCheck", bookLikeService.isUserLikeCheck(bookId));
+        }
 
         return "book-details";
     }
