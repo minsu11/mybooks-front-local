@@ -84,6 +84,7 @@ public class Utils {
         }
         headers.set("Authorization", token);
         headers.set("UserAgent", request.getHeader("User-Agent"));
+        headers.set("UserIp",request.getRemoteAddr());
         return headers;
     }
 
