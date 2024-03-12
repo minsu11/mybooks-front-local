@@ -27,4 +27,6 @@ public class TokenCreateRequest {
 
     private String uuid;
 
+    private String ip;
+
 }
