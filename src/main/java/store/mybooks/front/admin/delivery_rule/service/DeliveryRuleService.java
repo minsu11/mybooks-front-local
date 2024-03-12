@@ -50,12 +50,7 @@ public class DeliveryRuleService {
         }
     }
 
-    public boolean deleteDeliveryRule(Long id) {
-        try {
-            deliveryRuleAdaptor.deleteDeliveryRule(id);
-            return true;
-        } catch (RuntimeException e) {
-            return false;
-        }
+    public void deleteDeliveryRule(Integer id) {
+        deliveryRuleAdaptor.deleteDeliveryRule(id);
     }
 }
