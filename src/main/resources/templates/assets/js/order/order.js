@@ -1,11 +1,13 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function (event
+) {
     const radioInputs = document.querySelectorAll('input[type="radio"][name="wrapRadio"]');
-    const wrapItem = document.querySelectorAll('input[type=radio][name="wrap-item"]')
     const point = document.querySelector('input[id="user-point"][type="text"]')
     const total = document.querySelector('span[id="totalCost"]')
-    const wrapCost = document.querySelector('span[id="wrap-total-cost"]')
-
+    const wrapCost = document.querySelector('input[id="wrap-cost"]')
+    const input = document.querySelectorAll(".select-wrap")
     const totalCost = total.textContent
+    alert("확인용")
+
     radioInputs.forEach(function (input) {
         input.addEventListener('click', function () {
             const chkValue = document.getElementById('wrap-used').checked;
@@ -18,13 +20,16 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
     wrapCost.addEventListener('change', function () {
-        console.log(wrapCost.textContent)
+        alert(wrapCost.textContent)
         updateTotalCost(parseInt(wrapCost.textContent))
     })
 
     point.addEventListener('keyup', function (event) {
         event.preventDefault()
         if (event.keyCode === 13) {
+            if (point.value === "") {
+                point.value = "0"
+            }
             const inputValue = parseInt(point.value); // 입력된 값 가져오기
             const maxValue = parseInt(point.getAttribute('max')); // max 값 가져오기
             if (inputValue > maxValue) {
@@ -32,10 +37,11 @@ document.addEventListener('DOMContentLoaded', function () {
             } else if (inputValue < 0) {
                 alert("0원 미만을 입력하셨습니다.")
             }
-            updateTotalCost(inputValue)
+
+
+            updateTotalCost(inputValue);
         }
     })
-    alert("확인")
     point.addEventListener('change', function (event) {
         event.preventDefault()
         const inputValue = parseInt(point.value); // 입력된 값 가져오기
@@ -46,10 +52,9 @@ document.addEventListener('DOMContentLoaded', function () {
             alert("0원 미만을 입력하셨습니다.")
         }
         updateTotalCost(inputValue)
-        window.onunload(function () {
-            console.log("닫힘")
-        })
+
     })
+
 
     function updateTotalCost(num) {
         total.textContent = parseInt(totalCost) - num;
@@ -75,7 +80,8 @@ function clickCoupon() {
     window.open("/checkout/coupon/" + bookId, "_blank", "toolbar=yes,scrollbars=yes,top=" + top + ",left=" + left + ",width=" + width + ",height=" + height)
 }
 
-function wrap(id) {
+function wrap(button) {
+    const id = button.parentElement.parentElement.id
     const width = 800
     const height = 600
     const left = Math.ceil((window.screen.width - width) / 2);

@@ -134,8 +134,8 @@
                                                         <th class="col-1"></th>
                                                     </tr>
                                                     </thead>
-                                                    <tbody th:each="book, index:${bookList}">
-                                                    <tr th:id="${index.index}">
+                                                    <tbody th:each="book,index:${bookList}">
+                                                    <tr th:id="${index.index}" class="name">
                                                         <td th:text="${book.name}"></td>
                                                         <td></td>
                                                         <!--                                                        <td th:text="${book.originalCost}"></td>-->
@@ -143,17 +143,16 @@
                                                         <td th:text="${book.cartDetailAmount}"></td>
                                                         <td th:text="${totalCost}"></td>
                                                         <td class="form-input">
-                                                            <span class="wrap-name"></span>
                                                             <input class="select-wrap"
                                                                    name="select-wrap-id"
-                                                                   type="hidden"
-                                                                   readonly>
+                                                                   type="text">
+                                                            <input class="select-wrap-name" type="hidden"/>
+                                                            <!-- 포장지 가격 -->
                                                             <input class="select-wrap-cost" name="select-wrap-cost"
                                                                    type="hidden">
                                                         </td>
                                                         <td>
                                                             <span id="coupon-name"></span>
-
                                                         </td>
                                                         <td>
                                                             <button id="coupon-button" type="button"
@@ -164,9 +163,8 @@
                                                         </td>
                                                         <td>
                                                             <button th:id="'wrap-botton-'+${index.index}" type="button"
-
-                                                                    onclick="wrap(this.parentElement.parentElement.id)"
-                                                                    class="button btn-primary btn-sm">포장
+                                                                    onclick="wrap(this)"
+                                                                    class="button btn-primary btn-sm wt">포장
                                                             </button>
                                                         </td>
                                                     </tr>
@@ -195,7 +193,6 @@
                                     </div>
                                 </section>
                             </li>
-
                             <li>
                                 <h5>결제</h5>
                                 <hr>
@@ -207,13 +204,15 @@
                                                     <label>결제 금액</label>
                                                     <div class="form-text">
                                                         <span id="totalCost" th:text="${totalCost}"></span>
+                                                        <input id="input-total-cost" th:value="${totalCost}"
+                                                               type="hidden"/>
                                                     </div>
                                                 </div>
                                                 <div class="single-form form-default">
                                                     <label>포장 비용</label>
                                                     <div class="form-text">
-                                                        <span id="wrap-total-cost"></span>
-                                                        <input type="text" id="wrap-cost"/>
+                                                        <input type="text" id="wrap-cost" value="0"
+                                                               class="form-control w-25" readonly/>
                                                     </div>
                                                 </div>
                                                 <div class="single-form form-default">
@@ -243,7 +242,6 @@
         </div>
     </section>
     <script src="/assets/js/order/order.js"></script>
-
 
 </div>
 </html>
