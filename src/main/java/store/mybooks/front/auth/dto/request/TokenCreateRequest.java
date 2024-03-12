@@ -29,4 +29,6 @@ public class TokenCreateRequest {
 
     private String ip;
 
+    private String userAgent;
+
 }
