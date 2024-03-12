@@ -1,11 +1,7 @@
 package store.mybooks.front.config;
 
 import java.time.Duration;
-import java.util.Collections;
-import javax.servlet.SessionCookieConfig;
-import javax.servlet.SessionTrackingMode;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
@@ -39,12 +35,8 @@ public class WebClientConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new CookieInterceptor())
-                .addPathPatterns("/user/**")
-                .addPathPatterns("/admin/**")
-                .addPathPatterns("/book/**")
-                .addPathPatterns("/cart/**")
-                .addPathPatterns("/**/**")
-                .addPathPatterns("/", "/login", "/signup")
+                .addPathPatterns("/**")
+                .excludePathPatterns("/**/*.tgz")
                 .excludePathPatterns("/**/*.js")
                 .excludePathPatterns("/**/*.scss")
                 .excludePathPatterns("/**/*.css")
@@ -57,16 +49,9 @@ public class WebClientConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LogoutInterceptor())
                 .addPathPatterns("/logout")
                 .addPathPatterns("/user/delete")
-                .addPathPatterns("/user/modify/password");
-    }
-
-    @Bean
-    public ServletContextInitializer clearJsession() {
-        return servletContext -> {
-            servletContext.setSessionTrackingModes(Collections.singleton(SessionTrackingMode.COOKIE));
-            SessionCookieConfig sessionCookieConfig = servletContext.getSessionCookieConfig();
-            sessionCookieConfig.setHttpOnly(true);
-        };
+                .addPathPatterns("/user/modify/password")
+                .addPathPatterns("/dormancy")
+                .addPathPatterns("/lock");
     }
 
 }
