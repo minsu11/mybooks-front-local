@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/admin-layout}">
+
+<div layout:fragment="content">
+    <div class="container mt-5">
+        <h2>회원 주문 내역</h2>
+        <table class="table" style="text-align: center;">
+            <thead>
+            <tr>
+                <th>주문 번호</th>
+                <th>주문 상태</th>
+                <th>송장 번호</th>
+                <th>출고일</th>
+                <th>주문일</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="bookOrder:${bookOrderList.getContent()}">
+                <td th:text="${bookOrder.number}"></td>
+                <td th:text="${bookOrder.statusId}"></td>
+                <td class="invoiceNumber" th:text="${bookOrder.invoiceNumber}"></td>
+                <td th:if="${bookOrder.outDate eq null}" th:text="'-'"></td>
+                <td th:unless="${bookOrder.outDate eq null}" th:text="${bookOrder.outDate}"></td>
+                <td th:text="${bookOrder.invoiceNumber}"></td>
+                <td>
+
+                    <form class="form" method="post" th:action="@{'/admin/order/status'}">
+                        <input name="id" type="hidden" th:value="${bookOrder.id}"/>
+                        <input name="invoiceNumber" type="hidden" th:value="${bookOrder.invoiceNumber}"/>
+                        <button class="btn btn-outline-secondary" type="submit" id="button-status-modify">상태 변경</button>
+                    </form>
+
+                    <form method="get" th:action="@{'/admin/order/'+${bookOrder.id}}">
+                        <button class="btn btn-outline-secondary" type="submit" id="button-register-invoiceNumber">송장 번호
+                            등록
+                        </button>
+                    </form>
+                </td>
+
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</html>

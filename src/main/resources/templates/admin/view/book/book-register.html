@@ -22,7 +22,7 @@
                             <h3>도서 추가</h3>
                         </div>
 
-                        <form id="registerForm" class="row" method="post" action="/admin/book/register">
+                        <form id="registerForm" class="row" method="post" action="/admin/book/register" enctype="multipart/form-data">
 
                             <div class="col-md-6">
                                 <div class="row">
@@ -79,9 +79,9 @@
 
                                 <div class="col-sm-15">
                                     <div class="form-group">
-                                        <label for="content">설명</label>
+                                        <label for="explanation">설명</label>
                                         <div id="editor"></div>
-                                        <input type="hidden" id="content" name="content">
+                                        <input type="hidden" id="explanation" name="explanation">
                                     </div>
                                 </div>
                             </div>
@@ -260,23 +260,7 @@
                 ]
             });
             $('#registerForm').on('submit', function (e) {
-                e.preventDefault();
-                var formData = new FormData(this);
-                formData.append('content', editor.getHTML());
-
-                $.ajax({
-                    url: '/admin/book/register',
-                    type: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function () {
-                        window.location.href = '/admin/book/register';
-                    },
-                    error: function (xhr, status, error) {
-                        console.error('Error:', error);
-                    }
-                });
+                document.getElementById('explanation').value = editor.getHTML();
             });
         });
 
