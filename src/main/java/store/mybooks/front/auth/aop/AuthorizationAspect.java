@@ -89,7 +89,7 @@ public class AuthorizationAspect {
                     // 어드민 쿠키를 체크하는 redis 만료시간 재설정
                     String adminCookieValue = (String) request.getAttribute("admin_cookie_value");
                     if (Objects.nonNull(adminCookieValue)) {
-                        redisAuthService.expireValues(adminCookieValue, redisProperties.getExpiration());
+                        redisAuthService.expireValues(adminCookieValue, redisProperties.getAdminExpiration());
                     }
                     return joinPoint.proceed();
                 } else {

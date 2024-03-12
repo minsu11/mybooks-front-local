@@ -175,7 +175,7 @@ public class UserController {
                 String adminCookieValue = String.valueOf(UUID.randomUUID());
                 redisAuthService.setValues(adminCookieValue,
                         request.getHeader("X-Forwarded-For") + request.getHeader("User-Agent"), Duration.ofMillis(
-                                redisProperties.getExpiration()));
+                                redisProperties.getAdminExpiration()));
                 CookieUtils.addAdminCookie(response, adminCookieValue);
             }
             // 쿠키추가
