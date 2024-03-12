@@ -83,13 +83,14 @@
                                 </div>
                                 <p>배송비: <span>무료</span></p>
                                 <div class="quantity-input">
-                                    <button onclick="document.getElementById('quantity').stepDown()" class="minus-btn">-
+                                    <button onclick="stepDown()" class="minus-btn">-
                                     </button>
                                     <input type="number" id="quantity" name="quantity" min="1" value="1"
                                            class="form-control quantity">
-                                    <button onclick="document.getElementById('quantity').stepUp()" class="plus-btn">+
+                                    <button onclick="stepUp()" class="plus-btn">+
                                     </button>
                                 </div>
+
                                 <div class="bottom-content">
                                     <div class="row align-items-end">
                                         <div class="col-lg-4 col-md-4 col-12">
@@ -101,9 +102,13 @@
                                                 </div>
                                             </form>
                                         </div>
+                                        
                                         <div class="col-lg-4 col-md-4 col-12">
                                             <form action="/cart/add" method="post">
                                                 <input type="hidden" name="id" th:value="${book.id}">
+                                                <input type="hidden" name="originalCost"
+                                                       th:value="${book.originalCost}">
+                                                <input type="hidden" name="saleCost" th:value="${book.saleCost}">
                                                 <input type="hidden" id="cartQuantity" name="quantity">
                                                 <div class="button cart-button">
                                                     <button type="submit" class="btn" style="width: 100%;">장바구니 담기
@@ -111,6 +116,7 @@
                                                 </div>
                                             </form>
                                         </div>
+
                                         <div class="col-lg-4 col-md-4 col-12">
                                             <div th:if="${userBookLikeCheck} != null">
                                                 <form th:action="@{/book-like/{bookId}(bookId=${book.id})}"

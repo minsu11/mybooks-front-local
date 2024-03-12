@@ -8,45 +8,23 @@
 </head>
 <body>
 <div class="checkout-payment-option">
-    <div id="wrap-view" class="payment-option-wrapper">
+    <div id="coupon-view" class="payment-option-wrapper">
         <div class="single-payment-option" th:each="coupon, index:${couponList}">
             <label>
-                <input type="radio" class="border-1" th:id="'wrap-'+${index.count}" name="wrap-radio"
+                <input type="radio" class="border-1" th:id="'coupon-'+${index.count}" name="wrap-radio"
                        th:value="${coupon.name}" onclick="updateWrapValue(this)">
-                <label th:for="'wrap-'+${index.count}">
+                <label th:for="'coupon-'+${index.count}">
                     <span th:text="${index.count}"></span>
                     <span th:text="${coupon.name}"></span>
-                    <span class="price" th:text="${coupon.discountRateOrCost}"></span>
+                    <span class="discount-price" th:text="${coupon.discountRateOrCost}"></span>
                 </label>
             </label>
         </div>
-        <button type="button" id="wrap-btn" class="btn btn-outline-primary btn-sm"
-
-                onclick="sendWrap()">선택
+        <button type="button" id="coupon-btn" class="btn btn-outline-primary btn-sm"
+                onclick="sendCoupon()">선택
         </button>
     </div>
 </div>
-<script>
-    function updateWrapValue(radio) {
-        const wrapBtn = document.getElementById('wrap-btn');
-        const wrapCost = radio.parentElement.querySelector('.price').innerText;
-        wrapBtn.setAttribute('wrap-name', radio.value);
-        wrapBtn.setAttribute('wrap-cost', wrapCost);
-
-    }
-
-    function sendWrap() {
-        const wrapId = document.getElementById('wrap-btn').getAttribute('wrap-name');
-        const wrapCost = document.getElementById('wrap-btn').getAttribute('wrap-cost');
-
-        alert(wrapId);
-        alert(wrapCost)
-        opener.document.getElementsByClassName("select-wrap").value = wrapId
-        opener.document.getElementById("wrap-name").textContent = wrapId
-        opener.document.getElementById("wrap-total-cost").textContent = wrapCost
-        opener.document.getElementById("wrap-total-cost").value = wrapCost
-        window.close()
-    }
-</script>
+<script src="/assets/js/order/coupon.js"></script>
 </body>
 </html>

@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import store.mybooks.front.admin.book.model.response.BookDetailResponse;
 import store.mybooks.front.admin.wrap.dto.response.WrapResponse;
 import store.mybooks.front.admin.wrap.service.WrapService;
+import store.mybooks.front.cart.domain.CartDetail;
+import store.mybooks.front.cart.service.CartNonUserService;
+import store.mybooks.front.cart.service.CartUserService;
 import store.mybooks.front.order.dto.request.BookOrderDirectRequest;
 import store.mybooks.front.order.service.OrderService;
 import store.mybooks.front.user.adaptor.UserAdaptor;
@@ -44,7 +47,8 @@ public class OrderController {
     private final OrderService orderService;
     private final UserPointService userPointService;
     private final UserCouponService userCouponService;
-
+    private final CartNonUserService cartNonUserService;
+    private final CartUserService cartUserService;
 
     /**
      * methodName : viewOrderPage<br>
@@ -56,8 +60,8 @@ public class OrderController {
      * @return string
      */
     @GetMapping("/direct/checkout")
-    public String viewOrderPage(@ModelAttribute BookOrderDirectRequest request,
-                                ModelMap modelMap) {
+    public String viewDirectOrderPage(@ModelAttribute BookOrderDirectRequest request,
+                                      ModelMap modelMap) {
         BookDetailResponse bookDetailResponse = orderService.getBook(request);
         PointResponse pointResponse = userPointService.getPointsHeld();
         UserGetResponse user = userAdaptor.findUser();
@@ -97,10 +101,12 @@ public class OrderController {
      * @param modelMap model
      * @return string
      */
-    @GetMapping("/checkout/wraps")
-    public String viewCheckOutWrap(ModelMap modelMap) {
+    @GetMapping("/checkout/wraps/{id}")
+    public String viewCheckOutWrap(ModelMap modelMap,
+                                   @PathVariable String id) {
         List<WrapResponse> wrapResponses = wrapService.getWrapResponse();
         modelMap.put("wrapList", wrapResponses);
+        modelMap.put("id", id);
         return "wrap-list-view";
     }
 
@@ -120,5 +126,20 @@ public class OrderController {
         List<UserCouponGetResponseForOrder> useCoupon = userCouponService.getUsableUserCoupon(bookId);
         modelMap.put("couponList", useCoupon);
         return "checkout-coupon";
+    }
+
+    @GetMapping("/cart/checkout")
+    public String viewOrderPage(@ModelAttribute BookOrderDirectRequest request,
+                                ModelMap modelMap) {
+        PointResponse pointResponse = userPointService.getPointsHeld();
+        UserGetResponse user = userAdaptor.findUser();
+        List<CartDetail> bookFromCart = cartUserService.getBookFromCart();
+
+        modelMap.put("bookList", bookFromCart);
+        modelMap.put("totalCost", orderService.calculateTotalCost(bookFromCart));
+        modelMap.put("point", pointResponse.getRemainingPoint());
+        modelMap.put("user", user);
+        modelMap.put("quantity", request.getQuantity());
+        return "checkout";
     }
 }

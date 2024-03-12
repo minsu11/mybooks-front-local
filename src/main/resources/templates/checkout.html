@@ -44,8 +44,8 @@
                                                 <div class="row">
                                                     <div class="col-md-6 form-input form">
                                                         <label>
-                                                            <!--                                                            <input name="userId" type="text" th:value="${user.name}"-->
-                                                            <!--                                                                   readonly>-->
+                                                            <input name="userId" type="text" th:value="${user.name}"
+                                                                   readonly>
                                                         </label>
                                                     </div>
                                                 </div>
@@ -55,7 +55,7 @@
                                             <div class="single-form form-default">
                                                 <label>이메일</label>
                                                 <div class="col-md-6 form-input form">
-                                                    <!--                                                    <input type="text" th:value="${user.email}" readonly>-->
+                                                    <input type="text" th:value="${user.email}" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -63,7 +63,7 @@
                                             <div class="single-form form-default">
                                                 <label>휴대폰 번호</label>
                                                 <div class="col-md-6 form-input form">
-                                                    <!--                                                    <input type="text" th:value="${user.phoneNumber}" readonly>-->
+                                                    <input type="text" th:value="${user.phoneNumber}" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -134,15 +134,16 @@
                                                         <th class="col-1"></th>
                                                     </tr>
                                                     </thead>
-                                                    <tbody>
-                                                    <tr>
+                                                    <tbody th:each="book, index:${bookList}">
+                                                    <tr th:id="${index.index}">
                                                         <td th:text="${book.name}"></td>
-                                                        <td th:text="${book.originalCost}"></td>
+                                                        <td></td>
+                                                        <!--                                                        <td th:text="${book.originalCost}"></td>-->
                                                         <td th:text="${book.saleCost}"></td>
-                                                        <td th:text="${quantity}"></td>
+                                                        <td th:text="${book.cartDetailAmount}"></td>
                                                         <td th:text="${totalCost}"></td>
                                                         <td class="form-input">
-                                                            <span id="wrap-name"></span>
+                                                            <span class="wrap-name"></span>
                                                             <input class="select-wrap"
                                                                    name="select-wrap-id"
                                                                    type="hidden"
@@ -151,17 +152,20 @@
                                                                    type="hidden">
                                                         </td>
                                                         <td>
+                                                            <span id="coupon-name"></span>
 
                                                         </td>
                                                         <td>
                                                             <button id="coupon-button" type="button"
                                                                     class="button btn-primary btn-sm"
-                                                                    th:value="${book.id}"
+                                                                    th:value="${book.bookId}"
                                                                     onclick="clickCoupon()">쿠폰
                                                             </button>
                                                         </td>
                                                         <td>
-                                                            <button id="wrap-button" type="button" onclick="wrap()"
+                                                            <button th:id="'wrap-botton-'+${index.index}" type="button"
+
+                                                                    onclick="wrap(this.parentElement.parentElement.id)"
                                                                     class="button btn-primary btn-sm">포장
                                                             </button>
                                                         </td>
@@ -209,19 +213,20 @@
                                                     <label>포장 비용</label>
                                                     <div class="form-text">
                                                         <span id="wrap-total-cost"></span>
-                                                        <input type="text"/>
+                                                        <input type="text" id="wrap-cost"/>
                                                     </div>
                                                 </div>
                                                 <div class="single-form form-default">
-                                                    <label>할인 금액</label>
-                                                    <div class="form-input form">
-                                                        <input id="discount-cost" type="text"
-                                                               placeholder="0000 0000 0000 0000">
+                                                    <label>쿠폰 적용 금액</label>
+                                                    <div class="form-input">
+                                                        <input id="discount-cost" type="text" class="form-control w-25">
                                                     </div>
                                                 </div>
 
                                                 <div class="single-form form-default button">
                                                     <form>
+                                                        <input/>
+                                                        <input/>
                                                         <button class="btn">pay now</button>
                                                     </form>
                                                 </div>

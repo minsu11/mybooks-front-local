@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
-    updateTotalCost2(parseInt(wrapCost.textContent))
     wrapCost.addEventListener('change', function () {
         console.log(wrapCost.textContent)
         updateTotalCost(parseInt(wrapCost.textContent))
@@ -36,6 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
             updateTotalCost(inputValue)
         }
     })
+    alert("확인")
     point.addEventListener('change', function (event) {
         event.preventDefault()
         const inputValue = parseInt(point.value); // 입력된 값 가져오기
@@ -46,15 +46,13 @@ document.addEventListener('DOMContentLoaded', function () {
             alert("0원 미만을 입력하셨습니다.")
         }
         updateTotalCost(inputValue)
-
+        window.onunload(function () {
+            console.log("닫힘")
+        })
     })
 
     function updateTotalCost(num) {
         total.textContent = parseInt(totalCost) - num;
-    }
-
-    function updateTotalCost2(num) {
-        total.textContent = parseInt(totalCost) + num;
     }
 
 
@@ -77,12 +75,12 @@ function clickCoupon() {
     window.open("/checkout/coupon/" + bookId, "_blank", "toolbar=yes,scrollbars=yes,top=" + top + ",left=" + left + ",width=" + width + ",height=" + height)
 }
 
-function wrap() {
+function wrap(id) {
     const width = 800
     const height = 600
     const left = Math.ceil((window.screen.width - width) / 2);
     const top = Math.ceil((window.screen.height - height) / 2)
-    window.open("/checkout/wraps", "_blank", "toolbar=yes,scrollbars=yes,top=" + top + ",left=" + left + ",width=" + width + ",height=" + height)
+    window.open("/checkout/wraps/" + id, "_blank", "toolbar=yes,scrollbars=yes,top=" + top + ",left=" + left + ",width=" + width + ",height=" + height)
 }
 
 

@@ -21,11 +21,28 @@
             </label>
         </div>
         <button type="button" id="wrap-btn" class="btn btn-outline-primary btn-sm"
-
-                onclick="sendWrap()">선택
+                th:value="${id}"
+                onclick="sendWrap(this)">선택
         </button>
     </div>
 </div>
+<script th:inline="javascript">
+    function sendWrap(id) {
+        const wrapId = document.getElementById('wrap-btn').getAttribute('wrap-name');
+        const wrapCost = document.getElementById('wrap-btn').getAttribute('wrap-cost');
+        alert(wrapCost)
+        opener.document.getElementsByClassName("wrap-name")[id.value].textContent = wrapId
+        opener.document.getElementsByClassName("select-wrap").value = wrapId
+        opener.document.getElementById("wrap-total-cost").textContent = wrapCost + opener.document.getElementById("wrap-total-cost").textContent
+        alert(opener.document.getElementById("wrap-cost").value)
+        if (opener.document.getElementById("wrap-cost").value === "") {
+            opener.document.getElementById("wrap-cost").value = parseInt(wrapCost)
+        } else {
+            opener.document.getElementById("wrap-cost").value = parseInt(wrapCost) + parseInt(opener.document.getElementById("wrap-cost").value)
+        }
+        window.close()
+    }
+</script>
 <script>
     function updateWrapValue(radio) {
         const wrapBtn = document.getElementById('wrap-btn');
@@ -33,19 +50,6 @@
         wrapBtn.setAttribute('wrap-name', radio.value);
         wrapBtn.setAttribute('wrap-cost', wrapCost);
 
-    }
-
-    function sendWrap() {
-        const wrapId = document.getElementById('wrap-btn').getAttribute('wrap-name');
-        const wrapCost = document.getElementById('wrap-btn').getAttribute('wrap-cost');
-
-        alert(wrapId);
-        alert(wrapCost)
-        opener.document.getElementsByClassName("select-wrap").value = wrapId
-        opener.document.getElementById("wrap-name").textContent = wrapId
-        opener.document.getElementById("wrap-total-cost").textContent = wrapCost
-        opener.document.getElementById("wrap-total-cost").value = wrapCost
-        window.close()
     }
 </script>
 </body>
