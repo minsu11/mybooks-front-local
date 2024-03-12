@@ -3,6 +3,7 @@ package store.mybooks.front.auth.interceptor;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -24,6 +25,7 @@ import store.mybooks.front.utils.CookieUtils;
  * 3/6/24        masiljangajji       최초 생성
  */
 
+@Slf4j
 public class LogoutInterceptor implements HandlerInterceptor {
 
     @Override
@@ -34,7 +36,7 @@ public class LogoutInterceptor implements HandlerInterceptor {
         TokenAdaptor tokenAdaptor = Objects.requireNonNull(context).getBean(TokenAdaptor.class);
 
         //리프래시토큰 삭제
-        tokenAdaptor.deleteRefreshToken(new LogoutRequest((String) request.getAttribute("identity_cookie_value")));
+        tokenAdaptor.deleteRefreshToken(new LogoutRequest((String) request.getAttribute("identity_cookie_value"),request.getHeader("X-Forwarded-For"),request.getHeader("User-Agent")));
 
         // UUID - UserId 담은 redis 삭제 및 admin 쿠키 삭제
         if (Objects.nonNull(request.getAttribute("admin_cookie_value"))) {
@@ -45,6 +47,7 @@ public class LogoutInterceptor implements HandlerInterceptor {
 
         // 엑세스 토큰 담은 쿠키 삭제
         CookieUtils.deleteJwtCookie(response);
+        log.info("완전삭제");
 
     }
 }

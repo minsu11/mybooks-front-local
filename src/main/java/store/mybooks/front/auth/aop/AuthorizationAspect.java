@@ -76,7 +76,8 @@ public class AuthorizationAspect {
                 // 토큰을 갱신하는 요청을 보냄 (기존 엑세스 토큰을 보냄)
                 RefreshTokenResponse refreshTokenResponse =
                         tokenAdaptor.refreshAccessToken(
-                                new RefreshTokenRequest((String) request.getAttribute("identity_cookie_value")));
+                                new RefreshTokenRequest((String) request.getAttribute("identity_cookie_value"),
+                                        request.getHeader("X-Forwarded-For"), request.getHeader("User-Agent")));
 
                 // 리프래시 토큰 만료 아니고 유효해서 재발급 됐음
                 if (refreshTokenResponse.getIsValid()) {

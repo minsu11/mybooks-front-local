@@ -44,7 +44,7 @@ public class OauthController {
                     tokenAdaptor.createToken(
                             new TokenCreateRequest(loginResponse.getIsAdmin(), loginResponse.getUserId(),
                                     loginResponse.getStatus(), String.valueOf(UUID.randomUUID()),
-                                    request.getRemoteAddr(),request.getHeader("User-Agent")));
+                                    request.getHeader("X-Forwarded-For"),request.getHeader("User-Agent")));
 
             CookieUtils.addJwtCookie(response, tokenCreateResponse.getAccessToken());
             return "redirect:/";
