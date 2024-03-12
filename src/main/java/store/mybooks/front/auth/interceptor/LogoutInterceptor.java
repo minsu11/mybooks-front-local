@@ -9,6 +9,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import store.mybooks.front.auth.adaptor.TokenAdaptor;
 import store.mybooks.front.auth.dto.request.LogoutRequest;
+import store.mybooks.front.auth.redis.RedisAuthService;
 import store.mybooks.front.utils.CookieUtils;
 
 /**
@@ -32,8 +33,12 @@ public class LogoutInterceptor implements HandlerInterceptor {
         ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(request.getServletContext());
         TokenAdaptor tokenAdaptor = Objects.requireNonNull(context).getBean(TokenAdaptor.class);
 
-//       리프래시토큰 삭제
-        tokenAdaptor.deleteRefreshToken(new LogoutRequest(CookieUtils.getIdentityCookieValue(request)));
+        //리프래시토큰 삭제
+        tokenAdaptor.deleteRefreshToken(new LogoutRequest((String) request.getAttribute("identity_cookie_value")));
+
+        // UUID - UserId 담은 redis 삭제
+        RedisAuthService redisAuthService = context.getBean(RedisAuthService.class);
+        redisAuthService.deleteValues((String) request.getAttribute("admin_cookie_value"));
 
         // 쿠키 삭제
         CookieUtils.deleteJwtCookie(response);
