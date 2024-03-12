@@ -19,6 +19,7 @@
                 <th>생성 일자</th>
                 <th>사용 가능 여부</th>
                 <th>수정</th>
+                <th>비활성화</th>
             </tr>
             </thead>
             <tbody>
@@ -30,7 +31,13 @@
                 <td th:text="${deliveryRule.createdDate}"></td>
                 <td th:text="${deliveryRule.isAvailable == 1 ? '활용 가능' : '활용 불가능'}"></td>
                 <td>
-                    <a th:href="@{'/admin/delivery-rule/modify/' + ${deliveryRule.id}}"  class="btn btn-outline-secondary">수정</a>
+                    <a th:href="@{'/admin/delivery-rule/modify/' + ${deliveryRule.id}}"
+                       class="btn btn-outline-secondary">수정</a>
+                </td>
+                <td>
+                    <form th:action="@{'/admin/delivery-rule/delete/' + ${deliveryRule.id}}" method="post">
+                        <button type="submit" class="btn btn-outline-secondary">비활성화</button>
+                    </form>
                 </td>
             </tr>
             </tbody>
