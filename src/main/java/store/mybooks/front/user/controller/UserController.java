@@ -184,12 +184,12 @@ public class UserController {
                                 redisProperties.getAdminExpiration()));
                 CookieUtils.addAdminCookie(response, adminCookieValue);
             }
-            // 쿠키추가
             TokenCreateResponse tokenCreateResponse =
                     tokenAdaptor.createToken(
                             new TokenCreateRequest(loginResponse.getIsAdmin(), loginResponse.getUserId(),
-                                    loginResponse.getStatus(), String.valueOf(UUID.randomUUID())));
+                                    loginResponse.getStatus(), String.valueOf(UUID.randomUUID()),request.getHeader("X-Forwarded-For"),request.getHeader("User-Agent")));
 
+            // 쿠키추가
             CookieUtils.addJwtCookie(response, tokenCreateResponse.getAccessToken());
             applicationEventPublisher.publishEvent(new LoginCartDataMoveEvent(this));
             return "redirect:/";
