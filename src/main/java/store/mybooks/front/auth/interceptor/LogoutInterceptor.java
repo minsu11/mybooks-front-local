@@ -36,13 +36,15 @@ public class LogoutInterceptor implements HandlerInterceptor {
         //리프래시토큰 삭제
         tokenAdaptor.deleteRefreshToken(new LogoutRequest((String) request.getAttribute("identity_cookie_value")));
 
-        // UUID - UserId 담은 redis 삭제
-        RedisAuthService redisAuthService = context.getBean(RedisAuthService.class);
-        redisAuthService.deleteValues((String) request.getAttribute("admin_cookie_value"));
+        // UUID - UserId 담은 redis 삭제 및 admin 쿠키 삭제
+        if (Objects.nonNull(request.getAttribute("admin_cookie_value"))) {
+            RedisAuthService redisAuthService = context.getBean(RedisAuthService.class);
+            redisAuthService.deleteValues((String) request.getAttribute("admin_cookie_value"));
+            CookieUtils.deleteAdminCookie(response);
+        }
 
-        // 쿠키 삭제
+        // 엑세스 토큰 담은 쿠키 삭제
         CookieUtils.deleteJwtCookie(response);
-        CookieUtils.deleteAdminCookie(response);
 
     }
 }
