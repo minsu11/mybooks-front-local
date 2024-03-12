@@ -25,4 +25,6 @@ public class TokenCreateRequest {
 
     private String status;
 
+    private String uuid;
+
 }

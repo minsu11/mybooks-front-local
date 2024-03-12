@@ -156,7 +156,8 @@
                     <p th:text="${totalAmount}" id="totalAmount"></p>
                 </div>
                 <div class="col-lg-1 col-md-1 col-12">
-                    <form action="/order/place" method="post">
+                    <!-- 주문 버튼 -->
+                    <form action="/cart/checkout" method="get">
                         <button type="submit" class="btn">주문</button>
                     </form>
                 </div>
