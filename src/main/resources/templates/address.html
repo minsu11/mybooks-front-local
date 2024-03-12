@@ -237,6 +237,7 @@
 
             console.log(addressId)
 
+
             // 새 창에 폼 내용 작성
             var content = `
         <html>
@@ -244,7 +245,8 @@
             <title>주소 수정</title>
         </head>
         <body>
-        <form id="modifyForm" method="post" action="https://my-books.store/user/address/modify">
+
+        <form id="modifyForm" method="post" action="https://www.my-books.store/user/address/modify">
             <!-- 주소 id를 hidden으로 전달 -->
             <input type="hidden" name="addressId" value="${addressId}"/>
 
