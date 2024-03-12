@@ -72,4 +72,11 @@ public class DeliveryRuleController {
         }
         return "redirect:/admin/delivery-rule/modify";
     }
+
+    @PostMapping("/delete/{id}")
+    public String deleteDeliveryRule(@PathVariable("id") Integer id){
+        deliveryRuleService.deleteDeliveryRule(id);
+
+        return "redirect:/admin/delivery-rule";
+    }
 }
