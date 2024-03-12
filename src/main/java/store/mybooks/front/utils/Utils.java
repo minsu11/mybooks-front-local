@@ -83,6 +83,7 @@ public class Utils {
             throw new AuthenticationIsNotValidException();
         }
         headers.set("Authorization", token);
+        headers.set("UserAgent", request.getHeader("User-Agent"));
         return headers;
     }
 

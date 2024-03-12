@@ -31,7 +31,7 @@ public class AdminCookieAspect {
         if (Objects.nonNull(adminCookieValue)) {
             // 레디스에서 adminCookie 로 뽑은 Value 가 내가 쓰고있는 ip 주소 , user agent 랑 맞는경우 패스
             if (Objects.equals(redisAuthService.getValues(adminCookieValue),
-                    request.getHeader("X-Forwarded-For") + request.getHeader("User-Agent"))) {
+                    request.getRemoteAddr() + request.getHeader("User-Agent"))) {
                 return;
             }
         }
