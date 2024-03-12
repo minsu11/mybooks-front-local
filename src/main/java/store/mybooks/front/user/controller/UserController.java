@@ -1,5 +1,6 @@
 package store.mybooks.front.user.controller;
 
+import java.time.Duration;
 import java.util.Objects;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,8 @@ import org.springframework.web.servlet.view.RedirectView;
 import store.mybooks.front.auth.adaptor.TokenAdaptor;
 import store.mybooks.front.auth.dto.request.TokenCreateRequest;
 import store.mybooks.front.auth.dto.response.TokenCreateResponse;
+import store.mybooks.front.auth.redis.RedisAuthService;
+import store.mybooks.front.config.RedisProperties;
 import store.mybooks.front.user.adaptor.UserAdaptor;
 import store.mybooks.front.user.dto.request.UserCreateRequest;
 import store.mybooks.front.user.dto.request.UserEmailRequest;
@@ -51,6 +54,11 @@ public class UserController {
     private final TokenAdaptor tokenAdaptor;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final RedisAuthService redisAuthService;
+
+    private final RedisProperties redisProperties;
+
 
     /**
      * methodName : loginUserForm
@@ -148,7 +156,8 @@ public class UserController {
      * @return string
      */
     @PostMapping("/login")
-    public String loginUser(@ModelAttribute UserLoginRequest userLoginRequest, HttpServletResponse response) {
+    public String loginUser(@ModelAttribute UserLoginRequest userLoginRequest, HttpServletRequest request,
+                            HttpServletResponse response) {
 
         UserEmailRequest emailRequest = new UserEmailRequest(userLoginRequest.getEmail());
 
@@ -163,7 +172,11 @@ public class UserController {
             UserLoginResponse loginResponse = userAdaptor.completeLoginProcess(emailRequest);
 
             if (loginResponse.getIsAdmin()) {
-                CookieUtils.addAdminCookie(response);
+                String adminCookieValue = String.valueOf(UUID.randomUUID());
+                redisAuthService.setValues(adminCookieValue,
+                        request.getHeader("X-Forwarded-For") + request.getHeader("User-Agent"), Duration.ofMillis(
+                                redisProperties.getExpiration()));
+                CookieUtils.addAdminCookie(response, adminCookieValue);
             }
             // 쿠키추가
             TokenCreateResponse tokenCreateResponse =
