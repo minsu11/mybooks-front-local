@@ -62,7 +62,7 @@
                         <div class="product-images">
                             <main id="gallery">
                                 <div class="main-img">
-                                    <img src="https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_e805e9a72d2f47338a0a463196c36314/my-books-container/7a9644b8-fdb9-425e-821a-abbc6eb77335.png"
+                                    <img th:src="${book.getThumbNailImage().getPath() + book.getThumbNailImage().getFileName() + book.getThumbNailImage().getExtension()}"
                                          id="bookImage" alt="#">
                                 </div>
                             </main>
@@ -102,7 +102,7 @@
                                                 </div>
                                             </form>
                                         </div>
-                                        
+
                                         <div class="col-lg-4 col-md-4 col-12">
                                             <form action="/cart/add" method="post">
                                                 <input type="hidden" name="id" th:value="${book.id}">
@@ -177,8 +177,10 @@
                                 <div th:utext="${book.explanation}"></div>
 
                                 <h2 style="font-size: 24px; margin-top: 20px;">책소개</h2>
-                                <img src="https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_e805e9a72d2f47338a0a463196c36314/my-books-container/7a9644b8-fdb9-425e-821a-abbc6eb77335.png"
-                                     alt="책 소개 이미지">
+                                <div th:each="contentImage : ${book.getContentImageList()}">
+                                    <img th:src="${contentImage.getPath() + contentImage.getFileName() + contentImage.getExtension()}" alt="책 소개 이미지">
+                                </div>
+
 
                                 <h2 style="font-size: 24px; margin-top: 20px;">저자 소개</h2>
                                 <div th:each="author : ${book.authorList}">
