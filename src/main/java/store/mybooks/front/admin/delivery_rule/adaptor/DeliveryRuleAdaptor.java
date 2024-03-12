@@ -36,6 +36,11 @@ public class DeliveryRuleAdaptor {
     private static final String URL = "/api/delivery-rules";
     private static final String ADMIN = "/api/admin/delivery-rules";
 
+    /**
+     * Gets all delivery rule.
+     *
+     * @return the all delivery rule
+     */
     public List<DeliveryRuleResponse> getAllDeliveryRule() {
         ResponseEntity<List<DeliveryRuleResponse>> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + URL,
@@ -47,6 +52,12 @@ public class DeliveryRuleAdaptor {
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
+    /**
+     * Gets delivery rule.
+     *
+     * @param id the id
+     * @return the delivery rule
+     */
     public DeliveryRuleResponse getDeliveryRule(Integer id) {
         ResponseEntity<DeliveryRuleResponse> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + URL + "/{id}",
@@ -59,6 +70,12 @@ public class DeliveryRuleAdaptor {
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
+    /**
+     * Create delivery rule delivery rule response.
+     *
+     * @param deliveryRuleRegisterRequest the delivery rule register request
+     * @return the delivery rule response
+     */
     @RequiredAuthorization
     public DeliveryRuleResponse createDeliveryRule(DeliveryRuleRegisterRequest deliveryRuleRegisterRequest) {
         ResponseEntity<DeliveryRuleResponse> exchange = restTemplate.exchange(
@@ -71,6 +88,11 @@ public class DeliveryRuleAdaptor {
         return Utils.getResponseEntity(exchange, HttpStatus.CREATED);
     }
 
+    /**
+     * Modify delivery rule.
+     *
+     * @param deliveryRuleModifyRequest the delivery rule modify request
+     */
     @RequiredAuthorization
     public void modifyDeliveryRule(DeliveryRuleModifyRequest deliveryRuleModifyRequest) {
         ResponseEntity<Void> exchange = restTemplate.exchange(
@@ -82,6 +104,11 @@ public class DeliveryRuleAdaptor {
         Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
+    /**
+     * Delete delivery rule.
+     *
+     * @param id the id
+     */
     @RequiredAuthorization
     public void deleteDeliveryRule(Integer id) {
         ResponseEntity<Void> exchange = restTemplate.exchange(

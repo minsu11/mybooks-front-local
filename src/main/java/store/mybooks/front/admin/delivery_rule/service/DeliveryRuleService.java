@@ -24,32 +24,50 @@ import store.mybooks.front.admin.delivery_rule.dto.DeliveryRuleResponse;
 public class DeliveryRuleService {
     private final DeliveryRuleAdaptor deliveryRuleAdaptor;
 
+    /**
+     * Gets all delivery rule.
+     *
+     * @return the all delivery rule
+     */
     public List<DeliveryRuleResponse> getAllDeliveryRule() {
         return deliveryRuleAdaptor.getAllDeliveryRule();
     }
 
+    /**
+     * Gets delivery rule.
+     *
+     * @param id the id
+     * @return the delivery rule
+     */
     public DeliveryRuleResponse getDeliveryRule(Integer id) {
         return deliveryRuleAdaptor.getDeliveryRule(id);
     }
 
-    public boolean createDeliveryRule(DeliveryRuleRegisterRequest deliveryRuleRegisterRequest) {
-        try {
-            deliveryRuleAdaptor.createDeliveryRule(deliveryRuleRegisterRequest);
-            return true;
-        } catch (RuntimeException e) {
-            return false;
-        }
+    /**
+     * Create delivery rule boolean.
+     *
+     * @param deliveryRuleRegisterRequest the delivery rule register request
+     * @return the boolean
+     */
+    public void createDeliveryRule(DeliveryRuleRegisterRequest deliveryRuleRegisterRequest) {
+        deliveryRuleAdaptor.createDeliveryRule(deliveryRuleRegisterRequest);
     }
 
-    public boolean modifyDeliveryRule(DeliveryRuleModifyRequest deliveryRuleModifyRequest) {
-        try {
-            deliveryRuleAdaptor.modifyDeliveryRule(deliveryRuleModifyRequest);
-            return true;
-        } catch (RuntimeException e) {
-            return false;
-        }
+    /**
+     * Modify delivery rule boolean.
+     *
+     * @param deliveryRuleModifyRequest the delivery rule modify request
+     * @return the boolean
+     */
+    public void modifyDeliveryRule(DeliveryRuleModifyRequest deliveryRuleModifyRequest) {
+        deliveryRuleAdaptor.modifyDeliveryRule(deliveryRuleModifyRequest);
     }
 
+    /**
+     * Delete delivery rule.
+     *
+     * @param id the id
+     */
     public void deleteDeliveryRule(Integer id) {
         deliveryRuleAdaptor.deleteDeliveryRule(id);
     }

@@ -21,7 +21,6 @@ import lombok.ToString;
  */
 @Getter
 @AllArgsConstructor
-@ToString
 public class DeliveryRuleModifyRequest {
 
     private Integer id;
