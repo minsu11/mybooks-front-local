@@ -62,7 +62,7 @@ public class DeliveryRuleAdaptor {
     @RequiredAuthorization
     public DeliveryRuleResponse createDeliveryRule(DeliveryRuleRegisterRequest deliveryRuleRegisterRequest) {
         ResponseEntity<DeliveryRuleResponse> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL,
+                gatewayAdaptorProperties.getAddress() + ADMIN,
                 HttpMethod.POST,
                 new HttpEntity<>(deliveryRuleRegisterRequest, Utils.getAuthHeader()),
                 new ParameterizedTypeReference<DeliveryRuleResponse>() {
@@ -73,26 +73,25 @@ public class DeliveryRuleAdaptor {
 
     @RequiredAuthorization
     public void modifyDeliveryRule(DeliveryRuleModifyRequest deliveryRuleModifyRequest) {
-        System.out.println("asdf : " + deliveryRuleModifyRequest.toString());
         ResponseEntity<Void> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + ADMIN + "/modify",
                 HttpMethod.PUT,
                 new HttpEntity<>(deliveryRuleModifyRequest, Utils.getAuthHeader()),
                 new ParameterizedTypeReference<Void>() {
                 });
-        System.out.println("zxcvc : " + "zxcv");
         Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
     @RequiredAuthorization
-    public void deleteDeliveryRule(Long id) {
+    public void deleteDeliveryRule(Integer id) {
         ResponseEntity<Void> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL + "/{id}",
+                gatewayAdaptorProperties.getAddress() + ADMIN + "/{deliveryRuleId}",
                 HttpMethod.DELETE,
-                null,
+                new HttpEntity<>(null, Utils.getAuthHeader()),
                 new ParameterizedTypeReference<Void>() {
                 },
                 id);
+
         Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 }
