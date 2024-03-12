@@ -47,6 +47,7 @@ public class OauthController {
                                     request.getHeader("X-Forwarded-For"),request.getHeader("User-Agent")));
 
             CookieUtils.addJwtCookie(response, tokenCreateResponse.getAccessToken());
+            request.setAttribute("identity_cookie_value", CookieUtils.getIdentityCookieValue(request));
             return "redirect:/";
         }
 
