@@ -50,10 +50,10 @@ public class CookieUtils {
         response.addHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
     }
 
-    public static void addAdminCookie(HttpServletResponse response) {
+    public static void addAdminCookie(HttpServletResponse response,String adminCookieValue) {
 
         final ResponseCookie responseCookie = ResponseCookie
-                .from("admin_cookie", "admin")
+                .from("admin_cookie", adminCookieValue)
                 .secure(true)
                 .httpOnly(true)
                 .domain(cookieConfig.getDomain())
