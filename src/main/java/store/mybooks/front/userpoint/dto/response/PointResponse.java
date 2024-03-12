@@ -2,8 +2,6 @@ package store.mybooks.front.userpoint.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  * packageName    : store.mybooks.front.userpoint.dto.response<br>
@@ -17,8 +15,6 @@ import lombok.Setter;
  * 3/10/24        minsu11       최초 생성<br>
  */
 @Getter
-@Setter
-@NoArgsConstructor
 @AllArgsConstructor
 public class PointResponse {
     private Integer remainingPoint;
