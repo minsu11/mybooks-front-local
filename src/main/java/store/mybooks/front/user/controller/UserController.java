@@ -174,7 +174,7 @@ public class UserController {
             if (loginResponse.getIsAdmin()) {
                 String adminCookieValue = String.valueOf(UUID.randomUUID());
                 redisAuthService.setValues(adminCookieValue,
-                        request.getRemoteAddr() + request.getHeader("User-Agent"), Duration.ofMillis(
+                        request.getHeader("X-Forwarded-For") + request.getHeader("User-Agent"), Duration.ofMillis(
                                 redisProperties.getAdminExpiration()));
                 CookieUtils.addAdminCookie(response, adminCookieValue);
             }
