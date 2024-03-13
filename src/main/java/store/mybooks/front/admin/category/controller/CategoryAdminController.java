@@ -91,7 +91,7 @@ public class CategoryAdminController {
      * @param id Integer
      * @return string
      */
-    @GetMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
     public String deleteCategory(@PathVariable("id") Integer id) {
         categoryAdminService.deleteCategory(id);
         return "redirect:/admin/category";

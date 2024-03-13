@@ -10,54 +10,61 @@
                     <div class="mega-category-menu">
                         <span class="cat-button" id="categoryMenu"><i class="lni lni-menu"></i>All Categories</span>
                         <script>
-                            window.addEventListener('DOMContentLoaded', function (){
-                                var xhr = new XMLHttpRequest();
-                                xhr.open('GET', '/ajax/category', true);
-                                xhr.onreadystatechange = function() {
-                                    if (xhr.readyState === XMLHttpRequest.DONE) {
-                                        if (xhr.status === 200) {
-                                            var data = JSON.parse(xhr.responseText);
-                                            renderCategories(data);
-                                        } else {
-                                            console.error('Error fetching categories:', xhr.status);
-                                        }
-                                    }
-                                };
-                                xhr.send();
-                            });
+                            $.ajax({
+                                type: 'GET',
+                                url: '/ajax/category',
+                                success: function renderCategories(data) {
+                                    var categoryMenu = document.getElementById('categoryMenu');
+                                    var ul1 = document.createElement('ul');
+                                    ul1.classList.add("sub-category");
 
-                            function renderCategories(data) {
-                                var categoryMenu = document.getElementById('categoryMenu');
-                                var ul1 = document.createElement('ul');
-                                ul1.classList.add("sub-category");
+                                    data.forEach(function(data) {
+                                        var li2 = document.createElement('li');
+                                        var a1 = document.createElement('a');
+                                        a1.href = "#";
+                                        a1.text = data.parentCategoryName;
+                                        var icon = document.createElement("i");
+                                        icon.classList.add("lni", "lni-chevron-right");
 
-                                data.forEach(function(data) {
-                                    var li2 = document.createElement('li');
-                                    var a1 = document.createElement('a');
-                                    a1.href = "#";
-                                    a1.text = data.parentCategoryName;
-                                    var icon = document.createElement("i");
-                                    icon.classList.add("lni", "lni-chevron-right");
+                                        var ul3 = document.createElement('ul');
+                                        ul3.classList.add("inner-sub-category");
 
-                                    var ul3 = document.createElement('ul');
-                                    ul3.classList.add("inner-sub-category");
+                                        data.childCategoryList.forEach(function(childCategory) {
+                                            var li4 = document.createElement('li');
+                                            var a2 = document.createElement('a');
+                                            a2.href = `#`;
+                                            a2.textContent = childCategory.name;
+                                            li4.appendChild(a2);
+                                            ul3.appendChild(li4);
+                                        });
 
-                                    data.childCategoryList.forEach(function(childCategory) {
-                                        var li4 = document.createElement('li');
-                                        var a2 = document.createElement('a');
-                                        a2.href = `#`;
-                                        a2.textContent = childCategory.name;
-                                        li4.appendChild(a2);
-                                        ul3.appendChild(li4);
+                                        a1.appendChild(icon);
+                                        li2.appendChild(a1);
+                                        li2.appendChild(ul3);
+                                        ul1.appendChild(li2);
                                     });
-
-                                    a1.appendChild(icon);
-                                    li2.appendChild(a1);
-                                    li2.appendChild(ul3);
-                                    ul1.appendChild(li2);
-                                });
-                                categoryMenu.appendChild(ul1);
-                            }
+                                    categoryMenu.appendChild(ul1);
+                                },
+                                error: function(data) {
+                                    console.log("카테고리 부르던 중 에러 발생");
+                                    console.log(data);
+                                }
+                            })
+                            // window.addEventListener('DOMContentLoaded', function (){
+                            //     var xhr = new XMLHttpRequest();
+                            //     xhr.open('GET', '/ajax/category', true);
+                            //     xhr.onreadystatechange = function() {
+                            //         if (xhr.readyState === XMLHttpRequest.DONE) {
+                            //             if (xhr.status === 200) {
+                            //                 var data = JSON.parse(xhr.responseText);
+                            //                 renderCategories(data);
+                            //             } else {
+                            //                 console.error('Error fetching categories:', xhr.status);
+                            //             }
+                            //         }
+                            //     };
+                            //     xhr.send();
+                            // });
                         </script>
                     </div>
 
