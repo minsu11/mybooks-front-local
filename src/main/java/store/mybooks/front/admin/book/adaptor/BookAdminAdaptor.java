@@ -101,10 +101,11 @@ public class BookAdminAdaptor {
      * @param bookCreateRequest BookCreateRequest
      * @return bookCreateResponse
      */
+    @RequiredAuthorization
     public BookCreateResponse createBook(BookCreateRequest bookCreateRequest, MultipartFile thumbnailImage,
                                          List<MultipartFile> contentImages)
             throws IOException {
-        HttpHeaders headers = new HttpHeaders();
+        HttpHeaders headers = Utils.getAuthHeader();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
         MultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
         parts.add("request", bookCreateRequest);
@@ -116,13 +117,14 @@ public class BookAdminAdaptor {
         HttpEntity<MultiValueMap<String, Object>> requestHttpEntity = new HttpEntity<>(parts, headers);
 
         ResponseEntity<BookCreateResponse> responseEntity = restTemplate.postForEntity(
-                gatewayAdaptorProperties.getAddress() + URL,
+                gatewayAdaptorProperties.getAddress() + ADMIN_URL,
                 requestHttpEntity,
                 BookCreateResponse.class);
 
         return Utils.getResponseEntity(responseEntity, HttpStatus.CREATED);
     }
 
+    @RequiredAuthorization
     private File convert(MultipartFile file) throws IOException {
         File convFile = new File(Objects.requireNonNull(file.getOriginalFilename()));
         try (FileOutputStream fileOutputStream = new FileOutputStream(convFile)) {
