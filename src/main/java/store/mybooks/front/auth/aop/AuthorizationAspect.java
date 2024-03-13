@@ -91,6 +91,8 @@ public class AuthorizationAspect {
                     String adminCookieValue = (String) request.getAttribute("admin_cookie_value");
                     if (Objects.nonNull(adminCookieValue)) {
                         redisAuthService.expireValues(adminCookieValue, redisProperties.getAdminExpiration());
+                        // 쿠키 만료시간 재설정
+                        CookieUtils.addAdminCookie(response,adminCookieValue);
                     }
                     return joinPoint.proceed();
                 } else {
