@@ -145,20 +145,31 @@
                                                         <td class="form-input">
                                                             <input class="select-wrap"
                                                                    name="select-wrap-id"
-                                                                   type="text">
+                                                                   type="hidden">
                                                             <input class="select-wrap-name" type="hidden"/>
                                                             <!-- 포장지 가격 -->
                                                             <input class="select-wrap-cost" name="select-wrap-cost"
                                                                    type="hidden">
                                                         </td>
-                                                        <td>
-                                                            <span id="coupon-name"></span>
+                                                        <td class="form-input">
+                                                            <input class="select-coupon"
+                                                                   name="select-coupon-id"
+                                                                   type="text">
+
+                                                            <input class="select-coupon-name"
+                                                                   name="select-coupon-name"
+                                                                   type="text">
+
+                                                            <input class="select-coupon-cost"
+                                                                   name="select-coupon-cost"
+                                                                   type="text">
                                                         </td>
                                                         <td>
                                                             <button id="coupon-button" type="button"
                                                                     class="button btn-primary btn-sm"
+                                                                    name="coupon-button"
                                                                     th:value="${book.bookId}"
-                                                                    onclick="clickCoupon()">쿠폰
+                                                                    onclick="clickCoupon(this)">쿠폰
                                                             </button>
                                                         </td>
                                                         <td>
@@ -218,7 +229,8 @@
                                                 <div class="single-form form-default">
                                                     <label>쿠폰 적용 금액</label>
                                                     <div class="form-input">
-                                                        <input id="discount-cost" type="text" class="form-control w-25">
+                                                        <input id="coupon-cost" type="text" class="form-control w-25"
+                                                               value="0" readonly>
                                                     </div>
                                                 </div>
 

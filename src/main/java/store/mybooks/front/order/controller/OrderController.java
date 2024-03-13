@@ -120,11 +120,14 @@ public class OrderController {
      * @param bookId   쿠폰 적용할 도서 아이디
      * @return string
      */
-    @GetMapping("/checkout/coupon/{bookId}")
+    @GetMapping("/checkout/coupon/{bookId}/{id}")
     public String viewCoupon(ModelMap modelMap,
-                             @PathVariable Long bookId) {
+                             @PathVariable(name = "bookId") Long bookId,
+                             @PathVariable(name = "id") Long id) {
+        log.info("coupon value: {}", bookId);
         List<UserCouponGetResponseForOrder> useCoupon = userCouponService.getUsableUserCoupon(bookId);
         modelMap.put("couponList", useCoupon);
+        modelMap.put("id", id);
         return "checkout-coupon";
     }
 

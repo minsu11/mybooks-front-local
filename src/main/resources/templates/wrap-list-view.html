@@ -54,7 +54,8 @@
             opener.document.getElementById("wrap-cost").value = parseInt(wrapCost) + parseInt(opener.document.getElementById("wrap-cost").value)
             opener.document.getElementsByClassName('select-wrap-cost')[button.value].value = wrapCost;
         }
-        opener.document.getElementById('totalCost').textContent = (parseInt(bookTotalCost) + parseInt(opener.document.getElementById("wrap-cost").value)).toString()
+        opener.document.getElementById('totalCost').textContent = (parseInt(bookTotalCost) + parseInt(opener.document.getElementById("wrap-cost").value) -
+            parseInt(opener.document.getElementById('user-point').value)).toString()
 
         window.close()
     }
