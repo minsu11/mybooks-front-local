@@ -12,6 +12,7 @@ import store.mybooks.front.auth.adaptor.TokenAdaptor;
 import store.mybooks.front.auth.dto.request.LogoutRequest;
 import store.mybooks.front.auth.redis.RedisAuthService;
 import store.mybooks.front.utils.CookieUtils;
+import store.mybooks.front.utils.Utils;
 
 /**
  * packageName    : store.mybooks.front.auth.interceptor<br>
@@ -36,10 +37,11 @@ public class LogoutInterceptor implements HandlerInterceptor {
         TokenAdaptor tokenAdaptor = Objects.requireNonNull(context).getBean(TokenAdaptor.class);
 
         log.warn("리프래시토큰 삭제");
-        
+
         //리프래시토큰 삭제
-        tokenAdaptor.deleteRefreshToken(new LogoutRequest((String) request.getAttribute("identity_cookie_value"),
-                request.getHeader("X-Forwarded-For"), request.getHeader("User-Agent")));
+        tokenAdaptor.deleteRefreshToken(
+                new LogoutRequest((String) request.getAttribute("identity_cookie_value"), Utils.getUserIp(request),
+                        Utils.getUserAgent(request)));
         // 엑세스 토큰 담은 쿠키 삭제
 
         log.warn("엑세스토큰 담은 쿠키 삭제");
