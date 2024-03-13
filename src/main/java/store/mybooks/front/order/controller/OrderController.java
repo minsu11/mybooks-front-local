@@ -120,7 +120,7 @@ public class OrderController {
      * @param bookId   쿠폰 적용할 도서 아이디
      * @return string
      */
-    @GetMapping("/checkout/coupon/{bookId}/{id}")
+    @GetMapping("/checkout/{bookId}/coupon/{id}")
     public String viewCoupon(ModelMap modelMap,
                              @PathVariable(name = "bookId") Long bookId,
                              @PathVariable(name = "id") Long id) {

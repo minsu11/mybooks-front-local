@@ -74,7 +74,7 @@ function clickCoupon(button) {
     const height = 600
     const left = Math.ceil((window.screen.width - width) / 2);
     const top = Math.ceil((window.screen.height - height) / 2)
-    couponCheck = window.open("/checkout/coupon/" + button.value + "/" + id, "_blank", "toolbar=yes,scrollbars=yes,top=" + top + ",left=" + left + ",width=" + width + ",height=" + height)
+    couponCheck = window.open("/checkout/" + button.value + "/coupon" + id, "_blank", "toolbar=yes,scrollbars=yes,top=" + top + ",left=" + left + ",width=" + width + ",height=" + height)
 }
 
 function wrap(button) {
