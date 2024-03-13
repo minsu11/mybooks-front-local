@@ -62,7 +62,7 @@
                         <div class="product-images">
                             <main id="gallery">
                                 <div class="main-img">
-                                    <img th:src="${book.getThumbNailImage().getPath() + book.getThumbNailImage().getFileName() + book.getThumbNailImage().getExtension()}"
+                                    <img th:src="${thumbNailImage.path + thumbNailImage.fileName + thumbNailImage.extension}"
                                          id="bookImage" alt="#">
                                 </div>
                             </main>
@@ -177,8 +177,8 @@
                                 <div th:utext="${book.explanation}"></div>
 
                                 <h2 style="font-size: 24px; margin-top: 20px;">책소개</h2>
-                                <div th:each="contentImage : ${book.getContentImageList()}">
-                                    <img th:src="${contentImage.getPath() + contentImage.getFileName() + contentImage.getExtension()}" alt="책 소개 이미지">
+                                <div th:each="contentImage : ${contentImage}">
+                                    <img th:src="${contentImage.path + contentImage.fileName + contentImage.extension}" alt="책 소개 이미지">
                                 </div>
 
 

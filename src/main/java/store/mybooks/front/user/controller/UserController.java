@@ -32,6 +32,7 @@ import store.mybooks.front.user.dto.response.UserEncryptedPasswordResponse;
 import store.mybooks.front.user.dto.response.UserGetResponse;
 import store.mybooks.front.user.dto.response.UserLoginResponse;
 import store.mybooks.front.utils.CookieUtils;
+import store.mybooks.front.utils.Utils;
 
 /**
  * packageName    : store.mybooks.front.user.controller<br>
@@ -174,14 +175,14 @@ public class UserController {
             if (loginResponse.getIsAdmin()) {
                 String adminCookieValue = String.valueOf(UUID.randomUUID());
                 redisAuthService.setValues(adminCookieValue,
-                        request.getHeader("X-Forwarded-For") + request.getHeader("User-Agent"), Duration.ofMillis(
+                        Utils.getUserIp(request) + Utils.getUserAgent(request), Duration.ofMillis(
                                 redisProperties.getAdminExpiration()));
                 CookieUtils.addAdminCookie(response, adminCookieValue);
             }
             TokenCreateResponse tokenCreateResponse =
                     tokenAdaptor.createToken(
                             new TokenCreateRequest(loginResponse.getIsAdmin(), loginResponse.getUserId(),
-                                    loginResponse.getStatus(), String.valueOf(UUID.randomUUID()),request.getHeader("X-Forwarded-For"),request.getHeader("User-Agent")));
+                                    loginResponse.getStatus(), String.valueOf(UUID.randomUUID()),Utils.getUserIp(request),Utils.getUserAgent(request)));
 
             // 쿠키추가
             CookieUtils.addJwtCookie(response, tokenCreateResponse.getAccessToken());
