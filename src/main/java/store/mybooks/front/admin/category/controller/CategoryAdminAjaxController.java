@@ -23,7 +23,7 @@ import store.mybooks.front.admin.category.service.CategoryAdminService;
 @RestController
 @RequestMapping(("/admin/ajax/category"))
 @RequiredArgsConstructor
-public class CategoryAjaxController {
+public class CategoryAdminAjaxController {
     private final CategoryAdminService categoryAdminService;
 
     /**
