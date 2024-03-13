@@ -13,6 +13,7 @@ import store.mybooks.front.auth.dto.request.TokenCreateRequest;
 import store.mybooks.front.auth.dto.response.TokenCreateResponse;
 import store.mybooks.front.user.dto.response.UserLoginResponse;
 import store.mybooks.front.utils.CookieUtils;
+import store.mybooks.front.utils.Utils;
 
 /**
  * packageName    : store.mybooks.front.oauth2<br>
@@ -44,7 +45,7 @@ public class OauthController {
                     tokenAdaptor.createToken(
                             new TokenCreateRequest(loginResponse.getIsAdmin(), loginResponse.getUserId(),
                                     loginResponse.getStatus(), String.valueOf(UUID.randomUUID()),
-                                    request.getHeader("X-Forwarded-For"),request.getHeader("User-Agent")));
+                                    Utils.getUserIp(request),Utils.getUserAgent(request)));
 
             CookieUtils.addJwtCookie(response, tokenCreateResponse.getAccessToken());
             request.setAttribute("identity_cookie_value", CookieUtils.getIdentityCookieValue(request));
