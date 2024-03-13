@@ -223,7 +223,7 @@ public class CategoryAdminAdaptor {
                 new ParameterizedTypeReference<>() {
                 });
 
-        if (exchange.getStatusCode() != HttpStatus.OK) {
+        if (exchange.getStatusCode() != HttpStatus.NO_CONTENT) {
             throw new RuntimeException();
         }
     }
