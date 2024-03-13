@@ -131,6 +131,15 @@ public class OrderController {
         return "checkout-coupon";
     }
 
+    /**
+     * methodName : viewCoupon<br>
+     * author : minsu11<br>
+     * description : 장바구니를 통한 주문.
+     *
+     * @param request  the request
+     * @param modelMap the model map
+     * @return the string
+     */
     @GetMapping("/cart/checkout")
     public String viewOrderPage(@ModelAttribute BookOrderDirectRequest request,
                                 ModelMap modelMap) {
