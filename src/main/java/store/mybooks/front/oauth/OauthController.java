@@ -47,8 +47,9 @@ public class OauthController {
                                     loginResponse.getStatus(), String.valueOf(UUID.randomUUID()),
                                     Utils.getUserIp(request),Utils.getUserAgent(request)));
 
+
             CookieUtils.addJwtCookie(response, tokenCreateResponse.getAccessToken());
-            request.setAttribute("identity_cookie_value", CookieUtils.getIdentityCookieValue(request));
+
             return "redirect:/";
         }
 

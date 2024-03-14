@@ -1,10 +1,9 @@
 package store.mybooks.front.home;
 
-import java.util.Arrays;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import store.mybooks.front.utils.CookieUtils;
 
 /**
  * packageName    : store.mybooks.front
@@ -22,7 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
 
     @RequestMapping("/")
-    public String home() {
+    public String home(HttpServletRequest request) {
+        request.setAttribute("identity_cookie_value", CookieUtils.getIdentityCookieValue(request));
         return "index";
     }
 

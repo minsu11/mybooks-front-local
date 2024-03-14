@@ -36,6 +36,7 @@ public class WebClientConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new CookieInterceptor())
                 .addPathPatterns("/**")
+                .excludePathPatterns("/")
                 .excludePathPatterns("/**/*.tgz")
                 .excludePathPatterns("/**/*.js")
                 .excludePathPatterns("/**/*.scss")
