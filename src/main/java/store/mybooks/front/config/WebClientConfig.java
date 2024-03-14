@@ -53,5 +53,4 @@ public class WebClientConfig implements WebMvcConfigurer {
                 .addPathPatterns("/dormancy")
                 .addPathPatterns("/lock");
     }
-
 }
