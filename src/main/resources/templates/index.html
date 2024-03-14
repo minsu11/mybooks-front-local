@@ -243,7 +243,7 @@
                         <div class="product-info">
                             <span class="category">TT</span>
                             <h4 class="title">
-                                <a href="" th:text="${book.name}"></a>
+                                <a th:href="@{'/book/' + ${book.id}}" th:text="${book.name}"></a>
                             </h4>
                             <ul class="review">
                                 <li><i class="lni lni-star-filled"></i></li>
