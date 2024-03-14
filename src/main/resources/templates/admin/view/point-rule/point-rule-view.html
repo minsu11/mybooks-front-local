@@ -52,7 +52,7 @@
 
             </tbody>
         </table>
-        <div class="mt-3">
+        <div class="mt-3" th:block th:if="${pointRulePage.totalPages > 1}">
             <div class="pagination">
                 <div class="page-item">
                     <a class="page-link" id="prevLink" th:text="'<'" th:href="@{#}"></a>
