@@ -4,6 +4,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.category.adaptor.CategoryAdaptor;
+import store.mybooks.front.category.model.reesponse.CategoryGetResponseForCategoryView;
 import store.mybooks.front.category.model.reesponse.CategoryGetResponseForMainView;
 
 /**
@@ -24,5 +25,9 @@ public class CategoryService {
 
     public List<CategoryGetResponseForMainView> getCategoriesForMainView() {
         return categoryAdaptor.getCategoriesForMainView();
+    }
+
+    public CategoryGetResponseForCategoryView getCategoriesForCategoryView(Integer categoryId) {
+        return categoryAdaptor.getCategoriesForCategoryView(categoryId);
     }
 }
