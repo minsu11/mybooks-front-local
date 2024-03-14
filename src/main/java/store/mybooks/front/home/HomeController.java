@@ -1,10 +1,12 @@
 package store.mybooks.front.home;
 
-import java.util.Arrays;
-import javax.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import store.mybooks.front.admin.book.service.BookAdminService;
 
 /**
  * packageName    : store.mybooks.front
@@ -19,10 +21,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 
 @Controller
+@RequiredArgsConstructor
 public class HomeController {
 
+    private final BookAdminService bookAdminService;
+
+
     @RequestMapping("/")
-    public String home() {
+    public String home(@PageableDefault(size = 8) Pageable pageable, Model model) {
+        model.addAttribute("books", bookAdminService.getBooks(pageable));
         return "index";
     }
 

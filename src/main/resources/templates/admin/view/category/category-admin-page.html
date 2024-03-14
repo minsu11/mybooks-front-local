@@ -4,6 +4,7 @@
       layout:decorate="~{common/layout/admin-layout}">
 
 <div layout:fragment="content">
+
     <script>
         let url = "/admin/category"
         let currentPage = [[${categories.number}]]
@@ -37,15 +38,16 @@
                         </form>
                     </th>
                     <th>
-                        <a th:href="@{/admin/category/delete/{id}(id=${category.id})}" class="btn btn-secondary"
-                           role="button">삭제하기</a>
+                        <form th:action="@{/admin/category/delete/{id}(id=${category.id})}" th:method="post">
+                            <button class="btn btn-secondary" type="submit" th:text="삭제하기"></button>
+                        </form>
                     </th>
                 </tr>
                 </tbody>
             </table>
         </div>
     </div>
-    <div class="mt-3">
+    <div class="mt-3" th:block th:if="${categories.totalPages > 1}">
         <div class="pagination">
             <div class="page-item">
                 <a class="page-link" id="prevLink" th:text="'<'" th:href="@{#}"></a>

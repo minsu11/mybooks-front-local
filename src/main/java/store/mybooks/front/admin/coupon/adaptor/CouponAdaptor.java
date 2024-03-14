@@ -98,6 +98,6 @@ public class CouponAdaptor {
                 new ParameterizedTypeReference<>() {}
         );
 
-        Utils.getResponseEntity(exchange, HttpStatus.OK);
+        Utils.getResponseEntity(exchange, HttpStatus.NO_CONTENT);
     }
 }

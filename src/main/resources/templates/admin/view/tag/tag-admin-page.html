@@ -3,6 +3,11 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{common/layout/admin-layout}">
 <div layout:fragment="content">
+    <script>
+        let url = "/admin/tag"
+        let currentPage = [[${tags.number}]]
+        let totalPages = [[${tags.totalPages}]]
+    </script>
     <h1>태그 페이지</h1>
     <div>
         <div>
@@ -26,21 +31,23 @@
                             <button class="btn btn-primary" type="submit" th:text="수정하기"></button>
                         </form>
                     </th>
-                    <th><a th:href="@{/admin/tag/delete/{id}(id=${tag.id})}" class="btn btn-secondary" role="button">삭제하기</a></th>
+                    <th><a th:href="@{/admin/tag/delete/{id}(id=${tag.id})}" class="btn btn-secondary" role="button">삭제하기</a>
+                    </th>
                 </tr>
                 </tbody>
             </table>
         </div>
     </div>
-    <div class="mt-3">
-        <nav aria-label="admin-book-paging">
-            <ul class="pagination">
-                <li th:each="pageNum : ${#numbers.sequence(0, tags.totalPages - 1)}" class="page-item"
-                    th:classappend="${pageNum + 1 == tags.number ? 'active' : ''}">
-                    <a class="page-link" th:text="${pageNum + 1}" th:href="@{/admin/tag(page=${pageNum})}"></a>
-                </li>
-            </ul>
-        </nav>
+    <div class="mt-3" th:block th:if="${tags.totalPages > 1}">
+        <div class="pagination">
+            <div class="page-item">
+                <a class="page-link" id="prevLink" th:text="'<'" th:href="@{#}"></a>
+            </div>
+            <div class="pagination" id="pageNumContainer"></div>
+            <div class="page-item">
+                <a class="page-link" id="nextLink" th:text="'>'" th:href="@{#}"></a>
+            </div>
+        </div>
     </div>
 </div>
 </html>

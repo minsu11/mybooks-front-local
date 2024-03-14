@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>포장지 선택</title>
+    <th:block th:replace="common/fragment/my-book/config/my-books-config::configFragment1"/>
+
+</head>
+<body>
+<div class="checkout-payment-option">
+    <div id="wrap-view" class="payment-option-wrapper">
+        <div class="single-payment-option" th:each="wrap, index:${wrapList}">
+            <label>
+                <input type="radio" class="border-1" th:id="${index.index}" name="wrap-radio"
+                       th:value="${wrap.name}" onclick="updateWrapValue(this)">
+                <label th:for="${index.index}">
+                    <input type="hidden" th:id="${wrap.id}" class="wrap-id-form">
+                    <span th:text="${index.count}"></span>
+                    <span th:text="${wrap.name}"></span>
+                    <span class="price" th:text="${wrap.cost}"></span>
+                </label>
+            </label>
+        </div>
+        <button type="button" id="wrap-btn" class="btn btn-outline-primary btn-sm"
+                th:value="${id}"
+                onclick="sendWrap(this)">선택
+        </button>
+        <input type="text" id="before-data">
+    </div>
+</div>
+<script th:inline="javascript">
+    function sendWrap(button) {
+        const beforeWrapCost = opener.document.getElementsByClassName('select-wrap-cost')[button.value].value;
+        const wrapName = document.getElementById('wrap-btn').getAttribute('wrap-name');
+        const wrapCost = document.getElementById('wrap-btn').getAttribute('wrap-cost');
+        const selectId = document.getElementById('wrap-btn').getAttribute('radio-id');
+
+        const bookTotalCost = opener.document.getElementById('input-total-cost').value;
+        alert(bookTotalCost)
+
+        opener.document.querySelector(".select-wrap-name").value = wrapName
+        alert(opener.document.querySelector(".select-wrap-name").value)
+        opener.document.getElementsByClassName("select-wrap")[button.value].value = selectId
+        // 각 행에 before value가 있는지 확인
+        if (!beforeWrapCost) {
+            opener.document.getElementsByClassName('select-wrap-cost')[button.value].value = wrapCost;
+        } else {
+            opener.document.getElementById("wrap-cost").value = parseInt(opener.document.getElementById("wrap-cost").value) - parseInt(beforeWrapCost)
+        }
+
+        if (opener.document.getElementById("wrap-cost").value === "0") {
+            opener.document.getElementsByClassName('select-wrap-cost')[button.value].value = wrapCost;
+            opener.document.getElementById("wrap-cost").value = wrapCost
+        } else {
+            opener.document.getElementById("wrap-cost").value = parseInt(wrapCost) + parseInt(opener.document.getElementById("wrap-cost").value)
+            opener.document.getElementsByClassName('select-wrap-cost')[button.value].value = wrapCost;
+        }
+        opener.document.getElementById('totalCost').textContent = (parseInt(bookTotalCost) + parseInt(opener.document.getElementById("wrap-cost").value) -
+            parseInt(opener.document.getElementById('user-point').value)).toString()
+
+        window.close()
+    }
+</script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const beforeValue = opener.document.querySelectorAll(".select-wrap-name");
+        const data = document.querySelector('button[id="wrap-btn"]')
+        if (beforeValue[data.value].textContent) {
+            const radioInput = document.querySelectorAll('input[type="radio"][name="wrap-radio"]')
+            radioInput.forEach(function (input) {
+                if (input.value === beforeValue[data.value].textContent) {
+                    input.checked = true;
+                }
+            })
+        }
+
+    })
+
+    function updateWrapValue(radio) {
+        const wrapBtn = document.getElementById('wrap-btn');
+        const wrapCost = radio.parentElement.querySelector('.price').innerText;
+        const wrapId = radio.parentElement.querySelector('input[class="wrap-id-form"]').id
+        wrapBtn.setAttribute('wrap-name', radio.value);
+        wrapBtn.setAttribute('wrap-cost', wrapCost);
+        wrapBtn.setAttribute('radio-id', wrapId)
+    }
+</script>
+</body>
+</html>

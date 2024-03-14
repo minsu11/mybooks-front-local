@@ -8,6 +8,7 @@ import store.mybooks.front.admin.author.dto.response.AuthorGetResponse;
 import store.mybooks.front.admin.category.model.response.CategoryIdAndName;
 import store.mybooks.front.admin.publisher.dto.response.PublisherGetResponse;
 import store.mybooks.front.admin.tag.model.response.TagGetResponseForBookDetail;
+import store.mybooks.front.image.dto.ImageResponse;
 
 /**
  * packageName    : store.mybooks.front.admin.book.model.response <br/>
@@ -25,7 +26,7 @@ import store.mybooks.front.admin.tag.model.response.TagGetResponseForBookDetail;
 public class BookDetailResponse {
     private Long id;
 
-//    private String bookImage;
+    private ImageResponse thumbNailImage;
 
     private String name;
 
@@ -63,9 +64,9 @@ public class BookDetailResponse {
 
     private String index;
 
-    private String content;
+    private String explanation;
 
-//    private String bookContentImage;
+    private List<ImageResponse> contentImageList;
 
 //    private List<ReviewDetailResponse> review;
 
