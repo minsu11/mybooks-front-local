@@ -64,16 +64,14 @@
                                 <div class="col-sm-15">
                                     <div class="form-group">
                                         <label for="index">목차</label>
-                                        <textarea class="form-control" id="index" name="index" readonly
-                                                  th:text="${book.index}" rows="8"></textarea>
-
+                                        <div id="index" class="form-control" style="height: 16rem; overflow-y: auto;" readonly th:utext="${book.index}"></div>
                                     </div>
                                 </div>
 
                                 <div class="col-sm-15">
                                     <div class="form-group">
                                         <label for="content">설명</label>
-                                        <div id="content" class="form-control" style="height: auto; min-height: 32rem;" readonly th:utext="${book.explanation}"></div>
+                                        <div id="content" class="form-control" style="height: 32rem; overflow-y: auto;" readonly th:utext="${book.explanation}"></div>
                                     </div>
                                 </div>
                             </div>
