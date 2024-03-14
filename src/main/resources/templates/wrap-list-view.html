@@ -38,7 +38,8 @@
         const bookTotalCost = opener.document.getElementById('input-total-cost').value;
         alert(bookTotalCost)
 
-        opener.document.getElementsByClassName("select-wrap-name")[button.value].textContent = wrapName
+        opener.document.querySelector(".select-wrap-name").value = wrapName
+        alert(opener.document.querySelector(".select-wrap-name").value)
         opener.document.getElementsByClassName("select-wrap")[button.value].value = selectId
         // 각 행에 before value가 있는지 확인
         if (!beforeWrapCost) {
@@ -64,7 +65,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const beforeValue = opener.document.getElementsByClassName("select-wrap-name");
+        const beforeValue = opener.document.querySelectorAll(".select-wrap-name");
         const data = document.querySelector('button[id="wrap-btn"]')
         if (beforeValue[data.value].textContent) {
             const radioInput = document.querySelectorAll('input[type="radio"][name="wrap-radio"]')
