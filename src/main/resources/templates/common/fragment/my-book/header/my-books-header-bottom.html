@@ -21,7 +21,7 @@
                                     data.forEach(function(data) {
                                         var li2 = document.createElement('li');
                                         var a1 = document.createElement('a');
-                                        a1.href = "#";
+                                        a1.href = "/category/category-display/" + data.parentCategoryId;
                                         a1.text = data.parentCategoryName;
                                         var icon = document.createElement("i");
                                         icon.classList.add("lni", "lni-chevron-right");
@@ -32,7 +32,7 @@
                                         data.childCategoryList.forEach(function(childCategory) {
                                             var li4 = document.createElement('li');
                                             var a2 = document.createElement('a');
-                                            a2.href = `#`;
+                                            a2.href = "/category/category-display/" + childCategory.id;
                                             a2.textContent = childCategory.name;
                                             li4.appendChild(a2);
                                             ul3.appendChild(li4);
