@@ -9,7 +9,7 @@
         }
     </style>
     <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
 </head>
 
 <div layout:fragment="content">
@@ -22,7 +22,8 @@
                             <h3>도서 추가</h3>
                         </div>
 
-                        <form id="registerForm" class="row" method="post" action="/admin/book/register" enctype="multipart/form-data">
+                        <form id="registerForm" class="row" method="post" action="/admin/book/register"
+                              enctype="multipart/form-data">
 
                             <div class="col-md-6">
                                 <div class="row">
@@ -71,9 +72,9 @@
 
                                 <div class="col-sm-15">
                                     <div class="form-group">
-                                        <label for="index">목차</label>
-                                        <textarea style="resize:none" class="form-control" id="index" name="index"
-                                                  rows="8" required></textarea>
+                                        <label for="explanation">목차</label>
+                                        <div id="editor1"></div>
+                                        <input type="hidden" id="index" name="index">
                                     </div>
                                 </div>
 
@@ -94,8 +95,10 @@
                                             <label for="authorList">저자 검색</label>
                                         </div>
                                         <div class="form-group">
-                                            <select id="authorList" name="authorList" multiple="multiple" size="10" class="form-control">
-                                                <option th:each="author : ${authors}" th:value="${author.id}" th:title="${author.content}" th:text="${author.name}"></option>
+                                            <select id="authorList" name="authorList" multiple="multiple" size="10"
+                                                    class="form-control">
+                                                <option th:each="author : ${authors}" th:value="${author.id}"
+                                                        th:title="${author.content}" th:text="${author.name}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -157,8 +160,10 @@
                                             <label for="categoryList">카테고리</label>
                                         </div>
                                         <div class="form-group">
-                                            <select id="categoryList" name="categoryList" multiple="multiple" size="10" class="form-control">
-                                                <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+                                            <select id="categoryList" name="categoryList" multiple="multiple" size="10"
+                                                    class="form-control">
+                                                <option th:each="category : ${categories}" th:value="${category.id}"
+                                                        th:text="${category.name}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -169,8 +174,10 @@
                                             <label for="tagList">태그</label>
                                         </div>
                                         <div class="form-group">
-                                            <select id="tagList" name="tagList" multiple="multiple" size="10" class="form-control">
-                                                <option th:each="tag : ${tags}" th:value="${tag.id}" th:text="${tag.name}"></option>
+                                            <select id="tagList" name="tagList" multiple="multiple" size="10"
+                                                    class="form-control">
+                                                <option th:each="tag : ${tags}" th:value="${tag.id}"
+                                                        th:text="${tag.name}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -237,7 +244,7 @@
 
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#publisherId').select2({
                 placeholder: "출판사 선택",
                 allowClear: true,
@@ -259,8 +266,23 @@
                     ['table', 'code', 'codeblock']
                 ]
             });
+            const editor1 = new toastui.Editor({
+                el: document.querySelector('#editor1'),
+                height: '350px',
+                initialEditType: 'wysiwyg',
+                previewStyle: 'vertical',
+                usageStatistics: false,
+                toolbarItems: [
+                    ['heading', 'bold', 'italic', 'strike'],
+                    ['hr', 'quote'],
+                    ['ul', 'ol', 'task', 'indent', 'outdent'],
+                    ['table', 'code', 'codeblock']
+                ]
+            });
             $('#registerForm').on('submit', function (e) {
                 document.getElementById('explanation').value = editor.getHTML();
+                document.getElementById('index').value = editor1.getHTML();
+
             });
         });
 
@@ -276,9 +298,9 @@
                 filterPlaceholder: '저자 검색'
             });
 
-            $('#authorSearch').on('keyup', function() {
+            $('#authorSearch').on('keyup', function () {
                 var searchTerm = $(this).val().toLowerCase();
-                $('#authorList option').each(function() {
+                $('#authorList option').each(function () {
                     var text = $(this).text().toLowerCase();
                     var match = text.indexOf(searchTerm) > -1;
                 });
@@ -296,7 +318,7 @@
                 enableFiltering: true,
                 enableCaseInsensitiveFiltering: true,
                 filterPlaceholder: '카테고리 검색',
-                onChange: function(option, checked) {
+                onChange: function (option, checked) {
                     var selectedOptions = $('#categoryList option:selected');
                     var count = selectedOptions.length;
                     if (count > 10) {
@@ -306,9 +328,9 @@
                     }
                 }
             });
-            $('#categorySearch').on('keyup', function() {
+            $('#categorySearch').on('keyup', function () {
                 var searchTerm = $(this).val().toLowerCase();
-                $('#categoryList option').each(function() {
+                $('#categoryList option').each(function () {
                     var text = $(this).text().toLowerCase();
                     var match = text.indexOf(searchTerm) > -1;
                     $(this).toggle(match);
@@ -327,9 +349,9 @@
                 enableCaseInsensitiveFiltering: true,
                 filterPlaceholder: '태그 검색'
             });
-            $('#tagSearch').on('keyup', function() {
+            $('#tagSearch').on('keyup', function () {
                 var searchTerm = $(this).val().toLowerCase();
-                $('#tagList option').each(function() {
+                $('#tagList option').each(function () {
                     var text = $(this).text().toLowerCase();
                     var match = text.indexOf(searchTerm) > -1;
                     $(this).toggle(match);

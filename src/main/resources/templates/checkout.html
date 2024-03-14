@@ -4,7 +4,18 @@
       layout:decorate="~{common/layout/my-books-layout}">
 
 <div layout:fragment="content">
+    <style>
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
 
+        /* Firefox  */
+        input[type='number'] {
+            -moz-appearance: textfield;
+        }
+    </style>
     <!-- Start Breadcrumbs -->
     <div class="breadcrumbs">
         <div class="container">
@@ -28,7 +39,7 @@
 
     <!--====== Checkout Form Steps Part Start ======-->
     <section class="checkout-wrapper section">
-        <div class="container">
+        <div class="container w-1000">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <div class="checkout-steps-form-style-1">
@@ -123,7 +134,8 @@
                                                 <table class="table">
                                                     <thead>
                                                     <tr>
-                                                        <th class="col-4">책 이름</th>
+
+                                                        <th class="col-3">책 이름</th>
                                                         <th class="col-1">정가</th>
                                                         <th class="col-1">판매가</th>
                                                         <th class="col-1">수량</th>
@@ -134,39 +146,58 @@
                                                         <th class="col-1"></th>
                                                     </tr>
                                                     </thead>
-                                                    <tbody th:each="book, index:${bookList}">
-                                                    <tr th:id="${index.index}">
-                                                        <td th:text="${book.name}"></td>
+                                                    <tbody th:each="book, index:${bookLists}">
+                                                    <tr th:id="${index.index}" class="name">
+                                                        <td>
+                                                            <label>
+                                                                <img th:src="${book.bookImage}" alt="#" width="50"
+                                                                     height="50">
+                                                                <th:block th:text="${book.name}">
+
+                                                                </th:block>
+                                                            </label>
+                                                        </td>
                                                         <td></td>
                                                         <!--                                                        <td th:text="${book.originalCost}"></td>-->
                                                         <td th:text="${book.saleCost}"></td>
                                                         <td th:text="${book.cartDetailAmount}"></td>
                                                         <td th:text="${totalCost}"></td>
                                                         <td class="form-input">
-                                                            <span class="wrap-name"></span>
                                                             <input class="select-wrap"
                                                                    name="select-wrap-id"
-                                                                   type="hidden"
-                                                                   readonly>
+                                                                   type="hidden">
+                                                            <input class="form-control-sm select-wrap-name" type="text"
+                                                                   readonly/>
+                                                            <!-- 포장지 가격 -->
                                                             <input class="select-wrap-cost" name="select-wrap-cost"
                                                                    type="hidden">
                                                         </td>
-                                                        <td>
-                                                            <span id="coupon-name"></span>
 
+                                                        <td class="form-input">
+                                                            <input class="select-coupon-id"
+                                                                   name="select-coupon-id"
+                                                                   type="hidden">
+
+                                                            <input class="form-control-sm select-coupon-name"
+                                                                   name="select-coupon-name"
+                                                                   type="text" readonly>
+
+                                                            <input class="select-coupon-cost"
+                                                                   name="select-coupon-cost"
+                                                                   type="hidden">
                                                         </td>
                                                         <td>
                                                             <button id="coupon-button" type="button"
                                                                     class="button btn-primary btn-sm"
+                                                                    name="coupon-button"
                                                                     th:value="${book.bookId}"
-                                                                    onclick="clickCoupon()">쿠폰
+                                                                    onclick="clickCoupon(this)">쿠폰
                                                             </button>
                                                         </td>
                                                         <td>
                                                             <button th:id="'wrap-botton-'+${index.index}" type="button"
-
-                                                                    onclick="wrap(this.parentElement.parentElement.id)"
-                                                                    class="button btn-primary btn-sm">포장
+                                                                    onclick="wrap(this)"
+                                                                    class="button btn-primary btn-sm wt">포장
                                                             </button>
                                                         </td>
                                                     </tr>
@@ -185,8 +216,9 @@
                                         <div class="col-12">
                                             <div>
                                                 <label>
-                                                    <p th:text="'보유 포인트: '+ ${point}"></p>
-                                                    <input id="user-point" type="text" placeholder="포인트 사용"
+                                                    <p th:if="${point==null}" th:text="'보유 포인트: 0'"></p>
+                                                    <p th:if="${point!=null}" th:text="'보유 포인트: '+ ${point}"></p>
+                                                    <input id="user-point" type="number" placeholder="포인트 사용"
                                                            min="0" value="0"
                                                            th:max="${point}">
                                                 </label>
@@ -195,7 +227,6 @@
                                     </div>
                                 </section>
                             </li>
-
                             <li>
                                 <h5>결제</h5>
                                 <hr>
@@ -207,27 +238,33 @@
                                                     <label>결제 금액</label>
                                                     <div class="form-text">
                                                         <span id="totalCost" th:text="${totalCost}"></span>
+                                                        <input id="input-total-cost" th:value="${totalCost}"
+                                                               type="hidden"/>
                                                     </div>
                                                 </div>
                                                 <div class="single-form form-default">
                                                     <label>포장 비용</label>
                                                     <div class="form-text">
-                                                        <span id="wrap-total-cost"></span>
-                                                        <input type="text" id="wrap-cost"/>
+                                                        <input type="number" id="wrap-cost" value="0"
+                                                               class="form-control w-25" readonly/>
                                                     </div>
                                                 </div>
                                                 <div class="single-form form-default">
                                                     <label>쿠폰 적용 금액</label>
                                                     <div class="form-input">
-                                                        <input id="discount-cost" type="text" class="form-control w-25">
+                                                        <label>
+                                                            <input id="coupon-cost" type="number"
+                                                                   class="form-control w-25"
+                                                                   value="0" readonly>
+                                                        </label>
                                                     </div>
                                                 </div>
 
                                                 <div class="single-form form-default button">
-                                                    <form>
-                                                        <input/>
-                                                        <input/>
-                                                        <button class="btn">pay now</button>
+                                                    <form id="order-pay-form" action="/pay">
+
+
+                                                        <button class="pay-btn">pay now</button>
                                                     </form>
                                                 </div>
                                             </div>
@@ -243,7 +280,6 @@
         </div>
     </section>
     <script src="/assets/js/order/order.js"></script>
-
 
 </div>
 </html>

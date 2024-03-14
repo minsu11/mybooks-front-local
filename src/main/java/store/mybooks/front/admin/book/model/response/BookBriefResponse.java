@@ -20,11 +20,13 @@ import store.mybooks.front.image.dto.ImageResponse;
 public class BookBriefResponse {
     private Long id;
 
-    private ImageResponse thumbNailImage;
+    private ImageResponse imageResponse;
 
     private String name;
 
 //    private Double rate;
+
+    private Integer cost;
 
     private Integer saleCost;
 }

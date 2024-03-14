@@ -8,23 +8,97 @@
 </head>
 <body>
 <div class="checkout-payment-option">
-    <div id="coupon-view" class="payment-option-wrapper">
+    <div id="wrap-view" class="payment-option-wrapper">
         <div class="single-payment-option" th:each="coupon, index:${couponList}">
             <label>
-                <input type="radio" class="border-1" th:id="'coupon-'+${index.count}" name="wrap-radio"
-                       th:value="${coupon.name}" onclick="updateWrapValue(this)">
-                <label th:for="'coupon-'+${index.count}">
-                    <span th:text="${index.count}"></span>
-                    <span th:text="${coupon.name}"></span>
-                    <span class="discount-price" th:text="${coupon.discountRateOrCost}"></span>
+                <input type="radio" class="border-1" th:id="${index.index}" name="coupon-radio"
+                       th:value="${coupon.userCouponId}" onclick="updateCouponValue(this)">
+                <label th:for="${index.index}">
+                    <!--                    <span th:text="${index.count}"></span>-->
+                    <span th:text="'쿠폰이름: '+${coupon.name}"></span>
+                    <span th:text="'최소 주문 금액: '+${coupon.orderMin}"></span>
+                    <th:block th:if="${coupon.isRate == true}">
+                        <span th:text="${coupon.discountRateOrCost}+'%'"></span>
+
+                    </th:block>
+                    <th:block th:if="${coupon.isRate == false}">
+                        <span th:text="${coupon.discountRateOrCost}+'원'"></span>
+                    </th:block>
+                    <span th:text="'최대 할인 금액'+${coupon.maxDiscountCost}"></span>
+                    <span class="price" th:text="${coupon.discountRateOrCost}"></span>
                 </label>
             </label>
         </div>
         <button type="button" id="coupon-btn" class="btn btn-outline-primary btn-sm"
-                onclick="sendCoupon()">선택
+                th:value="${id}"
+                onclick="sendCoupon(this)">선택
         </button>
+        <input type="text" id="before-data">
     </div>
 </div>
-<script src="/assets/js/order/coupon.js"></script>
+<script th:inline="javascript">
+    function sendCoupon(button) {
+        const beforecouponCost = opener.document.getElementsByClassName('select-coupon-cost')[button.value].value;
+        const couponName = document.getElementById('coupon-btn').getAttribute('coupon-name');
+        const couponCost = document.getElementById('coupon-btn').getAttribute('coupon-cost');
+        const selectId = document.getElementById('coupon-btn').getAttribute('radio-id');
+        const bookTotalCost = opener.document.getElementById('input-total-cost').value;
+
+        // 선택된 값을 불러옴
+        opener.document.getElementsByClassName("select-coupon-id").value = document.getElementsByClassName('coupon-radio')[button.value].value;
+
+
+        opener.document.getElementsByClassName("select-coupon-name")[button.value].textContent = couponName
+        opener.document.getElementsByClassName("select-wrap")[button.value].value = selectId
+        // 각 행에 before value가 있는지 확인
+        if (!beforecouponCost) {
+            opener.document.getElementsByClassName('select-coupon-cost')[button.value].value = couponCost;
+        } else {
+            opener.document.getElementById("coupon-cost").value = parseInt(opener.document.getElementById("coupon-cost").value) - parseInt(beforecouponCost)
+        }
+        alert("값")
+        if (opener.document.getElementById("coupon-cost").value === "0") {
+            opener.document.getElementsByClassName('select-coupon-cost')[button.value].value = couponCost;
+            opener.document.getElementById("coupon-cost").value = couponCost
+        } else {
+            opener.document.getElementById("coupon-cost").value = parseInt(couponCost) + parseInt(opener.document.getElementById("coupon-cost").value)
+            opener.document.getElementsByClassName('select-coupon-cost')[button.value].value = couponCost;
+        }
+        opener.document.getElementById('totalCost').textContent = (parseInt(bookTotalCost) + parseInt(opener.document.getElementById("coupon-cost").value) -
+            parseInt(opener.document.getElementById('user-point').value)).toString()
+
+        window.close()
+    }
+</script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const beforeValue = opener.document.getElementsByClassName("select-coupon-name")
+
+        const data = document.querySelector('button[id="coupon-btn"]')
+        if (beforeValue[data.value].textContent) {
+            const radioInput = document.querySelectorAll('input[type="radio"][name="coupon-radio"]')
+            radioInput.forEach(function (input) {
+                if (input.value === beforeValue[data.value].textContent) {
+                    input.type = "hidden";
+                }
+            })
+        }
+
+    })
+
+    function updateCouponValue(radio) {
+        const wrapBtn = document.getElementById('coupon-btn');
+        alert("update wrap Btn" + wrapBtn)
+        const couponCost = radio.parentElement.querySelector('.price').innerText;
+
+        const wrapId = radio.parentElement.querySelector('input[class="wrap-id-form"]').id
+        wrapBtn.setAttribute('coupon-name', radio.value);
+        wrapBtn.setAttribute('coupon-cost', couponCost);
+        wrapBtn.setAttribute('radio-id', wrapId)
+        alert("update 끝")
+    }
+</script>
 </body>
 </html>

@@ -43,14 +43,14 @@ public class CookieUtils {
                 .httpOnly(true)
                 .domain(cookieConfig.getDomain())
                 .path("/")
-                .maxAge(7 * 24 * 60 * 60)
+                .maxAge(3 * 24 * 60 * 60)
                 .sameSite("Strict")
                 .build();
 
         response.addHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
     }
 
-    public static void addAdminCookie(HttpServletResponse response,String adminCookieValue) {
+    public static void addAdminCookie(HttpServletResponse response, String adminCookieValue) {
 
         final ResponseCookie responseCookie = ResponseCookie
                 .from("admin_cookie", adminCookieValue)
@@ -58,7 +58,7 @@ public class CookieUtils {
                 .httpOnly(true)
                 .domain(cookieConfig.getDomain())
                 .path("/")
-                .maxAge(7 * 24 * 60 * 60)
+                .maxAge(3 * 24 * 60 * 60)
                 .sameSite("Strict")
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
@@ -66,16 +66,25 @@ public class CookieUtils {
 
     public static void deleteJwtCookie(HttpServletResponse response) {
 
-        Cookie cookie = new Cookie("identity_cookie", null);
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
+        final ResponseCookie responseCookie = ResponseCookie
+                .from("identity_cookie", "")
+                .domain(cookieConfig.getDomain())
+                .path("/")
+                .maxAge(0)
+                .build();
+        response.addHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
     }
 
     public static void deleteAdminCookie(HttpServletResponse response) {
 
-        Cookie cookie = new Cookie("admin_cookie", null);
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
+        final ResponseCookie responseCookie = ResponseCookie
+                .from("admin_cookie", "")
+                .domain(cookieConfig.getDomain())
+                .path("/")
+                .maxAge(0)
+                .build();
+        response.addHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());
+
     }
 
     public static String getIdentityCookieValue(HttpServletRequest request) {

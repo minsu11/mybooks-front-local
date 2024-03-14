@@ -35,7 +35,7 @@ import store.mybooks.front.utils.Utils;
  */
 @Component
 @RequiredArgsConstructor
-public class CategoryAdaptor {
+public class CategoryAdminAdaptor {
     private final RestTemplate restTemplate;
 
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
@@ -223,7 +223,7 @@ public class CategoryAdaptor {
                 new ParameterizedTypeReference<>() {
                 });
 
-        if (exchange.getStatusCode() != HttpStatus.OK) {
+        if (exchange.getStatusCode() != HttpStatus.NO_CONTENT) {
             throw new RuntimeException();
         }
     }

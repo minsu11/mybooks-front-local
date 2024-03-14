@@ -20,5 +20,4 @@ public class ImageResponse {
     private String path;
     private String fileName;
     private String extension;
-    private String status;
 }

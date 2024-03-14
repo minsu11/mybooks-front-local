@@ -12,6 +12,7 @@ import store.mybooks.front.auth.adaptor.TokenAdaptor;
 import store.mybooks.front.auth.dto.request.LogoutRequest;
 import store.mybooks.front.auth.redis.RedisAuthService;
 import store.mybooks.front.utils.CookieUtils;
+import store.mybooks.front.utils.Utils;
 
 /**
  * packageName    : store.mybooks.front.auth.interceptor<br>
@@ -35,19 +36,28 @@ public class LogoutInterceptor implements HandlerInterceptor {
         ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(request.getServletContext());
         TokenAdaptor tokenAdaptor = Objects.requireNonNull(context).getBean(TokenAdaptor.class);
 
+        log.warn("리프래시토큰 삭제");
+
         //리프래시토큰 삭제
-        tokenAdaptor.deleteRefreshToken(new LogoutRequest((String) request.getAttribute("identity_cookie_value"),request.getHeader("X-Forwarded-For"),request.getHeader("User-Agent")));
+        tokenAdaptor.deleteRefreshToken(
+                new LogoutRequest((String) request.getAttribute("identity_cookie_value"), Utils.getUserIp(request),
+                        Utils.getUserAgent(request)));
+        // 엑세스 토큰 담은 쿠키 삭제
+
+        log.warn("엑세스토큰 담은 쿠키 삭제");
+        CookieUtils.deleteJwtCookie(response);
+
 
         // UUID - UserId 담은 redis 삭제 및 admin 쿠키 삭제
         if (Objects.nonNull(request.getAttribute("admin_cookie_value"))) {
+            log.warn("어드민쿠키 삭제 시작 ");
             RedisAuthService redisAuthService = context.getBean(RedisAuthService.class);
             redisAuthService.deleteValues((String) request.getAttribute("admin_cookie_value"));
+            log.warn("레디스 삭제");
             CookieUtils.deleteAdminCookie(response);
+            log.warn("어드민쿠키 삭제 완료");
         }
 
-        // 엑세스 토큰 담은 쿠키 삭제
-        CookieUtils.deleteJwtCookie(response);
-        log.info("완전삭제");
 
     }
 }

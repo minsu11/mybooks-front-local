@@ -3,6 +3,7 @@ package store.mybooks.front.book.controller;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,14 +34,15 @@ import store.mybooks.front.utils.CookieUtils;
 public class BookController {
     private final BookService bookService;
     private final BookLikeService bookLikeService;
+    private final RedisTemplate<String, Integer> redisTemplate;
 
     /**
      * methodName : getBookDetailPage
      * author : newjaehun
-     * description :도서 상세페이지 호출.
+     * description : 도서 상세페이지 호출.
      *
      * @param bookId Long
-     * @param model  Model
+     * @param model Model
      * @return string
      */
     @GetMapping("/{id}")
@@ -57,9 +59,17 @@ public class BookController {
                 .map(CategoryIdAndName::getName)
                 .collect(Collectors.joining(", ")));
 
+
+        model.addAttribute("thumbNailImage", book.getThumbNailImage());
+        model.addAttribute("contentImage", book.getContentImageList());
+
         if (CookieUtils.getIdentityCookieValue(request) != null) {
+
             model.addAttribute("userBookLikeCheck", bookLikeService.isUserLikeCheck(bookId));
         }
+
+        String key = "viewCount:" + bookId;
+        redisTemplate.opsForValue().increment(key, 1);
 
         return "book-details";
     }
