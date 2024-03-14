@@ -135,7 +135,7 @@
                                                     <thead>
                                                     <tr>
 
-                                                        <th class="col-3">책 이름</th>
+                                                        <th class="col-4">책 이름</th>
                                                         <th class="col-1">정가</th>
                                                         <th class="col-1">판매가</th>
                                                         <th class="col-1">수량</th>
@@ -152,22 +152,30 @@
                                                             <label>
                                                                 <img th:src="${book.bookImage}" alt="#" width="50"
                                                                      height="50">
-                                                                <th:block th:text="${book.name}">
+                                                                <span th:text="${book.name}">
 
-                                                                </th:block>
+                                                                </span>
                                                             </label>
                                                         </td>
                                                         <td></td>
                                                         <!--                                                        <td th:text="${book.originalCost}"></td>-->
                                                         <td th:text="${book.saleCost}"></td>
                                                         <td th:text="${book.cartDetailAmount}"></td>
-                                                        <td th:text="${totalCost}"></td>
+
+                                                        <td>
+                                                            <div class="book-sale-cost"
+                                                                 th:each="bookCost:${bookCostList}">
+                                                                <div th:if="${bookCost == book.saleCost}">
+                                                                    <p th:text="${bookCost}"></p>
+                                                                </div>
+                                                            </div>
+                                                        </td>
                                                         <td class="form-input">
                                                             <input class="select-wrap"
                                                                    name="select-wrap-id"
                                                                    type="hidden">
-                                                            <input class="form-control-sm select-wrap-name" type="text"
-                                                                   readonly/>
+                                                            <p class="select-wrap-name"></p>
+
                                                             <!-- 포장지 가격 -->
                                                             <input class="select-wrap-cost" name="select-wrap-cost"
                                                                    type="hidden">
@@ -177,11 +185,8 @@
                                                             <input class="select-coupon-id"
                                                                    name="select-coupon-id"
                                                                    type="hidden">
-
-                                                            <input class="form-control-sm select-coupon-name"
-                                                                   name="select-coupon-name"
-                                                                   type="text" readonly>
-
+                                                            <p class="select-coupon-name"></p>
+                                                            
                                                             <input class="select-coupon-cost"
                                                                    name="select-coupon-cost"
                                                                    type="hidden">
@@ -228,6 +233,17 @@
                                 </section>
                             </li>
                             <li>
+                                <h5>배송 날짜</h5>
+                                <section class="form-control">
+                                    <div>
+                                        <label>
+                                            <input type="date" id="delivery-date-id" th:min="${localDate}">
+                                            <label for="delivery-date-id" id="delivery-date-label"></label>
+                                        </label>
+                                    </div>
+                                </section>
+                            </li>
+                            <li>
                                 <h5>결제</h5>
                                 <hr>
                                 <section class="form-content">
@@ -251,7 +267,7 @@
                                                 </div>
                                                 <div class="single-form form-default">
                                                     <label>쿠폰 적용 금액</label>
-                                                    <div class="form-input">
+                                                    <div class="form-text">
                                                         <label>
                                                             <input id="coupon-cost" type="number"
                                                                    class="form-control w-25"
@@ -262,8 +278,6 @@
 
                                                 <div class="single-form form-default button">
                                                     <form id="order-pay-form" action="/pay">
-
-
                                                         <button class="pay-btn">pay now</button>
                                                     </form>
                                                 </div>

@@ -1,5 +1,6 @@
 package store.mybooks.front.order.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -124,8 +125,9 @@ public class OrderController {
                              @PathVariable(name = "bookId") Long bookId,
                              @PathVariable(name = "id") Long id) {
         log.info("coupon value: {}", bookId);
-        log.info("coupon id value :{}", id);
+
         List<UserCouponGetResponseForOrder> useCoupon = userCouponService.getUsableUserCoupon(bookId);
+        log.info("coupon id value :{}", useCoupon.toString());
         modelMap.put("couponList", useCoupon);
         modelMap.put("id", id);
         return "checkout-coupon";
@@ -144,12 +146,15 @@ public class OrderController {
     public String viewOrderPage(@ModelAttribute BookOrderDirectRequest request,
                                 ModelMap modelMap) {
         PointResponse pointResponse = userPointService.getPointsHeld();
+        LocalDate localDate = LocalDate.now();
         UserGetResponse user = userAdaptor.findUser();
         List<CartDetail> bookFromCart = cartUserService.getBookFromCart();
-
+        log.info("날짜: {}", localDate);
         modelMap.put("bookLists", bookFromCart);
         modelMap.put("totalCost", orderService.calculateTotalCost(bookFromCart));
         modelMap.put("point", pointResponse.getRemainingPoint());
+        modelMap.put("bookCostList", orderService.calculateBooksCost(bookFromCart));
+        modelMap.put("localDate", localDate);
         modelMap.put("user", user);
         modelMap.put("quantity", request.getQuantity());
         return "checkout";

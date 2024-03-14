@@ -5,10 +5,11 @@ var addressCheck = "";
 document.addEventListener('DOMContentLoaded', function (event
 ) {
     const radioInputs = document.querySelectorAll('input[type="radio"][name="wrapRadio"]');
-    const point = document.querySelector('input[id="user-point"][type="text"]')
+    const point = document.querySelector('input[id="user-point"][type="number"]')
     const wrapCost = document.querySelector('input[id="wrap-cost"]')
     // const input = document.querySelectorAll(".select-wrap")
     const payBtn = document.querySelector('.pay-btn')
+    const date = document.getElementById('delivery-date-id');
     let data = 0;
 
     radioInputs.forEach(function (input) {
@@ -22,16 +23,12 @@ document.addEventListener('DOMContentLoaded', function (event
             }
         });
     });
-    wrapCost.addEventListener('change', function () {
-        alert(wrapCost.textContent)
-        updateTotalCost(parseInt(wrapCost.textContent))
-    })
-
     point.addEventListener('keyup', function (event) {
         event.preventDefault()
         if (event.keyCode === 13) {
+            alert("123")
             const total = document.querySelector('span[id="totalCost"]')
-
+            alert("확인 ")
             if (point.value === "") {
                 point.value = "0"
             }
@@ -59,6 +56,9 @@ document.addEventListener('DOMContentLoaded', function (event
     })
 
 
+    date.addEventListener('change', function () {
+        document.getElementById('delivery-date-label').textContent = date.value;
+    })
 });
 
 function address() {
