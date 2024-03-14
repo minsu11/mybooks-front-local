@@ -26,7 +26,7 @@ public class GlobalControllerAdvice {
 
     private static final String REFERER = "referer";
 
-    private static final String domain = "http://localhost:8080";
+    private static final String domain = "https://www.my-books.store";
 
     /**
      * methodName : badRequestException <br>
