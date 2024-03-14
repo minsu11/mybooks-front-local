@@ -4,7 +4,10 @@
       layout:decorate="~{common/layout/admin-layout}">
 
 <div layout:fragment="content">
-    <p>출판사 등록 페이지 및 수정 페이지</p>
+    <p th:if="${modifyReturnRule == null}">반품 규정 등록 페이지</p>
+    <p th:if="${modifyReturnRule != null}">반품 규정 수정 페이지</p>
+
+
     <div class="input-group input-group-sm justify-content-center mb-3">
         <div th:if="${modifyReturnRule == null}">
             <form name="form" class="form" method="post" th:action="@{'/admin/return-rules/register'}">
