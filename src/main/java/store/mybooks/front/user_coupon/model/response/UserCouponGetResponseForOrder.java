@@ -3,6 +3,7 @@ package store.mybooks.front.user_coupon.model.response;
 import java.time.LocalDate;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  * packageName    : store.mybooks.front.user_coupon.model.response
@@ -17,13 +18,14 @@ import lombok.NoArgsConstructor;
  */
 @Getter
 @NoArgsConstructor
+@ToString
 public class UserCouponGetResponseForOrder {
     private Long userCouponId;
     private String name;
     private Integer orderMin;
     private Integer discountRateOrCost;
     private Integer maxDiscountCost;
-    private boolean isRate;
+    private boolean rate;
     private LocalDate startDate;
     private LocalDate endDate;
 }
