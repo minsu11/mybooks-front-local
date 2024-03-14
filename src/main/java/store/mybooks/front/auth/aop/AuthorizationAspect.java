@@ -77,7 +77,7 @@ public class AuthorizationAspect {
                 RefreshTokenResponse refreshTokenResponse =
                         tokenAdaptor.refreshAccessToken(
                                 new RefreshTokenRequest((String) request.getAttribute("identity_cookie_value"),
-                                        request.getHeader("X-Forwarded-For"), request.getHeader("User-Agent")));
+                                        Utils.getUserIp(request), Utils.getUserAgent(request)));
 
                 // 리프래시 토큰 만료 아니고 유효해서 재발급 됐음
                 if (refreshTokenResponse.getIsValid()) {
@@ -91,16 +91,20 @@ public class AuthorizationAspect {
                     String adminCookieValue = (String) request.getAttribute("admin_cookie_value");
                     if (Objects.nonNull(adminCookieValue)) {
                         redisAuthService.expireValues(adminCookieValue, redisProperties.getAdminExpiration());
+                        // 쿠키 만료시간 재설정
+                        CookieUtils.addAdminCookie(response,adminCookieValue);
                     }
                     return joinPoint.proceed();
                 } else {
                     // 리프래시 토큰 만료됐거나 , 유효하지 않음
                     CookieUtils.deleteJwtCookie(Objects.requireNonNull(response));
+                    CookieUtils.deleteAdminCookie(response);
                     // 리프래시 토큰이 만료면 TokenExpiredException -> 로그인하세요
                     throw new TokenExpiredException();
                 }
-            } else if (error.contains(ErrorMessage.INVALID_TOKEN.getMessage())) { // 토큰위조됨 쿠키삭제하기
+            } else if (error.contains(ErrorMessage.INVALID_TOKEN.getMessage())) { // 토큰위조됨 쿠키삭제
                 CookieUtils.deleteJwtCookie(Objects.requireNonNull(response));
+                CookieUtils.deleteAdminCookie(response);
                 throw new AuthenticationIsNotValidException();
             } else if (error.contains(ErrorMessage.STATUS_IS_DORMANT_EXCEPTION.getMessage())) { // 휴면상태 -> 휴면인증사이트로
                 throw new StatusIsDormancyException();
