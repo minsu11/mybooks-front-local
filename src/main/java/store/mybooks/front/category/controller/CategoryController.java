@@ -31,6 +31,7 @@ public class CategoryController {
         CategoryGetResponseForCategoryView categoryGetResponseForCategoryView =
                 categoryService.getCategoriesForCategoryView(categoryId);
 
+        model.addAttribute("highestCategoryName", categoryGetResponseForCategoryView.getHighestCategoryName());
         model.addAttribute("name", categoryGetResponseForCategoryView.getName());
         model.addAttribute("levelTwoCategories", categoryGetResponseForCategoryView.getLevelTwoCategories());
         model.addAttribute("targetCategories", categoryGetResponseForCategoryView.getTargetCategories());

@@ -11,7 +11,7 @@
                     <div class="product-sidebar">
                         <div class="single-widget">
                             <h3>
-                                <span th:text="${name}"></span>
+                                <span th:text="${highestCategoryName}"></span>
                             </h3>
                             <ul th:each="levelTwoCategory : ${levelTwoCategories}">
                                 <li>
@@ -23,15 +23,16 @@
                     </div>
                 </div>
                 <div class="col-lg-9 col-12">
+                    <h3 >
+                        <span th:text="${name}"></span>
+                    </h3>
                     <div class="product-grids-head">
                         <div class="product-grid-topbar" th:block th:if="${targetCategories.size() != 0}">
-                            <div class="row">
-                                <div th:each="category, iterStat : ${targetCategories}" class="col">
+                            <div class="row align-items-center">
+                                <div th:each="category, iterStat : ${targetCategories}" class="col-2 text-center">
                                     <a th:href="@{/category/category-display/{categoryId}(categoryId=${category.id})}"
-                                       th:text="${category.name}"></a>
-                                    <div th:if="${iterStat.count % 5 == 0}" class="w-100">
-
-                                    </div>
+                                       th:text="${category.name}">
+                                    </a>
                                 </div>
                             </div>
                         </div>
