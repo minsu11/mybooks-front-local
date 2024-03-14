@@ -32,7 +32,6 @@ public class HomeController {
     @RequestMapping("/")
     public String home(@PageableDefault(size = 8) Pageable pageable, Model model, HttpServletRequest request) {
         model.addAttribute("books", bookAdminService.getBooks(pageable));
-        request.setAttribute("identity_cookie_value", CookieUtils.getIdentityCookieValue(request));
         return "index";
     }
 
