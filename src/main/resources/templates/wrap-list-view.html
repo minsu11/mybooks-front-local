@@ -77,8 +77,7 @@
         const wrapBtn = document.getElementById('wrap-btn');
         const wrapCost = radio.parentElement.querySelector('.price').innerText;
         const wrapId = radio.parentElement.querySelector('input[class="wrap-id-form"]').id
-        const indexId =
-            wrapBtn.setAttribute('wrap-name', radio.value);
+        wrapBtn.setAttribute('wrap-name', radio.value);
         wrapBtn.setAttribute('wrap-cost', wrapCost);
         wrapBtn.setAttribute('radio-id', wrapId)
     }
