@@ -25,10 +25,15 @@ public class CartDetail {
     private int cartDetailAmount;
     private String name;
     private String bookImage;
+    private Integer cost;
     private Integer saleCost;
 
     public void amountUpdate(int amount) {
         this.cartDetailAmount = this.cartDetailAmount + amount;
     }
 
+    public CartDetail saleUpdate(Integer amount) {
+        this.saleCost *= amount;
+        return this;
+    }
 }

@@ -50,127 +50,158 @@
             </div>
         </div>
     </div>
+    <!-- End Breadcrumbs -->
 
-
+    <!-- Shopping Cart -->
     <div class="shopping-cart section">
         <div class="container">
             <div class="cart-list-head">
+                <!-- Cart List Title -->
                 <div class="cart-list-title">
                     <div class="row">
+                        <div class="col-lg-1 col-md-1 col-12">
 
-                        <div class="col-lg-5 col-md-3 col-12">
-                            <p>Product Image</p>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-12">
+                            <p>상품 명</p>
                         </div>
                         <div class="col-lg-2 col-md-2 col-12">
-                            <p>Product Name</p>
+                            <p>수량</p>
                         </div>
                         <div class="col-lg-2 col-md-2 col-12">
-                            <p>Product saleCost</p>
+                            <p>정상가</p>
                         </div>
                         <div class="col-lg-2 col-md-2 col-12">
-                            <p>Product Amount</p>
+                            <p>판매가</p>
                         </div>
                         <div class="col-lg-1 col-md-2 col-12">
-                            <p>Remove</p>
+                            <p>삭제</p>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="cart-single-list" th:each="cartDetail : ${cartDetailList}">
-                <div class="row align-items-center">
-                    <div class="col-lg-5 col-md-3 col-12">
-                        <img th:src="${cartDetail.bookImage}" alt="#">
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-12">
-                        <p th:text="${cartDetail.name}"></p>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-12" id="cost">
-                        <p th:text="${cartDetail.saleCost}"></p>
-                    </div>
-                    <div class="col-lg-2 col-md-2 col-12">
-                        <button onclick="decreaseCounter(this)" class="minus-btn">Decrease</button>
-                        <p class="counter" data-amount="${cartDetail.cartDetailAmount}"
-                           th:text="${cartDetail.cartDetailAmount}">0</p>
-                        <button onclick="increaseCounter(this)" class="plus-btn">Increase</button>
-                    </div>
-                    <div class="col-lg-1 col-md-2 col-12">
-                        <a th:href="@{'/cart/delete?bookId=' + ${cartDetail.bookId}}" class="delete-link">삭제</a>
+                <!-- End Cart List Title -->
+                <!-- Cart Single List list -->
+                <div th:each="cartDetail : ${cartDetailList}" class="cart-single-list">
+                    <div class="row align-items-center">
+                        <div class="col-lg-1 col-md-1 col-12">
+                            <a th:href="${cartDetail.bookImage}"><img th:src="${cartDetail.bookImage}" alt="#"></a>
+                        </div>
+                        <div class="col-lg-4 col-md-3 col-12">
+                            <h5 class="product-name"><a th:href="@{'/book/' + ${cartDetail.bookId}}"
+                                                        th:text="${cartDetail.name}">
+                            </a></h5>
+                            <p class="product-des">
+                                <span><em>Type:</em> Mirrorless</span>
+                                <span><em>Color:</em> Black</span>
+                            </p>
+                        </div>
+                        <div class="quantity-input col-lg-2 col-md-2 col-12">
+                            <button onclick="decreaseCounter(this)" class="minus-btn">-</button>
+                            <p class="counter form-control quantity"
+                               th:text="${cartDetail.cartDetailAmount}">0</p>
+                            <button onclick="increaseCounter(this)" class="plus-btn">+</button>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-12 ">
+                            <p th:text="${#numbers.formatInteger(cartDetail.cost, 3, 'COMMA')}"></p>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-12 "  id="cost">
+                            <p th:text="${#numbers.formatInteger(cartDetail.saleCost, 3, 'COMMA')}" ></p>
+
+                        </div>
+                        <div class="col-lg-1 col-md-2 col-12">
+                            <a class="remove-item" th:href="@{'/cart/delete?bookId=' + ${cartDetail.bookId}}"><i
+                                    class="lni lni-close"></i></a>
+                        </div>
                     </div>
                 </div>
 
+                <script th:inline="javascript">
+                    function updateCounterDisplay(element, value) {
+                        element.innerText = value;
+                        updateTotalAmount();
+                    }
 
+                    function increaseCounter(button) {
+                        var counterElement = button.parentElement.querySelector('.counter');
+                        var counterValue = parseInt(counterElement.innerText);
+                        counterValue++;
+                        updateCounterDisplay(counterElement, counterValue);
+                    }
+
+                    function decreaseCounter(button) {
+                        var counterElement = button.parentElement.querySelector('.counter');
+                        var counterValue = parseInt(counterElement.innerText);
+                        if (counterValue > 1) {
+                            counterValue--;
+                            updateCounterDisplay(counterElement, counterValue);
+                        }
+                    }
+
+                    function updateTotalAmount() {
+                        var total = 0;
+                        var counters = document.querySelectorAll('.counter');
+                        var costs = document.querySelectorAll('#cost p');
+
+                        for (var i = 0; i < counters.length; i++) {
+                            var counterValue = parseInt(counters[i].innerText);
+                            var costValue = parseInt(costs[i].innerText.replace(/[^0-9.]/g, ''));
+
+                            total += counterValue * costValue;
+                        }
+
+                        // document.getElementById('totalAmount').innerText = total;
+
+                        document.getElementById('totalAmount').innerText = total + '원';
+                    }
+
+                    // document.addEventListener('DOMContentLoaded', function (){
+                    //     updateTotalAmount();
+                    // });
+                </script>
+
+
+                <div class="row">
+                    <div class="col-12">
+                        <!-- Total Amount -->
+                        <div class="total-amount">
+                            <div class="row">
+                                <div class="col-lg-8 col-md-6 col-12">
+                                    <!--                            <div class="left">-->
+                                    <!--                                <div class="coupon">-->
+                                    <!--                                    <form action="#" target="_blank">-->
+                                    <!--                                        <input name="Coupon" placeholder="Enter Your Coupon">-->
+                                    <!--                                        <div class="button">-->
+                                    <!--                                            <button class="btn">Apply Coupon</button>-->
+                                    <!--                                        </div>-->
+                                    <!--                                    </form>-->
+                                    <!--                                </div>-->
+                                    <!--                            </div>-->
+                                </div>
+                                <div class="col-lg-4 col-md-6 col-12">
+                                    <div class="right">
+                                        <ul>
+                                            <li class="last">총 주문금액
+                                                <span th:text="${totalAmount}" id="totalAmount"></span></li>
+                                        </ul>
+                                        <div class="button">
+                                            <a href="/cart/checkout" class="btn">주문</a>
+                                            <a href="/" class="btn btn-alt">계속 쇼핑하기</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/ End Total Amount -->
+                    </div>
+                </div>
             </div>
         </div>
+        <!--/ End Shopping Cart -->
+
     </div>
 
-    <script th:inline="javascript">
-        function updateCounterDisplay(element, value) {
-            element.innerText = value;
-            updateTotalAmount();
-        }
-
-        function increaseCounter(button) {
-            var counterElement = button.parentElement.querySelector('.counter');
-            var counterValue = parseInt(counterElement.innerText);
-            counterValue++;
-            updateCounterDisplay(counterElement, counterValue);
-        }
-
-        function decreaseCounter(button) {
-            var counterElement = button.parentElement.querySelector('.counter');
-            var counterValue = parseInt(counterElement.innerText);
-            if (counterValue > 1) {
-                counterValue--;
-                updateCounterDisplay(counterElement, counterValue);
-            }
-        }
-
-        function updateTotalAmount() {
-            var total = 0;
-            var counters = document.querySelectorAll('.counter');
-            var costs = document.querySelectorAll('#cost p');
-
-            for (var i = 0; i < counters.length; i++) {
-                var counterValue = parseInt(counters[i].innerText);
-                var costValue = parseInt(costs[i].innerText);
-
-                total += counterValue * costValue;
-            }
-
-            document.getElementById('totalAmount').innerText = total;
-        }
-
-        // window.onload = function () {
-        //     updateTotalAmount();
-        // };
-
-
-    </script>
-
-
-    <div class="container">
-        <div class="total-amount">
-            <div class="row">
-                <div class="col-lg-7 col-md-7 col-12"></div>
-                <div class="col-lg-2 col-md-2 col-12">
-                    <h4>Total Amount:</h4>
-                </div>
-                <div class="col-lg-2 col-md-2 col-12">
-                    <!-- 여기서 Thymeleaf를 사용하여 총 주문 금액을 표시 -->
-                    <p th:text="${totalAmount}" id="totalAmount"></p>
-                </div>
-                <div class="col-lg-1 col-md-1 col-12">
-                    <!-- 주문 버튼 -->
-                    <form action="/cart/checkout" method="get">
-                        <button type="submit" class="btn">주문</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        updateTotalAmount();
+    <script>        updateTotalAmount();
     </script>
 </div>
 
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/my-books-layout}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>        .quantity-input {
+        display: flex;
+        align-items: center;
+    }
+
+    .quantity-input .form-control.quantity {
+        width: 60px;
+        text-align: center;
+        margin: 0 5px;
+    }
+
+    .quantity-input button {
+        border: 1px solid #ddd;
+        background-color: #f5f5f5;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+
+    .quantity-input button:focus,
+    .quantity-input .form-control.quantity:focus {
+        outline: none;
+    }
+
+    </style>
+</head>
+<div layout:fragment="content">
+    <!-- Start Breadcrumbs -->
+    <div class="breadcrumbs">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="breadcrumbs-content">
+                        <h1 class="page-title">Cart</h1>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-12">
+                    <ul class="breadcrumb-nav">
+                        <li><a href="index.html"><i class="lni lni-home"></i> Home</a></li>
+                        <li><a href="index.html">Shop</a></li>
+                        <li>Cart</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="shopping-cart section">
+        <div class="container">
+            <div class="cart-list-head">
+                <div class="cart-list-title">
+                    <div class="row">
+
+                        <div class="col-lg-5 col-md-3 col-12">
+                            <p>Product Image</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-12">
+                            <p>Product Name</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-12">
+                            <p>Product saleCost</p>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-12">
+                            <p>Product Amount</p>
+                        </div>
+                        <div class="col-lg-1 col-md-2 col-12">
+                            <p>Remove</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="cart-single-list" th:each="cartDetail : ${cartDetailList}">
+                <div class="row align-items-center">
+                    <div class="col-lg-5 col-md-3 col-12">
+                        <img th:src="${cartDetail.bookImage}" alt="#">
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-12">
+                        <p th:text="${cartDetail.name}"></p>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-12" id="cost">
+                        <p th:text="${cartDetail.saleCost}"></p>
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-12">
+                        <button onclick="decreaseCounter(this)" class="minus-btn">Decrease</button>
+                        <p class="counter" data-amount="${cartDetail.cartDetailAmount}"
+                           th:text="${cartDetail.cartDetailAmount}">0</p>
+                        <button onclick="increaseCounter(this)" class="plus-btn">Increase</button>
+                    </div>
+                    <div class="col-lg-1 col-md-2 col-12">
+                        <a th:href="@{'/cart/delete?bookId=' + ${cartDetail.bookId}}" class="delete-link">삭제</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        function updateCounterDisplay(element, value) {
+            element.innerText = value;
+            updateTotalAmount();
+        }
+
+        function increaseCounter(button) {
+            var counterElement = button.parentElement.querySelector('.counter');
+            var counterValue = parseInt(counterElement.innerText);
+            counterValue++;
+            updateCounterDisplay(counterElement, counterValue);
+        }
+
+        function decreaseCounter(button) {
+            var counterElement = button.parentElement.querySelector('.counter');
+            var counterValue = parseInt(counterElement.innerText);
+            if (counterValue > 1) {
+                counterValue--;
+                updateCounterDisplay(counterElement, counterValue);
+            }
+        }
+
+        function updateTotalAmount() {
+            var total = 0;
+            var counters = document.querySelectorAll('.counter');
+            var costs = document.querySelectorAll('#cost p');
+
+            for (var i = 0; i < counters.length; i++) {
+                var counterValue = parseInt(counters[i].innerText);
+                var costValue = parseInt(costs[i].innerText);
+
+                total += counterValue * costValue;
+            }
+
+            document.getElementById('totalAmount').innerText = total;
+        }
+
+
+    </script>
+
+
+    <div class="container">
+        <div class="total-amount">
+            <div class="row">
+                <div class="col-lg-7 col-md-7 col-12"></div>
+                <div class="col-lg-2 col-md-2 col-12">
+                    <h4>Total Amount:</h4>
+                </div>
+                <div class="col-lg-2 col-md-2 col-12">
+                    <p th:text="${totalAmount}" id="totalAmount"></p>
+                </div>
+                <div class="col-lg-1 col-md-1 col-12">
+                    <!-- 주문 버튼 -->
+                    <form action="/cart/checkout" method="get">
+                        <button type="submit" class="btn">주문</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>        updateTotalAmount();
+    </script>
+</div>

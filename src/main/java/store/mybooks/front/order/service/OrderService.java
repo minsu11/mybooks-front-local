@@ -1,6 +1,7 @@
 package store.mybooks.front.order.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.admin.book.model.response.BookDetailResponse;
@@ -52,5 +53,12 @@ public class OrderService {
             totalCost += (cartDetail.getSaleCost() * cartDetail.getCartDetailAmount());
         }
         return totalCost;
+    }
+
+    public List<Integer> calculateBooksCost(List<CartDetail> cartDetailList) {
+        return cartDetailList.stream()
+                .map(cartDetail -> cartDetail.getSaleCost() * cartDetail.getCartDetailAmount())
+                .collect(Collectors.toList());
+
     }
 }

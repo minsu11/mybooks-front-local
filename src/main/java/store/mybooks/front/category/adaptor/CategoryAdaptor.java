@@ -3,6 +3,7 @@ package store.mybooks.front.category.adaptor;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -10,8 +11,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import store.mybooks.front.admin.book.model.response.BookBriefResponseIncludePublishDate;
+import store.mybooks.front.category.model.reesponse.CategoryGetResponseForCategoryView;
 import store.mybooks.front.category.model.reesponse.CategoryGetResponseForMainView;
 import store.mybooks.front.config.GatewayAdaptorProperties;
+import store.mybooks.front.pageable.dto.response.PageResponse;
 import store.mybooks.front.utils.Utils;
 
 /**
@@ -48,4 +52,37 @@ public class CategoryAdaptor {
 
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
+
+    public CategoryGetResponseForCategoryView getCategoriesForCategoryView(Integer categoryId) {
+        HttpHeaders headers = Utils.getHttpHeader();
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<CategoryGetResponseForCategoryView> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL + "/view/" + categoryId,
+                HttpMethod.GET,
+                requestEntity,
+                new ParameterizedTypeReference<>() {
+                }
+        );
+
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
+
+    public PageResponse<BookBriefResponseIncludePublishDate> getBooksForCategoryView(Integer categoryId,
+                                                                                     Pageable pageable) {
+        HttpHeaders headers = Utils.getHttpHeader();
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<PageResponse<BookBriefResponseIncludePublishDate>> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL + "/view/book/" + categoryId
+                        + "?page=" + pageable.getPageNumber() + "&size=" + pageable.getPageSize(),
+                HttpMethod.GET,
+                requestEntity,
+                new ParameterizedTypeReference<>() {
+                }
+        );
+
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
+
 }

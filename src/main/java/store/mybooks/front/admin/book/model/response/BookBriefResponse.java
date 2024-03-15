@@ -1,7 +1,9 @@
 package store.mybooks.front.admin.book.model.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import store.mybooks.front.image.dto.ImageResponse;
 
 /**
@@ -16,7 +18,9 @@ import store.mybooks.front.image.dto.ImageResponse;
  * 2/26/24        newjaehun       최초 생성<br/>
  */
 @Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class BookBriefResponse {
     private Long id;
 

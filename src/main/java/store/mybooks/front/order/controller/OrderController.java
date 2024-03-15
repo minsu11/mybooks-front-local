@@ -1,5 +1,6 @@
 package store.mybooks.front.order.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import store.mybooks.front.admin.wrap.dto.response.WrapResponse;
 import store.mybooks.front.admin.wrap.service.WrapService;
 import store.mybooks.front.cart.domain.CartDetail;
@@ -18,6 +20,7 @@ import store.mybooks.front.order.service.OrderService;
 import store.mybooks.front.user.adaptor.UserAdaptor;
 import store.mybooks.front.user.dto.response.UserGetResponse;
 import store.mybooks.front.user_address.adaptor.UserAddressAdaptor;
+import store.mybooks.front.user_address.request.UserAddressCreateRequest;
 import store.mybooks.front.user_address.response.UserAddressGetResponse;
 import store.mybooks.front.user_coupon.model.response.UserCouponGetResponseForOrder;
 import store.mybooks.front.user_coupon.service.UserCouponService;
@@ -91,6 +94,12 @@ public class OrderController {
         return "mini-address";
     }
 
+    @PostMapping("/cart/address/create")
+    public String createUserAddress(@ModelAttribute UserAddressCreateRequest userAddressCreateRequest) {
+        userAddressAdaptor.createUserAddress(userAddressCreateRequest);
+        return "redirect:/address";
+    }
+
     /**
      * methodName : viewCheckOutWrap<br>
      * author : minsu11<br>
@@ -124,8 +133,9 @@ public class OrderController {
                              @PathVariable(name = "bookId") Long bookId,
                              @PathVariable(name = "id") Long id) {
         log.info("coupon value: {}", bookId);
-        log.info("coupon id value :{}", id);
+
         List<UserCouponGetResponseForOrder> useCoupon = userCouponService.getUsableUserCoupon(bookId);
+        log.info("coupon id value :{}", useCoupon.toString());
         modelMap.put("couponList", useCoupon);
         modelMap.put("id", id);
         return "checkout-coupon";
@@ -144,12 +154,15 @@ public class OrderController {
     public String viewOrderPage(@ModelAttribute BookOrderDirectRequest request,
                                 ModelMap modelMap) {
         PointResponse pointResponse = userPointService.getPointsHeld();
+        LocalDate localDate = LocalDate.now();
         UserGetResponse user = userAdaptor.findUser();
         List<CartDetail> bookFromCart = cartUserService.getBookFromCart();
-
+        log.info("날짜: {}", localDate);
         modelMap.put("bookLists", bookFromCart);
         modelMap.put("totalCost", orderService.calculateTotalCost(bookFromCart));
         modelMap.put("point", pointResponse.getRemainingPoint());
+        modelMap.put("bookCostList", orderService.calculateBooksCost(bookFromCart));
+        modelMap.put("localDate", localDate);
         modelMap.put("user", user);
         modelMap.put("quantity", request.getQuantity());
         return "checkout";
