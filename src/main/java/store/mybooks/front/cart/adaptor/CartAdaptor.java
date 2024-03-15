@@ -2,6 +2,7 @@ package store.mybooks.front.cart.adaptor;
 
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.event.EventListener;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -10,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import store.mybooks.front.cart.LoginCartDataMoveEvent;
+import store.mybooks.front.cart.LogoutCartDataMoveEvent;
 import store.mybooks.front.cart.domain.CartUserRedisKeyNameRequest;
 import store.mybooks.front.cart.service.CartUserService;
 import store.mybooks.front.config.GatewayAdaptorProperties;
@@ -32,10 +35,11 @@ public class CartAdaptor {
     private final RestTemplate restTemplate;
     private final CartUserService cartUserService;
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
-
     private static final String URL_CART = "/api/carts";
 
-    public void moveDataRedisToMysql() {
+
+    @EventListener
+    public void moveDataRedisToMysql(LoginCartDataMoveEvent loginCartDataMoveEvent) {
         CartUserRedisKeyNameRequest cartUserRedisKeyNameRequest =
                 new CartUserRedisKeyNameRequest(cartUserService.cartKey());
 
@@ -51,7 +55,8 @@ public class CartAdaptor {
         }
     }
 
-    public void moveDataMysqlToRedis() {
+    @EventListener
+    public void moveDataMysqlToRedis(LogoutCartDataMoveEvent logoutCartDataMoveEvent) {
         CartUserRedisKeyNameRequest cartUserRedisKeyNameRequest =
                 new CartUserRedisKeyNameRequest(cartUserService.cartKey());
 
