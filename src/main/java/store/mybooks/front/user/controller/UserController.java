@@ -91,7 +91,7 @@ public class UserController {
 
     @GetMapping("/logout")
     public String logout() {
-        applicationEventPublisher.publishEvent(new LogoutCartDataMoveEvent(this));
+//        applicationEventPublisher.publishEvent(new LogoutCartDataMoveEvent(this));
         return "redirect:/";
     }
 
@@ -192,7 +192,7 @@ public class UserController {
 
             // 쿠키추가
             CookieUtils.addJwtCookie(response, tokenCreateResponse.getAccessToken());
-            applicationEventPublisher.publishEvent(new LoginCartDataMoveEvent(this));
+//            applicationEventPublisher.publishEvent(new LoginCartDataMoveEvent(this));
             return "redirect:/";
         }
 
