@@ -41,6 +41,6 @@ public class CategoryController {
         model.addAttribute("targetCategories", categoryGetResponseForCategoryView.getTargetCategories());
         model.addAttribute("books", categoryService.getBooksForCategoryView(categoryId, pageable));
 
-        return "/category-display";
+        return "category-display";
     }
 }
