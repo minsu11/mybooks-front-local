@@ -19,6 +19,7 @@ import store.mybooks.front.admin.category.model.response.CategoryIdAndName;
 @Getter
 @NoArgsConstructor
 public class CategoryGetResponseForCategoryView {
+    private String highestCategoryName;
     private String name;
     private List<CategoryIdAndName> levelTwoCategories;
     private List<CategoryIdAndName> targetCategories;
