@@ -79,6 +79,7 @@ public class CartNonUserService {
                         cartRegisterRequest.getQuantity(),
                         cartBook.getName(),
                         cartBook.getBookImage(),
+                        cartBook.getCost(),
                         cartBook.getSaleCost()));
             }
             String cartJson = objectMapper.writeValueAsString(cartDetailList);

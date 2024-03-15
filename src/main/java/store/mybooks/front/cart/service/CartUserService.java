@@ -76,7 +76,7 @@ public class CartUserService {
         if (!isAlreadyInCart) {
             BookCartResponse cartBook = bookAdminAdaptor.getCartBook(cartRegisterRequest.getId());
             CartDetail cartDetail =
-                    new CartDetail(cartBook.getId(), cartRegisterRequest.getQuantity(), cartBook.getName(), cartBook.getBookImage(),
+                    new CartDetail(cartBook.getId(), cartRegisterRequest.getQuantity(), cartBook.getName(), cartBook.getBookImage(), cartBook.getCost(),
                             cartBook.getSaleCost());
             cartDetailList.add(cartDetail);
             redisTemplate.opsForList().rightPush(cartKey, cartDetail);
