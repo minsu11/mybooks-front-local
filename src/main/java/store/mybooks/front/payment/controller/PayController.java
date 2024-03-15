@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -35,6 +36,7 @@ import store.mybooks.front.config.TossAppKey;
  * -----------------------------------------------------------<br>
  * 3/13/24        minsu11       최초 생성<br>
  */
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/pay")

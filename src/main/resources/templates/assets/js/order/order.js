@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function (event
     const point = document.querySelector('input[id="user-point"][type="number"]')
     const wrapCost = document.querySelector('input[id="wrap-cost"]')
     // const input = document.querySelectorAll(".select-wrap")
-    const payBtn = document.querySelector('.pay-btn')
     const date = document.getElementById('delivery-date-id');
     let data = 0;
 
@@ -44,17 +43,6 @@ document.addEventListener('DOMContentLoaded', function (event
             data = inputValue;
         }
     })
-    payBtn.addEventListener('submit', function () {
-        const form = document.getElementById('order-pay-form');
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', form.action)
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-
-            }
-        }
-    })
-
 
     date.addEventListener('change', function () {
         document.getElementById('delivery-date-label').textContent = date.value;
@@ -103,6 +91,7 @@ function wrap(button) {
 function updateTotalCost(total, num) {
     return total - num;
 }
+
 
 
 
