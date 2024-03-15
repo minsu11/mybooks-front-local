@@ -32,4 +32,8 @@ public class CartDetail {
         this.cartDetailAmount = this.cartDetailAmount + amount;
     }
 
+    public CartDetail saleUpdate(Integer amount) {
+        this.saleCost *= amount;
+        return this;
+    }
 }

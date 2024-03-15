@@ -23,7 +23,7 @@ public class UserCouponGetResponseForOrder {
     private Integer orderMin;
     private Integer discountRateOrCost;
     private Integer maxDiscountCost;
-    private boolean isRate;
+    private boolean rate;
     private LocalDate startDate;
     private LocalDate endDate;
 }

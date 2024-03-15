@@ -25,7 +25,6 @@
                 th:value="${id}"
                 onclick="sendWrap(this)">선택
         </button>
-        <input type="text" id="before-data">
     </div>
 </div>
 <script th:inline="javascript">
@@ -36,12 +35,9 @@
         const selectId = document.getElementById('wrap-btn').getAttribute('radio-id');
 
         const bookTotalCost = opener.document.getElementById('input-total-cost').value;
-        alert(bookTotalCost)
 
-        opener.document.querySelector(".select-wrap-name").value = wrapName
-        alert(opener.document.querySelector(".select-wrap-name").value)
+        opener.document.querySelectorAll('p[class="select-wrap-name"]')[button.value].textContent = wrapName.toString()
         opener.document.getElementsByClassName("select-wrap")[button.value].value = selectId
-        // 각 행에 before value가 있는지 확인
         if (!beforeWrapCost) {
             opener.document.getElementsByClassName('select-wrap-cost')[button.value].value = wrapCost;
         } else {
@@ -57,7 +53,6 @@
         }
         opener.document.getElementById('totalCost').textContent = (parseInt(bookTotalCost) + parseInt(opener.document.getElementById("wrap-cost").value) -
             parseInt(opener.document.getElementById('user-point').value)).toString()
-
         window.close()
     }
 </script>
