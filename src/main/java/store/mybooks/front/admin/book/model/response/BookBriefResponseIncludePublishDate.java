@@ -1,6 +1,5 @@
 package store.mybooks.front.admin.book.model.response;
 
-import java.time.LocalDate;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import store.mybooks.front.image.dto.ImageResponse;
@@ -30,6 +29,4 @@ public class BookBriefResponseIncludePublishDate {
     private Integer cost;
 
     private Integer saleCost;
-
-    private LocalDate publishDate;
 }
