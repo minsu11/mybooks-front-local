@@ -28,6 +28,16 @@ import store.mybooks.front.category.service.CategoryService;
 public class CategoryController {
     private final CategoryService categoryService;
 
+    /**
+     * methodName : getCategoryDisplayPage <br>
+     * author : damho-lee <br>
+     * description : 카테고리-도서 조회.<br>
+     *
+     * @param categoryId Integer
+     * @param pageable Pageable
+     * @param model Model
+     * @return string
+     */
     @GetMapping("/category-display/{categoryId}")
     public String getCategoryDisplayPage(@PathVariable("categoryId") Integer categoryId,
                                          @PageableDefault(size = 9) Pageable pageable,
@@ -41,6 +51,6 @@ public class CategoryController {
         model.addAttribute("targetCategories", categoryGetResponseForCategoryView.getTargetCategories());
         model.addAttribute("books", categoryService.getBooksForCategoryView(categoryId, pageable));
 
-        return "/category-display";
+        return "category-display";
     }
 }
