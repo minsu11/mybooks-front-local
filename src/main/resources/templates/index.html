@@ -233,7 +233,7 @@
                             <div class="button">
                                 <form action="/cart/add" method="post">
                                     <input type="hidden" name="id" th:value="${book.id}">
-                                    <input type="hidden" name="originalCost" th:value="${book.cost}">
+                                    <input type="hidden" name="cost" th:value="${book.cost}">
                                     <input type="hidden" name="saleCost" th:value="${book.saleCost}">
                                     <input type="hidden" name="quantity" value=1>
                                     <button type="submit" class="lni lni-cart btn">Add to Cart</button>

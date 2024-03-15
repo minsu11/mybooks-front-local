@@ -60,6 +60,7 @@ public class CartUtil {
 
             if (!isAlreadyCart) {
                 cartDetailList.add(new CartDetail(cartBook.getId(), amount, cartBook.getName(), cartBook.getBookImage(),
+                        cartBook.getCost(),
                         cartBook.getSaleCost()));
             }
             String cartJson = objectMapper.writeValueAsString(cartDetailList);

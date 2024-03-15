@@ -25,6 +25,7 @@ public class CartDetail {
     private int cartDetailAmount;
     private String name;
     private String bookImage;
+    private Integer cost;
     private Integer saleCost;
 
     public void amountUpdate(int amount) {

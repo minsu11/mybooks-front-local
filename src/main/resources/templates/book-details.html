@@ -121,7 +121,7 @@
                                         <div class="col-lg-4 col-md-4 col-12">
                                             <form action="/cart/add" method="post">
                                                 <input type="hidden" name="id" th:value="${book.id}">
-                                                <input type="hidden" name="originalCost"
+                                                <input type="hidden" name="cost"
                                                        th:value="${book.originalCost}">
                                                 <input type="hidden" name="saleCost" th:value="${book.saleCost}">
                                                 <input type="hidden" id="cartQuantity" name="quantity">
