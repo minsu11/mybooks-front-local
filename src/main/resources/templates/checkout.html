@@ -163,10 +163,9 @@
                                                         <td th:text="${book.cartDetailAmount}"></td>
 
                                                         <td>
-                                                            <div class="book-sale-cost"
-                                                                 th:each="bookCost:${bookCostList}">
+                                                            <div th:each="bookCost:${bookCostList}">
                                                                 <div th:if="${bookCost == book.saleCost}">
-                                                                    <p th:text="${bookCost}"></p>
+                                                                    <p class="book-sale-cost" th:text="${bookCost}"></p>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -186,7 +185,7 @@
                                                                    name="select-coupon-id"
                                                                    type="hidden">
                                                             <p class="select-coupon-name"></p>
-                                                            
+
                                                             <input class="select-coupon-cost"
                                                                    name="select-coupon-cost"
                                                                    type="hidden">
@@ -270,7 +269,7 @@
                                                     <div class="form-text">
                                                         <label>
                                                             <input id="coupon-cost" type="number"
-                                                                   class="form-control w-25"
+                                                                   class="form-control w-50"
                                                                    value="0" readonly>
                                                         </label>
                                                     </div>
