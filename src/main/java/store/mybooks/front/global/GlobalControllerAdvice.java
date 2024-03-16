@@ -61,13 +61,11 @@ public class GlobalControllerAdvice {
 
 
     @ExceptionHandler({OrderInfoNotMatchException.class})
-    // 400 404 이게 리소스에서 나오는 모든 예외
     public String handleOrderModulationException(Exception exception, HttpServletRequest request) {
 
         String previousUrl = request.getHeader(REFERER);
-        request.getSession().setAttribute("error", exception.getMessage());
+        request.getSession().setAttribute("errosr", exception.getMessage());
         return previousUrl.replace(domain, "redirect:");
     }
-
 
 }
