@@ -56,7 +56,7 @@
                                                     <div class="row">
                                                         <div class="col-md-6 form-input form">
                                                             <label>
-                                                                <input name="order.userId" type="text"
+                                                                <input name="orderInfo.userId" type="text"
                                                                        th:value="${user.name}"
                                                                        readonly>
                                                             </label>
@@ -68,7 +68,8 @@
                                                 <div class="single-form form-default">
                                                     <label>이메일</label>
                                                     <div class="col-md-6 form-input form">
-                                                        <input type="text" name="order.email" th:value="${user.email}"
+                                                        <input type="text" name="orderInfo.email"
+                                                               th:value="${user.email}"
                                                                readonly>
                                                     </div>
                                                 </div>
@@ -78,7 +79,7 @@
                                                     <label>휴대폰 번호</label>
                                                     <div class="col-md-6 form-input form">
                                                         <input type="text" th:value="${user.phoneNumber}"
-                                                               name="order.phoneNumber" readonly>
+                                                               name="orderInfo.phoneNumber" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -95,7 +96,7 @@
                                                     <label>이름</label>
                                                     <div class="row">
                                                         <div class="col-md-6 form-input form">
-                                                            <input name="order.recipientName" type="text"
+                                                            <input name="orderInfo.recipientName" type="text"
                                                                    placeholder="이름">
                                                         </div>
                                                     </div>
@@ -105,7 +106,7 @@
                                                 <div class="single-form form-default">
                                                     <label>휴대폰 번호</label>
                                                     <div class="form-input form">
-                                                        <input name="order.recipientPhoneNumber" type="text"
+                                                        <input name="orderInfo.recipientPhoneNumber" type="text"
                                                                placeholder="휴대폰 번호">
                                                     </div>
                                                 </div>
@@ -121,7 +122,8 @@
                                                             </button>
                                                         </label>
                                                         <div class="form-input form">
-                                                            <input id="delivery-address" name="order.recipientAddress"
+                                                            <input id="delivery-address"
+                                                                   name="orderInfo.recipientAddress"
                                                                    type="text"
                                                                    placeholder="배송지"
                                                                    readonly>
@@ -156,6 +158,13 @@
                                                         </thead>
                                                         <tbody th:each="book, index:${bookLists}">
                                                         <tr th:id="${index.index}" class="name">
+                                                            <input th:name="|bookInfoList[${index.index}].bookId|"
+                                                                   type="hidden"
+                                                                   th:value="${book.bookId}"/>
+                                                            <input th:name="|bookInfoList[${index.index}].saleCost|"
+                                                                   type="hidden"
+                                                                   th:value="${book.saleCost}"/>
+
                                                             <td>
                                                                 <label>
                                                                     <img th:src="${book.bookImage}" alt="#" width="50"
@@ -175,12 +184,14 @@
                                                                     <div th:if="${bookCost == book.saleCost}">
                                                                         <p class="book-sale-cost"
                                                                            th:text="${bookCost}"></p>
+                                                                        <input th:name="|bookInfoList[${index.index}].bookCost|"
+                                                                               th:value="${bookCost}">
                                                                     </div>
                                                                 </div>
                                                             </td>
                                                             <td class="form-input">
                                                                 <input class="select-wrap"
-                                                                       name="select-wrap-id"
+                                                                       th:name="|bookInfoList[${index.index}].selectWrapId|"
                                                                        type="hidden">
                                                                 <p class="select-wrap-name"></p>
 
@@ -191,7 +202,7 @@
 
                                                             <td class="form-input">
                                                                 <input class="select-coupon-id"
-                                                                       name="select-coupon-id"
+                                                                       th:name="|bookInfoList[${index.index}].seletCouponId]|"
                                                                        type="hidden">
                                                                 <p class="select-coupon-name"></p>
 
@@ -246,7 +257,8 @@
                                     <section class="form-control">
                                         <div>
                                             <label>
-                                                <input type="date" id="delivery-date-id" th:min="${localDate}">
+                                                <input type="date" id="delivery-date-id" th:min="${localDate}"
+                                                       name="orderInfo.deliveryDate">
                                                 <label for="delivery-date-id" id="delivery-date-label"></label>
                                             </label>
                                         </div>
@@ -264,14 +276,15 @@
                                                         <div class="form-text">
                                                             <span id="totalCost" th:text="${totalCost}"></span>
                                                             <input id="input-total-cost" th:value="${totalCost}"
-                                                                   type="hidden"/>
+                                                                   type="hidden" name="orderInfo.usingPoint"/>
                                                         </div>
                                                     </div>
                                                     <div class="single-form form-default">
                                                         <label>포장 비용</label>
                                                         <div class="form-text">
                                                             <input type="number" id="wrap-cost" value="0"
-                                                                   class="form-control w-25" readonly/>
+                                                                   class="form-control w-25" name="orderInfo.wrapCost"
+                                                                   readonly/>
                                                         </div>
                                                     </div>
                                                     <div class="single-form form-default">
@@ -280,6 +293,7 @@
                                                             <label>
                                                                 <input id="coupon-cost" type="number"
                                                                        class="form-control w-50"
+                                                                       name="orderInfo.couponApplicationAmount"
                                                                        value="0" readonly>
                                                             </label>
                                                         </div>

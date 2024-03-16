@@ -1,6 +1,5 @@
 package store.mybooks.front.order.dto.request;
 
-import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,7 +7,7 @@ import lombok.ToString;
 
 /**
  * packageName    : store.mybooks.front.order.dto.request<br>
- * fileName       : BookOrderRequest<br>
+ * fileName       : BookInfoRequest<br>
  * author         : minsu11<br>
  * date           : 3/16/24<br>
  * description    :
@@ -21,7 +20,11 @@ import lombok.ToString;
 @NoArgsConstructor
 @Setter
 @ToString
-public class BookOrderRequest {
-    private OrderInfoRequest orderInfo;
-    private List<BookInfoRequest> bookInfoList;
+public class BookInfoRequest {
+    private Long bookId;
+    private Integer saleCost;
+    private Integer bookCost;
+    private Integer selectWrapId;
+    private Integer selectCouponId;
+
 }

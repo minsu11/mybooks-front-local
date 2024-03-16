@@ -1,6 +1,9 @@
 package store.mybooks.front.order.dto.request;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * packageName    : store.mybooks.front.order.dto.request<br>
@@ -16,7 +19,6 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString
 public class OrderInfoRequest {
     private String userId;
@@ -25,5 +27,9 @@ public class OrderInfoRequest {
     private String recipientName;
     private String recipientPhoneNumber;
     private String recipientAddress;
+    private String deliveryDate;
+    private Integer usingPoint;
+    private Integer wrapCost;
+    private Integer couponApplicationAmount;
 
 }

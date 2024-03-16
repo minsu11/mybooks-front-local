@@ -18,6 +18,7 @@ import store.mybooks.front.cart.service.CartUserService;
 import store.mybooks.front.order.dto.request.BookOrderDirectRequest;
 import store.mybooks.front.order.dto.request.BookOrderRequest;
 import store.mybooks.front.order.service.OrderService;
+import store.mybooks.front.order.utils.OrderUtils;
 import store.mybooks.front.user.adaptor.UserAdaptor;
 import store.mybooks.front.user.dto.response.UserGetResponse;
 import store.mybooks.front.user_address.adaptor.UserAddressAdaptor;
@@ -172,6 +173,7 @@ public class OrderController {
     @PostMapping("/order")
     public String doOrder(@ModelAttribute BookOrderRequest orderRequest) {
         log.info("값이 들어가나? {}", orderRequest.toString());
+        log.info(OrderUtils.createOrderNumber());
         return "test";
     }
 }

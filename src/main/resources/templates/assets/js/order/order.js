@@ -9,7 +9,14 @@ document.addEventListener('DOMContentLoaded', function (event
     const wrapCost = document.querySelector('input[id="wrap-cost"]')
     // const input = document.querySelectorAll(".select-wrap")
     const date = document.getElementById('delivery-date-id');
+    const submitForm = document.getElementById('order-pay-form')
     let data = 0;
+
+    submitForm.addEventListener("keydown", function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault()
+        }
+    })
 
     radioInputs.forEach(function (input) {
         input.addEventListener('click', function () {
