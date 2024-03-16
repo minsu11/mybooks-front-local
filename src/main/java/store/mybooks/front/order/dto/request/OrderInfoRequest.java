@@ -21,9 +21,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class OrderInfoRequest {
-    private String userId;
-    private String email;
-    private String phoneNumber;
+
     private String recipientName;
     private String recipientPhoneNumber;
     private Long addressId;
