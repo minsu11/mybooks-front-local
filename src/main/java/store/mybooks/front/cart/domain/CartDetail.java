@@ -28,8 +28,12 @@ public class CartDetail {
     private Integer cost;
     private Integer saleCost;
 
-    public void amountUpdate(int amount) {
+    public void addAmount(int amount) {
         this.cartDetailAmount = this.cartDetailAmount + amount;
+    }
+
+    public void amountUpdate(int amount) {
+        this.cartDetailAmount = amount;
     }
 
     public CartDetail saleUpdate(Integer amount) {
