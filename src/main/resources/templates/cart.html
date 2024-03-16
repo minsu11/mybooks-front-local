@@ -81,7 +81,8 @@
                 </div>
                 <!-- End Cart List Title -->
                 <!-- Cart Single List list -->
-                <div th:each="cartDetail : ${cartDetailList}" class="cart-single-list">
+                <div th:each="cartDetail : ${cartDetailList}" class="cart-single-list"
+                     th:attr="data-book-id=${cartDetail.bookId}">
                     <div class="row align-items-center">
                         <div class="col-lg-1 col-md-1 col-12">
                             <a th:href="${cartDetail.bookImage}"><img th:src="${cartDetail.bookImage}" alt="#"></a>
@@ -104,8 +105,8 @@
                         <div class="col-lg-2 col-md-2 col-12 ">
                             <p th:text="${#numbers.formatInteger(cartDetail.cost, 3, 'COMMA')}"></p>
                         </div>
-                        <div class="col-lg-2 col-md-2 col-12 "  id="cost">
-                            <p th:text="${#numbers.formatInteger(cartDetail.saleCost, 3, 'COMMA')}" ></p>
+                        <div class="col-lg-2 col-md-2 col-12 " id="cost">
+                            <p th:text="${#numbers.formatInteger(cartDetail.saleCost, 3, 'COMMA')}"></p>
 
                         </div>
                         <div class="col-lg-1 col-md-2 col-12">
@@ -122,15 +123,15 @@
                     }
 
                     function increaseCounter(button) {
-                        var counterElement = button.parentElement.querySelector('.counter');
-                        var counterValue = parseInt(counterElement.innerText);
+                        let counterElement = button.parentElement.querySelector('.counter');
+                        let counterValue = parseInt(counterElement.innerText);
                         counterValue++;
                         updateCounterDisplay(counterElement, counterValue);
                     }
 
                     function decreaseCounter(button) {
-                        var counterElement = button.parentElement.querySelector('.counter');
-                        var counterValue = parseInt(counterElement.innerText);
+                        let counterElement = button.parentElement.querySelector('.counter');
+                        let counterValue = parseInt(counterElement.innerText);
                         if (counterValue > 1) {
                             counterValue--;
                             updateCounterDisplay(counterElement, counterValue);
@@ -138,13 +139,13 @@
                     }
 
                     function updateTotalAmount() {
-                        var total = 0;
-                        var counters = document.querySelectorAll('.counter');
-                        var costs = document.querySelectorAll('#cost p');
+                        let total = 0;
+                        let counters = document.querySelectorAll('.counter');
+                        let costs = document.querySelectorAll('#cost p');
 
-                        for (var i = 0; i < counters.length; i++) {
-                            var counterValue = parseInt(counters[i].innerText);
-                            var costValue = parseInt(costs[i].innerText.replace(/[^0-9.]/g, ''));
+                        for (let i = 0; i < counters.length; i++) {
+                            let counterValue = parseInt(counters[i].innerText);
+                            let costValue = parseInt(costs[i].innerText.replace(/[^0-9.]/g, ''));
 
                             total += counterValue * costValue;
                         }
@@ -154,9 +155,35 @@
                         document.getElementById('totalAmount').innerText = total + '원';
                     }
 
-                    // document.addEventListener('DOMContentLoaded', function (){
-                    //     updateTotalAmount();
-                    // });
+
+                    function orderItem() {
+                        let orderItems = [];
+                        let cartItems = document.querySelectorAll('.cart-single-list');
+
+                        cartItems.forEach(function (cartItem) {
+                            let bookId = cartItem.getAttribute('data-book-id');
+                            let amount = cartItem.querySelector('.counter').innerText;
+
+                            orderItems.push({
+                                bookId: bookId,
+                                amount: amount
+                            });
+                        });
+
+                        fetch('/cart/order', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(orderItems)
+                        })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('response not ok');
+                                }
+                                return response.json();
+                            })
+                    }
                 </script>
 
 
@@ -181,22 +208,21 @@
                                     <div class="right">
                                         <ul>
                                             <li class="last">총 주문금액
-                                                <span th:text="${totalAmount}" id="totalAmount"></span></li>
+                                                <span th:text="${totalAmount}" id="totalAmount"></span>
+                                            </li>
                                         </ul>
                                         <div class="button">
-                                            <a href="/cart/checkout" class="btn">주문</a>
+                                            <a href="/cart/checkout" class="btn" onclick="orderItem()">주문</a>
                                             <a href="/" class="btn btn-alt">계속 쇼핑하기</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!--/ End Total Amount -->
                     </div>
                 </div>
             </div>
         </div>
-        <!--/ End Shopping Cart -->
 
     </div>
 
