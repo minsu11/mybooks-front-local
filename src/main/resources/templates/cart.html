@@ -145,9 +145,6 @@
 
                         for (let i = 0; i < counters.length; i++) {
                             let counterValue = parseInt(counters[i].innerText);
-                            if (counterValue <= 0) {
-
-                            }
                             let costValue = parseInt(costs[i].innerText.replace(/[^0-9.]/g, ''));
 
                             total += counterValue * costValue;
@@ -158,76 +155,35 @@
                         document.getElementById('totalAmount').innerText = total + '원';
                     }
 
-                    async function orderAndRedirect() {
-                        try {
-
-                            if (await validateQuantity()) {
-                                await orderItem();
-
-                                window.location.href = "/cart/checkout";
-                            } else {
-                                throw new Error("주문 수량이 0 이하입니다");
-                            }
-
-                        } catch (error) {
-                            console.error("주문 처리중에 에러가 벌생했다 : ", error.name);
-                            alert("수량을 다시 설정 하세요");
-                            window.location.href = "/cart";
-                        }
-                    }
-
 
                     function orderItem() {
-                        return new Promise((resolve, reject) => {
-                            let orderItems = [];
-                            let cartItems = document.querySelectorAll('.cart-single-list');
+                        let orderItems = [];
+                        let cartItems = document.querySelectorAll('.cart-single-list');
 
-                            cartItems.forEach(function (cartItem) {
-                                let bookId = cartItem.getAttribute('data-book-id');
-                                let amount = cartItem.querySelector('.counter').innerText;
+                        cartItems.forEach(function (cartItem) {
+                            let bookId = cartItem.getAttribute('data-book-id');
+                            let amount = cartItem.querySelector('.counter').innerText;
 
-                                orderItems.push({
-                                    bookId: bookId,
-                                    amount: amount
-                                });
+                            orderItems.push({
+                                bookId: bookId,
+                                amount: amount
                             });
-
-                            fetch('/cart/update', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify(orderItems)
-                            })
-                                .then(response => {
-                                    if (!response.ok) {
-                                        throw new Error("수량을 업데이트 할때 에러가 발생했다");
-                                    }
-                                    resolve();
-                                })
-                                .catch(error => {
-                                    reject(error);
-                                });
                         });
-                    }
 
-                    async function validateQuantity() {
-                        return new Promise((resolve, reject) => {
-                            let isValid = true;
-                            let cartItems = document.querySelectorAll('.cart-single-list');
-
-                            cartItems.forEach(function (cartItem) {
-                                let quantity = parseInt(cartItem.querySelector('.counter').innerText);
-                                if (quantity <= 0) {
-                                    isValid = false;
-                                    return;
+                        fetch('/cart/order', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(orderItems)
+                        })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('response not ok');
                                 }
-                            });
-
-                            resolve(isValid);
-                        });
+                                return response.json();
+                            })
                     }
-
                 </script>
 
 
@@ -256,8 +212,7 @@
                                             </li>
                                         </ul>
                                         <div class="button">
-                                            <a href="javascript:void(0);" class="btn"
-                                               onclick="orderAndRedirect()">주문</a>
+                                            <a href="/cart/checkout" class="btn" onclick="orderItem()">주문</a>
                                             <a href="/" class="btn btn-alt">계속 쇼핑하기</a>
                                         </div>
                                     </div>
