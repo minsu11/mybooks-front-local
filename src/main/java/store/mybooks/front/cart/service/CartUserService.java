@@ -11,6 +11,7 @@ import store.mybooks.front.admin.book.model.response.BookCartResponse;
 import store.mybooks.front.cart.controller.CartController;
 import store.mybooks.front.cart.domain.CartDetail;
 import store.mybooks.front.cart.domain.CartRegisterRequest;
+import store.mybooks.front.cart.domain.OrderItemRequest;
 import store.mybooks.front.user.adaptor.UserAdaptor;
 import store.mybooks.front.user.dto.response.UserGetResponse;
 
@@ -66,7 +67,7 @@ public class CartUserService {
 
         for (CartDetail cartDetail : cartDetailList) {
             if (Objects.equals(cartRegisterRequest.getId(), cartDetail.getBookId())) {
-                cartDetail.amountUpdate(cartRegisterRequest.getQuantity());
+                cartDetail.addAmount(cartRegisterRequest.getQuantity());
                 isAlreadyInCart = true;
                 redisTemplate.opsForList().set(cartKey, cartDetailList.indexOf(cartDetail), cartDetail);
                 break;
@@ -76,7 +77,8 @@ public class CartUserService {
         if (!isAlreadyInCart) {
             BookCartResponse cartBook = bookAdminAdaptor.getCartBook(cartRegisterRequest.getId());
             CartDetail cartDetail =
-                    new CartDetail(cartBook.getId(), cartRegisterRequest.getQuantity(), cartBook.getName(), cartBook.getBookImage(), cartBook.getCost(),
+                    new CartDetail(cartBook.getId(), cartRegisterRequest.getQuantity(), cartBook.getName(),
+                            cartBook.getBookImage(), cartBook.getCost(),
                             cartBook.getSaleCost());
             cartDetailList.add(cartDetail);
             redisTemplate.opsForList().rightPush(cartKey, cartDetail);
@@ -100,6 +102,30 @@ public class CartUserService {
                 break;
             }
         }
+    }
+
+    public void orderBookInCart(List<OrderItemRequest> orderItemRequestList) {
+        List<CartDetail> bookFromCart = getBookFromCart();
+        if (Objects.isNull(bookFromCart) || bookFromCart.isEmpty()) {
+            return;
+        }
+
+        for (OrderItemRequest orderItemRequest : orderItemRequestList) {
+            bookFromCart.forEach(cartDetail -> {
+                if (Objects.equals(cartDetail.getBookId(), orderItemRequest.getBookId())) {
+                    cartDetail.amountUpdate(orderItemRequest.getAmount());
+                }
+            });
+        }
+        deleteAllBookFromCart();
+
+        String carKey = cartKey();
+        bookFromCart.forEach(cartDetail -> redisTemplate.opsForList().rightPush(carKey, cartDetail));
+    }
+
+    public void deleteAllBookFromCart() {
+        String cartKey = cartKey();
+        redisTemplate.delete(cartKey);
     }
 
     public String cartKey() {
