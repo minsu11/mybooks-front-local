@@ -111,11 +111,10 @@ public class CartController {
         return Objects.nonNull(CookieUtils.getIdentityCookieValue(request));
     }
 
-    @PostMapping("/cart/update")
-    public ResponseEntity<Void> cartAmountUpdate(
-            @CookieValue(name = CartUtil.CART_COOKIE, required = false) Cookie cartCookie,
-            HttpServletResponse response, HttpServletRequest request,
-            @RequestBody List<OrderItemRequest> orderItemRequest) {
+    @PostMapping("/cart/order")
+    public ResponseEntity<Void> cartOrder(@CookieValue(name = CartUtil.CART_COOKIE, required = false) Cookie cartCookie,
+                                    HttpServletResponse response, HttpServletRequest request,
+                                    @RequestBody List<OrderItemRequest> orderItemRequest) {
         if (isUser(request)) {
             cartUserService.orderBookInCart(orderItemRequest);
         } else {
