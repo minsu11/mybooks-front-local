@@ -1,6 +1,7 @@
 package store.mybooks.front.order.service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -89,7 +90,7 @@ public class OrderService {
     }
 
     public void checkOrderInfo(OrderInfoRequest orderInfoRequest) {
-        UserGetResponse user = userAdaptor.findUser();
+        UserGetResponse user = checkUser(orderInfoRequest.getEmail());
         UserAddressGetResponse userAddress = checkAddress(orderInfoRequest.getAddressId());
         PointResponse pointResponse = userPointAdaptor.getPointsHeld();
 
@@ -100,11 +101,20 @@ public class OrderService {
         List<UserAddressGetResponse> userAddressGetResponses = userAddressAdaptor.findAllUserAddress();
 
         for (UserAddressGetResponse address : userAddressGetResponses) {
-            if (address.getId() == addressId) {
+            if (Objects.equals(address.getId(), addressId)) {
                 return address;
             }
         }
         throw new OrderModulationException();
     }
+
+    public UserGetResponse checkUser(String email) {
+        UserGetResponse user = userAdaptor.findUser();
+        if (Objects.equals(user.getEmail(), email)) {
+            return user;
+        }
+        throw new OrderModulationException();
+    }
+
 
 }
