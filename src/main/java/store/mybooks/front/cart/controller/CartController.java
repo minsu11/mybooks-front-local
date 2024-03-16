@@ -111,7 +111,7 @@ public class CartController {
         return Objects.nonNull(CookieUtils.getIdentityCookieValue(request));
     }
 
-    @PostMapping("/cart/order")
+    @PostMapping("/cart/update")
     public ResponseEntity<Void> cartOrder(@CookieValue(name = CartUtil.CART_COOKIE, required = false) Cookie cartCookie,
                                     HttpServletResponse response, HttpServletRequest request,
                                     @RequestBody List<OrderItemRequest> orderItemRequest) {
