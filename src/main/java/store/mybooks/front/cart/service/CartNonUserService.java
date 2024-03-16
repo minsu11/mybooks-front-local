@@ -19,6 +19,7 @@ import store.mybooks.front.admin.book.model.response.BookCartResponse;
 import store.mybooks.front.cart.controller.CartController;
 import store.mybooks.front.cart.domain.CartDetail;
 import store.mybooks.front.cart.domain.CartRegisterRequest;
+import store.mybooks.front.cart.domain.OrderItemRequest;
 import store.mybooks.front.cart.exception.CookieParseException;
 
 /**
@@ -67,7 +68,7 @@ public class CartNonUserService {
             boolean isAlreadyCart = false;
             for (CartDetail cartDetail : cartDetailList) {
                 if (Objects.equals(cartBook.getId(), cartDetail.getBookId())) {
-                    cartDetail.amountUpdate(cartRegisterRequest.getQuantity());
+                    cartDetail.addAmount(cartRegisterRequest.getQuantity());
                     isAlreadyCart = true;
                     break;
                 }
@@ -90,6 +91,38 @@ public class CartNonUserService {
             throw new CookieParseException(e.getMessage());
         }
     }
+
+
+    /**
+     * Order book in cart.
+     *
+     * @param cartCookie           the cart cookie
+     * @param response             the response
+     * @param orderItemRequestList the order item request list
+     */
+    public void orderBookInCart(Cookie cartCookie, HttpServletResponse response,
+                                List<OrderItemRequest> orderItemRequestList) {
+        if (Objects.isNull(cartCookie)) {
+            return;
+        }
+        try {
+            List<CartDetail> cartDetailList = new ArrayList<>(viewCart(cartCookie));
+            for (OrderItemRequest orderItemRequest : orderItemRequestList) {
+                cartDetailList.forEach(cartDetail -> {
+                    if (Objects.equals(cartDetail.getBookId(), orderItemRequest.getBookId())) {
+                        cartDetail.amountUpdate(orderItemRequest.getAmount());
+                    }
+                });
+            }
+            String cartJson = objectMapper.writeValueAsString(cartDetailList);
+            String encode = URLEncoder.encode(cartJson, StandardCharsets.UTF_8);
+            Cookie saveCookie = new Cookie(CartController.CART_COOKIE_VALUE, encode);
+            response.addCookie(saveCookie);
+        } catch (JsonProcessingException e) {
+            throw new CookieParseException(e.getMessage());
+        }
+    }
+
 
     /**
      * Delete book from cart.
@@ -129,4 +162,6 @@ public class CartNonUserService {
 
         return cartDetailList;
     }
+
+
 }
