@@ -5,9 +5,22 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.admin.book.model.response.BookDetailResponse;
+import store.mybooks.front.admin.wrap.adaptor.WrapAdaptor;
 import store.mybooks.front.book.adaptor.BookAdaptor;
 import store.mybooks.front.cart.domain.CartDetail;
+import store.mybooks.front.order.adaptor.OrderAdaptor;
+import store.mybooks.front.order.dto.request.BookInfoRequest;
 import store.mybooks.front.order.dto.request.BookOrderDirectRequest;
+import store.mybooks.front.order.dto.request.BookOrderRequest;
+import store.mybooks.front.order.dto.request.OrderInfoRequest;
+import store.mybooks.front.order.exception.OrderModulationException;
+import store.mybooks.front.user.adaptor.UserAdaptor;
+import store.mybooks.front.user.dto.response.UserGetResponse;
+import store.mybooks.front.user_address.adaptor.UserAddressAdaptor;
+import store.mybooks.front.user_address.response.UserAddressGetResponse;
+import store.mybooks.front.user_coupon.adaptor.UserCouponAdaptor;
+import store.mybooks.front.userpoint.adaptor.UserPointAdaptor;
+import store.mybooks.front.userpoint.dto.response.PointResponse;
 
 /**
  * packageName    : store.mybooks.front.order.service<br>
@@ -24,6 +37,12 @@ import store.mybooks.front.order.dto.request.BookOrderDirectRequest;
 @RequiredArgsConstructor
 public class OrderService {
     private final BookAdaptor bookAdaptor;
+    private final OrderAdaptor orderAdapter;
+    private final UserAddressAdaptor userAddressAdaptor;
+    private final UserAdaptor userAdaptor;
+    private final WrapAdaptor wrapAdaptor;
+    private final UserCouponAdaptor userCouponAdaptor;
+    private final UserPointAdaptor userPointAdaptor;
 
     /**
      * methodName : getBook<br>
@@ -60,6 +79,32 @@ public class OrderService {
                 .map(cartDetail -> cartDetail.getSaleCost() * cartDetail.getCartDetailAmount())
                 .collect(Collectors.toList());
 
+    }
+
+    public void checkModulation(BookOrderRequest bookOrderRequest) {
+        OrderInfoRequest orderInfoRequest = bookOrderRequest.getOrderInfo();
+        List<BookInfoRequest> bookInfoRequest = bookOrderRequest.getBookInfoList();
+
+
+    }
+
+    public void checkOrderInfo(OrderInfoRequest orderInfoRequest) {
+        UserGetResponse user = userAdaptor.findUser();
+        UserAddressGetResponse userAddress = checkAddress(orderInfoRequest.getAddressId());
+        PointResponse pointResponse = userPointAdaptor.getPointsHeld();
+
+
+    }
+
+    public UserAddressGetResponse checkAddress(Long addressId) {
+        List<UserAddressGetResponse> userAddressGetResponses = userAddressAdaptor.findAllUserAddress();
+
+        for (UserAddressGetResponse address : userAddressGetResponses) {
+            if (address.getId() == addressId) {
+                return address;
+            }
+        }
+        throw new OrderModulationException();
     }
 
 }

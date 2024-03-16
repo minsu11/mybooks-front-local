@@ -278,7 +278,7 @@
         const addressElement = document.getElementById(addressId).parentElement.parentElement.firstElementChild;
         const addressRoadName = addressElement.nextElementSibling.innerHTML;
         const addressDetail = addressElement.nextElementSibling.nextElementSibling.innerHTML;
-
+        opener.document.getElementById("delivery-address-id").value = addressId.replace("select-", "")
         opener.document.getElementById("delivery-address").value = addressRoadName + addressDetail;
         window.close()
     }

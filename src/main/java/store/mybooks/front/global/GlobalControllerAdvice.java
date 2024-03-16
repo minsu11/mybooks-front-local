@@ -4,11 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
-import store.mybooks.front.auth.exception.AccessIdForbiddenException;
-import store.mybooks.front.auth.exception.AuthenticationIsNotValidException;
-import store.mybooks.front.auth.exception.StatusIsDormancyException;
-import store.mybooks.front.auth.exception.StatusIsLockException;
-import store.mybooks.front.auth.exception.TokenExpiredException;
+import store.mybooks.front.auth.exception.*;
+import store.mybooks.front.order.exception.OrderModulationException;
 
 /**
  * packageName    : store.mybooks.front.global
@@ -60,6 +57,16 @@ public class GlobalControllerAdvice {
 
         // 권한없는 경우 index
         return "redirect:/";
+    }
+
+
+    @ExceptionHandler({OrderModulationException.class})
+    // 400 404 이게 리소스에서 나오는 모든 예외
+    public String handleOrderModulationException(Exception exception, HttpServletRequest request) {
+
+        String previousUrl = request.getHeader(REFERER);
+        request.getSession().setAttribute("error", exception.getMessage());
+        return previousUrl.replace(domain, "redirect:");
     }
 
 
