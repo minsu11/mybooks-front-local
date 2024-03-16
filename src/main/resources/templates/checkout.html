@@ -179,8 +179,13 @@
                                                             </td>
                                                             <td></td>
                                                             <!--                                                        <td th:text="${book.originalCost}"></td>-->
-                                                            <td th:text="${book.saleCost}"></td>
-                                                            <td th:text="${book.cartDetailAmount}"></td>
+                                                            <td th:text="${book.saleCost}">
+                                                            </td>
+                                                            <td th:text="${book.cartDetailAmount}">
+                                                                <input th:name="|bookInfoList${index.index}.amount|"
+                                                                       th:value="${book.cartDetailAmount}"
+                                                                       type="hidden">
+                                                            </td>
 
                                                             <td>
                                                                 <div th:each="bookCost:${bookCostList}">
