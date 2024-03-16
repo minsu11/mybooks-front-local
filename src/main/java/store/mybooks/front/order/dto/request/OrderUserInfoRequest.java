@@ -1,14 +1,12 @@
 package store.mybooks.front.order.dto.request;
 
-import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 /**
  * packageName    : store.mybooks.front.order.dto.request<br>
- * fileName       : BookOrderRequest<br>
+ * fileName       : OrderUserInfoRequest<br>
  * author         : minsu11<br>
  * date           : 3/16/24<br>
  * description    :
@@ -18,11 +16,10 @@ import lombok.ToString;
  * 3/16/24        minsu11       최초 생성<br>
  */
 @Getter
-@NoArgsConstructor
 @Setter
-@ToString
-public class BookOrderRequest {
-    private OrderInfoRequest orderInfo;
-    private List<BookInfoRequest> bookInfoList;
-    private OrderUserInfoRequest userInfo;
+@NoArgsConstructor
+public class OrderUserInfoRequest {
+    private String userName;
+    private String email;
+    private String phoneNumber;
 }
