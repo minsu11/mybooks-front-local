@@ -14,7 +14,7 @@ import store.mybooks.front.order.dto.request.BookInfoRequest;
 import store.mybooks.front.order.dto.request.BookOrderDirectRequest;
 import store.mybooks.front.order.dto.request.BookOrderRequest;
 import store.mybooks.front.order.dto.request.OrderInfoRequest;
-import store.mybooks.front.order.exception.OrderModulationException;
+import store.mybooks.front.order.exception.OrderInfoNotMatchException;
 import store.mybooks.front.user.adaptor.UserAdaptor;
 import store.mybooks.front.user.dto.response.UserGetResponse;
 import store.mybooks.front.user_address.adaptor.UserAddressAdaptor;
@@ -92,7 +92,7 @@ public class OrderService {
     public void checkOrderInfo(OrderInfoRequest orderInfoRequest) {
         UserGetResponse user = checkUser(orderInfoRequest.getEmail());
         UserAddressGetResponse userAddress = checkAddress(orderInfoRequest.getAddressId());
-        PointResponse pointResponse = userPointAdaptor.getPointsHeld();
+        Integer point = checkPoint(orderInfoRequest.getUsingPoint());
 
 
     }
@@ -105,7 +105,7 @@ public class OrderService {
                 return address;
             }
         }
-        throw new OrderModulationException();
+        throw new OrderInfoNotMatchException("회원 주소 정보 변조");
     }
 
     public UserGetResponse checkUser(String email) {
@@ -113,8 +113,15 @@ public class OrderService {
         if (Objects.equals(user.getEmail(), email)) {
             return user;
         }
-        throw new OrderModulationException();
+        throw new OrderInfoNotMatchException("회원 정보 변조");
     }
 
-
+    public Integer checkPoint(Integer usingPoint) {
+        PointResponse pointsHeld = userPointAdaptor.getPointsHeld();
+        if (usingPoint < 0 || pointsHeld.getRemainingPoint() < usingPoint) {
+            throw new OrderInfoNotMatchException("포인트 정보");
+        }
+        return usingPoint;
+    }
+    public
 }

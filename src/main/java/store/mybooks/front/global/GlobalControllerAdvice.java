@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
 import store.mybooks.front.auth.exception.*;
-import store.mybooks.front.order.exception.OrderModulationException;
+import store.mybooks.front.order.exception.OrderInfoNotMatchException;
 
 /**
  * packageName    : store.mybooks.front.global
@@ -60,7 +60,7 @@ public class GlobalControllerAdvice {
     }
 
 
-    @ExceptionHandler({OrderModulationException.class})
+    @ExceptionHandler({OrderInfoNotMatchException.class})
     // 400 404 이게 리소스에서 나오는 모든 예외
     public String handleOrderModulationException(Exception exception, HttpServletRequest request) {
 
