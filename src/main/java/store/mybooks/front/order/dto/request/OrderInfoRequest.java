@@ -27,8 +27,10 @@ public class OrderInfoRequest {
     private Long addressId;
     private String recipientAddress;
     private String deliveryDate;
+    private String receiverMessage;
     private Integer usingPoint;
     private Integer wrapCost;
     private Integer couponApplicationAmount;
+
 
 }

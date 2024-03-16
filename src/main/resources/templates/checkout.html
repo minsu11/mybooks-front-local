@@ -262,13 +262,21 @@
                                     </section>
                                 </li>
                                 <li>
-                                    <h5>배송 날짜</h5>
+                                    <h5>배송</h5>
                                     <section class="form-control">
                                         <div>
+                                            <h6> 배송 날짜</h6>
                                             <label>
                                                 <input type="date" id="delivery-date-id" th:min="${localDate}"
                                                        name="orderInfo.deliveryDate">
                                                 <label for="delivery-date-id" id="delivery-date-label"></label>
+                                            </label>
+                                        </div>
+                                        <div class="md-form amber-textarea active-amber-textarea">
+                                            <h6>배송 시 요청 사항</h6>
+                                            <label class="form-label">
+                                                <textarea id="receiver-message" class="form-control" rows="3"
+                                                          name="orderInfo.receiverMessage"></textarea>
                                             </label>
                                         </div>
                                     </section>
