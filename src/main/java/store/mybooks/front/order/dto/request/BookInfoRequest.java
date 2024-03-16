@@ -25,6 +25,6 @@ public class BookInfoRequest {
     private Integer saleCost;
     private Integer bookCost;
     private Integer selectWrapId;
-    private Integer selectCouponId;
+    private Long selectCouponId;
 
 }

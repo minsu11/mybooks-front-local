@@ -12,9 +12,7 @@ import store.mybooks.front.order.dto.request.BookInfoRequest;
 import store.mybooks.front.order.dto.request.BookOrderRequest;
 import store.mybooks.front.order.dto.request.OrderInfoRequest;
 import store.mybooks.front.order.exception.OrderInfoNotMatchException;
-import store.mybooks.front.user.adaptor.UserAdaptor;
 import store.mybooks.front.user_address.adaptor.UserAddressAdaptor;
-import store.mybooks.front.user_address.response.UserAddressGetResponse;
 import store.mybooks.front.user_coupon.adaptor.UserCouponAdaptor;
 import store.mybooks.front.user_coupon.model.response.UserCouponGetResponseForOrder;
 import store.mybooks.front.userpoint.adaptor.UserPointAdaptor;
@@ -37,7 +35,6 @@ public class OrderInfoCheckService {
     private final BookAdaptor bookAdaptor;
     private final OrderAdaptor orderAdapter;
     private final UserAddressAdaptor userAddressAdaptor;
-    private final UserAdaptor userAdaptor;
     private final WrapAdaptor wrapAdaptor;
     private final UserCouponAdaptor userCouponAdaptor;
     private final UserPointAdaptor userPointAdaptor;
@@ -52,6 +49,7 @@ public class OrderInfoCheckService {
 
     }
 
+    //todo 수량 체크하는 부분 추가해야함
     public void checkBookInfo(List<BookInfoRequest> bookInfos, List<CartDetail> cartInfos) {
         if (bookInfos.size() == cartInfos.size()) {
             throw new OrderInfoNotMatchException("장바구니에 담긴 물품의 갯수가 다름");
@@ -80,7 +78,6 @@ public class OrderInfoCheckService {
                 }
             }
         }
-
     }
 
     public void checkBookCoupon(BookInfoRequest bookInfo) {
@@ -96,27 +93,15 @@ public class OrderInfoCheckService {
         }
     }
 
-
     public void checkOrderInfo(OrderInfoRequest orderInfoRequest) {
         orderAdapter.checkOrderUserAddressInfo(orderInfoRequest.getAddressId());
         checkPoint(orderInfoRequest.getUsingPoint());
     }
 
-    public UserAddressGetResponse checkAddress(Long addressId) {
-        List<UserAddressGetResponse> userAddressGetResponses = userAddressAdaptor.findAllUserAddress();
-
-        for (UserAddressGetResponse address : userAddressGetResponses) {
-            if (Objects.equals(address.getId(), addressId)) {
-                return address;
-            }
-        }
-        throw new OrderInfoNotMatchException("회원 주소 정보 변조");
-    }
-
     public Integer checkPoint(Integer usingPoint) {
         PointResponse pointsHeld = userPointAdaptor.getPointsHeld();
         if (usingPoint < 0 || pointsHeld.getRemainingPoint() < usingPoint) {
-            throw new OrderInfoNotMatchException("포인트 정보");
+            throw new OrderInfoNotMatchException("포인트 정보가 다름");
         }
         return usingPoint;
     }

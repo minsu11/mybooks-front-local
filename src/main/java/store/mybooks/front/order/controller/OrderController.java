@@ -17,6 +17,7 @@ import store.mybooks.front.cart.service.CartNonUserService;
 import store.mybooks.front.cart.service.CartUserService;
 import store.mybooks.front.order.dto.request.BookOrderDirectRequest;
 import store.mybooks.front.order.dto.request.BookOrderRequest;
+import store.mybooks.front.order.service.OrderInfoCheckService;
 import store.mybooks.front.order.service.OrderService;
 import store.mybooks.front.user.adaptor.UserAdaptor;
 import store.mybooks.front.user.dto.response.UserGetResponse;
@@ -52,6 +53,7 @@ public class OrderController {
     private final UserCouponService userCouponService;
     private final CartNonUserService cartNonUserService;
     private final CartUserService cartUserService;
+    private final OrderInfoCheckService orderInfoCheckService;
 
     /**
      * methodName : viewOrderPage<br>
@@ -171,7 +173,8 @@ public class OrderController {
 
     @PostMapping("/order")
     public String doOrder(@ModelAttribute BookOrderRequest orderRequest) {
-        orderService.checkModulation(orderRequest);
+        List<CartDetail> cart = cartUserService.getBookFromCart();
+        orderInfoCheckService.checkModulation(orderRequest, cart);
         log.info("값 : {}", orderRequest.toString());
         return "test";
     }

@@ -34,6 +34,17 @@ public class WrapAdaptor {
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
     private static final String URL = "/api/wraps";
 
+    public WrapResponse getWrap(Integer id) {
+        String url = gatewayAdaptorProperties.getAddress() + URL + "/{id}";
+        ResponseEntity<WrapResponse> exchange = restTemplate.exchange(url,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<WrapResponse>() {
+                }, id);
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
+
+
     /**
      * methodName : getWrap<br>
      * author : minsu11<br>

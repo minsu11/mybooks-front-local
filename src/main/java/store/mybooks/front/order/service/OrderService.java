@@ -1,7 +1,6 @@
 package store.mybooks.front.order.service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,18 +9,11 @@ import store.mybooks.front.admin.wrap.adaptor.WrapAdaptor;
 import store.mybooks.front.book.adaptor.BookAdaptor;
 import store.mybooks.front.cart.domain.CartDetail;
 import store.mybooks.front.order.adaptor.OrderAdaptor;
-import store.mybooks.front.order.dto.request.BookInfoRequest;
 import store.mybooks.front.order.dto.request.BookOrderDirectRequest;
-import store.mybooks.front.order.dto.request.BookOrderRequest;
-import store.mybooks.front.order.dto.request.OrderInfoRequest;
-import store.mybooks.front.order.exception.OrderInfoNotMatchException;
 import store.mybooks.front.user.adaptor.UserAdaptor;
-import store.mybooks.front.user.dto.response.UserGetResponse;
 import store.mybooks.front.user_address.adaptor.UserAddressAdaptor;
-import store.mybooks.front.user_address.response.UserAddressGetResponse;
 import store.mybooks.front.user_coupon.adaptor.UserCouponAdaptor;
 import store.mybooks.front.userpoint.adaptor.UserPointAdaptor;
-import store.mybooks.front.userpoint.dto.response.PointResponse;
 
 /**
  * packageName    : store.mybooks.front.order.service<br>
@@ -81,47 +73,4 @@ public class OrderService {
                 .collect(Collectors.toList());
 
     }
-
-    public void checkModulation(BookOrderRequest bookOrderRequest) {
-        OrderInfoRequest orderInfoRequest = bookOrderRequest.getOrderInfo();
-        List<BookInfoRequest> bookInfoRequest = bookOrderRequest.getBookInfoList();
-
-
-    }
-
-    public void checkOrderInfo(OrderInfoRequest orderInfoRequest) {
-        UserGetResponse user = checkUser(orderInfoRequest.getEmail());
-        UserAddressGetResponse userAddress = checkAddress(orderInfoRequest.getAddressId());
-        Integer point = checkPoint(orderInfoRequest.getUsingPoint());
-
-
-    }
-
-    public UserAddressGetResponse checkAddress(Long addressId) {
-        List<UserAddressGetResponse> userAddressGetResponses = userAddressAdaptor.findAllUserAddress();
-
-        for (UserAddressGetResponse address : userAddressGetResponses) {
-            if (Objects.equals(address.getId(), addressId)) {
-                return address;
-            }
-        }
-        throw new OrderInfoNotMatchException("회원 주소 정보 변조");
-    }
-
-    public UserGetResponse checkUser(String email) {
-        UserGetResponse user = userAdaptor.findUser();
-        if (Objects.equals(user.getEmail(), email)) {
-            return user;
-        }
-        throw new OrderInfoNotMatchException("회원 정보 변조");
-    }
-
-    public Integer checkPoint(Integer usingPoint) {
-        PointResponse pointsHeld = userPointAdaptor.getPointsHeld();
-        if (usingPoint < 0 || pointsHeld.getRemainingPoint() < usingPoint) {
-            throw new OrderInfoNotMatchException("포인트 정보");
-        }
-        return usingPoint;
-    }
-    public
 }
