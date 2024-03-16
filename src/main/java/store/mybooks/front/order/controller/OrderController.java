@@ -83,7 +83,7 @@ public class OrderController {
      * methodName : viewCheckAddress<br>
      * author : minsu11<br>
      * description : 회원의 주소 목록만 나오는 view.
-     * <br> *
+     * <br>
      *
      * @param modelMap model
      * @return string

@@ -40,6 +40,15 @@ public class OrderInfoCheckService {
     private final UserPointAdaptor userPointAdaptor;
 
 
+    /**
+     * methodName : checkModulation<br>
+     * author : minsu11<br>
+     * description : {@Code html}에서 변조 데이터 들어왔는지 검사.
+     * <br>
+     *
+     * @param bookOrderRequest the book order request
+     * @param cartInfo         the cart info
+     */
     public void checkModulation(BookOrderRequest bookOrderRequest, List<CartDetail> cartInfo) {
         OrderInfoRequest orderInfoRequest = bookOrderRequest.getOrderInfo();
         List<BookInfoRequest> bookInfoRequest = bookOrderRequest.getBookInfoList();
@@ -49,7 +58,16 @@ public class OrderInfoCheckService {
 
     }
 
-    //todo 수량 체크하는 부분 추가해야함
+    /**
+     * methodName : checkBookInfo<br>
+     * author : minsu11<br>
+     * description : 장바구니에 담긴 정보랑 주문할 도서 정보가 같은지 확인.
+     * <br> *
+     *
+     * @param bookInfos 주문할 도서 정보
+     * @param cartInfos 장바구니 정보
+     */
+//todo 수량 체크하는 부분 추가해야함
     public void checkBookInfo(List<BookInfoRequest> bookInfos, List<CartDetail> cartInfos) {
         if (bookInfos.size() == cartInfos.size()) {
             throw new OrderInfoNotMatchException("장바구니에 담긴 물품의 갯수가 다름");
@@ -57,8 +75,11 @@ public class OrderInfoCheckService {
         for (int i = 0; i < bookInfos.size(); i++) {
             BookInfoRequest bookInfo = bookInfos.get(i);
             CartDetail cartInfo = cartInfos.get(i);
-            if (!bookInfo.getBookId().equals(cartInfo.getBookId())
-                    || !bookInfo.getSaleCost().equals(cartInfo.getSaleCost())) {
+            if (
+                    !bookInfo.getBookId().equals(cartInfo.getBookId())
+                            || !bookInfo.getSaleCost().equals(cartInfo.getSaleCost())
+                            || !Objects.equals(bookInfo.getAmount(), cartInfo.getCartDetailAmount())
+            ) {
                 throw new OrderInfoNotMatchException("도서의 정보가 다름");
             }
             if (Objects.nonNull(bookInfo.getSelectWrapId())) {
@@ -70,6 +91,14 @@ public class OrderInfoCheckService {
         }
     }
 
+    /**
+     * methodName : checkDuplicateCoupon<br>
+     * author : minsu11<br>
+     * description : 같은 쿠폰이 있는지 확인.
+     * <br> *
+     *
+     * @param bookInfos the book infos
+     */
     public void checkDuplicateCoupon(List<BookInfoRequest> bookInfos) {
         for (int i = 0; i < bookInfos.size(); i++) {
             for (int j = i + 1; j < bookInfos.size(); j++) {
@@ -80,6 +109,14 @@ public class OrderInfoCheckService {
         }
     }
 
+    /**
+     * methodName : checkBookCoupon<br>
+     * author : minsu11<br>
+     * description : 책에 적용된 쿠폰 검사. 본인이 소유한 쿠폰이 아니면 {@cod throw}를 던짐.
+     * <br> *
+     *
+     * @param bookInfo 도서관련 DTO
+     */
     public void checkBookCoupon(BookInfoRequest bookInfo) {
         boolean isCheck = false;
         List<UserCouponGetResponseForOrder> couponList = userCouponAdaptor.getUsableUserCoupon(bookInfo.getBookId());
@@ -93,16 +130,32 @@ public class OrderInfoCheckService {
         }
     }
 
+    /**
+     * methodName : checkOrderInfo<br>
+     * author : minsu11<br>
+     * description : 회원의 주문 정보를 검사하는 메서드.
+     * <br> *
+     *
+     * @param orderInfoRequest 주문 정보가 담긴 DTO
+     */
     public void checkOrderInfo(OrderInfoRequest orderInfoRequest) {
         orderAdapter.checkOrderUserAddressInfo(orderInfoRequest.getAddressId());
         checkPoint(orderInfoRequest.getUsingPoint());
     }
 
-    public Integer checkPoint(Integer usingPoint) {
+    /**
+     * methodName : checkPoint<br>
+     * author : minsu11<br>
+     * description : 회원이 가진 포인트 검사. DB에 등록된 회원의 포인트 보다 높으면
+     * {@code OrderInfoNotMatchException}을 던짐.
+     * <br> *
+     *
+     * @param usingPoint 사용할 포인트
+     */
+    public void checkPoint(Integer usingPoint) {
         PointResponse pointsHeld = userPointAdaptor.getPointsHeld();
         if (usingPoint < 0 || pointsHeld.getRemainingPoint() < usingPoint) {
             throw new OrderInfoNotMatchException("포인트 정보가 다름");
         }
-        return usingPoint;
     }
 }
