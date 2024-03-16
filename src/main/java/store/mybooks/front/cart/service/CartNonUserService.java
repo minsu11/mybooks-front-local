@@ -93,6 +93,13 @@ public class CartNonUserService {
     }
 
 
+    /**
+     * Order book in cart.
+     *
+     * @param cartCookie           the cart cookie
+     * @param response             the response
+     * @param orderItemRequestList the order item request list
+     */
     public void orderBookInCart(Cookie cartCookie, HttpServletResponse response,
                                 List<OrderItemRequest> orderItemRequestList) {
         if (Objects.isNull(cartCookie)) {

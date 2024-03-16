@@ -104,6 +104,11 @@ public class CartUserService {
         }
     }
 
+    /**
+     * Order book in cart.
+     *
+     * @param orderItemRequestList the order item request list
+     */
     public void orderBookInCart(List<OrderItemRequest> orderItemRequestList) {
         List<CartDetail> bookFromCart = getBookFromCart();
         if (Objects.isNull(bookFromCart) || bookFromCart.isEmpty()) {
@@ -123,11 +128,19 @@ public class CartUserService {
         bookFromCart.forEach(cartDetail -> redisTemplate.opsForList().rightPush(carKey, cartDetail));
     }
 
+    /**
+     * Delete all book from cart.
+     */
     public void deleteAllBookFromCart() {
         String cartKey = cartKey();
         redisTemplate.delete(cartKey);
     }
 
+    /**
+     * Cart key string.
+     *
+     * @return the string
+     */
     public String cartKey() {
         UserGetResponse user = userAdaptor.findUser();
         return CartController.CART_COOKIE_VALUE + ":" + user.getEmail();
