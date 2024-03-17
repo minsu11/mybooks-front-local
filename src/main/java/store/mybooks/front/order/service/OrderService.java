@@ -15,7 +15,7 @@ import store.mybooks.front.order.dto.request.BookInfoRequest;
 import store.mybooks.front.order.dto.request.BookOrderCreateRequest;
 import store.mybooks.front.order.dto.request.BookOrderDirectRequest;
 import store.mybooks.front.order.dto.request.OrderInfoRequest;
-import store.mybooks.front.order.dto.response.BookOrderCreateResponse;
+import store.mybooks.front.order.dto.response.BookOrderResultCreateResponse;
 import store.mybooks.front.order.utils.OrderUtils;
 import store.mybooks.front.user.adaptor.UserAdaptor;
 import store.mybooks.front.user_address.adaptor.UserAddressAdaptor;
@@ -149,12 +149,12 @@ public class OrderService {
      * @param totalCost  the total cost
      * @return the book order create response
      */
-    public BookOrderCreateResponse createOrder(List<BookInfoRequest> bookInfo,
-                                               OrderInfoRequest orderInfo,
-                                               Integer point,
-                                               Integer couponCost,
-                                               Integer wrapCost,
-                                               Integer totalCost) {
+    public BookOrderResultCreateResponse createOrder(List<BookInfoRequest> bookInfo,
+                                                     OrderInfoRequest orderInfo,
+                                                     Integer point,
+                                                     Integer couponCost,
+                                                     Integer wrapCost,
+                                                     Integer totalCost) {
         totalCost += wrapCost - point - couponCost;
         String orderNumber = "";
 
@@ -167,5 +167,5 @@ public class OrderService {
         return orderAdapter.createBookOrder(request);
     }
 
-  
+
 }

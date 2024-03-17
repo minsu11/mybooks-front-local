@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import store.mybooks.front.auth.Annotation.RequiredAuthorization;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.order.dto.request.BookOrderCreateRequest;
-import store.mybooks.front.order.dto.response.BookOrderCreateResponse;
+import store.mybooks.front.order.dto.response.BookOrderResultCreateResponse;
 import store.mybooks.front.utils.Utils;
 
 /**
@@ -53,13 +53,13 @@ public class OrderAdaptor {
 
 
     @RequiredAuthorization
-    public BookOrderCreateResponse createBookOrder(BookOrderCreateRequest request) {
+    public BookOrderResultCreateResponse createBookOrder(BookOrderCreateRequest request) {
         HttpEntity<BookOrderCreateRequest> httpEntity = new HttpEntity<>(request, Utils.getAuthHeader());
-        ResponseEntity<BookOrderCreateResponse> exchange = restTemplate.exchange(
+        ResponseEntity<BookOrderResultCreateResponse> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + MEMBER_URL,
                 HttpMethod.POST,
                 httpEntity,
-                new ParameterizedTypeReference<BookOrderCreateResponse>() {
+                new ParameterizedTypeReference<BookOrderResultCreateResponse>() {
                 });
         return Utils.getResponseEntity(exchange, HttpStatus.CREATED);
     }
