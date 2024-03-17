@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/my-books-layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Form</title>
+
+    <style>
+        body {
+            height: 100vh;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+        }
+
+        .rating {
+            position: relative;
+            width: 180px;
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: .3em;
+            padding: 5px;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 0 2px #b3acac;
+        }
+
+        .rating__result {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: translateY(-10px) translateX(-5px);
+            z-index: -9;
+            font: 3em Arial, Helvetica, sans-serif;
+            color: #ebebeb8e;
+            pointer-events: none;
+        }
+
+        .rating__star {
+            font-size: 1.3em;
+            cursor: pointer;
+            color: #dabd18b2;
+            transition: filter linear .3s;
+        }
+
+        .rating__star:hover {
+            filter: drop-shadow(1px 1px 4px gold);
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <!-- Start Breadcrumbs -->
+    <div class="breadcrumbs">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6 col-12">
+                </div>
+                <div class="col-lg-6 col-md-6 col-12">
+                    <ul class="breadcrumb-nav">
+                        <li><a href="index.html"><i class="lni lni-home"></i> Home</a></li>
+                        <li>리뷰</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Start Contact Area -->
+    <section id="contact-us" class="contact-us section">
+        <div class="container">
+            <div class="contact-head">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="section-title">
+                            <h2>리뷰 작성</h2>
+                            <p>리뷰 정책을 꼭 확인해 주세요</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-info">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-12 col-12">
+                            <div class="single-info-head">
+                                <!-- Start Single Info -->
+                                <div class="single-info">
+                                    <i class="lni lni-star"></i>
+                                    <h3>리뷰 정책</h3>
+                                    <ul>
+                                        <li>리뷰 작성시 자동으로 구매가 확정되며 환불이 불가능합니다.<br><br> 리뷰 : 200포인트 적립<br>리뷰 + 사진 첨부 :
+                                            500포인트 적립
+                                            <br>사진은 최초 리뷰 작성 시 등록 가능하며 수정이 불가능합니다
+                                            <br>별점 미선택시 5점으로 측정됩니다
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- End Single Info -->
+                            </div>
+                        </div>
+                        <div class="col-lg-8 col-md-12 col-12">
+                            <div class="contact-form-head">
+                                <div class="form-main">
+                                    <form class="form" method="post" action="/review/register" enctype="multipart/form-data">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <div class="form-group">
+                                                    <input name="title" type="text" placeholder="제목" required="required">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                별점<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+                                                <div class="rating">
+                                                    <span class="rating__result"></span>
+                                                    <input type="hidden" name="rate" id="rate" value="5"> <!-- Hidden input field for rate -->
+                                                    <i class="rating__star far fa-star"></i>
+                                                    <i class="rating__star far fa-star"></i>
+                                                    <i class="rating__star far fa-star"></i>
+                                                    <i class="rating__star far fa-star"></i>
+                                                    <i class="rating__star far fa-star"></i>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12">
+                                                <div class="form-group message">
+                                                    <textarea name="content" placeholder="내용"></textarea>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 file-container">
+                                                <input id="contentImage" name="contentImage" type="file" class="file" accept="image/*">
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-group button">
+                                                    <button type="submit" class="btn ">리뷰 작성</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Breadcrumbs -->
+    <script>
+        const ratingStars = [...document.getElementsByClassName("rating__star")];
+        const ratingResult = document.querySelector(".rating__result");
+
+        printRatingResult(ratingResult);
+
+        function executeRating(stars, result) {
+            const starClassActive = "rating__star fas fa-star";
+            const starClassUnactive = "rating__star far fa-star";
+            const starsLength = stars.length;
+            let i = 1; // i를 1로 초기화
+
+            stars.map((star) => {
+                star.onclick = () => {
+                    i = stars.indexOf(star) + 1;
+
+                    // Set the rate value to the selected number of stars
+                    document.getElementById('rate').value = i;
+
+                    if (star.className.indexOf(starClassUnactive) !== -1) {
+                        printRatingResult(result, i);
+                        for (let j = 0; j < i; ++j) stars[j].className = starClassActive;
+                    } else {
+                        printRatingResult(result, i - 1);
+                        for (let j = i; j < starsLength; ++j) stars[j].className = starClassUnactive;
+                    }
+                };
+            });
+        }
+
+        function printRatingResult(result, num = 1) {
+            result.textContent = `${num}/5`;
+        }
+
+        executeRating(ratingStars, ratingResult);
+
+        // Disable form submission if rating is 0
+        document.getElementById('reviewForm').addEventListener('submit', function(event) {
+            const ratingValue = document.getElementById('rate').value;
+            if (ratingValue === '0') {
+                event.preventDefault(); // Prevent form submission
+                alert('별점을 선택하세요.');
+            }
+        });
+    </script>
+</body>
+</html>
