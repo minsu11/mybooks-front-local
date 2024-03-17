@@ -1,5 +1,6 @@
 package store.mybooks.front.auth.dto.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,9 +17,9 @@ import lombok.NoArgsConstructor;
  */
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class RefreshTokenResponse {
 
-    private Boolean isValid;
     private String accessToken;
 
 }

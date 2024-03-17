@@ -79,32 +79,26 @@ public class AuthorizationAspect {
                                 new RefreshTokenRequest((String) request.getAttribute("identity_cookie_value"),
                                         Utils.getUserIp(request), Utils.getUserAgent(request)));
 
-                // 리프래시 토큰 만료 아니고 유효해서 재발급 됐음
-                if (refreshTokenResponse.getIsValid()) {
-                    // 쿠키에 재발급한 엑세스토큰 넣어주고
-                    CookieUtils.addJwtCookie(Objects.requireNonNull(response), refreshTokenResponse.getAccessToken());
-                    // 헤더 설정해주고 기존 메서드 다시 불러
-                    RequestContextHolder.currentRequestAttributes()
-                            .setAttribute("authHeader", Utils.refreshAuthHeader(refreshTokenResponse.getAccessToken()),
-                                    RequestAttributes.SCOPE_REQUEST);
-                    // 어드민 쿠키를 체크하는 redis 만료시간 재설정
-                    String adminCookieValue = (String) request.getAttribute("admin_cookie_value");
-                    if (Objects.nonNull(adminCookieValue)) {
-                        redisAuthService.expireValues(adminCookieValue, redisProperties.getAdminExpiration());
-                        // 쿠키 만료시간 재설정
-                        CookieUtils.addAdminCookie(response,adminCookieValue);
-                    }
-                    return joinPoint.proceed();
-                } else {
-                    // 리프래시 토큰 만료됐거나 , 유효하지 않음
-                    CookieUtils.deleteJwtCookie(Objects.requireNonNull(response));
-                    CookieUtils.deleteAdminCookie(response);
-                    // 리프래시 토큰이 만료면 TokenExpiredException -> 로그인하세요
+                // 리프래시 토큰 만료 됐거나 유효하지않음
+                if (refreshTokenResponse.getAccessToken().isEmpty()) {
                     throw new TokenExpiredException();
                 }
+
+                // 쿠키에 재발급한 엑세스토큰 넣어주고
+                CookieUtils.addJwtCookie(Objects.requireNonNull(response), refreshTokenResponse.getAccessToken());
+                // 헤더 설정해주고 기존 메서드 다시 불러
+                RequestContextHolder.currentRequestAttributes()
+                        .setAttribute("authHeader", Utils.refreshAuthHeader(refreshTokenResponse.getAccessToken()),
+                                RequestAttributes.SCOPE_REQUEST);
+                // 어드민 쿠키를 체크하는 redis 만료시간 재설정
+                String adminCookieValue = (String) request.getAttribute("admin_cookie_value");
+                if (Objects.nonNull(adminCookieValue)) {
+                    redisAuthService.expireValues(adminCookieValue, redisProperties.getAdminExpiration());
+                    // 쿠키 만료시간 재설정
+                    CookieUtils.addAdminCookie(response, adminCookieValue);
+                }
+                return joinPoint.proceed();
             } else if (error.contains(ErrorMessage.INVALID_TOKEN.getMessage())) { // 토큰위조됨 쿠키삭제
-                CookieUtils.deleteJwtCookie(Objects.requireNonNull(response));
-                CookieUtils.deleteAdminCookie(response);
                 throw new AuthenticationIsNotValidException();
             } else if (error.contains(ErrorMessage.STATUS_IS_DORMANT_EXCEPTION.getMessage())) { // 휴면상태 -> 휴면인증사이트로
                 throw new StatusIsDormancyException();

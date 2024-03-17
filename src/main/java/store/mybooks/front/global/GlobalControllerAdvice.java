@@ -1,11 +1,14 @@
 package store.mybooks.front.global;
 
+import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
 import store.mybooks.front.auth.exception.*;
 import store.mybooks.front.order.exception.OrderInfoNotMatchException;
+import store.mybooks.front.utils.CookieUtils;
 
 /**
  * packageName    : store.mybooks.front.global
@@ -45,9 +48,11 @@ public class GlobalControllerAdvice {
     // 토큰 인증/인가와 관련된 모든 예외를 잡음
     @ExceptionHandler({AuthenticationIsNotValidException.class, AccessIdForbiddenException.class,
             StatusIsDormancyException.class, TokenExpiredException.class, StatusIsLockException.class})
-    public String handleAuthException(RuntimeException ex) {
+    public String handleAuthException(RuntimeException ex, HttpServletResponse response) {
 
         if (ex instanceof AuthenticationIsNotValidException | ex instanceof TokenExpiredException) {
+            CookieUtils.deleteJwtCookie(Objects.requireNonNull(response));
+            CookieUtils.deleteAdminCookie(response);
             return "redirect:/login"; // 토큰조작 됐거나 , 만료됐음 -> 다시 로그인
         } else if (ex instanceof StatusIsDormancyException) {
             return "redirect:/verification/dormancy";  // 유저계정 휴면상태
