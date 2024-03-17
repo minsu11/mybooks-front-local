@@ -1,6 +1,5 @@
 package store.mybooks.front.order.dto.request;
 
-import java.time.LocalDate;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,14 +17,13 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public class OrderCreateRequest {
+public class BookOrderCreateRequest {
     private List<BookInfoRequest> bookInfoList;
-    private String deliveryName;
-    private LocalDate deliveryDate;
-    private Integer point;
-    private String recipientName;
-    private String recipientAddress;
-    private String recipientPhoneNumber;
-    private String receiverMessage;
+    private OrderInfoRequest orderInfoRequest;
     private String orderNumber;
+    private Integer pointCost;
+    private Integer couponCost;
+    private Integer wrapCost;
+    private Integer totalCost;
+
 }

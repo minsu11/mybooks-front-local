@@ -2,12 +2,16 @@ package store.mybooks.front.order.adaptor;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import store.mybooks.front.auth.Annotation.RequiredAuthorization;
 import store.mybooks.front.config.GatewayAdaptorProperties;
+import store.mybooks.front.order.dto.request.BookOrderCreateRequest;
+import store.mybooks.front.order.dto.response.BookOrderCreateResponse;
 import store.mybooks.front.utils.Utils;
 
 /**
@@ -26,7 +30,8 @@ import store.mybooks.front.utils.Utils;
 public class OrderAdaptor {
     private final RestTemplate restTemplate;
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
-    private static final String URL = "/api/order";
+    private static final String URL = "/api/orders";
+    private static final String MEMBER_URL = "/api/member/orders";
 
     /**
      * methodName : checkOrderUserAddressInfo<br>
@@ -37,7 +42,8 @@ public class OrderAdaptor {
      * @param id 주소 아이디
      */
     public void checkOrderUserAddressInfo(Long id) {
-        ResponseEntity<Object> exchange = restTemplate.exchange(URL + "/check/address/{id}",
+        ResponseEntity<Object> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL + "/check/address/{id}",
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<Object>() {
@@ -45,4 +51,16 @@ public class OrderAdaptor {
         Utils.getResponseEntity(exchange, HttpStatus.NO_CONTENT);
     }
 
+
+    @RequiredAuthorization
+    public BookOrderCreateResponse createBookOrder(BookOrderCreateRequest request) {
+        HttpEntity<BookOrderCreateRequest> httpEntity = new HttpEntity<>(request, Utils.getAuthHeader());
+        ResponseEntity<BookOrderCreateResponse> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + MEMBER_URL,
+                HttpMethod.POST,
+                httpEntity,
+                new ParameterizedTypeReference<BookOrderCreateResponse>() {
+                });
+        return Utils.getResponseEntity(exchange, HttpStatus.CREATED);
+    }
 }

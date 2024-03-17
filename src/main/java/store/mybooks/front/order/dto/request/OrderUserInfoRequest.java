@@ -3,6 +3,7 @@ package store.mybooks.front.order.dto.request;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * packageName    : store.mybooks.front.order.dto.request<br>
@@ -18,8 +19,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@ToString
 public class OrderUserInfoRequest {
     private String userName;
     private String email;
     private String phoneNumber;
+    private Long addressId;
+
 }

@@ -1,19 +1,26 @@
 package store.mybooks.front.order.service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.admin.book.model.response.BookDetailResponse;
 import store.mybooks.front.admin.wrap.adaptor.WrapAdaptor;
+import store.mybooks.front.admin.wrap.dto.response.WrapResponse;
 import store.mybooks.front.book.adaptor.BookAdaptor;
 import store.mybooks.front.cart.domain.CartDetail;
 import store.mybooks.front.order.adaptor.OrderAdaptor;
+import store.mybooks.front.order.dto.request.BookInfoRequest;
+import store.mybooks.front.order.dto.request.BookOrderCreateRequest;
 import store.mybooks.front.order.dto.request.BookOrderDirectRequest;
+import store.mybooks.front.order.dto.request.OrderInfoRequest;
+import store.mybooks.front.order.dto.response.BookOrderCreateResponse;
+import store.mybooks.front.order.utils.OrderUtils;
 import store.mybooks.front.user.adaptor.UserAdaptor;
 import store.mybooks.front.user_address.adaptor.UserAddressAdaptor;
 import store.mybooks.front.user_coupon.adaptor.UserCouponAdaptor;
-import store.mybooks.front.userpoint.adaptor.UserPointAdaptor;
+import store.mybooks.front.user_coupon.model.response.UserCouponResponse;
 
 /**
  * packageName    : store.mybooks.front.order.service<br>
@@ -35,7 +42,6 @@ public class OrderService {
     private final UserAdaptor userAdaptor;
     private final WrapAdaptor wrapAdaptor;
     private final UserCouponAdaptor userCouponAdaptor;
-    private final UserPointAdaptor userPointAdaptor;
 
     /**
      * methodName : getBook<br>
@@ -72,5 +78,72 @@ public class OrderService {
                 .map(cartDetail -> cartDetail.getSaleCost() * cartDetail.getCartDetailAmount())
                 .collect(Collectors.toList());
 
+    }
+
+    public Integer calculateBookCouponCost(List<BookInfoRequest> bookInfoRequests) {
+        int result = 0;
+        for (int i = 0; i < bookInfoRequests.size(); i++) {
+            int saleCost = bookInfoRequests.get(i).getSaleCost();
+            int amount = bookInfoRequests.get(i).getAmount();
+            int couponCost = 0;
+            Long couponId = bookInfoRequests.get(i).getSelectCouponId();
+            if (Objects.nonNull(couponId)) {
+
+                UserCouponResponse coupon = userCouponAdaptor.getUserCouponResponse(couponId);
+                if (coupon.isRate()) { // true 시 할인 률
+                    couponCost = (saleCost * amount) * coupon.getDiscountRate() / 100;
+                } else {
+                    couponCost = coupon.getDiscountCost();
+                }
+
+                if (coupon.isRate() && couponCost > coupon.getMaxDiscountCost()) {
+                    couponCost = coupon.getMaxDiscountCost();
+                }
+            }
+            result += couponCost;
+        }
+
+        return result;
+    }
+
+    /**
+     * methodName : calculateBookWrapCost<br>
+     * author : minsu11<br>
+     * description : 도서에 적용된 총 포장지 가격 계산.
+     * <br>
+     *
+     * @param bookInfoRequests the book info requests
+     * @return the integer
+     */
+    public Integer calculateBookWrapCost(List<BookInfoRequest> bookInfoRequests) {
+        int result = 0;
+        for (int i = 0; i < bookInfoRequests.size(); i++) {
+            Integer wrapId = bookInfoRequests.get(i).getSelectWrapId();
+            if (Objects.nonNull(wrapId)) {
+
+                WrapResponse wrapResponse = wrapAdaptor.getWrap(wrapId);
+                result += wrapResponse.getCost();
+            }
+        }
+        return result;
+    }
+
+    public Integer getPoint(OrderInfoRequest orderInfoRequest) {
+        return orderInfoRequest.getUsingPoint();
+    }
+
+    public BookOrderCreateResponse createOrder(List<BookInfoRequest> bookInfo,
+                                               OrderInfoRequest orderInfo,
+                                               Integer point,
+                                               Integer couponCost,
+                                               Integer wrapCost,
+                                               Integer totalCost) {
+        totalCost += wrapCost - point - couponCost;
+        //todo 해당 주문 번호가 있는지 확인하는 메서드 필요
+        String orderNumber = OrderUtils.createOrderNumber();
+
+        BookOrderCreateRequest request = new BookOrderCreateRequest(bookInfo, orderInfo,
+                orderNumber, point, couponCost, wrapCost, totalCost);
+        return orderAdapter.createBookOrder(request);
     }
 }

@@ -39,4 +39,6 @@ public class OrderUtils {
         return orderNumber.append(time)
                 .append(randomStr).toString();
     }
+
+
 }
