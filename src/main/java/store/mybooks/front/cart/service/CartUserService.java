@@ -79,7 +79,7 @@ public class CartUserService {
             CartDetail cartDetail =
                     new CartDetail(cartBook.getId(), cartRegisterRequest.getQuantity(), cartBook.getName(),
                             cartBook.getBookImage(), cartBook.getCost(),
-                            cartBook.getSaleCost());
+                            cartBook.getSaleCost(), cartBook.getStock(), cartBook.getSellingStatus());
             cartDetailList.add(cartDetail);
             redisTemplate.opsForList().rightPush(cartKey, cartDetail);
         }
@@ -109,7 +109,7 @@ public class CartUserService {
      *
      * @param orderItemRequestList the order item request list
      */
-    public void orderBookInCart(List<OrderItemRequest> orderItemRequestList) {
+    public void updateAmountBookInCart(List<OrderItemRequest> orderItemRequestList) {
         List<CartDetail> bookFromCart = getBookFromCart();
         if (Objects.isNull(bookFromCart) || bookFromCart.isEmpty()) {
             return;
