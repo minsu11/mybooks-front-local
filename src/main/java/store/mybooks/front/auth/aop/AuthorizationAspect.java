@@ -80,7 +80,7 @@ public class AuthorizationAspect {
                                         Utils.getUserIp(request), Utils.getUserAgent(request)));
 
                 // 리프래시 토큰 만료 됐거나 유효하지않음
-                if (refreshTokenResponse.getAccessToken().isEmpty()) {
+                if (Objects.isNull(refreshTokenResponse.getAccessToken())) {
                     throw new TokenExpiredException();
                 }
 
