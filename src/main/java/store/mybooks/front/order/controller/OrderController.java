@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import store.mybooks.front.admin.delivery_rule.dto.DeliveryRuleResponse;
+import store.mybooks.front.admin.delivery_rule.service.DeliveryRuleService;
 import store.mybooks.front.admin.wrap.dto.response.WrapResponse;
 import store.mybooks.front.admin.wrap.service.WrapService;
 import store.mybooks.front.cart.domain.CartDetail;
@@ -55,6 +57,7 @@ public class OrderController {
     private final CartNonUserService cartNonUserService;
     private final CartUserService cartUserService;
     private final OrderInfoCheckService orderInfoCheckService;
+    private final DeliveryRuleService deliveryRuleService;
 
     /**
      * methodName : viewOrderPage<br>
@@ -161,12 +164,14 @@ public class OrderController {
         LocalDate localDate = LocalDate.now();
         UserGetResponse user = userAdaptor.findUser();
         List<CartDetail> bookFromCart = cartUserService.getBookFromCart();
+        DeliveryRuleResponse deliveryRule = deliveryRuleService.getDeliveryRuleResponseByName("배송 비");
         modelMap.put("bookLists", bookFromCart);
         modelMap.put("totalCost", orderService.calculateTotalCost(bookFromCart));
         modelMap.put("point", pointResponse.getRemainingPoint());
         modelMap.put("bookCostList", orderService.calculateBooksCost(bookFromCart));
         modelMap.put("localDate", localDate);
         modelMap.put("user", user);
+        modelMap.put("delivery", deliveryRule);
         modelMap.put("quantity", request.getQuantity());
         return "checkout";
     }

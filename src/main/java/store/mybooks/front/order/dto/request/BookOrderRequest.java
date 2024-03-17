@@ -22,7 +22,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class BookOrderRequest {
-    private OrderInfoRequest orderInfo;
     private List<BookInfoRequest> bookInfoList;
+    private OrderInfoRequest orderInfo;
     private OrderUserInfoRequest userInfo;
 }

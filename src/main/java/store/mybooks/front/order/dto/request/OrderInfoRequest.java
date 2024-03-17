@@ -25,6 +25,7 @@ public class OrderInfoRequest {
     private String recipientName;
     private String recipientPhoneNumber;
     private String recipientAddress;
+    private Integer deliveryId;
     private String deliveryDate;
     private String receiverMessage;
     private Integer usingPoint;

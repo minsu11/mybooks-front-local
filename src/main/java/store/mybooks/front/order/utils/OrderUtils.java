@@ -29,7 +29,7 @@ public class OrderUtils {
         String time = LocalDateTime.now().format(DateTimeFormatter.BASIC_ISO_DATE);
         int leftLimit = 48;
         int rightLimit = 122;
-        int targetStringLength = 13;
+        int targetStringLength = 12;
         String randomStr = new Random()
                 .ints(leftLimit, rightLimit + 1)
                 .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))

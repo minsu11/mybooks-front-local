@@ -285,6 +285,22 @@
                                                           name="orderInfo.receiverMessage"></textarea>
                                             </label>
                                         </div>
+                                        <div>
+                                            <h6>
+                                                배송 비
+                                            </h6>
+                                            <th:block th:if="${delivery.ruleCost} < ${totalCost}">
+                                                                <span th:text="${delivery.cost}">
+                                                                </span>
+                                            </th:block>
+                                            <th:block th:if="${delivery.ruleCost} > ${totalCost}">
+                                                <span>0원</span>
+                                            </th:block>
+                                            <label>
+                                                <input name="orderInfo.deliveryId"
+                                                       th:value="${delivery.id}">
+                                            </label>
+                                        </div>
                                     </section>
                                 </li>
                                 <li>

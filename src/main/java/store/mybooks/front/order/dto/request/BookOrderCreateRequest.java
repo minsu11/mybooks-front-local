@@ -19,7 +19,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class BookOrderCreateRequest {
     private List<BookInfoRequest> bookInfoList;
-    private OrderInfoRequest orderInfoRequest;
+    private OrderInfoRequest orderInfo;
     private String orderNumber;
     private Integer pointCost;
     private Integer couponCost;

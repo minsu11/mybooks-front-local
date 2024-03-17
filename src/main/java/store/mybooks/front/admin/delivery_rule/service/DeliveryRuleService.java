@@ -71,4 +71,9 @@ public class DeliveryRuleService {
     public void deleteDeliveryRule(Integer id) {
         deliveryRuleAdaptor.deleteDeliveryRule(id);
     }
+
+    public DeliveryRuleResponse getDeliveryRuleResponseByName(String name) {
+        return deliveryRuleAdaptor.getDeliveryRuleByName(name);
+    }
+
 }
