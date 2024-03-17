@@ -119,6 +119,7 @@ public class PayController {
     @GetMapping
     public String index(HttpServletRequest request, ModelMap model) throws Exception {
         model.put("tossValue", tossAppKey.getClientKey());
+
         return "payment";
     }
 

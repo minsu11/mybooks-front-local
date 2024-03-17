@@ -2,6 +2,7 @@ package store.mybooks.front.order.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * packageName    : store.mybooks.front.order.dto.response<br>
@@ -15,6 +16,7 @@ import lombok.Getter;
  * 3/16/24        minsu11       최초 생성<br>
  */
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class BookOrderCreateResponse {
     private String orderStatus;

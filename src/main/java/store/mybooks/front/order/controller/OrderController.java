@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import store.mybooks.front.admin.delivery_rule.dto.DeliveryRuleResponse;
 import store.mybooks.front.admin.delivery_rule.service.DeliveryRuleService;
 import store.mybooks.front.admin.wrap.dto.response.WrapResponse;
@@ -177,7 +178,8 @@ public class OrderController {
     }
 
     @PostMapping("/order")
-    public String doOrder(@ModelAttribute BookOrderRequest orderRequest) {
+    public String doOrder(@ModelAttribute BookOrderRequest orderRequest,
+                          RedirectAttributes redirectAttributes) {
         log.info("값 : {}", orderRequest.toString());
         List<CartDetail> cart = cartUserService.getBookFromCart();
         orderInfoCheckService.checkModulation(orderRequest, cart);
@@ -187,7 +189,6 @@ public class OrderController {
         int totalCost = orderService.calculateTotalCost(cart);
         BookOrderResultCreateResponse response = orderService.createOrder(orderRequest.getBookInfoList(),
                 orderRequest.getOrderInfo(), point, couponCost, wrapCost, totalCost);
-
-        return "test";
+        return "redirect:/pay";
     }
 }
