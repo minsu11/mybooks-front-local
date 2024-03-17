@@ -63,4 +63,14 @@ public class OrderAdaptor {
                 });
         return Utils.getResponseEntity(exchange, HttpStatus.CREATED);
     }
+
+    public Boolean checkBookOrderNumber(String orderNumber) {
+        ResponseEntity<Boolean> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL + "/orderNumber/{orderNumber}",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<Boolean>() {
+                }, orderNumber);
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
 }

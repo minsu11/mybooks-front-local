@@ -128,10 +128,27 @@ public class OrderService {
         return result;
     }
 
+    /**
+     * 회원의 포인트 조회.
+     *
+     * @param orderInfoRequest the order info request
+     * @return the point
+     */
     public Integer getPoint(OrderInfoRequest orderInfoRequest) {
         return orderInfoRequest.getUsingPoint();
     }
 
+    /**
+     * 주문 등록.
+     *
+     * @param bookInfo   the book info
+     * @param orderInfo  the order info
+     * @param point      the point
+     * @param couponCost the coupon cost
+     * @param wrapCost   the wrap cost
+     * @param totalCost  the total cost
+     * @return the book order create response
+     */
     public BookOrderCreateResponse createOrder(List<BookInfoRequest> bookInfo,
                                                OrderInfoRequest orderInfo,
                                                Integer point,
@@ -139,11 +156,16 @@ public class OrderService {
                                                Integer wrapCost,
                                                Integer totalCost) {
         totalCost += wrapCost - point - couponCost;
-        //todo 해당 주문 번호가 있는지 확인하는 메서드 필요
-        String orderNumber = OrderUtils.createOrderNumber();
+        String orderNumber = "";
+
+        do {
+            orderNumber = OrderUtils.createOrderNumber();
+        } while (!orderAdapter.checkBookOrderNumber(orderNumber));
 
         BookOrderCreateRequest request = new BookOrderCreateRequest(bookInfo, orderInfo,
                 orderNumber, point, couponCost, wrapCost, totalCost);
         return orderAdapter.createBookOrder(request);
     }
+
+  
 }
