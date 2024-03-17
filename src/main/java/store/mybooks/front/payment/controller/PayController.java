@@ -18,11 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import store.mybooks.front.config.TossAppKey;
+import store.mybooks.front.order.service.OrderService;
 
 
 /**
@@ -42,6 +40,8 @@ import store.mybooks.front.config.TossAppKey;
 @RequestMapping("/pay")
 public class PayController {
     private final TossAppKey tossAppKey;
+    private final OrderService orderService;
+
 
     @PostMapping("/confirm")
     public ResponseEntity<JSONObject> confirmPayment(@RequestBody String jsonBody) throws Exception {
@@ -65,8 +65,6 @@ public class PayController {
         obj.put("amount", amount);
         obj.put("paymentKey", paymentKey);
 
-        // TODO: 개발자센터에 로그인해서 내 결제위젯 연동 키 > 시크릿 키를 입력하세요. 시크릿 키는 외부에 공개되면 안돼요.
-        // @docs https://docs.tosspayments.com/reference/using-api/api-keys
         String apiKey = tossAppKey.getKey();
 
         // 토스페이먼츠 API는 시크릿 키를 사용자 ID로 사용하고, 비밀번호는 사용하지 않습니다.
@@ -116,9 +114,12 @@ public class PayController {
         return "success";
     }
 
-    @GetMapping
-    public String index(HttpServletRequest request, ModelMap model) throws Exception {
+    @GetMapping("/{orderNumber}")
+    public String index(HttpServletRequest request, ModelMap model,
+                        @PathVariable(name = "orderNumber") String orderNumber) throws Exception {
+        log.info("orderNumber: {}", orderNumber);
         model.put("tossValue", tossAppKey.getClientKey());
+        model.put("orderInfo", orderService.getPayBookOrderInfo(orderNumber));
 
         return "payment";
     }

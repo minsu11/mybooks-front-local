@@ -20,7 +20,7 @@ import store.mybooks.front.cart.service.CartNonUserService;
 import store.mybooks.front.cart.service.CartUserService;
 import store.mybooks.front.order.dto.request.BookOrderDirectRequest;
 import store.mybooks.front.order.dto.request.BookOrderRequest;
-import store.mybooks.front.order.dto.response.BookOrderResultCreateResponse;
+import store.mybooks.front.order.dto.response.BookOrderCreateResponse;
 import store.mybooks.front.order.service.OrderInfoCheckService;
 import store.mybooks.front.order.service.OrderService;
 import store.mybooks.front.user.adaptor.UserAdaptor;
@@ -187,8 +187,8 @@ public class OrderController {
         int couponCost = orderService.calculateBookCouponCost(orderRequest.getBookInfoList());
         int wrapCost = orderService.calculateBookWrapCost(orderRequest.getBookInfoList());
         int totalCost = orderService.calculateTotalCost(cart);
-        BookOrderResultCreateResponse response = orderService.createOrder(orderRequest.getBookInfoList(),
+        BookOrderCreateResponse response = orderService.createOrder(orderRequest.getBookInfoList(),
                 orderRequest.getOrderInfo(), point, couponCost, wrapCost, totalCost);
-        return "redirect:/pay";
+        return "redirect:/pay/" + response.getNumber();
     }
 }
