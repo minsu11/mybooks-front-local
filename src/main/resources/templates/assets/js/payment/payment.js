@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     const button = document.getElementById("payment-button");
-    const coupon = document.getElementById("coupon-box");
+    const coupon = document.getElementById("all-book-coupon-button");
     const generateRandomString = document.getElementById("order-number").value;
     var amount = parseInt(document.getElementById("order-total-cost").value);
 // ------  결제위젯 초기화 ------
@@ -41,10 +41,10 @@ document.addEventListener("DOMContentLoaded", function () {
         // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
         paymentWidget.requestPayment({
             orderId: customerKey,
-            orderName: "토스 티셔츠 외 2건",
+            orderName: "123",
             successUrl: window.location.origin + "/pay/success",
             failUrl: window.location.origin + "/pay/fail",
-            customerEmail: "customer123@gmail.com",
+            customerEmail: "123@gmail.com",
             customerName: "김토스",
             customerMobilePhone: "01012341234",
         });

@@ -25,6 +25,7 @@
         <p id="paymentKey"></p>
         <p id="orderId"></p>
         <p id="amount"></p>
+        <p id="status"></p>
     </div>
 </div>
 <script>
@@ -70,6 +71,7 @@
     amountElement.textContent = "결제 금액: " + urlParams.get("amount");
     paymentKeyElement.textContent =
         "paymentKey: " + urlParams.get("paymentKey");
+
 </script>
 </body>
 </html>
