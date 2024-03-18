@@ -228,7 +228,7 @@
                     <div class="single-product card h-100">
                         <div class="product-image">
                             <img class="product-image card-img-top "
-                                 th:src="${book.imageResponse.path + book.imageResponse.fileName + book.imageResponse.extension}"
+                                 th:src="${book.image}"
                                  alt="#">
                             <div class="button">
                                 <form action="/cart/add" method="post">
@@ -280,7 +280,7 @@
                     <div class="single-product card h-100">
                         <div class="product-image">
                             <img class="product-image card-img-top "
-                                 th:src="${book.imageResponse.path + book.imageResponse.fileName + book.imageResponse.extension}"
+                                 th:src="${book.image}"
                                  alt="#">
                             <div class="button">
                                 <form action="/cart/add" method="post">
