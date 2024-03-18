@@ -27,6 +27,8 @@ public class CartDetail {
     private String bookImage;
     private Integer cost;
     private Integer saleCost;
+    private Integer stock;
+    private String sellingStatus;
 
     public void addAmount(int amount) {
         this.cartDetailAmount = this.cartDetailAmount + amount;

@@ -112,15 +112,14 @@ public class CartController {
     }
 
     @PostMapping("/cart/update")
-    public ResponseEntity<Void> cartOrder(@CookieValue(name = CartUtil.CART_COOKIE, required = false) Cookie cartCookie,
-                                    HttpServletResponse response, HttpServletRequest request,
-                                    @RequestBody List<OrderItemRequest> orderItemRequest) {
+    public ResponseEntity<Void> updateBookAmount(@CookieValue(name = CartUtil.CART_COOKIE, required = false) Cookie cartCookie,
+                                                 HttpServletResponse response, HttpServletRequest request,
+                                                 @RequestBody List<OrderItemRequest> orderItemRequest) {
         if (isUser(request)) {
-            cartUserService.orderBookInCart(orderItemRequest);
+            cartUserService.updateAmountBookInCart(orderItemRequest);
         } else {
             cartNonUserService.orderBookInCart(cartCookie, response, orderItemRequest);
         }
-
         return ResponseEntity.ok().build();
     }
 }

@@ -81,7 +81,9 @@ public class CartNonUserService {
                         cartBook.getName(),
                         cartBook.getBookImage(),
                         cartBook.getCost(),
-                        cartBook.getSaleCost()));
+                        cartBook.getSaleCost(),
+                        cartBook.getStock(),
+                        cartBook.getSellingStatus()));
             }
             String cartJson = objectMapper.writeValueAsString(cartDetailList);
             String encode = URLEncoder.encode(cartJson, StandardCharsets.UTF_8);
