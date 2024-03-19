@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import store.mybooks.front.review.controller.dto.request.ReviewCreateRequest;
-import store.mybooks.front.review.controller.dto.request.ReviewModifyRequest;
-import store.mybooks.front.review.controller.service.ReviewService;
+import store.mybooks.front.review.dto.request.ReviewCreateRequest;
+import store.mybooks.front.review.dto.request.ReviewModifyRequest;
+import store.mybooks.front.review.service.ReviewService;
 
 /**
  * packageName    : store.mybooks.front.review.controller<br>

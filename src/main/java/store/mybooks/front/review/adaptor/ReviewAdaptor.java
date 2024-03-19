@@ -1,4 +1,4 @@
-package store.mybooks.front.review.controller.adaptor;
+package store.mybooks.front.review.adaptor;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -22,12 +22,12 @@ import org.springframework.web.multipart.MultipartFile;
 import store.mybooks.front.auth.Annotation.RequiredAuthorization;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.pageable.dto.response.PageResponse;
-import store.mybooks.front.review.controller.dto.request.ReviewCreateRequest;
-import store.mybooks.front.review.controller.dto.request.ReviewModifyRequest;
-import store.mybooks.front.review.controller.dto.response.ReviewCreateResponse;
-import store.mybooks.front.review.controller.dto.response.ReviewDetailGetResponse;
-import store.mybooks.front.review.controller.dto.response.ReviewGetResponse;
-import store.mybooks.front.review.controller.dto.response.ReviewModifyResponse;
+import store.mybooks.front.review.dto.request.ReviewCreateRequest;
+import store.mybooks.front.review.dto.request.ReviewModifyRequest;
+import store.mybooks.front.review.dto.response.ReviewCreateResponse;
+import store.mybooks.front.review.dto.response.ReviewDetailGetResponse;
+import store.mybooks.front.review.dto.response.ReviewGetResponse;
+import store.mybooks.front.review.dto.response.ReviewModifyResponse;
 import store.mybooks.front.utils.Utils;
 
 /**
@@ -95,8 +95,6 @@ public class ReviewAdaptor {
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
-    // 책에서 보여줄 리뷰
-    @RequiredAuthorization
     public PageResponse<ReviewDetailGetResponse> getBookReview(Pageable pageable, Long bookId) {
 
         ResponseEntity<PageResponse<ReviewDetailGetResponse>> exchange = restTemplate.exchange(

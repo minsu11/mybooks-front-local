@@ -1,4 +1,4 @@
-package store.mybooks.front.review.controller.dto.response;
+package store.mybooks.front.review.dto.response;
 
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 import store.mybooks.front.image.dto.ImageResponse;
 
 /**
- * packageName    : store.mybooks.resource.review.dto.response<br>
- * fileName       : ReviewDetailGetResponse<br>
+ * packageName    : store.mybooks.front.review.controller.dto.response<br>
+ * fileName       : ReviewGetResponse<br>
  * author         : masiljangajji<br>
  * date           : 3/17/24<br>
  * description    :
@@ -20,7 +20,11 @@ import store.mybooks.front.image.dto.ImageResponse;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReviewDetailGetResponse {
+public class ReviewGetResponse {
+
+    private Long bookId;
+
+    private String bookName;
 
     private Long reviewId;
 
@@ -35,5 +39,6 @@ public class ReviewDetailGetResponse {
     private String content;
 
     private ImageResponse reviewImage;
+
 
 }
