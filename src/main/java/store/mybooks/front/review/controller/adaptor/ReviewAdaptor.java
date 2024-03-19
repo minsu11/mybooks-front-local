@@ -86,7 +86,7 @@ public class ReviewAdaptor {
 
         ResponseEntity<PageResponse<ReviewGetResponse>> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + URL_MEMBER + "?page=" + pageable.getPageNumber()
-                        + "&size=" + 8,
+                        + "&size=" + pageable.getPageSize(),
                 HttpMethod.GET,
                 new HttpEntity<>(Utils.getAuthHeader()),
                 new ParameterizedTypeReference<>() {
