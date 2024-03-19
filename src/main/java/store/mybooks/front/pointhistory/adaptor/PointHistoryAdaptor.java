@@ -33,8 +33,6 @@ public class PointHistoryAdaptor {
     private final RestTemplate restTemplate;
 
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
-
-    private static final String URL = "/api/point-histories";
     private static final String URL_MEMBER = "/api/member/point-histories";
 
 
