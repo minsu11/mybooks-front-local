@@ -13,7 +13,7 @@
     </script>
     <div class="container mt-5"> <!-- text-center 클래스 추가 -->
         <h1>회원 정보</h1>
-        <table class="table table-bordered" style="width: 150%; height: 150%;">
+        <table class="table table-bordered" style="width: 120%; height: 100%;">
             <thead>
             <tr>
                 <th>회원 이름</th>
@@ -22,11 +22,14 @@
                 <th>생년</th>
                 <th>생월일</th>
                 <th>가입일</th>
+                <th>등급</th>
+                <th>상태</th>
                 <th>최근 로그인</th>
                 <th>등급 변경일</th>
             </tr>
             </thead>
             <tbody>
+
             <tr th:each="member:${members.content}">
                 <td th:text="${member.name}"></td>
                 <td th:text="${member.phoneNumber}"></td>
@@ -34,6 +37,8 @@
                 <td th:text="${member.birthYear}"></td>
                 <td th:text="${member.birthMonthDay}"></td>
                 <td th:text="${member.createdAt}"></td>
+                <td th:text="${member.userGradeUserGradeNameId}"></td>
+                <td th:text="${member.userStatusId}"></td>
                 <td th:text="${member.latestLogin}"></td>
                 <td th:text="${member.gradeChangedDate}"></td>
             </tr>
