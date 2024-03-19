@@ -1,0 +1,136 @@
+
+<head>
+    <style>
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .pagination a {
+            padding: 8px 16px;
+            margin: 4px;
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .pagination a:hover {
+            background-color: #3367d6;
+        }
+
+        .pagination ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+        }
+
+        .pagination li {
+            margin-right: 5px;
+        }
+
+        .quantity-input {
+            display: flex;
+            align-items: center;
+        }
+
+        .quantity-input .form-control.quantity {
+            width: 60px; /* 입력 칸 크기 조정 */
+            text-align: center;
+            margin: 0 5px; /* 버튼과의 간격 */
+        }
+
+        .quantity-input button {
+            border: 1px solid #ddd;
+            background-color: #f5f5f5;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .quantity-input button:focus,
+        .quantity-input .form-control.quantity:focus {
+            outline: none;
+        }
+    </style>
+
+</head>
+
+<div class="myrevies">
+    <h2>리뷰</h2>
+    <div class="row mt-3">
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="list-group">
+                    <li th:each="review : ${reviews.content}" class="list-group-item">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <h5 class="mb-1"><span th:text="${review.title}"></span>
+                                </h5>
+                                <p class="mb-1">평점 : <span class="rating__result"
+                                                           th:text="${review.rate+'/5'}"></span>
+                                </p>
+                                <p class="mb-1">등록일 : <span th:text="${review.date}"></span>
+                                </p>
+                                <p class="mb-1">작성자 : <span
+                                        th:text="${review.userName}"></span></p>
+
+                                <div class="col-md-2">
+                                    <div class="float-left">
+                                        <img th:if="${review.reviewImage != null}"
+                                             th:src="${review.reviewImage.path+review.reviewImage.getFileName()+review.reviewImage.getExtension()}"
+                                             width="100" height="100" alt="리뷰 이미지"/>
+                                    </div>
+                                </div>
+                                <p class="mb-1"><span th:text="${review.content}"></span>
+                                </p>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+
+        // 페이지 번호를 클릭할 때 AJAX로 페이지를 로드하는 함수
+        function loadReviewsPage(pageNumber) {
+            // AJAX 요청 생성
+            var xhr = new XMLHttpRequest();
+
+            xhr.open("GET", "/review/book?page=" + pageNumber, true);
+
+            // 요청이 완료되었을 때의 콜백 함수 등록
+            xhr.onload = function () {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    // 요청이 성공한 경우 페이지 내용을 업데이트
+                    var response = xhr.responseText;
+
+                    document.querySelector(".myrevies").innerHTML = response;
+                } else {
+                    // 요청이 실패한 경우 오류 처리
+                    console.error(xhr.statusText);
+                }
+            };
+
+            // 요청 보내기
+            xhr.send();
+        }
+
+        document.querySelectorAll(".pagination li a").forEach(function (pageLink) {
+            pageLink.addEventListener("click", function (event) {
+                event.preventDefault(); // 링크 기본 동작 방지
+                var pageNumber = parseInt(this.textContent.trim()); // 클릭한 페이지 번호 가져오기
+                loadReviewsPage(pageNumber-1); // 해당 페이지 로드
+            });
+        });
+    </script>
+
+</div>
+
