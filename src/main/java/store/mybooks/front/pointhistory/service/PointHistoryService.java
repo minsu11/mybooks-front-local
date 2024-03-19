@@ -23,6 +23,14 @@ import store.mybooks.front.pointhistory.model.PointHistoryGetResponse;
 public class PointHistoryService {
     private final PointHistoryAdaptor pointHistoryAdaptor;
 
+    /**
+     * methodName : getPointHistories <br>
+     * author : damho-lee <br>
+     * description : 포인트 내역 페이지 조회.<br>
+     *
+     * @param pageable Pageable
+     * @return PageResponse
+     */
     public PageResponse<PointHistoryGetResponse> getPointHistories(Pageable pageable) {
         return pointHistoryAdaptor.getPointHistories(pageable);
     }

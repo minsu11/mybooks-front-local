@@ -44,7 +44,7 @@ public class PointHistoryAdaptor {
      * description : 포인트 사용 내역 패이지 조회.<br>
      *
      * @param pageable Pageable
-     * @return page
+     * @return PageResponse
      */
     @RequiredAuthorization
     public PageResponse<PointHistoryGetResponse> getPointHistories(Pageable pageable) {

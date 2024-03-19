@@ -7,8 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import store.mybooks.front.pageable.dto.response.PageResponse;
-import store.mybooks.front.pointhistory.model.PointHistoryGetResponse;
 import store.mybooks.front.pointhistory.service.PointHistoryService;
 
 /**
@@ -28,10 +26,18 @@ import store.mybooks.front.pointhistory.service.PointHistoryService;
 public class PointHistoryController {
     private final PointHistoryService pointHistoryService;
 
+    /**
+     * methodName : getPointHistoryPage <br>
+     * author : damho-lee <br>
+     * description : 포인트 내역 페이지 조회.<br>
+     *
+     * @param pageable Pageable
+     * @param model Model
+     * @return string
+     */
     @GetMapping
     public String getPointHistoryPage(@PageableDefault Pageable pageable, Model model) {
-        PageResponse<PointHistoryGetResponse> page = pointHistoryService.getPointHistories(pageable);
-        model.addAttribute("points", page);
+        model.addAttribute("points", pointHistoryService.getPointHistories(pageable));
         return "point-history";
     }
 }
