@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,9 +52,15 @@ public class ReviewController {
     }
 
     @GetMapping
-    public String getReviewByUserId(@PageableDefault Pageable pageable, Model model) {
+    public String getReviewByUserId(@PageableDefault (size = 8)Pageable pageable, Model model) {
         model.addAttribute("reviews", reviewService.getAllUserReview(pageable));
         return "review";
+    }
+
+    @GetMapping("/book/{bookId}")
+    public String getReviewByBookId(@PathVariable(name = "bookId")Long bookId, @PageableDefault(size=5)Pageable pageable, Model model){
+        model.addAttribute("reviews",reviewService.getBookReview(pageable,bookId));
+        return "review-book";
     }
 
     @GetMapping("/modify")
@@ -68,5 +75,6 @@ public class ReviewController {
         reviewService.modifyReview(reviewId, request);
         return "redirect:/review";
     }
+
 
 }
