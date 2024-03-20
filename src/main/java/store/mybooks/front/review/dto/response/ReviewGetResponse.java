@@ -1,4 +1,4 @@
-package store.mybooks.front.review.controller.dto.response;
+package store.mybooks.front.review.dto.response;
 
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;
@@ -38,7 +38,7 @@ public class ReviewGetResponse {
 
     private String content;
 
-    private ImageResponse reviewImage;
+    private String reviewImage;
 
 
 }

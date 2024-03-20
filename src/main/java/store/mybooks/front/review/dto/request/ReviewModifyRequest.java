@@ -1,14 +1,12 @@
-package store.mybooks.front.review.controller.dto.response;
+package store.mybooks.front.review.dto.request;
 
-import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import store.mybooks.front.image.dto.ImageResponse;
+import lombok.Setter;
 
 /**
- * packageName    : store.mybooks.resource.review.dto.response<br>
- * fileName       : ReviewDetailGetResponse<br>
+ * packageName    : store.mybooks.resource.review.dto.reqeust<br>
+ * fileName       : ReviewModifyRequest<br>
  * author         : masiljangajji<br>
  * date           : 3/17/24<br>
  * description    :
@@ -18,22 +16,14 @@ import store.mybooks.front.image.dto.ImageResponse;
  * 3/17/24        masiljangajji       최초 생성
  */
 @Getter
-@NoArgsConstructor
+@Setter
 @AllArgsConstructor
-public class ReviewDetailGetResponse {
-
-    private Long reviewId;
-
-    private String userName;
+public class ReviewModifyRequest {
 
     private Integer rate;
-
-    private LocalDate date;
 
     private String title;
 
     private String content;
-
-    private ImageResponse reviewImage;
 
 }

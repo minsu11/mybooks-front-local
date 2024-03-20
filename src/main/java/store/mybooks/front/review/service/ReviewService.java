@@ -1,4 +1,4 @@
-package store.mybooks.front.review.controller.service;
+package store.mybooks.front.review.service;
 
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
@@ -6,11 +6,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import store.mybooks.front.pageable.dto.response.PageResponse;
-import store.mybooks.front.review.controller.adaptor.ReviewAdaptor;
-import store.mybooks.front.review.controller.dto.request.ReviewCreateRequest;
-import store.mybooks.front.review.controller.dto.request.ReviewModifyRequest;
-import store.mybooks.front.review.controller.dto.response.ReviewDetailGetResponse;
-import store.mybooks.front.review.controller.dto.response.ReviewGetResponse;
+import store.mybooks.front.review.adaptor.ReviewAdaptor;
+import store.mybooks.front.review.dto.request.ReviewCreateRequest;
+import store.mybooks.front.review.dto.request.ReviewModifyRequest;
+import store.mybooks.front.review.dto.response.ReviewDetailGetResponse;
+import store.mybooks.front.review.dto.response.ReviewGetResponse;
+import store.mybooks.front.review.dto.response.ReviewRateResponse;
 
 /**
  * packageName    : store.mybooks.front.review.controller.service<br>
@@ -47,6 +48,10 @@ public class ReviewService {
 
     public PageResponse<ReviewDetailGetResponse> getBookReview(Pageable pageable, Long bookId){
         return reviewAdaptor.getBookReview(pageable,bookId);
+    }
+
+    public ReviewRateResponse getTotalReviewRate(Long bookId){
+        return  reviewAdaptor.getTotalReviewRate(bookId);
     }
 
 }

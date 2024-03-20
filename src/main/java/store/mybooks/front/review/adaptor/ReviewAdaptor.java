@@ -1,4 +1,4 @@
-package store.mybooks.front.review.controller.adaptor;
+package store.mybooks.front.review.adaptor;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -22,12 +22,13 @@ import org.springframework.web.multipart.MultipartFile;
 import store.mybooks.front.auth.Annotation.RequiredAuthorization;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.pageable.dto.response.PageResponse;
-import store.mybooks.front.review.controller.dto.request.ReviewCreateRequest;
-import store.mybooks.front.review.controller.dto.request.ReviewModifyRequest;
-import store.mybooks.front.review.controller.dto.response.ReviewCreateResponse;
-import store.mybooks.front.review.controller.dto.response.ReviewDetailGetResponse;
-import store.mybooks.front.review.controller.dto.response.ReviewGetResponse;
-import store.mybooks.front.review.controller.dto.response.ReviewModifyResponse;
+import store.mybooks.front.review.dto.request.ReviewCreateRequest;
+import store.mybooks.front.review.dto.request.ReviewModifyRequest;
+import store.mybooks.front.review.dto.response.ReviewCreateResponse;
+import store.mybooks.front.review.dto.response.ReviewDetailGetResponse;
+import store.mybooks.front.review.dto.response.ReviewGetResponse;
+import store.mybooks.front.review.dto.response.ReviewModifyResponse;
+import store.mybooks.front.review.dto.response.ReviewRateResponse;
 import store.mybooks.front.utils.Utils;
 
 /**
@@ -57,8 +58,22 @@ public class ReviewAdaptor {
     private static final String URL_MEMBER_ID = "/api/member/reviews/{id}";
 
 
+    public ReviewRateResponse getTotalReviewRate(Long bookId){
+
+        ResponseEntity<ReviewRateResponse> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL + "/book/{bookId}/rate",
+                HttpMethod.GET,
+                new HttpEntity<>(Utils.getAuthHeader()),
+                new ParameterizedTypeReference<>() {
+                },bookId);
+
+        Utils.getResponseEntity(exchange, HttpStatus.OK);
+
+        return exchange.getBody();
+    }
+
     @RequiredAuthorization
-    public ReviewCreateResponse createReview(ReviewCreateRequest request, MultipartFile file) throws IOException {
+    public void createReview(ReviewCreateRequest request, MultipartFile file) throws IOException {
 
 
         HttpHeaders headers = Utils.getAuthHeader();
@@ -66,7 +81,7 @@ public class ReviewAdaptor {
         MultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
         parts.add("request", request);
 
-        if (!file.getOriginalFilename().isEmpty()) {
+        if (!Objects.requireNonNull(file.getOriginalFilename()).isEmpty()) {
             parts.add("contentImage", new FileSystemResource(convert(file)));
         }
         HttpEntity<MultiValueMap<String, Object>> requestHttpEntity = new HttpEntity<>(parts, headers);
@@ -77,8 +92,6 @@ public class ReviewAdaptor {
                         ReviewCreateResponse.class);
 
         Utils.getResponseEntity(responseEntity, HttpStatus.CREATED);
-
-        return responseEntity.getBody();
     }
 
     @RequiredAuthorization
@@ -95,8 +108,6 @@ public class ReviewAdaptor {
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
-    // 책에서 보여줄 리뷰
-    @RequiredAuthorization
     public PageResponse<ReviewDetailGetResponse> getBookReview(Pageable pageable, Long bookId) {
 
         ResponseEntity<PageResponse<ReviewDetailGetResponse>> exchange = restTemplate.exchange(
@@ -124,7 +135,7 @@ public class ReviewAdaptor {
     }
 
     @RequiredAuthorization
-    public ReviewModifyResponse modifyUserReview(Long reviewId, ReviewModifyRequest request) {
+    public void modifyUserReview(Long reviewId, ReviewModifyRequest request) {
 
         ResponseEntity<ReviewModifyResponse> responseEntity =
                 restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL_MEMBER_ID,
@@ -134,8 +145,6 @@ public class ReviewAdaptor {
                         }, reviewId);
 
         Utils.getResponseEntity(responseEntity, HttpStatus.OK);
-
-        return responseEntity.getBody();
     }
 
     private File convert(MultipartFile file) throws IOException {

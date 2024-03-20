@@ -1,10 +1,12 @@
-package store.mybooks.front.review.controller.dto.response;
+package store.mybooks.front.review.dto.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
- * packageName    : store.mybooks.resource.review.dto.response<br>
- * fileName       : ReviewCreateResponse<br>
+ * packageName    : store.mybooks.front.review.controller.dto.request<br>
+ * fileName       : ReviewCreateRequest<br>
  * author         : masiljangajji<br>
  * date           : 3/17/24<br>
  * description    :
@@ -15,8 +17,16 @@ import lombok.Getter;
  */
 
 @Getter
-public class ReviewCreateResponse {
+@Setter
+@AllArgsConstructor
+public class ReviewCreateRequest {
+
+    private Long orderDetailId;
+
+    private Integer rate;
 
     private String title;
+
+    private String content;
 
 }
