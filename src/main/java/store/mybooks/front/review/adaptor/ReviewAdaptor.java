@@ -95,6 +95,30 @@ public class ReviewAdaptor {
     }
 
     @RequiredAuthorization
+    public void modifyUserReview(Long reviewId, ReviewModifyRequest request, MultipartFile file) throws IOException {
+
+
+        HttpHeaders headers = Utils.getAuthHeader();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        MultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
+        parts.add("request", request);
+
+        if (!Objects.requireNonNull(file.getOriginalFilename()).isEmpty()) {
+            parts.add("contentImage", new FileSystemResource(convert(file)));
+        }
+        HttpEntity<MultiValueMap<String, Object>> requestHttpEntity = new HttpEntity<>(parts, headers);
+
+        ResponseEntity<ReviewModifyResponse> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL_MEMBER_ID,
+                HttpMethod.PUT,
+                requestHttpEntity,
+                new ParameterizedTypeReference<>() {
+                },reviewId);
+
+        Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
+
+    @RequiredAuthorization
     public PageResponse<ReviewGetResponse> getAllUserReview(Pageable pageable) {
 
         ResponseEntity<PageResponse<ReviewGetResponse>> exchange = restTemplate.exchange(
@@ -132,19 +156,6 @@ public class ReviewAdaptor {
                 }, reviewId);
 
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
-    }
-
-    @RequiredAuthorization
-    public void modifyUserReview(Long reviewId, ReviewModifyRequest request) {
-
-        ResponseEntity<ReviewModifyResponse> responseEntity =
-                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL_MEMBER_ID,
-                        HttpMethod.PUT,
-                        new HttpEntity<>(request, Utils.getAuthHeader()),
-                        new ParameterizedTypeReference<>() {
-                        }, reviewId);
-
-        Utils.getResponseEntity(responseEntity, HttpStatus.OK);
     }
 
     private File convert(MultipartFile file) throws IOException {
