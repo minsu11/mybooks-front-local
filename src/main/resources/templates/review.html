@@ -70,11 +70,6 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <script>
-        let url = "/review/all"
-        let currentPage = [[${reviews.number}]]
-        let totalPages = [[${reviews.totalPages}]]
-    </script>
     <!-- Start Breadcrumbs -->
     <div class="breadcrumbs">
         <div class="container">
@@ -93,7 +88,7 @@
     <!-- End Breadcrumbs -->
     <div class="container ml-2">
         <div>
-            <div class="row mt-3">
+            <div class="row mt-3" th:if="${reviews != null and not #lists.isEmpty(reviews.content)}">
                 <div th:each="review : ${reviews.content}" class="col-md-3 mb-3">
                     <div class="card h-100">
                         <div class="card-body">
@@ -108,7 +103,7 @@
                             <br>
 
                             <br>
-                             <span th:text="${review.content}"></span>
+                            <span th:text="${review.content}"></span>
 
                             <div class="float-right">
                                 <img th:if="${review.reviewImage != null}"
@@ -120,17 +115,28 @@
                         <a class="edit-button" th:href="@{/review/modify(reviewId=${review.reviewId})}">수정</a>
                     </div>
                 </div>
+
+                <div class="pagination">
+                    <ul>
+                        <li th:each="i : ${#numbers.sequence(0, reviews.totalPages - 1)}">
+                            <a th:href="@{${#httpServletRequest.requestURI}(page=${i})}"
+                               th:text="${i + 1}" th:class="${reviews.number == i ? 'active' : ''}"></a>
+                        </li>
+                    </ul>
+                </div>
+
+
             </div>
+            <div th:if="${reviews == null or #lists.isEmpty(reviews.content)}" style="text-align: center; margin-top: 20px;">
+                <div style="background-color: #f8f9fa; padding: 20px; border-radius: 10px;">
+                    <h2>리뷰가 존재하지 않습니다.</h2>
+                </div>
+            </div>
+
+
         </div>
 
-        <div class="pagination">
-            <ul>
-                <li th:each="i : ${#numbers.sequence(0, reviews.totalPages - 1)}">
-                    <a th:href="@{${#httpServletRequest.requestURI}(page=${i})}"
-                       th:text="${i + 1}" th:class="${reviews.number == i ? 'active' : ''}"></a>
-                </li>
-            </ul>
-        </div>
+
     </div>
 
 </div>
