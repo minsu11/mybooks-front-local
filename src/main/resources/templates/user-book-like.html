@@ -60,7 +60,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-3">
+            <div class="mt-3" th:block th:if="${bookLikeList.totalPages > 1}">
                 <div class="pagination">
                     <div class="page-item">
                         <a class="page-link" id="prevLink" th:text="'<'" th:href="@{#}"></a>
@@ -70,10 +70,10 @@
                         <a class="page-link" id="nextLink" th:text="'>'" th:href="@{#}"></a>
                     </div>
                 </div>
-                <script src="/admin/js/page/setPrevious.js"></script>
-                <script src="/admin/js/page/setNext.js"></script>
-                <script src="/admin/js/page/setLastPage.js"></script>
             </div>
+            <script src="/admin/js/page/setPrevious.js"></script>
+            <script src="/admin/js/page/setNext.js"></script>
+            <script src="/admin/js/page/setLastPage.js"></script>
         </div>
     </section>
     <!-- End About Area -->
