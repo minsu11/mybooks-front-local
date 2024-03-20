@@ -36,15 +36,11 @@ public class LogoutInterceptor implements HandlerInterceptor {
         ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(request.getServletContext());
         TokenAdaptor tokenAdaptor = Objects.requireNonNull(context).getBean(TokenAdaptor.class);
 
-        log.warn("리프래시토큰 삭제");
-
         //리프래시토큰 삭제
         tokenAdaptor.deleteRefreshToken(
                 new LogoutRequest((String) request.getAttribute("identity_cookie_value"), Utils.getUserIp(request),
                         Utils.getUserAgent(request)));
         // 엑세스 토큰 담은 쿠키 삭제
-
-        log.warn("엑세스토큰 담은 쿠키 삭제");
         CookieUtils.deleteJwtCookie(response);
 
 

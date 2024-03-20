@@ -29,7 +29,7 @@
                 <div th:each="book : ${books.content}" class="col-md-3 mb-3">
                     <div class="card h-100">
                         <img class="card-img-top book-image"
-                             th:src="${book.imageResponse.path + book.imageResponse.fileName+ book.imageResponse.extension}"
+                             th:src="${book.image}"
                              alt="도서 썸네일 이미지">
                         <div class="card-body">
                             <a th:href="@{/admin/book/update(id=${book.id})}">

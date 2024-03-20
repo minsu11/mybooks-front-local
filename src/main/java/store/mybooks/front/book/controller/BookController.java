@@ -3,7 +3,9 @@ package store.mybooks.front.book.controller;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,7 @@ import store.mybooks.front.admin.category.model.response.CategoryIdAndName;
 import store.mybooks.front.admin.tag.model.response.TagGetResponseForBookDetail;
 import store.mybooks.front.book.service.BookService;
 import store.mybooks.front.booklike.service.BookLikeService;
+import store.mybooks.front.review.service.ReviewService;
 import store.mybooks.front.utils.CookieUtils;
 
 /**
@@ -34,6 +37,7 @@ import store.mybooks.front.utils.CookieUtils;
 public class BookController {
     private final BookService bookService;
     private final BookLikeService bookLikeService;
+    private final ReviewService reviewService;
     private final RedisTemplate<String, Integer> redisTemplate;
 
     /**
@@ -46,7 +50,8 @@ public class BookController {
      * @return string
      */
     @GetMapping("/{id}")
-    public String getBookDetailPage(HttpServletRequest request, @PathVariable("id") Long bookId, Model model) {
+    public String getBookDetailPage(HttpServletRequest request, @PathVariable("id") Long bookId, Model model, @PageableDefault(size = 5)
+    Pageable pageable) {
         BookDetailResponse book = bookService.getBook(bookId);
         model.addAttribute("book", book);
         model.addAttribute("authorNameList", book.getAuthorList().stream()
@@ -70,6 +75,11 @@ public class BookController {
 
         String key = "viewCount:" + bookId;
         redisTemplate.opsForValue().increment(key, 1);
+
+
+        model.addAttribute("reviews", reviewService.getBookReview(pageable,bookId));
+        model.addAttribute("reviewRateInfo",reviewService.getTotalReviewRate(bookId));
+
 
         return "book-details";
     }
