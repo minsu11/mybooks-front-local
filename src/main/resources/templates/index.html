@@ -248,7 +248,8 @@
                                 <li><p>리뷰: <span th:text="${book.rate}">/5</span>(<span th:text="(${book.reviewCount})"></span>)</p></li>
                             </ul>
                             <div class="price">
-                                <span th:text="${book.saleCost}"></span>
+                                <span th:text="'₩'+ ${book.saleCost}"></span>
+                                <span th:if="${book.saleCost != book.cost}" class="discount-price" th:text="${book.cost} + '₩'"></span>
                             </div>
                         </div>
                     </div>
@@ -295,7 +296,8 @@
 
                             </ul>
                             <div class="price">
-                                <span th:text="${book.saleCost}"></span>
+                                <span th:text="'₩'+ ${book.saleCost}"></span>
+                                <span th:if="${book.saleCost != book.cost}" class="discount-price" th:text="${book.cost} + '₩'"></span>
                             </div>
                         </div>
                     </div>
