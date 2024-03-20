@@ -47,6 +47,45 @@
                                  data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
                                     <style>
+
+                                        /* 모달 스타일 */
+                                        .modal {
+                                            display: none; /* 모달을 기본적으로 숨김 */
+                                            position: fixed; /* 고정 위치 */
+                                            z-index: 1; /* 다른 요소들 위에 표시 */
+                                            left: 0;
+                                            top: 0;
+                                            width: 100%; /* 화면 전체 너비 */
+                                            height: 100%; /* 화면 전체 높이 */
+                                            overflow: auto; /* 스크롤 가능하도록 설정 */
+                                            background-color: rgb(0,0,0); /* 배경색 */
+                                            background-color: rgba(0,0,0,0.4); /* 배경 투명도 */
+                                        }
+
+                                        /* 모달 콘텐츠 스타일 */
+                                        .modal-content {
+                                            background-color: #fefefe; /* 배경색 */
+                                            margin: 15% auto; /* 화면 중앙에서 수직 및 수평 가운데로 정렬 */
+                                            padding: 20px;
+                                            border: 1px solid #888;
+                                            width: 80%; /* 모달의 너비 */
+                                        }
+
+                                        /* 닫기 버튼 스타일 */
+                                        .close {
+                                            color: #aaa;
+                                            float: right;
+                                            font-size: 28px;
+                                            font-weight: bold;
+                                        }
+
+                                        .close:hover,
+                                        .close:focus {
+                                            color: black;
+                                            text-decoration: none;
+                                            cursor: pointer;
+                                        }
+
                                         table {
                                             width: 100%;
                                             border-collapse: collapse;
@@ -93,8 +132,9 @@
                                             <td th:text="${address.detail}"></td>
                                             <td th:text="${address.number}"></td>
                                             <td th:text="${address.reference}"></td>
+                                            <!-- 버튼을 클릭하면 모달 열기 -->
                                             <td>
-                                                <button type="button" class="delete-btn" th:id="${address.id}" onclick="openWindow(this.getAttribute('id'))">수정</button>
+                                                <button type="button" class="delete-btn" th:id="${address.id}" onclick="openModal(this.getAttribute('id'))">수정</button>
                                             </td>
                                             <td>
                                                 <form  method="post" action="/user/address/delete">
@@ -106,6 +146,10 @@
                                         </tr>
                                         </tbody>
                                     </table>
+
+
+
+
 
                                 </div>
                             </div>
@@ -218,77 +262,34 @@
             </div>
         </div>
     </section>
+
+    <!-- 모달 -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <!-- 모달 내용 -->
+            <h2>주소 수정</h2>
+            <form id="modifyForm" method="post" action="/user/address/modify">
+                <!-- 주소 id를 hidden으로 전달 -->
+                <input type="hidden" name="addressId" value="" id="addressId"/>
+
+                <!-- 수정 양식 내용 -->
+                <div class="form-group">
+                    <label for="modify_alias">별명</label>
+                    <input type="text" id="modify_alias" class="form-control" name="alias" placeholder="별명" required>
+                </div>
+                <div class="form-group">
+                    <label for="modify_sample6_detailAddress">상세주소</label>
+                    <input type="text" id="modify_sample6_detailAddress" class="form-control" name="detail" placeholder="상세주소" required>
+                </div>
+                <button type="submit" class="delete-btn">변경</button>
+            </form>
+        </div>
+    </div>
     <!-- End Team Area -->
 
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script>
-
-        var newWindow;
-
-        function openWindow(addressId) {
-            // 기존에 열려있는 창이 있다면 닫기
-            if (newWindow && !newWindow.closed) {
-                newWindow.close();
-            }
-
-            // 새 창 열기
-            newWindow = window.open("", "NewWindow", "width=400,height=100");
-
-            console.log(addressId)
-
-            // 새 창에 폼 내용 작성
-            var content = `
-        <html>
-        <head>
-            <title>주소 수정</title>
-        </head>
-        <body>
-        <form id="modifyForm" method="post" action="https://www.my-books.store/user/address/modify">
-            <!-- 주소 id를 hidden으로 전달 -->
-            <input type="hidden" name="addressId" value="${addressId}"/>
-
-            <!-- 수정 양식 내용 -->
-            <div class="form-group">
-                <label for="modify_alias">별명</label>
-                <input type="text" id="modify_alias" class="form-control" name="alias" placeholder="별명" required>
-            </div>
-            <div class="form-group">
-                <label for="modify_sample6_detailAddress">상세주소</label>
-                <input type="text" id="modify_sample6_detailAddress" class="form-control" name="detail" placeholder="상세주소" required>
-            </div>
-            <button type="submit">변경</button>
-        </form>
-        </body>
-        </html>
-    `;
-
-            // 새 창에 내용 쓰기
-            newWindow.document.write(content);
-
-            // 폼 제출 시 새 창 닫기
-            newWindow.document.getElementById('modifyForm').addEventListener('submit', function (event) {
-                event.preventDefault(); // 폼 제출 방지
-                var form = event.target; // 폼 요소 가져오기
-                var formData = new FormData(form); // 폼 데이터 생성
-                var xhr = new XMLHttpRequest(); // XMLHttpRequest 객체 생성
-                xhr.open('POST', 'https://www.my-books.store/user/address/modify'); // 요청 설정
-                xhr.onload = function () {
-                    // 요청 완료 시
-                    if (xhr.status === 200) {
-                        // 요청 성공 시
-                        newWindow.close(); // 새 창 닫기
-                        location.reload(); // 기존 페이지 새로고침
-                    }
-                };
-                xhr.send(formData); // 요청 전송
-            });
-        }
-
-        // 기존 창 닫기
-        function closeWindow() {
-            // 창 닫기
-            newWindow.close();
-        }
 
 
         function sample6_execDaumPostcode() {
@@ -334,5 +335,21 @@
             }
             return true;
         }
+
+        // 모달 열기 함수
+        function openModal(addressId) {
+            var modal = document.getElementById("myModal");
+            var addressIdField = document.getElementById("addressId");
+            addressIdField.value = addressId;
+            console.log(addressId)
+            modal.style.display = "block";
+        }
+
+        // 모달 닫기 함수
+        function closeModal() {
+            var modal = document.getElementById("myModal");
+            modal.style.display = "none";
+        }
+
     </script>
 </div>
