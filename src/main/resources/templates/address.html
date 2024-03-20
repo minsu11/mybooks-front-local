@@ -96,7 +96,6 @@
                                             <td>
                                                 <button type="button" class="delete-btn" th:id="${address.id}" onclick="openWindow(this.getAttribute('id'))">수정</button>
                                             </td>
-
                                             <td>
                                                 <form  method="post" action="/user/address/delete">
                                                     <input type="hidden" name="addressId"
@@ -153,7 +152,7 @@
                                         <div class="form-group">
                                             <label for="sample6_extraAddress">참고항목</label>
                                             <input type="text" id="sample6_extraAddress" name="reference"
-                                                   class="form-control" placeholder="참고항목" readonly>
+                                                   class="form-control" placeholder="참고항목" required>
                                         </div>
                                         <button type="submit" class="btn btn-primary">추가</button>
                                     </form>
