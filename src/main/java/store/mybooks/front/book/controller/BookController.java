@@ -69,7 +69,6 @@ public class BookController {
         model.addAttribute("contentImage", book.getContentImageList());
 
         if (CookieUtils.getIdentityCookieValue(request) != null) {
-
             model.addAttribute("userBookLikeCheck", bookLikeService.isUserLikeCheck(bookId));
         }
 
@@ -78,7 +77,6 @@ public class BookController {
 
 
         model.addAttribute("reviews", reviewService.getBookReview(pageable,bookId));
-        model.addAttribute("reviewRateInfo",reviewService.getTotalReviewRate(bookId));
 
 
         return "book-details";
