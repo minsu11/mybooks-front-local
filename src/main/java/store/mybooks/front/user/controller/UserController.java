@@ -6,7 +6,6 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,8 +20,6 @@ import store.mybooks.front.auth.dto.request.TokenCreateRequest;
 import store.mybooks.front.auth.dto.response.TokenCreateResponse;
 import store.mybooks.front.auth.redis.RedisAuthService;
 import store.mybooks.front.config.RedisProperties;
-import store.mybooks.front.cart.LoginCartDataMoveEvent;
-import store.mybooks.front.cart.LogoutCartDataMoveEvent;
 import store.mybooks.front.user.adaptor.UserAdaptor;
 import store.mybooks.front.user.dto.request.UserCreateRequest;
 import store.mybooks.front.user.dto.request.UserEmailRequest;
@@ -64,8 +61,6 @@ public class UserController {
     private final RedisProperties redisProperties;
 
 
-    private final ApplicationEventPublisher applicationEventPublisher;
-
     /**
      * methodName : loginUserForm
      * author : masiljangajji
@@ -91,7 +86,6 @@ public class UserController {
 
     @GetMapping("/logout")
     public String logout() {
-//        applicationEventPublisher.publishEvent(new LogoutCartDataMoveEvent(this));
         return "redirect:/";
     }
 
@@ -192,7 +186,7 @@ public class UserController {
 
             // 쿠키추가
             CookieUtils.addJwtCookie(response, tokenCreateResponse.getAccessToken());
-//            applicationEventPublisher.publishEvent(new LoginCartDataMoveEvent(this));
+
             return "redirect:/";
         }
 
