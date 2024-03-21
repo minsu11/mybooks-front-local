@@ -2,7 +2,6 @@ package store.mybooks.front.user_address.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 /**
  * packageName    : store.mybooks.resource.user_address.dto.request<br>
@@ -23,5 +22,8 @@ public class UserAddressModifyRequest {
     private String alias;
 
     private String detail;
+
+    private String reference;
+
 
 }
