@@ -69,7 +69,7 @@ public class GlobalControllerAdvice {
     public String handleOrderModulationException(Exception exception, HttpServletRequest request) {
 
         String previousUrl = request.getHeader(REFERER);
-        request.getSession().setAttribute("errosr", exception.getMessage());
+        request.getSession().setAttribute("error", exception.getMessage());
         return previousUrl.replace(domain, "redirect:");
     }
 
