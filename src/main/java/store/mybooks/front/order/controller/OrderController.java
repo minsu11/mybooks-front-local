@@ -159,23 +159,33 @@ public class OrderController {
     public String viewOrderPage(
             ModelMap modelMap) {
         PointResponse pointResponse = userPointService.getPointsHeld();
-        LocalDate localDate = LocalDate.now();
         UserGetResponse user = userAdaptor.findUser();
+
         List<CartDetail> bookFromCart = cartUserService.getBookFromCart();
+
         DeliveryRuleResponse deliveryRule = deliveryRuleService.getDeliveryRuleResponseByName("배송 비");
         modelMap.put("bookLists", bookFromCart);
         modelMap.put("totalCost", orderService.calculateTotalCost(bookFromCart));
         modelMap.put("point", pointResponse.getRemainingPoint());
-        modelMap.put("localDate", localDate);
+        modelMap.put("localDate", LocalDate.now());
         modelMap.put("user", user);
         modelMap.put("delivery", deliveryRule);
         return "checkout";
     }
 
+    /**
+     * methodName : doOrder<br>
+     * author : minsu11<br>
+     * description : 주문 처리.
+     *
+     * @param orderRequest the order request
+     * @return the string
+     */
     @PostMapping("/order")
     public String doOrder(@ModelAttribute BookOrderRequest orderRequest) {
         log.info("값 : {}", orderRequest.toString());
         List<CartDetail> cart = cartUserService.getBookFromCart();
+        log.debug(cart.get(0).toString());
         orderInfoCheckService.checkModulation(orderRequest, cart);
         int point = orderService.getPoint(orderRequest.getOrderInfo());
         int couponCost = orderService.calculateBookCouponCost(orderRequest.getBookInfoList());

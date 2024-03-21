@@ -1,7 +1,8 @@
 package store.mybooks.front.order.dto.request;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * packageName    : store.mybooks.front.order.dto.request<br>
@@ -15,7 +16,8 @@ import lombok.Getter;
  * 3/16/24        minsu11       최초 생성<br>
  */
 @Getter
-@AllArgsConstructor
+@Setter
+@NoArgsConstructor
 public class OrderInfoRequest {
 
     private String recipientName;
