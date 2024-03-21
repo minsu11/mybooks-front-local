@@ -6,9 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.order.dto.response.BookOrderDetailResponse;
 import store.mybooks.front.payment.adaptor.PayAdaptor;
-import store.mybooks.front.payment.dto.request.PayCreateRequest;
 import store.mybooks.front.payment.dto.request.TossPaymentRequest;
-import store.mybooks.front.payment.dto.response.PayCreateResponse;
 import store.mybooks.front.payment.dto.response.TossPaymentResponse;
 
 /**
@@ -46,14 +44,6 @@ public class PayService {
 
     public TossPaymentResponse createTossPayment(TossPaymentRequest request) {
         return payAdaptor.confirmPayment(request);
-    }
-
-    public PayCreateResponse createPayment(PayCreateRequest request) {
-        return payAdaptor.createResponse(request);
-    }
-
-    public TossPaymentResponse getTossPayment(TossPaymentRequest request) {
-        return payAdaptor.getTossPaymentResponse(request);
     }
 
 
