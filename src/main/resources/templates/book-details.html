@@ -61,10 +61,10 @@
         }
 
 
-         .product-images {
-             max-height: 70%;
-             overflow: hidden;
-         }
+        .product-images {
+            max-height: 70%;
+            overflow: hidden;
+        }
 
         #bookImage {
             height: 70%;
@@ -141,8 +141,9 @@
                                 <div class="bottom-content">
                                     <div class="row align-items-end">
                                         <div class="col-lg-4 col-md-4 col-12">
-                                            <form action="/direct/checkout" method="get">
-                                                <input type="hidden" name="id" th:value="${book.id}">
+                                            <form id="direct-order-form" action="/direct/checkout" method="get">
+                                                <input type="hidden" id="direct-order-book-id" name="id"
+                                                       th:value="${book.id}">
                                                 <input type="hidden" id="buyNowQuantity" name="quantity">
                                                 <div class="button cart-button">
                                                     <button type="submit" class="btn" style="width: 100%;">바로구매</button>
@@ -301,8 +302,7 @@
 
     <script type="text/javascript">
 
-
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             // 리뷰 목록이 비어 있는지 확인
             var reviewsList = document.querySelectorAll(".list-group-item");
             if (reviewsList.length === 0) {
@@ -314,7 +314,19 @@
                 document.querySelector(".pagination").style.display = "none";
             }
         });
+        const form = document.getElementById('direct-order-form');
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault()
+            const bookId = document.getElementById('direct-order-book-id').value;
+            const buyNowQuantity = document.getElementById('buyNowQuantity').value
+            console.log(bookId)
+            console.log(buyNowQuantity)
+            const request = {}
+            const response = await fetch('/direct/book/check', {
+                method: "POST",
 
+            })
+        })
 
         // 페이지 번호를 클릭할 때 AJAX로 페이지를 로드하는 함수
         function loadReviewsPage(pageNumber) {
@@ -345,12 +357,9 @@
             pageLink.addEventListener("click", function (event) {
                 event.preventDefault(); // 링크 기본 동작 방지
                 var pageNumber = parseInt(this.textContent.trim()); // 클릭한 페이지 번호 가져오기
-                loadReviewsPage(pageNumber-1); // 해당 페이지 로드
+                loadReviewsPage(pageNumber - 1); // 해당 페이지 로드
             });
         });
-
-
-
 
 
         const current = document.getElementById("current");

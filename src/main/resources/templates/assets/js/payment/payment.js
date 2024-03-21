@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const button = document.getElementById("payment-button");
     const coupon = document.getElementById("all-book-coupon-button");
     const generateRandomString = orderNumber.toString()
+    var couponCheck;
     var amount = parseInt(document.getElementById("order-total-cost").value);
 
 // ------  결제위젯 초기화 ------
@@ -33,10 +34,9 @@ document.addEventListener("DOMContentLoaded", function () {
 // @docs https://docs.tosspayments.com/reference/widget-sdk#updateamount결제-금액
     if (coupon) {
         coupon.addEventListener("click", function () {
-            if (coupon.checked) {
-                paymentMethodWidget.updateAmount(amount - 5000);
-            } else {
-                paymentMethodWidget.updateAmount(amount);
+            // paymentMethodWidget.updateAmount(amount - 5000);
+            if (!couponCheck.closed && couponCheck) {
+
             }
         });
     }
@@ -79,4 +79,8 @@ async function payInfo(customerKey) {
     }
     return json;
 }
+
+
+
+
 

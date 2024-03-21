@@ -3,6 +3,7 @@ package store.mybooks.front.book.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.admin.book.model.response.BookDetailResponse;
+import store.mybooks.front.admin.book.model.response.BookGetResponseForOrder;
 import store.mybooks.front.book.adaptor.BookAdaptor;
 
 /**
@@ -31,5 +32,15 @@ public class BookService {
      */
     public BookDetailResponse getBook(Long bookId) {
         return bookAdaptor.getBook(bookId);
+    }
+
+    /**
+     * 바로 구매 정보를 조회.
+     *
+     * @param bookId the book id
+     * @return the book for order
+     */
+    public BookGetResponseForOrder getBookForOrder(Long bookId) {
+        return bookAdaptor.getBookForOrder(bookId);
     }
 }

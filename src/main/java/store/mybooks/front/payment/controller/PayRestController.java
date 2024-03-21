@@ -38,7 +38,7 @@ public class PayRestController {
 
     @PostMapping("/confirm")
     public ResponseEntity<TossPaymentResponse> confirmPayment(@RequestBody TossPaymentRequest request) {
-
+        // 재고
         return ResponseEntity.status(HttpStatus.OK).body(payService.createTossPayment(request));
     }
 

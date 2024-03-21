@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import store.mybooks.front.admin.book.model.response.BookBriefResponse;
 import store.mybooks.front.admin.book.model.response.BookDetailResponse;
+import store.mybooks.front.admin.book.model.response.BookGetResponseForOrder;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.utils.Utils;
 
@@ -76,4 +77,23 @@ public class BookAdaptor {
                 id);
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
+
+    /**
+     * 바로 구매에서 사용될 DTO 데이터.
+     *
+     * @param bookId the book id
+     * @return the book for order
+     */
+    public BookGetResponseForOrder getBookForOrder(Long bookId) {
+        ResponseEntity<BookGetResponseForOrder> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL_ID + "/order",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<BookGetResponseForOrder>() {
+                }, bookId
+        );
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+
+    }
+
 }

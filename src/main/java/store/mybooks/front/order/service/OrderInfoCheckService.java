@@ -5,6 +5,7 @@ import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import store.mybooks.front.admin.book.model.response.BookGetResponseForOrder;
 import store.mybooks.front.admin.wrap.adaptor.WrapAdaptor;
 import store.mybooks.front.book.adaptor.BookAdaptor;
 import store.mybooks.front.cart.domain.CartDetail;
@@ -13,6 +14,8 @@ import store.mybooks.front.order.dto.request.BookInfoRequest;
 import store.mybooks.front.order.dto.request.BookOrderRequest;
 import store.mybooks.front.order.dto.request.OrderInfoRequest;
 import store.mybooks.front.order.dto.request.OrderUserInfoRequest;
+import store.mybooks.front.order.exception.AmountNegativeException;
+import store.mybooks.front.order.exception.AmountOverStockException;
 import store.mybooks.front.order.exception.OrderInfoNotMatchException;
 import store.mybooks.front.user_address.adaptor.UserAddressAdaptor;
 import store.mybooks.front.user_coupon.adaptor.UserCouponAdaptor;
@@ -46,21 +49,22 @@ public class OrderInfoCheckService {
     /**
      * methodName : checkModulation<br>
      * author : minsu11<br>
-     * description : {@Code html}에서 변조 데이터 들어왔는지 검사.
+     * description : 장바구니 구매 과정에서 {@code html} 변조 데이터  검사.
      * <br>
      *
-     * @param bookOrderRequest the book order request
-     * @param cartInfo         the cart info
+     * @param bookOrderRequest 주문서에서 작성한 데이터
+     * @param cartInfo         장바구니에 담긴 데이터
      */
     public void checkModulation(BookOrderRequest bookOrderRequest, List<CartDetail> cartInfo) {
         OrderInfoRequest orderInfoRequest = bookOrderRequest.getOrderInfo();
         List<BookInfoRequest> bookInfoRequest = bookOrderRequest.getBookInfoList();
         checkOrderAddress(bookOrderRequest.getUserInfo());
         checkDuplicateCoupon(bookInfoRequest);
-        checkBookInfo(bookInfoRequest, cartInfo);
         checkPoint(orderInfoRequest.getUsingPoint());
+        checkBookInfos(bookInfoRequest, cartInfo);
 
     }
+
 
     /**
      * methodName : checkBookInfo<br>
@@ -71,8 +75,7 @@ public class OrderInfoCheckService {
      * @param bookInfos 주문할 도서 정보
      * @param cartInfos 장바구니 정보
      */
-//todo 수량 체크하는 부분 추가해야함
-    public void checkBookInfo(List<BookInfoRequest> bookInfos, List<CartDetail> cartInfos) {
+    public void checkBookInfos(List<BookInfoRequest> bookInfos, List<CartDetail> cartInfos) {
         if (bookInfos.size() != cartInfos.size()) {
             throw new OrderInfoNotMatchException("장바구니에 담긴 물품의 갯수가 다름");
         }
@@ -165,6 +168,42 @@ public class OrderInfoCheckService {
 
         if (usingPoint < 0 || pointsHeld.getRemainingPoint() < usingPoint) {
             throw new OrderInfoNotMatchException("포인트 정보가 다름");
+        }
+    }
+
+    /**
+     * methodName : checkDirectOrderModulation<br>
+     * author : minsu11<br>
+     * description : 바로 구매 과정에서 {@code html} 변조 데이터 검사
+     * <br>
+     *
+     * @param bookOrderRequest        주문서에 작성한 데이터
+     * @param bookGetResponseForOrder {@code DB}에서 조회한 데이터
+     */
+    public void checkDirectOrderModulation(BookOrderRequest bookOrderRequest,
+                                           BookGetResponseForOrder bookGetResponseForOrder) {
+
+        OrderInfoRequest orderInfoRequest = bookOrderRequest.getOrderInfo();
+        List<BookInfoRequest> bookInfoRequest = bookOrderRequest.getBookInfoList();
+        checkOrderAddress(bookOrderRequest.getUserInfo());
+        checkDuplicateCoupon(bookInfoRequest);
+        checkPoint(orderInfoRequest.getUsingPoint());
+        checkAmount(bookInfoRequest, bookGetResponseForOrder);
+    }
+
+
+    public void checkAmount(List<BookInfoRequest> bookInfoRequest, BookGetResponseForOrder bookGetResponseForOrder) {
+        checkAmount(bookInfoRequest.get(0).getAmount(), bookGetResponseForOrder.getStock());
+    }
+
+
+    public void checkAmount(int amount, int equalsAmount) {
+        if (amount <= 0) {
+            throw new AmountNegativeException();
+        }
+
+        if (amount > equalsAmount) {
+            throw new AmountOverStockException();
         }
     }
 

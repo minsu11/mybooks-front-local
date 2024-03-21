@@ -10,11 +10,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import store.mybooks.front.admin.book.model.response.BookDetailResponse;
+import store.mybooks.front.admin.book.model.response.BookGetResponseForOrder;
 import store.mybooks.front.admin.delivery_rule.dto.DeliveryRuleResponse;
 import store.mybooks.front.admin.delivery_rule.service.DeliveryRuleService;
 import store.mybooks.front.admin.wrap.dto.response.WrapResponse;
 import store.mybooks.front.admin.wrap.service.WrapService;
+import store.mybooks.front.book.service.BookService;
 import store.mybooks.front.cart.domain.CartDetail;
 import store.mybooks.front.cart.service.CartNonUserService;
 import store.mybooks.front.cart.service.CartUserService;
@@ -59,6 +60,8 @@ public class OrderController {
     private final CartUserService cartUserService;
     private final OrderInfoCheckService orderInfoCheckService;
     private final DeliveryRuleService deliveryRuleService;
+    private final BookService bookService;
+
 
     /**
      * methodName : viewOrderPage<br>
@@ -72,16 +75,24 @@ public class OrderController {
     @GetMapping("/direct/checkout")
     public String viewDirectOrderPage(@ModelAttribute BookOrderDirectRequest request,
                                       ModelMap modelMap) {
-        BookDetailResponse bookDetailResponse = orderService.getBook(request);
+        BookGetResponseForOrder bookGetResponseForOrder = bookService.getBookForOrder(request.getId());
+        List<BookGetResponseForOrder> bookGetResponseForOrders = List.of(bookService.getBookForOrder(request.getId()));
         PointResponse pointResponse = userPointService.getPointsHeld();
         UserGetResponse user = userAdaptor.findUser();
-        Integer totalCost = bookDetailResponse.getSaleCost() * request.getQuantity();
-        modelMap.put("bookList", bookDetailResponse);
+        Integer totalCost = bookGetResponseForOrder.getSaleCost() * request.getQuantity();
+        DeliveryRuleResponse deliveryRule = deliveryRuleService.getDeliveryRuleResponseByName("배송 비");
+        modelMap.put("quantity", request.getQuantity());
+        modelMap.put("bookLists", bookGetResponseForOrders);
         modelMap.put("totalCost", totalCost);
         modelMap.put("point", pointResponse.getRemainingPoint());
+        modelMap.put("direct", true);
+        modelMap.put("localDate", LocalDate.now());
         modelMap.put("user", user);
-        return "checkout";
+        modelMap.put("delivery", deliveryRule);
+        log.debug("메서드 끝");
+        return "direct-order-checkout";
     }
+
 
     /**
      * methodName : viewCheckAddress<br>
@@ -151,6 +162,23 @@ public class OrderController {
     /**
      * methodName : viewCoupon<br>
      * author : minsu11<br>
+     * description : 결제 페이지에서 사용 가능한 전체 쿠폰 페이지.
+     * <br>
+     *
+     * @param modelMap the model map
+     * @return the string
+     */
+    @GetMapping("checkout/total/coupon")
+    public String viewTotalCoupon(ModelMap modelMap) {
+        List<UserCouponGetResponseForOrder> useCoupon = userCouponService.getUsableUserTotalCoupon();
+        modelMap.put("couponList", useCoupon);
+        modelMap.put("allCoupon", true);
+        return "checkout-coupon";
+    }
+
+    /**
+     * methodName : viewCoupon<br>
+     * author : minsu11<br>
      * description : 장바구니를 통한 주문.
      *
      * @param modelMap the model map
@@ -184,9 +212,7 @@ public class OrderController {
      */
     @PostMapping("/order")
     public String doOrder(@ModelAttribute BookOrderRequest orderRequest) {
-        log.info("값 : {}", orderRequest.toString());
         List<CartDetail> cart = cartUserService.getBookFromCart();
-        log.debug(cart.get(0).toString());
         orderInfoCheckService.checkModulation(orderRequest, cart);
         int point = orderService.getPoint(orderRequest.getOrderInfo());
         int couponCost = orderService.calculateBookCouponCost(orderRequest.getBookInfoList());
@@ -194,6 +220,32 @@ public class OrderController {
         int totalCost = orderService.calculateTotalCost(cart);
         BookOrderCreateResponse response = orderService.createOrder(orderRequest.getBookInfoList(),
                 orderRequest.getOrderInfo(), point, couponCost, wrapCost, totalCost);
+        return "redirect:/pay/" + response.getNumber();
+    }
+
+    @PostMapping("/direct/order")
+    public String doDirectOrder(@ModelAttribute BookOrderRequest orderRequest
+    ) {
+        log.debug("값이 제대로 들어왔는지 확인: {}", orderRequest);
+
+        BookGetResponseForOrder bookGetResponseForOrder =
+                bookService.getBookForOrder(orderRequest.getBookInfoList().get(0).getBookId());
+
+        orderInfoCheckService.checkDirectOrderModulation(orderRequest, bookGetResponseForOrder);
+
+        int point = orderRequest.getOrderInfo().getUsingPoint(); // 사용한 포인트
+        log.debug("point cost: {}", point);
+        // coupon cost
+        int couponCost = orderService.calculateBookCouponCost(orderRequest.getBookInfoList());
+        log.debug("coupon cost: {}", couponCost);
+        int wrapCost = orderService.calculateBookWrapCost(orderRequest.getBookInfoList());
+        log.debug("wrap cost: {}", wrapCost);
+
+        int totalCost = bookGetResponseForOrder.getSaleCost()
+                * orderRequest.getBookInfoList().get(0).getAmount();
+        BookOrderCreateResponse response = orderService.createOrder(orderRequest.getBookInfoList(),
+                orderRequest.getOrderInfo(), point, couponCost, wrapCost, totalCost);
+
         return "redirect:/pay/" + response.getNumber();
     }
 }

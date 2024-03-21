@@ -86,11 +86,11 @@ public class OrderService {
 
     public Integer calculateBookCouponCost(List<BookInfoRequest> bookInfoRequests) {
         int result = 0;
-        for (int i = 0; i < bookInfoRequests.size(); i++) {
-            int saleCost = bookInfoRequests.get(i).getSaleCost();
-            int amount = bookInfoRequests.get(i).getAmount();
+        for (BookInfoRequest bookInfoRequest : bookInfoRequests) {
+            int saleCost = bookInfoRequest.getSaleCost();
+            int amount = bookInfoRequest.getAmount();
             int couponCost = 0;
-            Long couponId = bookInfoRequests.get(i).getSelectCouponId();
+            Long couponId = bookInfoRequest.getSelectCouponId();
             if (Objects.nonNull(couponId)) {
 
                 UserCouponResponse coupon = userCouponAdaptor.getUserCouponResponse(couponId);
@@ -169,7 +169,7 @@ public class OrderService {
         BookOrderCreateRequest request = new BookOrderCreateRequest(bookInfo, orderInfo,
                 orderNumber, point, couponCost, wrapCost, totalCost);
         log.debug("주문 저장할 데이터: {}", request);
-        
+
         return orderAdapter.createBookOrder(request);
     }
 
@@ -181,4 +181,8 @@ public class OrderService {
     public BookOrderPayInfoResponse getBookOrderPayInfo(String orderNumber) {
         return orderAdapter.getBookOrderPayInfo(orderNumber);
     }
+//
+//    public Integer calculateDirectOrderTotalCost() {
+//
+//    }
 }

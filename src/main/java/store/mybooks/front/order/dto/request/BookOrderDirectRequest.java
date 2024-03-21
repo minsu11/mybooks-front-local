@@ -18,7 +18,5 @@ import lombok.Getter;
 @AllArgsConstructor
 public class BookOrderDirectRequest {
     private Long id;
-    private Integer saleCost;
     private Integer quantity;
-
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{common/layout/my-books-layout}">
 
@@ -42,7 +42,7 @@
         <div class="container w-1000">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    <form id="order-pay-form" action="/order" method="post">
+                    <form id="order-pay-form" action="/direct/order" method="post">
                         <div class="checkout-steps-form-style-1">
                             <ul id="accordionExample">
                                 <li>
@@ -164,7 +164,7 @@
                                                         <tr th:id="${index.index}" class="name">
                                                             <input th:name="|bookInfoList[${index.index}].bookId|"
                                                                    type="hidden"
-                                                                   th:value="${book.bookId}"/>
+                                                                   th:value="${book.id}"/>
                                                             <input th:name="|bookInfoList[${index.index}].saleCost|"
                                                                    type="hidden"
                                                                    th:value="${book.saleCost}"/>
@@ -178,17 +178,18 @@
                                                                 </span>
                                                                 </label>
                                                             </td>
-                                                            <td th:text="${book.cost}"></td>
+                                                            <td th:text="${book.originalCost}"></td>
                                                             <td th:text="${book.saleCost}">
                                                             </td>
                                                             <td>
 
                                                                 <div>
                                                                     <label>
-                                                                        <span th:text="${book.cartDetailAmount}">
+                                                                        <span th:text="${quantity}">
                                                                         </span>
-                                                                        <input th:name="|bookInfoList[${index.index}].amount|"
-                                                                               th:value="${book.cartDetailAmount}"
+                                                                        <input id="quantity"
+                                                                               th:name="|bookInfoList[${index.index}].amount|"
+                                                                               th:value="${quantity}"
                                                                                type="text"/>
                                                                     </label>
                                                                 </div>
@@ -196,10 +197,10 @@
 
                                                             <td>
                                                                 <label>
-                                                                    <span th:text="${book.saleCost} * ${book.cartDetailAmount}"></span>
+                                                                    <span th:text="${totalCost} "></span>
                                                                     <input class="book-sale-cost"
                                                                            th:name="|bookInfoList[${index.index}].bookCost|"
-                                                                           th:value="${book.saleCost.intValue()} * ${book.cartDetailAmount.intValue()}"
+                                                                           th:value="${totalCost}"
                                                                            type="hidden">
                                                                 </label>
                                                             </td>
@@ -228,7 +229,7 @@
                                                                 <button id="coupon-button" type="button"
                                                                         class="button btn-primary btn-sm"
                                                                         name="coupon-button"
-                                                                        th:value="${book.bookId}"
+                                                                        th:value="${book.id}"
                                                                         onclick="clickCoupon(this)">쿠폰
                                                                 </button>
                                                             </td>
@@ -359,7 +360,7 @@
             </div>
         </div>
     </section>
-    <script src="/assets/js/order/order.js"></script>
+    <script src="/assets/js/order/direct-order.js"></script>
     <script>
         // 현재 날짜 가져오기
         var today = new Date();
