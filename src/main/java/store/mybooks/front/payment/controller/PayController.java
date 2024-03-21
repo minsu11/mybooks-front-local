@@ -7,11 +7,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import store.mybooks.front.config.TossAppKey;
 import store.mybooks.front.order.dto.response.BookOrderInfoResponse;
 import store.mybooks.front.order.service.OrderService;
+import store.mybooks.front.payment.dto.request.TossPaymentRequest;
 import store.mybooks.front.payment.service.PayService;
 
 
@@ -45,20 +47,20 @@ public class PayController {
      * @throws Exception
      */
     @GetMapping("/success")
-    public String paymentRequest(HttpServletRequest request, Model model) throws Exception {
+    public String paymentRequest(ModelMap model,
+                                 @ModelAttribute TossPaymentRequest request
+    ) {
         return "success";
     }
 
     @GetMapping("/{orderNumber}")
     public String index(HttpServletRequest request, ModelMap model,
                         @PathVariable(name = "orderNumber") String orderNumber) throws Exception {
-        log.info("orderNumber: {}", orderNumber);
         BookOrderInfoResponse bookOrderInfoResponse = orderService.getPayBookOrderInfo(orderNumber);
-        log.info("주문 정보: {}", bookOrderInfoResponse);
         model.put("tossValue", tossAppKey.getClientKey());
         model.put("orderInfo", bookOrderInfoResponse);
         model.put("isCouponUsed", payService.checkCouponUsed(bookOrderInfoResponse.getOrderDetails()));
-
+        model.put("orderNumber", orderNumber);
         return "payment";
     }
 
@@ -81,4 +83,6 @@ public class PayController {
 
         return "fail";
     }
+
+
 }

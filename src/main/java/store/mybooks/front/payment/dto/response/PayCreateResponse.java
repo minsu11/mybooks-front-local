@@ -1,26 +1,23 @@
-package store.mybooks.front.payment.dto.request;
+package store.mybooks.front.payment.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * packageName    : store.mybooks.front.payment.dto.request<br>
- * fileName       : TossPaymentRequest<br>
+ * packageName    : store.mybooks.front.payment.dto.response<br>
+ * fileName       : PayCreateResponse<br>
  * author         : minsu11<br>
- * date           : 3/18/24<br>
+ * date           : 3/19/24<br>
  * description    :
  * ===========================================================<br>
  * DATE              AUTHOR             NOTE<br>
  * -----------------------------------------------------------<br>
- * 3/18/24        minsu11       최초 생성<br>
+ * 3/19/24        minsu11       최초 생성<br>
  */
 @Getter
 @AllArgsConstructor
-public class TossPaymentRequest {
+public class PayCreateResponse {
+    private Long payId;
     private String paymentKey;
-    private String orderId;
-    private Integer amount;
-    private String paymentType;
-
-
+    private Integer totalAmount;
 }

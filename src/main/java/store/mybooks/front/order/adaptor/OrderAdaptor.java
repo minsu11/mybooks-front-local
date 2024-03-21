@@ -13,6 +13,7 @@ import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.order.dto.request.BookOrderCreateRequest;
 import store.mybooks.front.order.dto.response.BookOrderCreateResponse;
 import store.mybooks.front.order.dto.response.BookOrderInfoResponse;
+import store.mybooks.front.order.dto.response.BookOrderPayInfoResponse;
 import store.mybooks.front.utils.Utils;
 
 /**
@@ -42,14 +43,14 @@ public class OrderAdaptor {
      *
      * @param id 주소 아이디
      */
-    public void checkOrderUserAddressInfo(Long id) {
-        ResponseEntity<Object> exchange = restTemplate.exchange(
+    public Boolean checkOrderUserAddressInfo(Long id) {
+        ResponseEntity<Boolean> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + URL + "/check/address/{id}",
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<Object>() {
+                new ParameterizedTypeReference<Boolean>() {
                 }, id);
-        Utils.getResponseEntity(exchange, HttpStatus.NO_CONTENT);
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
 
@@ -86,5 +87,17 @@ public class OrderAdaptor {
 
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
+
+    public BookOrderPayInfoResponse getBookOrderPayInfo(String orderNumber) {
+        ResponseEntity<BookOrderPayInfoResponse> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL + "/info/{orderNumber}/pay",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<BookOrderPayInfoResponse>() {
+                }, orderNumber
+        );
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
+
 
 }

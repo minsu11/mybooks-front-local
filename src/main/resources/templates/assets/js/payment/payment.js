@@ -1,14 +1,19 @@
 document.addEventListener("DOMContentLoaded", function () {
+    const orderNumber = document.getElementById("order-number").value;
     const button = document.getElementById("payment-button");
     const coupon = document.getElementById("all-book-coupon-button");
-    const generateRandomString = document.getElementById("order-number").value;
+    const generateRandomString = orderNumber.toString()
     var amount = parseInt(document.getElementById("order-total-cost").value);
+
 // ------  결제위젯 초기화 ------
 
     const clientKey = document.querySelector(".toss").value;
     const customerKey = generateRandomString;
     const paymentWidget = PaymentWidget(clientKey, customerKey); // 회원 결제
+
+    const payValue = payInfo(customerKey);
 // const paymentWidget = PaymentWidget(clientKey, PaymentWidget.ANONYMOUS); // 비회원 결제
+    console.log(coupon)
 
 // ------  결제 UI 렌더링 ------
 // @docs https://docs.tosspayments.com/reference/widget-sdk#renderpaymentmethods선택자-결제-금액-옵션
@@ -26,28 +31,52 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // ------  결제 금액 업데이트 ------
 // @docs https://docs.tosspayments.com/reference/widget-sdk#updateamount결제-금액
-    coupon.addEventListener("change", function () {
-        if (coupon.checked) {
-            paymentMethodWidget.updateAmount(amount - 5000);
-        } else {
-            paymentMethodWidget.updateAmount(amount);
-        }
-    });
+    if (coupon) {
+        coupon.addEventListener("click", function () {
+            if (coupon.checked) {
+                paymentMethodWidget.updateAmount(amount - 5000);
+            } else {
+                paymentMethodWidget.updateAmount(amount);
+            }
+        });
+    }
 
 // ------ '결제하기' 버튼 누르면 결제창 띄우기 ------
 // @docs https://docs.tosspayments.com/reference/widget-sdk#requestpayment결제-정보
     button.addEventListener("click", function () {
         // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
         // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
-        paymentWidget.requestPayment({
-            orderId: customerKey,
-            orderName: "123",
-            successUrl: window.location.origin + "/pay/success",
-            failUrl: window.location.origin + "/pay/fail",
-            customerEmail: "123@gmail.com",
-            customerName: "김토스",
-            customerMobilePhone: "01012341234",
-        });
+        payValue.then(value => {
+            paymentWidget.requestPayment({
+                orderId: customerKey,
+                orderName: value.orderName,
+                successUrl: window.location.origin + "/pay/success",
+                failUrl: window.location.origin + "/pay/fail",
+                customerEmail: value.email,
+                customerName: value.name,
+                customerMobilePhone: value.phoneNumber,
+            });
+        })
+
+
     });
 
+
 })
+
+async function payInfo(customerKey) {
+
+    const response = await fetch("/pay/info/" + customerKey, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
+    const json = await response.json()
+    if (!response.ok) {
+
+        console.log(json)
+    }
+    return json;
+}
+

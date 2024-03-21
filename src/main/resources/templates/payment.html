@@ -22,8 +22,9 @@
             <section>
                 <h3>결제 정보</h3>
                 <div>
-                    <span>주문 번호</span>
+                    <h5>주문 번호</h5>
                     <span th:text="${orderInfo.number}"></span>
+                    <h5>결제 금액</h5>
                     <span th:text="${orderInfo.totalCost}"></span>
                     <input th:value="${orderInfo.number}" type="hidden"
                            id="order-number">

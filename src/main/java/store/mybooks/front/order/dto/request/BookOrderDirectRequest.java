@@ -2,6 +2,7 @@ package store.mybooks.front.order.dto.request;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * packageName    : store.mybooks.front.order.dto.dto.request<br>
@@ -16,6 +17,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@ToString
 public class BookOrderDirectRequest {
     private Long id;
     private Integer saleCost;

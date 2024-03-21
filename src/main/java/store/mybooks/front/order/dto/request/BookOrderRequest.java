@@ -4,7 +4,6 @@ import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 /**
  * packageName    : store.mybooks.front.order.dto.request<br>
@@ -20,7 +19,6 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor
 @Setter
-@ToString
 public class BookOrderRequest {
     private List<BookInfoRequest> bookInfoList;
     private OrderInfoRequest orderInfo;

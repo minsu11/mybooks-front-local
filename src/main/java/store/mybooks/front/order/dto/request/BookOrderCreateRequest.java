@@ -3,6 +3,7 @@ package store.mybooks.front.order.dto.request;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 
 /**
  * packageName    : store.mybooks.front.order.dto.request<br>
@@ -17,6 +18,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
+@ToString
 public class BookOrderCreateRequest {
     private List<BookInfoRequest> bookInfoList;
     private OrderInfoRequest orderInfo;
@@ -25,5 +27,6 @@ public class BookOrderCreateRequest {
     private Integer couponCost;
     private Integer wrapCost;
     private Integer totalCost;
+
 
 }

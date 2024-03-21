@@ -11,6 +11,18 @@ document.addEventListener('DOMContentLoaded', function (event
     const date = document.getElementById('delivery-date-id');
     const submitForm = document.getElementById('order-pay-form')
     let data = 0;
+    const payBtn = document.getElementById('pay-btn');
+    payBtn.addEventListener('submit', function () {
+        const couponCost = document.getElementById('coupon-cost')
+        console.log(wrapCost.value);
+        alert(wrapCost.value);
+        if (couponCost.value < 0 || wrapCost.value < 0) {
+            alert("음수를 입력했습니다.")
+            event.preventDefault()
+            return false;
+        }
+    })
+
 
     submitForm.addEventListener("keydown", function (event) {
         if (event.keyCode === 13) {
@@ -98,12 +110,5 @@ function wrap(button) {
 function updateTotalCost(total, num) {
     return total - num;
 }
-
-
-
-
-
-
-
 
 

@@ -2,10 +2,13 @@ package store.mybooks.front.payment.service;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.order.dto.response.BookOrderDetailResponse;
 import store.mybooks.front.payment.adaptor.PayAdaptor;
+import store.mybooks.front.payment.dto.request.PayCreateRequest;
 import store.mybooks.front.payment.dto.request.TossPaymentRequest;
+import store.mybooks.front.payment.dto.response.PayCreateResponse;
 import store.mybooks.front.payment.dto.response.TossPaymentResponse;
 
 /**
@@ -19,6 +22,7 @@ import store.mybooks.front.payment.dto.response.TossPaymentResponse;
  * -----------------------------------------------------------<br>
  * 3/18/24        minsu11       최초 생성<br>
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PayService {
@@ -40,8 +44,17 @@ public class PayService {
         return false;
     }
 
-    public TossPaymentResponse getTossPayment(TossPaymentRequest request) {
+    public TossPaymentResponse createTossPayment(TossPaymentRequest request) {
         return payAdaptor.confirmPayment(request);
     }
+
+    public PayCreateResponse createPayment(PayCreateRequest request) {
+        return payAdaptor.createResponse(request);
+    }
+
+    public TossPaymentResponse getTossPayment(TossPaymentRequest request) {
+        return payAdaptor.getTossPaymentResponse(request);
+    }
+
 
 }

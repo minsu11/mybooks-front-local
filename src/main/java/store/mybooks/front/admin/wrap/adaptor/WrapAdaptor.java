@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 import store.mybooks.front.admin.wrap.dto.request.WrapCreateRequest;
 import store.mybooks.front.admin.wrap.dto.request.WrapModifyRequest;
 import store.mybooks.front.admin.wrap.dto.response.WrapCreateResponse;
@@ -35,8 +36,13 @@ public class WrapAdaptor {
     private static final String URL = "/api/wraps";
 
     public WrapResponse getWrap(Integer id) {
-        String url = gatewayAdaptorProperties.getAddress() + URL + "/{id}";
-        ResponseEntity<WrapResponse> exchange = restTemplate.exchange(url,
+        String uri = UriComponentsBuilder
+                .fromUriString(gatewayAdaptorProperties.getAddress())
+                .path(URL + "/{id}")
+                .build().expand(id).toString();
+
+
+        ResponseEntity<WrapResponse> exchange = restTemplate.exchange(uri,
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<WrapResponse>() {

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.admin.book.model.response.BookDetailResponse;
 import store.mybooks.front.admin.wrap.adaptor.WrapAdaptor;
@@ -17,6 +18,7 @@ import store.mybooks.front.order.dto.request.BookOrderDirectRequest;
 import store.mybooks.front.order.dto.request.OrderInfoRequest;
 import store.mybooks.front.order.dto.response.BookOrderCreateResponse;
 import store.mybooks.front.order.dto.response.BookOrderInfoResponse;
+import store.mybooks.front.order.dto.response.BookOrderPayInfoResponse;
 import store.mybooks.front.order.utils.OrderUtils;
 import store.mybooks.front.user.adaptor.UserAdaptor;
 import store.mybooks.front.user_address.adaptor.UserAddressAdaptor;
@@ -34,6 +36,7 @@ import store.mybooks.front.user_coupon.model.response.UserCouponResponse;
  * -----------------------------------------------------------<br>
  * 3/5/24        minsu11       최초 생성<br>
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrderService {
@@ -165,6 +168,8 @@ public class OrderService {
 
         BookOrderCreateRequest request = new BookOrderCreateRequest(bookInfo, orderInfo,
                 orderNumber, point, couponCost, wrapCost, totalCost);
+        log.debug("주문 저장할 데이터: {}", request);
+        
         return orderAdapter.createBookOrder(request);
     }
 
@@ -173,4 +178,7 @@ public class OrderService {
 
     }
 
+    public BookOrderPayInfoResponse getBookOrderPayInfo(String orderNumber) {
+        return orderAdapter.getBookOrderPayInfo(orderNumber);
+    }
 }

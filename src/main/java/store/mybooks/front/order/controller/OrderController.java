@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import store.mybooks.front.admin.delivery_rule.dto.DeliveryRuleResponse;
 import store.mybooks.front.admin.delivery_rule.service.DeliveryRuleService;
 import store.mybooks.front.admin.wrap.dto.response.WrapResponse;
@@ -18,7 +17,6 @@ import store.mybooks.front.admin.wrap.service.WrapService;
 import store.mybooks.front.cart.domain.CartDetail;
 import store.mybooks.front.cart.service.CartNonUserService;
 import store.mybooks.front.cart.service.CartUserService;
-import store.mybooks.front.order.dto.request.BookOrderDirectRequest;
 import store.mybooks.front.order.dto.request.BookOrderRequest;
 import store.mybooks.front.order.dto.response.BookOrderCreateResponse;
 import store.mybooks.front.order.service.OrderInfoCheckService;
@@ -154,13 +152,12 @@ public class OrderController {
      * author : minsu11<br>
      * description : 장바구니를 통한 주문.
      *
-     * @param request  the requestx
      * @param modelMap the model map
      * @return the string
      */
     @GetMapping("/cart/checkout")
-    public String viewOrderPage(@ModelAttribute BookOrderDirectRequest request,
-                                ModelMap modelMap) {
+    public String viewOrderPage(
+            ModelMap modelMap) {
         PointResponse pointResponse = userPointService.getPointsHeld();
         LocalDate localDate = LocalDate.now();
         UserGetResponse user = userAdaptor.findUser();
@@ -169,17 +166,14 @@ public class OrderController {
         modelMap.put("bookLists", bookFromCart);
         modelMap.put("totalCost", orderService.calculateTotalCost(bookFromCart));
         modelMap.put("point", pointResponse.getRemainingPoint());
-        modelMap.put("bookCostList", orderService.calculateBooksCost(bookFromCart));
         modelMap.put("localDate", localDate);
         modelMap.put("user", user);
         modelMap.put("delivery", deliveryRule);
-        modelMap.put("quantity", request.getQuantity());
         return "checkout";
     }
 
     @PostMapping("/order")
-    public String doOrder(@ModelAttribute BookOrderRequest orderRequest,
-                          RedirectAttributes redirectAttributes) {
+    public String doOrder(@ModelAttribute BookOrderRequest orderRequest) {
         log.info("값 : {}", orderRequest.toString());
         List<CartDetail> cart = cartUserService.getBookFromCart();
         orderInfoCheckService.checkModulation(orderRequest, cart);

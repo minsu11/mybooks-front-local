@@ -47,20 +47,32 @@
                 th:value="${id}"
                 onclick="sendCoupon(this)">선택
         </button>
-        <input type="text" id="before-data">
     </div>
 </div>
 <script>
     function sendCoupon(button) {
+        alert(2)
+
         const index = button.value
+        alert(1)
         const beforecouponCost = opener.document.getElementsByClassName('select-coupon-cost')[index].value;
+        alert(beforecouponCost)
         const couponName = document.getElementById('coupon-btn').getAttribute('coupon-name');
+        alert(couponName)
         const couponCost = document.getElementById('coupon-btn').getAttribute('coupon-cost');
+        alert(couponCost)
         const selectId = document.getElementById('coupon-btn').getAttribute('radio-id');
+        alert(selectId)
+        alert(1)
+
         const bookTotalCost = opener.document.getElementById('input-total-cost').value;
+        alert(bookTotalCost)
         const check = document.getElementById('coupon-btn').getAttribute('coupon-rate');
-        const bookSale = opener.document.getElementsByClassName('book-sale-cost')[index].textContent;
+        alert(check)
+        const bookSale = opener.document.getElementsByClassName('book-sale-cost')[index].value;
+        alert("할인가: " + bookSale)
         const orderMin = document.getElementById('coupon-btn').getAttribute('coupon-order-min');
+        alert("최소 주문 금액: " + orderMin)
         let saleCost;
         alert(orderMin)
         if (parseInt(orderMin) > bookTotalCost) {
@@ -113,10 +125,7 @@
 
         window.close()
     }
-</script>
 
-
-<script>
     document.addEventListener('DOMContentLoaded', function () {
         const selectedCouponId = opener.document.querySelectorAll(".select-coupon-id");
         const coupon = document.querySelectorAll(".coupon-id-form");

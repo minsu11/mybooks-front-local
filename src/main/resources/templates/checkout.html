@@ -194,15 +194,13 @@
                                                             </td>
 
                                                             <td>
-                                                                <div th:each="bookCost:${bookCostList}">
-                                                                    <div th:if="${bookCost == book.saleCost}">
-                                                                        <p class="book-sale-cost"
-                                                                           th:text="${bookCost}"></p>
-                                                                        <input th:name="|bookInfoList[${index.index}].bookCost|"
-                                                                               th:value="${bookCost}"
-                                                                               type="hidden">
-                                                                    </div>
-                                                                </div>
+                                                                <label>
+                                                                    <span th:text="${book.saleCost} * ${book.cartDetailAmount}"></span>
+                                                                    <input class="book-sale-cost"
+                                                                           th:name="|bookInfoList[${index.index}].bookCost|"
+                                                                           th:value="${book.saleCost.intValue()} * ${book.cartDetailAmount.intValue()}"
+                                                                           type="hidden">
+                                                                </label>
                                                             </td>
                                                             <td class="form-text">
                                                                 <input class="select-wrap"
@@ -274,7 +272,9 @@
                                             <h6> 배송 날짜</h6>
                                             <label>
                                                 <input type="date" id="delivery-date-id" th:min="${localDate}"
-                                                       name="orderInfo.deliveryDate">
+                                                       name="orderInfo.deliveryDate"
+
+                                                       required>
                                                 <label for="delivery-date-id" id="delivery-date-label"></label>
                                             </label>
                                         </div>
@@ -282,7 +282,7 @@
                                             <h6>배송 시 요청 사항</h6>
                                             <label class="form-label">
                                                 <textarea id="receiver-message" class="form-control" rows="3"
-                                                          name="orderInfo.receiverMessage"></textarea>
+                                                          name="orderInfo.receiverMessage" required></textarea>
                                             </label>
                                         </div>
                                         <div>
@@ -297,7 +297,7 @@
                                                 <span>0원</span>
                                             </th:block>
                                             <label>
-                                                <input name="orderInfo.deliveryId"
+                                                <input name="orderInfo.deliveryId" type="hidden"
                                                        th:value="${delivery.id}">
                                             </label>
                                         </div>
@@ -341,7 +341,8 @@
                                                     <div class="single-form form-default button">
 
 
-                                                        <button type="submit" id="pay-btn">pay now
+                                                        <button type="submit" id="pay-btn">pay
+                                                            now
                                                         </button>
 
                                                     </div>
@@ -358,5 +359,24 @@
         </div>
     </section>
     <script src="/assets/js/order/order.js"></script>
+    <script>
+        // 현재 날짜 가져오기
+        var today = new Date();
+
+        // 2주 뒤의 날짜 계산
+        var twoWeeksLater = new Date();
+        twoWeeksLater.setDate(today.getDate() + 14);
+        console.log(twoWeeksLater)
+
+        // yyyy-MM-dd 형식으로 변환 (input의 value 속성 값에 들어갈 형식)
+        var formattedToday = today.toISOString().slice(0, 10);
+        console.log(formattedToday)
+        var formattedTwoWeeksLater = twoWeeksLater.toISOString().slice(0, 10);
+
+        // input 태그에 min과 max 속성 설정
+        var inputDate = document.getElementById("delivery-date-id");
+        inputDate.setAttribute("min", formattedToday);
+        inputDate.setAttribute("max", formattedTwoWeeksLater);
+    </script>
 </div>
 </html>

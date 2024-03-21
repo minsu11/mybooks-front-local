@@ -121,7 +121,7 @@ public class UserCouponAdaptor {
         HttpEntity<Object> requestEntity = new HttpEntity<>(Utils.getAuthHeader());
 
         ResponseEntity<UserCouponResponse> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL_USER + "/" + id,
+                gatewayAdaptorProperties.getAddress() + URL_USER + "/{id}",
                 HttpMethod.GET,
                 requestEntity,
                 new ParameterizedTypeReference<UserCouponResponse>() {

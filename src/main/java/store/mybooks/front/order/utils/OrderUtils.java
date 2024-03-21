@@ -34,7 +34,7 @@ public class OrderUtils {
                 .ints(leftLimit, rightLimit + 1)
                 .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
                 .limit(targetStringLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .collect(StringBuffer::new, StringBuffer::appendCodePoint, StringBuffer::append)
                 .toString();
         return orderNumber.append(time)
                 .append(randomStr).toString();

@@ -2,7 +2,6 @@ package store.mybooks.front.order.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.ToString;
 
 /**
  * packageName    : store.mybooks.front.order.dto.response<br>
@@ -17,8 +16,9 @@ import lombok.ToString;
  */
 @Getter
 @AllArgsConstructor
-@ToString
 public class BookOrderDetailResponse {
+    private Long id;
+    private Long couponId;
     private String bookName;
     private Integer cost;
     private Boolean isCouponUsed;
