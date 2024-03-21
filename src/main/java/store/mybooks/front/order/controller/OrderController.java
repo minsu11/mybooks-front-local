@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import store.mybooks.front.admin.book.model.response.BookGetResponseForOrder;
+import store.mybooks.front.admin.book.model.response.BookStockResponse;
 import store.mybooks.front.admin.delivery_rule.dto.DeliveryRuleResponse;
 import store.mybooks.front.admin.delivery_rule.service.DeliveryRuleService;
 import store.mybooks.front.admin.wrap.dto.response.WrapResponse;
@@ -75,6 +76,9 @@ public class OrderController {
     @GetMapping("/direct/checkout")
     public String viewDirectOrderPage(@ModelAttribute BookOrderDirectRequest request,
                                       ModelMap modelMap) {
+        BookStockResponse bookStockResponse = bookService.getBookStockResponse(request.getId());
+        orderInfoCheckService.checkAmount(request.getQuantity(), bookStockResponse.getStock());
+        
         BookGetResponseForOrder bookGetResponseForOrder = bookService.getBookForOrder(request.getId());
         List<BookGetResponseForOrder> bookGetResponseForOrders = List.of(bookService.getBookForOrder(request.getId()));
         PointResponse pointResponse = userPointService.getPointsHeld();
@@ -185,8 +189,7 @@ public class OrderController {
      * @return the string
      */
     @GetMapping("/cart/checkout")
-    public String viewOrderPage(
-            ModelMap modelMap) {
+    public String viewOrderPage(ModelMap modelMap) {
         PointResponse pointResponse = userPointService.getPointsHeld();
         UserGetResponse user = userAdaptor.findUser();
 

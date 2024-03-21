@@ -57,8 +57,6 @@ async function confirm(urlParams) {
 
 
 async function payTest(payInfo) {
-    console.log("함수 안: " + payInfo)
-
     const response = await fetch("/pay/info/success", {
         method: "POST",
         headers: {

@@ -11,16 +11,19 @@ document.addEventListener('DOMContentLoaded', function (event
     const date = document.getElementById('delivery-date-id');
     const submitForm = document.getElementById('order-pay-form')
     let data = 0;
-    const payBtn = document.getElementById('pay-btn');
-    payBtn.addEventListener('submit', function () {
+    const payForm = document.getElementById('order-pay-form');
+
+    payForm.addEventListener('submit', function () {
         const couponCost = document.getElementById('coupon-cost')
         console.log(wrapCost.value);
         alert(wrapCost.value);
-        if (couponCost.value < 0 || wrapCost.value < 0) {
+        if (couponCost.value < 0 || wrapCost.value < 0 || point.value < 0) {
             alert("음수를 입력했습니다.")
             event.preventDefault()
             return false;
         }
+
+
     })
 
 

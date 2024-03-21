@@ -314,19 +314,7 @@
                 document.querySelector(".pagination").style.display = "none";
             }
         });
-        const form = document.getElementById('direct-order-form');
-        form.addEventListener('submit', async function (e) {
-            e.preventDefault()
-            const bookId = document.getElementById('direct-order-book-id').value;
-            const buyNowQuantity = document.getElementById('buyNowQuantity').value
-            console.log(bookId)
-            console.log(buyNowQuantity)
-            const request = {}
-            const response = await fetch('/direct/book/check', {
-                method: "POST",
-
-            })
-        })
+       
 
         // 페이지 번호를 클릭할 때 AJAX로 페이지를 로드하는 함수
         function loadReviewsPage(pageNumber) {

@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import store.mybooks.front.admin.book.model.response.BookBriefResponse;
 import store.mybooks.front.admin.book.model.response.BookDetailResponse;
 import store.mybooks.front.admin.book.model.response.BookGetResponseForOrder;
+import store.mybooks.front.admin.book.model.response.BookStockResponse;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.utils.Utils;
 
@@ -95,5 +96,24 @@ public class BookAdaptor {
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
 
     }
+
+    /**
+     * {@code id}의 도서 재고 조회.
+     *
+     * @param bookId the book id
+     * @return the book stock response
+     */
+    public BookStockResponse getBookStockResponse(Long bookId) {
+        ResponseEntity<BookStockResponse> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL_ID + "/order/stock",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<BookStockResponse>() {
+                }, bookId
+        );
+
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
+
 
 }

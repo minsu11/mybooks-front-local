@@ -17,6 +17,7 @@ import store.mybooks.front.order.dto.request.BookOrderCreateRequest;
 import store.mybooks.front.order.dto.request.BookOrderDirectRequest;
 import store.mybooks.front.order.dto.request.OrderInfoRequest;
 import store.mybooks.front.order.dto.response.BookOrderCreateResponse;
+import store.mybooks.front.order.dto.response.BookOrderDetailResponse;
 import store.mybooks.front.order.dto.response.BookOrderInfoResponse;
 import store.mybooks.front.order.dto.response.BookOrderPayInfoResponse;
 import store.mybooks.front.order.utils.OrderUtils;
@@ -181,8 +182,8 @@ public class OrderService {
     public BookOrderPayInfoResponse getBookOrderPayInfo(String orderNumber) {
         return orderAdapter.getBookOrderPayInfo(orderNumber);
     }
-//
-//    public Integer calculateDirectOrderTotalCost() {
-//
-//    }
+
+    public List<BookOrderDetailResponse> getBookOrderDetail(String orderNumber) {
+        return orderAdapter.getBookOrderDetailList(orderNumber);
+    }
 }

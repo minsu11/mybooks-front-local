@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.admin.book.model.response.BookDetailResponse;
 import store.mybooks.front.admin.book.model.response.BookGetResponseForOrder;
+import store.mybooks.front.admin.book.model.response.BookStockResponse;
 import store.mybooks.front.book.adaptor.BookAdaptor;
 
 /**
@@ -42,5 +43,10 @@ public class BookService {
      */
     public BookGetResponseForOrder getBookForOrder(Long bookId) {
         return bookAdaptor.getBookForOrder(bookId);
+    }
+
+    public BookStockResponse getBookStockResponse(Long bookId) {
+        return bookAdaptor.getBookStockResponse(bookId);
+
     }
 }

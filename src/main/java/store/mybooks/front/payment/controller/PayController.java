@@ -54,7 +54,7 @@ public class PayController {
     }
 
     @GetMapping("/{orderNumber}")
-    public String index(HttpServletRequest request, ModelMap model,
+    public String index(ModelMap model,
                         @PathVariable(name = "orderNumber") String orderNumber) throws Exception {
         BookOrderInfoResponse bookOrderInfoResponse = orderService.getPayBookOrderInfo(orderNumber);
         model.put("tossValue", tossAppKey.getClientKey());
@@ -66,7 +66,7 @@ public class PayController {
 
 
     /**
-     * 인증실패처리
+     * 인증실패처리.
      *
      * @param request
      * @param model

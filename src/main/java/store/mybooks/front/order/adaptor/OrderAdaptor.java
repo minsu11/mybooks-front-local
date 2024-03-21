@@ -1,5 +1,6 @@
 package store.mybooks.front.order.adaptor;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -8,10 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import store.mybooks.front.auth.Annotation.RequiredAuthorization;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.order.dto.request.BookOrderCreateRequest;
 import store.mybooks.front.order.dto.response.BookOrderCreateResponse;
+import store.mybooks.front.order.dto.response.BookOrderDetailResponse;
 import store.mybooks.front.order.dto.response.BookOrderInfoResponse;
 import store.mybooks.front.order.dto.response.BookOrderPayInfoResponse;
 import store.mybooks.front.utils.Utils;
@@ -34,6 +35,7 @@ public class OrderAdaptor {
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
     private static final String URL = "/api/orders";
     private static final String MEMBER_URL = "/api/member/orders";
+    private static final String ORDER_DETAIL_URL = "/api/order-details";
 
     /**
      * methodName : checkOrderUserAddressInfo<br>
@@ -54,11 +56,10 @@ public class OrderAdaptor {
     }
 
 
-    @RequiredAuthorization
     public BookOrderCreateResponse createBookOrder(BookOrderCreateRequest request) {
         HttpEntity<BookOrderCreateRequest> httpEntity = new HttpEntity<>(request, Utils.getAuthHeader());
         ResponseEntity<BookOrderCreateResponse> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + MEMBER_URL,
+                gatewayAdaptorProperties.getAddress() + URL,
                 HttpMethod.POST,
                 httpEntity,
                 new ParameterizedTypeReference<BookOrderCreateResponse>() {
@@ -66,6 +67,12 @@ public class OrderAdaptor {
         return Utils.getResponseEntity(exchange, HttpStatus.CREATED);
     }
 
+    /**
+     * 주문 번호 중복 확인.
+     *
+     * @param orderNumber the order number
+     * @return the boolean
+     */
     public Boolean checkBookOrderNumber(String orderNumber) {
         ResponseEntity<Boolean> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + URL + "/orderNumber/{orderNumber}",
@@ -88,6 +95,12 @@ public class OrderAdaptor {
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
+    /**
+     * 주문 결제 정보 조회.
+     *
+     * @param orderNumber the order number
+     * @return the book order pay info
+     */
     public BookOrderPayInfoResponse getBookOrderPayInfo(String orderNumber) {
         ResponseEntity<BookOrderPayInfoResponse> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + URL + "/info/{orderNumber}/pay",
@@ -97,6 +110,24 @@ public class OrderAdaptor {
                 }, orderNumber
         );
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
+
+    /**
+     * 주문번호로 조회된 주문 상세 목록
+     *
+     * @param orderNumber the order number
+     * @return the book order detail list
+     */
+    public List<BookOrderDetailResponse> getBookOrderDetailList(String orderNumber) {
+        ResponseEntity<List<BookOrderDetailResponse>> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + ORDER_DETAIL_URL + "/{orderNumber}",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<BookOrderDetailResponse>>() {
+                }, orderNumber
+        );
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+
     }
 
 

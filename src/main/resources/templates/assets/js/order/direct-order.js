@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function (event
             }
         }
     })
-    console.log(typeof amount().getAmount());
+    
 
     const radioInputs = document.querySelectorAll('input[type="radio"][name="wrapRadio"]');
     const point = document.querySelector('input[id="user-point"][type="number"]')

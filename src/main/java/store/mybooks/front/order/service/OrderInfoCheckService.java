@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.admin.book.model.response.BookGetResponseForOrder;
+import store.mybooks.front.admin.book.model.response.BookStockResponse;
 import store.mybooks.front.admin.wrap.adaptor.WrapAdaptor;
 import store.mybooks.front.book.adaptor.BookAdaptor;
 import store.mybooks.front.cart.domain.CartDetail;
@@ -14,6 +15,7 @@ import store.mybooks.front.order.dto.request.BookInfoRequest;
 import store.mybooks.front.order.dto.request.BookOrderRequest;
 import store.mybooks.front.order.dto.request.OrderInfoRequest;
 import store.mybooks.front.order.dto.request.OrderUserInfoRequest;
+import store.mybooks.front.order.dto.response.BookOrderDetailResponse;
 import store.mybooks.front.order.exception.AmountNegativeException;
 import store.mybooks.front.order.exception.AmountOverStockException;
 import store.mybooks.front.order.exception.OrderInfoNotMatchException;
@@ -188,14 +190,27 @@ public class OrderInfoCheckService {
         checkOrderAddress(bookOrderRequest.getUserInfo());
         checkDuplicateCoupon(bookInfoRequest);
         checkPoint(orderInfoRequest.getUsingPoint());
-        checkAmount(bookInfoRequest, bookGetResponseForOrder);
+        isCheckAmount(bookInfoRequest, bookGetResponseForOrder);
     }
 
 
-    public void checkAmount(List<BookInfoRequest> bookInfoRequest, BookGetResponseForOrder bookGetResponseForOrder) {
+    public void isCheckAmount(List<BookInfoRequest> bookInfoRequest, BookGetResponseForOrder bookGetResponseForOrder) {
         checkAmount(bookInfoRequest.get(0).getAmount(), bookGetResponseForOrder.getStock());
     }
 
+    /**
+     * 장바구니 구매과정에서 재고 검사.
+     *
+     * @param cartDetails the cart details
+     */
+    public void isCheckAmountBookCart(List<BookOrderDetailResponse> bookOrderDetailList) {
+        for (BookOrderDetailResponse bookOrderDetail : bookOrderDetailList) {
+            BookStockResponse bookStockResponse = bookAdaptor.getBookStockResponse(bookOrderDetail.getId());
+            if (bookOrderDetail.getAmount() > bookStockResponse.getStock()) {
+                throw new AmountOverStockException();
+            }
+        }
+    }
 
     public void checkAmount(int amount, int equalsAmount) {
         if (amount <= 0) {
