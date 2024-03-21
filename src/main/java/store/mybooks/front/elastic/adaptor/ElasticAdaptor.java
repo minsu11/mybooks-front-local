@@ -41,16 +41,14 @@ public class ElasticAdaptor {
 
 
     public PageResponse<BookBriefResponse> searchPaged(String query, Pageable pageable) {
+        Sort.Order order = pageable.getSort().iterator().next();
         URI url = UriComponentsBuilder
                 .fromHttpUrl(gatewayAdaptorProperties.getAddress() + "/api/searches")
                 .queryParam("query", query)
                 .queryParam("page", pageable.getPageNumber())
                 .queryParam("size", pageable.getPageSize())
-                .queryParam("sort",pageable.getSort().stream()
-                        .map(order -> order.getProperty() + "," + order.getDirection().toString().toLowerCase())
-                        .collect(Collectors.joining(",")))
-                .encode()
-                .build().toUri();
+                .queryParam("sort", order.getProperty() + "," + order.getDirection().toString().toLowerCase())
+                .encode().build().toUri();
 
         ResponseEntity<PageResponse<BookBriefResponse>> exchange = restTemplate.exchange(
                 url,
