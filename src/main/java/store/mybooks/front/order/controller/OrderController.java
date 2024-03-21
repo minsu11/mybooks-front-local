@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import store.mybooks.front.admin.book.model.response.BookDetailResponse;
 import store.mybooks.front.admin.delivery_rule.dto.DeliveryRuleResponse;
 import store.mybooks.front.admin.delivery_rule.service.DeliveryRuleService;
 import store.mybooks.front.admin.wrap.dto.response.WrapResponse;
@@ -17,6 +18,7 @@ import store.mybooks.front.admin.wrap.service.WrapService;
 import store.mybooks.front.cart.domain.CartDetail;
 import store.mybooks.front.cart.service.CartNonUserService;
 import store.mybooks.front.cart.service.CartUserService;
+import store.mybooks.front.order.dto.request.BookOrderDirectRequest;
 import store.mybooks.front.order.dto.request.BookOrderRequest;
 import store.mybooks.front.order.dto.response.BookOrderCreateResponse;
 import store.mybooks.front.order.service.OrderInfoCheckService;
@@ -67,20 +69,19 @@ public class OrderController {
      * @param modelMap model
      * @return string
      */
-//    @GetMapping("/direct/checkout")
-//    public String viewDirectOrderPage(@ModelAttribute BookOrderDirectRequest request,
-//                                      ModelMap modelMap) {
-//        BookDetailResponse bookDetailResponse = orderService.getBook(request);
-//        PointResponse pointResponse = userPointService.getPointsHeld();
-//        UserGetResponse user = userAdaptor.findUser();
-//        Integer totalCost = bookDetailResponse.getSaleCost() * request.getQuantity();
-//        modelMap.put("bookList", bookDetailResponse);
-//        modelMap.put("totalCost", totalCost);
-//        modelMap.put("point", pointResponse.getRemainingPoint());
-//        modelMap.put("user", user);
-//        modelMap.put("quantity", request.getQuantity());
-//        return "checkout";
-//    }
+    @GetMapping("/direct/checkout")
+    public String viewDirectOrderPage(@ModelAttribute BookOrderDirectRequest request,
+                                      ModelMap modelMap) {
+        BookDetailResponse bookDetailResponse = orderService.getBook(request);
+        PointResponse pointResponse = userPointService.getPointsHeld();
+        UserGetResponse user = userAdaptor.findUser();
+        Integer totalCost = bookDetailResponse.getSaleCost() * request.getQuantity();
+        modelMap.put("bookList", bookDetailResponse);
+        modelMap.put("totalCost", totalCost);
+        modelMap.put("point", pointResponse.getRemainingPoint());
+        modelMap.put("user", user);
+        return "checkout";
+    }
 
     /**
      * methodName : viewCheckAddress<br>
