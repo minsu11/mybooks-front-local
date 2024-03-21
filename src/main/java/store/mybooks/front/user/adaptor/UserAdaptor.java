@@ -53,8 +53,6 @@ public class UserAdaptor {
     private static final String URL = "/api/users";
     private static final String URL_MEMBER = "/api/member/users";
     private static final String URL_ADMIN_ID = "/api/admin/users/{userId}";
-    private static final String URL_ADMIN = "/api/admin/users/"; // todo 전체유저 조회
-
 
     public UserEncryptedPasswordResponse verifyUserStatus(UserEmailRequest request) {
 
