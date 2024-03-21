@@ -4,12 +4,12 @@ import static io.lettuce.core.GeoArgs.Sort.desc;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.admin.book.model.response.BookBriefResponse;
 import store.mybooks.front.elastic.adaptor.ElasticAdaptor;
 import store.mybooks.front.pageable.dto.response.PageResponse;
-import store.mybooks.front.pageable.dto.response.Pageable;
 
 /**
  * packageName    : store.mybooks.front.elastic.service <br/>
@@ -27,7 +27,7 @@ import store.mybooks.front.pageable.dto.response.Pageable;
 public class ElasticService {
     private final ElasticAdaptor elasticAdaptor;
 
-//    public PageResponse<BookBriefResponse> getSearchResultPage(String query, String type) {
-//        return elasticAdaptor.searchPaged(query, pageable);
-//    }
+    public PageResponse<BookBriefResponse> getSearchResultPage(String query, Pageable pageable) {
+        return elasticAdaptor.searchPaged(query, pageable);
+    }
 }

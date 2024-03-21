@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import store.mybooks.front.admin.book.model.response.BookBriefResponse;
 import store.mybooks.front.elastic.service.ElasticService;
 import store.mybooks.front.pageable.dto.response.PageResponse;
@@ -31,9 +32,9 @@ public class ElasticController {
     private final ElasticService elasticService;
 
     @GetMapping
-    public String getSearchResultPage(@PathVariable("query") String query, @PageableDefault(size = 8, sort = "viewCount", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
-//        PageResponse<BookBriefResponse> result = elasticService.getSearchResultPage(query, type);
-//        model.addAttribute("books", result);
+    public String getSearchResultPage(@RequestParam("query") String query, @PageableDefault(size = 8, sort = "book_view_count", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
+        PageResponse<BookBriefResponse> result = elasticService.getSearchResultPage(query, pageable);
+        model.addAttribute("books", result);
         return "search-display";
     }
 }
