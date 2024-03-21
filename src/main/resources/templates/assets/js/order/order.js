@@ -8,9 +8,27 @@ document.addEventListener('DOMContentLoaded', function (event
     const point = document.querySelector('input[id="user-point"][type="number"]')
     const wrapCost = document.querySelector('input[id="wrap-cost"]')
     // const input = document.querySelectorAll(".select-wrap")
-    const payBtn = document.querySelector('.pay-btn')
     const date = document.getElementById('delivery-date-id');
+    const submitForm = document.getElementById('order-pay-form')
     let data = 0;
+    const payBtn = document.getElementById('pay-btn');
+    payBtn.addEventListener('submit', function () {
+        const couponCost = document.getElementById('coupon-cost')
+        console.log(wrapCost.value);
+        alert(wrapCost.value);
+        if (couponCost.value < 0 || wrapCost.value < 0) {
+            alert("음수를 입력했습니다.")
+            event.preventDefault()
+            return false;
+        }
+    })
+
+
+    submitForm.addEventListener("keydown", function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault()
+        }
+    })
 
     radioInputs.forEach(function (input) {
         input.addEventListener('click', function () {
@@ -44,17 +62,6 @@ document.addEventListener('DOMContentLoaded', function (event
             data = inputValue;
         }
     })
-    payBtn.addEventListener('submit', function () {
-        const form = document.getElementById('order-pay-form');
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', form.action)
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-
-            }
-        }
-    })
-
 
     date.addEventListener('change', function () {
         document.getElementById('delivery-date-label').textContent = date.value;
@@ -103,11 +110,5 @@ function wrap(button) {
 function updateTotalCost(total, num) {
     return total - num;
 }
-
-
-
-
-
-
 
 

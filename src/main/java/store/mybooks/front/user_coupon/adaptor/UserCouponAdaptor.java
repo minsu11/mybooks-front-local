@@ -15,6 +15,7 @@ import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.pageable.dto.response.PageResponse;
 import store.mybooks.front.user_coupon.model.response.UserCouponGetResponse;
 import store.mybooks.front.user_coupon.model.response.UserCouponGetResponseForOrder;
+import store.mybooks.front.user_coupon.model.response.UserCouponResponse;
 import store.mybooks.front.utils.Utils;
 
 /**
@@ -103,6 +104,28 @@ public class UserCouponAdaptor {
                 }
         );
 
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
+
+
+    /**
+     * methodName : getUserCouponResponse <br>
+     * author : minsu11<br>
+     * description : 회원 쿠폰 아이디로 쿠폰 조회.
+     *
+     * @param id the id
+     * @return the user coupon response
+     */
+    @RequiredAuthorization
+    public UserCouponResponse getUserCouponResponse(Long id) {
+        HttpEntity<Object> requestEntity = new HttpEntity<>(Utils.getAuthHeader());
+
+        ResponseEntity<UserCouponResponse> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL_USER + "/{id}",
+                HttpMethod.GET,
+                requestEntity,
+                new ParameterizedTypeReference<UserCouponResponse>() {
+                }, id);
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 }

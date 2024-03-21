@@ -121,4 +121,21 @@ public class DeliveryRuleAdaptor {
 
         Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
+
+    /**
+     * 이름으로 배송 규정 조회.
+     *
+     * @param name the name
+     * @return the delivery rule by name
+     */
+    public DeliveryRuleResponse getDeliveryRuleByName(String name) {
+        ResponseEntity<DeliveryRuleResponse> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL + "/name/{name}",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<DeliveryRuleResponse>() {
+                }, name
+        );
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
 }
