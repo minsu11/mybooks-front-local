@@ -1,6 +1,7 @@
 package store.mybooks.front.user.controller;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
@@ -21,8 +22,6 @@ import store.mybooks.front.auth.dto.request.TokenCreateRequest;
 import store.mybooks.front.auth.dto.response.TokenCreateResponse;
 import store.mybooks.front.auth.redis.RedisAuthService;
 import store.mybooks.front.config.RedisProperties;
-import store.mybooks.front.cart.LoginCartDataMoveEvent;
-import store.mybooks.front.cart.LogoutCartDataMoveEvent;
 import store.mybooks.front.user.adaptor.UserAdaptor;
 import store.mybooks.front.user.dto.request.UserCreateRequest;
 import store.mybooks.front.user.dto.request.UserEmailRequest;
@@ -106,6 +105,7 @@ public class UserController {
     @GetMapping("/signup")
     public String createUserForm(HttpServletRequest request) {
         if (Objects.isNull(request.getAttribute("identity_cookie_value"))) {
+            request.setAttribute("nowDate", LocalDate.now());
             return "signup";
         }
         return "redirect:/";
@@ -188,13 +188,15 @@ public class UserController {
             TokenCreateResponse tokenCreateResponse =
                     tokenAdaptor.createToken(
                             new TokenCreateRequest(loginResponse.getIsAdmin(), loginResponse.getUserId(),
-                                    loginResponse.getStatus(), String.valueOf(UUID.randomUUID()),Utils.getUserIp(request),Utils.getUserAgent(request)));
+                                    loginResponse.getStatus(), String.valueOf(UUID.randomUUID()),
+                                    Utils.getUserIp(request), Utils.getUserAgent(request)));
 
             // 쿠키추가
             CookieUtils.addJwtCookie(response, tokenCreateResponse.getAccessToken());
 //            applicationEventPublisher.publishEvent(new LoginCartDataMoveEvent(this));
             return "redirect:/";
         }
+
 
         return "redirect:/login";
     }
