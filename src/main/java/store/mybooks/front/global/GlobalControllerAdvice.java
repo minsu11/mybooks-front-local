@@ -5,6 +5,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.HttpClientErrorException;
 import store.mybooks.front.auth.exception.AccessIdForbiddenException;
 import store.mybooks.front.auth.exception.AuthenticationIsNotValidException;
@@ -67,5 +69,8 @@ public class GlobalControllerAdvice {
         return "redirect:/";
     }
 
-
+    @ModelAttribute("query")
+    public String lastSearchMemory(@RequestParam(value = "query", required = false) String query) {
+        return query;
+    }
 }
