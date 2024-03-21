@@ -1,5 +1,7 @@
 package store.mybooks.front.elastic.adaptor;
 
+import java.net.URI;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
@@ -39,14 +41,16 @@ public class ElasticAdaptor {
 
 
     public PageResponse<BookBriefResponse> searchPaged(String query, Pageable pageable) {
-        String url = UriComponentsBuilder
+        URI url = UriComponentsBuilder
                 .fromHttpUrl(gatewayAdaptorProperties.getAddress() + "/api/searches")
                 .queryParam("query", query)
                 .queryParam("page", pageable.getPageNumber())
                 .queryParam("size", pageable.getPageSize())
-                .queryParam("sort", pageable.getSort())
+                .queryParam("sort",pageable.getSort().stream()
+                        .map(order -> order.getProperty() + "," + order.getDirection().toString().toLowerCase())
+                        .collect(Collectors.joining(",")))
                 .encode()
-                .toUriString();
+                .build().toUri();
 
         ResponseEntity<PageResponse<BookBriefResponse>> exchange = restTemplate.exchange(
                 url,
