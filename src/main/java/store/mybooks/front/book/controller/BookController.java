@@ -76,7 +76,9 @@ public class BookController {
         String key = "viewCount:" + bookId;
         redisTemplate.opsForValue().increment(key, 1);
 
+
         model.addAttribute("reviews", reviewService.getBookReview(pageable,bookId));
+        model.addAttribute("reviewRateInfo",reviewService.getTotalReviewRate(bookId));
 
 
         return "book-details";

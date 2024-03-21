@@ -38,7 +38,7 @@ public class ReviewGetResponse {
 
     private String content;
 
-    private ImageResponse reviewImage;
+    private String reviewImage;
 
 
 }

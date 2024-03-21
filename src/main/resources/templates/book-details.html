@@ -122,7 +122,7 @@
                             <p>출판사: <span th:text="${book.publisher.name}"></span></p>
                             <p>카테고리: <span th:text="${categoryNameList}"></span></p>
                             <p>태그: <span th:text="${tagNameList}"></span></p>
-                            <p>리뷰: <span></span></p>
+                            <p>리뷰: <span th:text="${reviewRateInfo.averageRate}">/5</span>(<span th:text="(${reviewRateInfo.totalCount})"></span>)</p>
                             <div class="price-info">
                                 <div class="original-price">정가: <span th:text="${book.originalCost}">원</span></div>
                                 <div class="sale-price">판매가:
@@ -265,7 +265,7 @@
                                                             <div class="col-md-2">
                                                                 <div class="float-left">
                                                                     <img th:if="${review.reviewImage != null}"
-                                                                         th:src="${review.reviewImage.path+review.reviewImage.getFileName()+review.reviewImage.getExtension()}"
+                                                                         th:src="${review.reviewImage}"
                                                                          width="100" height="100" alt="리뷰 이미지"/>
                                                                 </div>
                                                             </div>
