@@ -8,11 +8,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.HttpClientErrorException;
-import store.mybooks.front.auth.exception.AccessIdForbiddenException;
-import store.mybooks.front.auth.exception.AuthenticationIsNotValidException;
-import store.mybooks.front.auth.exception.StatusIsDormancyException;
-import store.mybooks.front.auth.exception.StatusIsLockException;
-import store.mybooks.front.auth.exception.TokenExpiredException;
+import store.mybooks.front.auth.exception.*;
+import store.mybooks.front.order.exception.OrderInfoNotMatchException;
 import store.mybooks.front.utils.CookieUtils;
 
 /**
@@ -73,4 +70,14 @@ public class GlobalControllerAdvice {
     public String lastSearchMemory(@RequestParam(value = "query", required = false) String query) {
         return query;
     }
+
+
+    @ExceptionHandler({OrderInfoNotMatchException.class})
+    public String handleOrderModulationException(Exception exception, HttpServletRequest request) {
+
+        String previousUrl = request.getHeader(REFERER);
+        request.getSession().setAttribute("error", exception.getMessage());
+        return previousUrl.replace(domain, "redirect:");
+    }
+
 }

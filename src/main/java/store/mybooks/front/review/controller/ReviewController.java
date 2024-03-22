@@ -46,6 +46,8 @@ public class ReviewController {
             throws IOException {
 
         // todo 이거 진짜로 바꾸기
+
+
         createRequest.setOrderDetailId(1L);
         reviewService.createReview(createRequest, contentImages);
         return "redirect:/review";
@@ -71,8 +73,10 @@ public class ReviewController {
 
     @PostMapping("/modify")
     public String modifyReview(@RequestParam(name = "reviewId") Long reviewId,
-                               @ModelAttribute ReviewModifyRequest request) {
-        reviewService.modifyReview(reviewId, request);
+                               @ModelAttribute ReviewModifyRequest request,
+                               @RequestParam(value = "contentImage", required = false) MultipartFile contentImages)
+            throws IOException {
+        reviewService.modifyReview(reviewId, request,contentImages);
         return "redirect:/review";
     }
 

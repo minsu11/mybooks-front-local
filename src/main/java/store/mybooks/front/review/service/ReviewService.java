@@ -35,8 +35,8 @@ public class ReviewService {
         reviewAdaptor.createReview(request,file);
     }
 
-    public void modifyReview(Long reviewId,ReviewModifyRequest request){
-        reviewAdaptor.modifyUserReview(reviewId,request);
+    public void modifyReview(Long reviewId,ReviewModifyRequest request,MultipartFile file) throws IOException {
+        reviewAdaptor.modifyUserReview(reviewId,request,file);
     }
     public PageResponse<ReviewGetResponse> getAllUserReview(Pageable pageable){
         return reviewAdaptor.getAllUserReview(pageable);

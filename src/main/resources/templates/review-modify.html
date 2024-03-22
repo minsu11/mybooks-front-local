@@ -86,7 +86,6 @@
                                     <ul>
                                         <li>리뷰 작성시 자동으로 구매가 확정되며 환불이 불가능합니다.<br><br> 리뷰 : 200포인트 적립<br>리뷰 + 사진 첨부 :
                                             500포인트 적립
-                                            <br>사진은 최초 리뷰 작성 시 등록 가능하며 수정이 불가능합니다
                                             <br>별점 미선택시 5점으로 측정됩니다
                                         </li>
                                     </ul>
@@ -130,6 +129,10 @@
                                                     <textarea name="content" placeholder="수정할 내용"
                                                               th:text="${review.content}"></textarea>
                                                 </div>
+                                            </div>
+
+                                            <div class="col-12 file-container">
+                                                <input id="contentImage" name="contentImage" type="file" class="file" accept="image/*">
                                             </div>
 
                                             <div class="col-12">
