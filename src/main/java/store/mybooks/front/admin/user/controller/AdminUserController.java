@@ -1,4 +1,4 @@
-package store.mybooks.front.admin.member.controller;
+package store.mybooks.front.admin.user.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import store.mybooks.front.admin.member.service.MemberService;
+import store.mybooks.front.admin.user.adaptor.AdminUserAdaptor;
 
 /**
  * packageName    : store.mybooks.front.admin.member<br>
@@ -24,16 +24,16 @@ import store.mybooks.front.admin.member.service.MemberService;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin/member")
-public class MemberController {
+public class UserController {
 
-    private final MemberService memberService;
+    private final AdminUserAdaptor adminUserAdaptor;
 
     @GetMapping
     public String viewMembers(@PageableDefault Pageable pageable, Model model) {
 
-        model.addAttribute("members", memberService.getAllMembers(pageable));
+        model.addAttribute("users", adminUserAdaptor.getPagedUsers(pageable));
 
-        return "admin/view/member/member-all";
+        return "admin/view/user/user-all";
     }
 
 

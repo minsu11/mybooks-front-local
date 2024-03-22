@@ -1,4 +1,4 @@
-package store.mybooks.front.admin.member.adaptor;
+package store.mybooks.front.admin.user.adaptor;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
@@ -29,7 +29,7 @@ import store.mybooks.front.utils.Utils;
 
 @Component
 @RequiredArgsConstructor
-public class MemberAdaptor {
+public class UserAdaptor {
 
     private final RestTemplate restTemplate;
 
