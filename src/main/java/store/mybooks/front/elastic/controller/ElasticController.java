@@ -1,5 +1,7 @@
 package store.mybooks.front.elastic.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -32,8 +34,19 @@ public class ElasticController {
     private final ElasticService elasticService;
 
     @GetMapping
-    public String getSearchResultPage(@RequestParam("query") String query, @PageableDefault(size = 8, sort = "book_view_count", direction = Sort.Direction.DESC) Pageable pageable, Model model) {
-        PageResponse<BookBriefResponse> result = elasticService.getSearchResultPage(query, pageable);
+    public String getSearchResultPage(@RequestParam("query") String query,
+                                      @RequestParam(value = "order", required = false) String order,
+                                      @PageableDefault(size = 8, sort = "book_view_count", direction = Sort.Direction.DESC)
+                                      Pageable pageable, Model model) {
+        PageResponse<BookBriefResponse> result = elasticService.getSearchResultPage(query, pageable, order);
+
+        model.addAttribute("order", (order != null) ? order : "popular");
+        if ("rate".equals(order)) {
+            List<BookBriefResponse> checkReviewCount = result.getContent().stream()
+                    .filter(book -> book.getReviewCount() != null && book.getReviewCount() >= 100)
+                    .collect(Collectors.toList());
+            result.setContent(checkReviewCount);
+        }
         model.addAttribute("books", result);
         return "search-display";
     }
