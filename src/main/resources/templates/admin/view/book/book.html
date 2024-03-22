@@ -3,17 +3,16 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{common/layout/admin-layout}">
 
-<style>
-    .book-image {
-        width: 100px;
-        height: 150px;
-        object-fit: cover;
-        display: block;
-        margin: 0 auto;
-    }
-</style>
-
 <div layout:fragment="content">
+    <style>
+        .book-image {
+            width: 100px;
+            height: 150px;
+            object-fit: cover;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
     <script>
         let url = "/admin/book"
         let currentPage = [[${books.number}]]
