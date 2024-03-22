@@ -1,4 +1,4 @@
-package store.mybooks.front.payment;
+package store.mybooks.front.payment.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -57,13 +57,26 @@ public class PayController {
     public String index(ModelMap model,
                         @PathVariable(name = "orderNumber") String orderNumber) throws Exception {
         BookOrderInfoResponse bookOrderInfoResponse = orderService.getPayBookOrderInfo(orderNumber);
+        log.debug("결제창 넘어온 값: {}", bookOrderInfoResponse);
         model.put("tossValue", tossAppKey.getClientKey());
         model.put("orderInfo", bookOrderInfoResponse);
-        model.put("isCouponUsed", payService.checkCouponUsed(bookOrderInfoResponse.getOrderDetails()));
+//        model.put("isCouponUsed", payService.checkCouponUsed(bookOrderInfoResponse.getOrderDetails()));
         model.put("orderNumber", orderNumber);
         return "payment";
     }
 
+    @GetMapping("/non/{orderNumber}")
+    public String indexNonUser(ModelMap model,
+                               @PathVariable(name = "orderNumber") String orderNumber) throws Exception {
+        log.info("비회원의 주문 번호: {}", orderNumber);
+        BookOrderInfoResponse bookOrderInfoResponse = orderService.getPayBookOrderInfo(orderNumber);
+        log.debug("결제창 넘어온 값: {}", bookOrderInfoResponse);
+        model.put("tossValue", tossAppKey.getClientKey());
+        model.put("orderInfo", bookOrderInfoResponse);
+//        model.put("isCouponUsed", payService.checkCouponUsed(bookOrderInfoResponse.getOrderDetails()));
+        model.put("orderNumber", orderNumber);
+        return "payment";
+    }
 
     /**
      * 인증실패처리.

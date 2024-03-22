@@ -2,6 +2,7 @@ package store.mybooks.front.payment.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 
 /**
  * packageName    : store.mybooks.front.payment.dto.request<br>
@@ -16,6 +17,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
+@ToString
 public class TossPaymentRequest {
     private String paymentKey;
     private String orderId;

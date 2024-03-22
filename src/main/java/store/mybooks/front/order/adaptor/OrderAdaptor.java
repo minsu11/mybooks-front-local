@@ -56,11 +56,34 @@ public class OrderAdaptor {
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
+    /**
+     * Create book order book order create response.
+     *
+     * @param request the request
+     * @return the book order create response
+     */
     @RequiredAuthorization
-    public BookOrderCreateResponse createBookOrder(BookOrderCreateRequest request) {
+    public BookOrderCreateResponse createUserBookOrder(BookOrderCreateRequest request) {
         HttpEntity<BookOrderCreateRequest> httpEntity = new HttpEntity<>(request, Utils.getAuthHeader());
         ResponseEntity<BookOrderCreateResponse> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + MEMBER_URL,
+                HttpMethod.POST,
+                httpEntity,
+                new ParameterizedTypeReference<BookOrderCreateResponse>() {
+                });
+        return Utils.getResponseEntity(exchange, HttpStatus.CREATED);
+    }
+
+    /**
+     * 비회원 주문 결제.
+     *
+     * @param request the request
+     * @return the book order create response
+     */
+    public BookOrderCreateResponse createNonUserBookOrder(BookOrderCreateRequest request) {
+        HttpEntity<BookOrderCreateRequest> httpEntity = new HttpEntity<>(request, Utils.getHttpHeader());
+        ResponseEntity<BookOrderCreateResponse> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL + "/non/user",
                 HttpMethod.POST,
                 httpEntity,
                 new ParameterizedTypeReference<BookOrderCreateResponse>() {

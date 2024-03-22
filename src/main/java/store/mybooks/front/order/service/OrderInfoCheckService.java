@@ -67,6 +67,10 @@ public class OrderInfoCheckService {
 
     }
 
+    public void checkNonOrderModulation(BookOrderRequest bookOrderRequest, List<CartDetail> cartInfo) {
+        List<BookInfoRequest> bookInfoRequest = bookOrderRequest.getBookInfoList();
+        checkBookInfos(bookInfoRequest, cartInfo);
+    }
 
     /**
      * methodName : checkBookInfo<br>
@@ -207,6 +211,8 @@ public class OrderInfoCheckService {
         for (BookOrderDetailResponse bookOrderDetail : bookOrderDetailList) {
             BookStockResponse bookStockResponse = bookAdaptor.getBookStockResponse(bookOrderDetail.getId());
             if (bookOrderDetail.getAmount() > bookStockResponse.getStock()) {
+                log.info("주문 재고: {}", bookOrderDetail.getAmount());
+                log.info("도서 재고: {}", bookStockResponse.getStock());
                 throw new AmountOverStockException();
             }
         }

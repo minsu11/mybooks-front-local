@@ -93,23 +93,23 @@ public class PayAdaptor {
      * @param request the request
      * @return the pay create response
      */
-//    public PayCreateResponse createPayment(PayCreateRequest request) {
-//        HttpHeaders headers = Utils.getHttpHeader();
-//        HttpEntity<PayCreateRequest> httpEntity = new HttpEntity<>(request, headers);
-//        ResponseEntity<PayCreateResponse> exchange = restTemplate.exchange(
-//                gatewayAdaptorProperties.getAddress() + URL,
-//                HttpMethod.POST,
-//                httpEntity,
-//                new ParameterizedTypeReference<PayCreateResponse>() {
-//                }
-//        );
-//        return Utils.getResponseEntity(exchange, HttpStatus.CREATED);
-//    }
     @RequiredAuthorization
     public PayCreateResponse createResponse(PayCreateRequest request) {
         HttpEntity<PayCreateRequest> httpEntity = new HttpEntity<>(request, Utils.getAuthHeader());
         ResponseEntity<PayCreateResponse> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + MEMBER_URL,
+                HttpMethod.POST,
+                httpEntity,
+                new ParameterizedTypeReference<PayCreateResponse>() {
+                }
+        );
+        return Utils.getResponseEntity(exchange, HttpStatus.CREATED);
+    }
+
+    public PayCreateResponse createNonUserOrderResponse(PayCreateRequest request) {
+        HttpEntity<PayCreateRequest> httpEntity = new HttpEntity<>(request, Utils.getHttpHeader());
+        ResponseEntity<PayCreateResponse> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL + "/non/user",
                 HttpMethod.POST,
                 httpEntity,
                 new ParameterizedTypeReference<PayCreateResponse>() {

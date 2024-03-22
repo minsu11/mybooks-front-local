@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const paymentWidget = PaymentWidget(clientKey, customerKey); // 회원 결제
 
     const payValue = payInfo(customerKey);
-// const paymentWidget = PaymentWidget(clientKey, PaymentWidget.ANONYMOUS); // 비회원 결제
+    // const paymentWidget = PaymentWidget(clientKey, PaymentWidget.ANONYMOUS); // 비회원 결제
     console.log(coupon)
 
 // ------  결제 UI 렌더링 ------
@@ -39,6 +39,10 @@ document.addEventListener("DOMContentLoaded", function () {
         // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
 
         payValue.then(value => {
+            alert(value.orderName)
+            alert(value.email)
+            alert(value.name)
+            alert(value.phoneNumber)
             paymentWidget.requestPayment({
                 orderId: customerKey,
                 orderName: value.orderName,

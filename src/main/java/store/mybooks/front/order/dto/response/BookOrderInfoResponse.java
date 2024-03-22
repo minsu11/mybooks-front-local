@@ -3,6 +3,7 @@ package store.mybooks.front.order.dto.response;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 
 /**
  * packageName    : store.mybooks.front.order.dto.response<br>
@@ -17,6 +18,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
+@ToString
 public class BookOrderInfoResponse {
     private String orderStatus;
     private String number;

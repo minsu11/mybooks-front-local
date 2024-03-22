@@ -47,45 +47,100 @@
                             <ul id="accordionExample">
                                 <li>
                                     <!--                                    <th:block th:if="${direct == turn}"></th:block>-->
-                                    <h5>구매자 정보 </h5>
-                                    <section>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="single-form form-default">
-                                                    <!-- 로그인 된 회원의 데이터 -->
-                                                    <label>이름</label>
-                                                    <div class="row">
+                                    <th:block th:if="${check == true}">
+
+
+                                        <h5>구매자 정보 </h5>
+                                        <section>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="single-form form-default">
+                                                        <!-- 로그인 된 회원의 데이터 -->
+                                                        <label>이름</label>
+                                                        <div class="row">
+                                                            <div class="col-md-6 form-input form">
+                                                                <label>
+                                                                    <input name="userInfo.userName" type="text"
+                                                                           th:value="${user.name}"
+                                                                           readonly>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="single-form form-default">
+                                                        <label>이메일</label>
                                                         <div class="col-md-6 form-input form">
-                                                            <label>
-                                                                <input name="userInfo.userName" type="text"
-                                                                       th:value="${user.name}"
-                                                                       readonly>
-                                                            </label>
+                                                            <input type="text" name="userInfo.email"
+                                                                   th:value="${user.email}"
+                                                                   readonly>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="single-form form-default">
+                                                        <label>휴대폰 번호</label>
+                                                        <div class="col-md-6 form-input form">
+                                                            <input type="text" th:value="${user.phoneNumber}"
+                                                                   name="userInfo.phoneNumber" readonly>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-12">
-                                                <div class="single-form form-default">
-                                                    <label>이메일</label>
+                                        </section>
+                                    </th:block>
+                                    <th:block th:if="${check != true}">
+                                        <h5>구매자 정보</h5>
+                                        <div class="col-md-12">
+                                            <div class="single-form form-default">
+                                                <!-- 로그인 된 회원의 데이터 -->
+                                                <label>이름</label>
+                                                <div class="row">
                                                     <div class="col-md-6 form-input form">
-                                                        <input type="text" name="userInfo.email"
-                                                               th:value="${user.email}"
-                                                               readonly>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <div class="single-form form-default">
-                                                    <label>휴대폰 번호</label>
-                                                    <div class="col-md-6 form-input form">
-                                                        <input type="text" th:value="${user.phoneNumber}"
-                                                               name="userInfo.phoneNumber" readonly>
+                                                        <label>
+                                                            <input name="userInfo.userName" type="text">
+                                                        </label>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </section>
+                                        <div class="col-md-12">
+                                            <div class="single-form form-default">
+                                                <label>이메일</label>
+                                                <div class="col-md-6 form-input form">
+                                                    <input type="text" name="userInfo.email">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="single-form form-default">
+                                                <label>휴대폰 번호</label>
+                                                <div class="col-md-6 form-input form">
+                                                    <input type="text" name="userInfo.phoneNumber">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <h6>
+                                            주문 코드
+                                        </h6>
+                                        <section>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="single-form form-default">
+                                                        <label>주문 코드 입력</label>
+                                                        <div class="row">
+                                                            <div class="col-md-6 form-input form">
+                                                                <label>
+                                                                    <input name="userInfo.userName" type="text">
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </th:block>
                                 </li>
                                 <li>
                                     <h5>받는 사람 정보</h5>
@@ -113,28 +168,76 @@
                                                 </div>
                                             </div>
 
-                                            <div>
-                                                <div class="col-md-8">
-                                                    <div class="single-form form-default">
-                                                        <label>받는 주소
-                                                            <button class="btn btn-outline-secondary btn-sm"
-                                                                    type="button"
-                                                                    onclick="address()">배송지
-                                                            </button>
-                                                        </label>
-                                                        <div class="form-input form">
-                                                            <input id="delivery-address-id"
-                                                                   name="userInfo.addressId"
-                                                                   type="hidden">
-                                                            <input id="delivery-address"
-                                                                   name="orderInfo.recipientAddress"
-                                                                   type="text"
-                                                                   placeholder="배송지"
-                                                                   readonly>
+                                            <th:block th:if="${check==true}">
+                                                <div>
+                                                    <div class="col-md-8">
+                                                        <div class="single-form form-default">
+                                                            <label>받는 주소
+                                                                <button class="btn btn-outline-secondary btn-sm"
+                                                                        type="button"
+                                                                        onclick="address()">배송지
+                                                                </button>
+                                                            </label>
+                                                            <div class="form-input form">
+                                                                <input id="delivery-address-id"
+                                                                       name="userInfo.addressId"
+                                                                       type="hidden">
+                                                                <input id="delivery-address"
+                                                                       name="orderInfo.recipientAddress"
+                                                                       type="text"
+                                                                       placeholder="배송지"
+                                                                       readonly>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </th:block>
+                                            <th:block th:if="${check!=true}">
+                                                <div>
+                                                    <div class="col-md-8">
+                                                        <div class="single-form form-default">
+                                                            <label>
+                                                                <h6>받는 주소</h6>
+                                                            </label>
+                                                            <div class="form-group">
+                                                                <label for="sample6_postcode">우편번호</label>
+                                                                <div class="input-group">
+                                                                    <input type="text" id="sample6_postcode"
+                                                                           class="form-control"
+                                                                           name="number" placeholder="우편번호" readonly>
+                                                                    <button type="button" class="btn btn-primary"
+                                                                            onclick="registerRegister()">우편번호 찾기
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="sample6_address">주소</label>
+                                                                <input type="text" id="sample6_address"
+                                                                       class="form-control" name="roadName"
+                                                                       placeholder="주소" readonly>
+                                                                <small class="form-text text-muted">(지번주소 입력시 도로명 주소로 자동
+                                                                    변환됩니다)</small>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="sample6_detailAddress">상세주소</label>
+                                                                <input type="text" id="sample6_detailAddress"
+                                                                       class="form-control"
+                                                                       name="detail" placeholder="상세주소" required>
+                                                            </div>
+                                                            <input type="hidden" id="non-user-address"
+                                                                   name="orderInfo.recipientAddress"
+                                                            >
+                                                            <div class="form-group">
+                                                                <label for="sample6_extraAddress">참고항목</label>
+                                                                <input type="text" id="sample6_extraAddress"
+                                                                       name="reference"
+                                                                       class="form-control" placeholder="참고항목" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </th:block>
+
                                         </div>
                                     </section>
                                 </li>
@@ -155,8 +258,10 @@
                                                             <th class="col-1">수량</th>
                                                             <th class="col-1">합계</th>
                                                             <th class="col-1">포장</th>
-                                                            <th class="col-1">쿠폰</th>
-                                                            <th class="col-1"></th>
+                                                            <th:block th:if="${check==true}">
+                                                                <th class="col-1">쿠폰</th>
+                                                                <th class="col-1"></th>
+                                                            </th:block>
                                                             <th class="col-1"></th>
                                                         </tr>
                                                         </thead>
@@ -214,25 +319,27 @@
                                                                 <input class="select-wrap-cost" name="select-wrap-cost"
                                                                        type="hidden">
                                                             </td>
+                                                            <th:block th:if="${check == true}">
 
-                                                            <td class="form-text">
-                                                                <input class="select-coupon-id"
-                                                                       th:name="|bookInfoList[${index.index}].selectCouponId|"
-                                                                       type="hidden">
-                                                                <p class="select-coupon-name"></p>
+                                                                <td class="form-text">
+                                                                    <input class="select-coupon-id"
+                                                                           th:name="|bookInfoList[${index.index}].selectCouponId|"
+                                                                           type="hidden">
+                                                                    <p class="select-coupon-name"></p>
 
-                                                                <input class="select-coupon-cost"
-                                                                       name="select-coupon-cost"
-                                                                       type="hidden">
-                                                            </td>
-                                                            <td>
-                                                                <button id="coupon-button" type="button"
-                                                                        class="button btn-primary btn-sm"
-                                                                        name="coupon-button"
-                                                                        th:value="${book.id}"
-                                                                        onclick="clickCoupon(this)">쿠폰
-                                                                </button>
-                                                            </td>
+                                                                    <input class="select-coupon-cost"
+                                                                           name="select-coupon-cost"
+                                                                           type="hidden">
+                                                                </td>
+                                                                <td>
+                                                                    <button id="coupon-button" type="button"
+                                                                            class="button btn-primary btn-sm"
+                                                                            name="coupon-button"
+                                                                            th:value="${book.id}"
+                                                                            onclick="clickCoupon(this)">쿠폰
+                                                                    </button>
+                                                                </td>
+                                                            </th:block>
                                                             <td>
                                                                 <button th:id="'wrap-botton-'+${index.index}"
                                                                         type="button"
@@ -249,24 +356,27 @@
                                         </div>
                                     </section>
                                 </li>
-                                <li>
-                                    <h5>포인트 사용</h5>
-                                    <section class="form-control">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <div>
-                                                    <label>
-                                                        <p th:if="${point==null}" th:text="'보유 포인트: 0'"></p>
-                                                        <p th:if="${point!=null}" th:text="'보유 포인트: '+ ${point}"></p>
-                                                        <input id="user-point" type="number" placeholder="포인트 사용"
-                                                               min="0" value="0" name="orderInfo.usingPoint"
-                                                               th:max="${point}">
-                                                    </label>
+                                <th:block th:if="${check == true}">
+                                    <li>
+                                        <h5>포인트 사용</h5>
+                                        <section class="form-control">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div>
+                                                        <label>
+                                                            <p th:if="${point==null}" th:text="'보유 포인트: 0'"></p>
+                                                            <p th:if="${point!=null}"
+                                                               th:text="'보유 포인트: '+ ${point}"></p>
+                                                            <input id="user-point" type="number" placeholder="포인트 사용"
+                                                                   min="0" value="0" name="orderInfo.usingPoint"
+                                                                   th:max="${point}">
+                                                        </label>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </section>
-                                </li>
+                                        </section>
+                                    </li>
+                                </th:block>
                                 <li>
                                     <h5>배송</h5>
                                     <section class="form-control">
@@ -328,18 +438,19 @@
                                                                    readonly/>
                                                         </div>
                                                     </div>
-                                                    <div class="single-form form-default">
-                                                        <label>쿠폰 적용 금액</label>
-                                                        <div class="form-text">
-                                                            <label>
-                                                                <input id="coupon-cost" type="number"
-                                                                       class="form-control w-50"
-                                                                       name="orderInfo.couponApplicationAmount"
-                                                                       value="0" readonly>
-                                                            </label>
+                                                    <th:block th:if="${check==true}">
+                                                        <div class="single-form form-default">
+                                                            <label>쿠폰 적용 금액</label>
+                                                            <div class="form-text">
+                                                                <label>
+                                                                    <input id="coupon-cost" type="number"
+                                                                           class="form-control w-50"
+                                                                           name="orderInfo.couponApplicationAmount"
+                                                                           value="0" readonly>
+                                                                </label>
+                                                            </div>
                                                         </div>
-                                                    </div>
-
+                                                    </th:block>
                                                     <div class="single-form form-default button">
 
 
@@ -362,6 +473,7 @@
     </section>
     <script src="/assets/js/order/direct-order.js"></script>
     <script src="/assets/js/order/order.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script>
         // 현재 날짜 가져오기
         var today = new Date();
@@ -380,6 +492,43 @@
         var inputDate = document.getElementById("delivery-date-id");
         inputDate.setAttribute("min", formattedToday);
         inputDate.setAttribute("max", formattedTwoWeeksLater);
+
+        function registerRegister() {
+            new daum.Postcode({
+                oncomplete: function (data) {
+                    var addr = ''; // 주소 변수
+                    var extraAddr = ''; // 참고항목 변수
+
+                    // 사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                    if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                        addr = data.roadAddress;
+                    } else if (data.userSelectedType === 'J') { // 사용자가 지번 주소를 선택했을 경우에도 도로명주소를
+                        addr = data.roadAddress;
+                    }
+
+                    // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                    if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                        extraAddr += data.bname;
+                    }
+                    if (data.buildingName !== '' && data.apartment === 'Y') {
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    if (extraAddr !== '') {
+                        extraAddr = ' (' + extraAddr + ')';
+                    }
+                    document.getElementById("sample6_extraAddress").value = extraAddr;
+
+
+                    // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                    document.getElementById('sample6_postcode').value = data.zonecode;
+                    document.getElementById("sample6_address").value = addr;
+                    // 커서를 상세주소 필드로 이동한다.
+                    document.getElementById("sample6_detailAddress").focus();
+                }
+            }).open();
+        }
+
+
     </script>
 </div>
 </html>

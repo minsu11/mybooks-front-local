@@ -1,6 +1,9 @@
 package store.mybooks.front.payment.controller;
 
 import java.util.List;
+import java.util.Objects;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,6 +20,7 @@ import store.mybooks.front.payment.dto.request.TossPaymentRequest;
 import store.mybooks.front.payment.dto.response.PayCreateResponse;
 import store.mybooks.front.payment.dto.response.TossPaymentResponse;
 import store.mybooks.front.payment.service.PayService;
+import store.mybooks.front.utils.CookieUtils;
 
 /**
  * packageName    : store.mybooks.front.payment.controller<br>
@@ -32,7 +36,6 @@ import store.mybooks.front.payment.service.PayService;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/pay")
 public class PayRestController {
     private final PayService payService;
     private final OrderService orderService;
@@ -40,23 +43,27 @@ public class PayRestController {
     private final CartUserService cartUserService;
     private final OrderInfoCheckService orderInfoCheckService;
 
+    private static final String USER_COOKIE_VALUE = "identity_cookie";
+
     /**
      * 결제 .
      *
      * @param request the request
      * @return the response entity
      */
-    @PostMapping("/confirm")
+    @PostMapping("/pay/confirm")
     public ResponseEntity<TossPaymentResponse> confirmPayment(@RequestBody TossPaymentRequest request) {
-        // 재고
+        // 재고ㅇ
         List<BookOrderDetailResponse> bookOrderDetailResponses =
                 orderService.getBookOrderDetail(request.getOrderId());
+        log.debug("재고 확인");
         orderInfoCheckService.isCheckAmountBookCart(bookOrderDetailResponses);
         return ResponseEntity.status(HttpStatus.OK).body(payService.createTossPayment(request));
     }
 
-    @GetMapping("/info/{orderNumber}")
+    @GetMapping("/pay/info/{orderNumber}")
     public ResponseEntity<BookOrderPayInfoResponse> getBookOrderPayInfo(@PathVariable(name = "orderNumber") String orderNumber) {
+        log.info("결제 주문번호: {}", orderNumber);
         List<BookOrderDetailResponse> bookOrderDetailResponses =
                 orderService.getBookOrderDetail(orderNumber);
         orderInfoCheckService.isCheckAmountBookCart(bookOrderDetailResponses);
@@ -73,25 +80,22 @@ public class PayRestController {
      * @param payCreateRequest the pay create request
      * @return the response entity
      */
-    @PostMapping("/info/success")
-    public ResponseEntity<PayCreateResponse> payProcessing(@RequestBody PayCreateRequest payCreateRequest) {
-        PayCreateResponse response = payAdaptor.createResponse(payCreateRequest);
+    @PostMapping("/cart/info/success")
+    public ResponseEntity<PayCreateResponse> payProcessing(@RequestBody PayCreateRequest payCreateRequest,
+                                                           @CookieValue(name = USER_COOKIE_VALUE, required = false) Cookie cookie,
+                                                           HttpServletRequest request) {
+        log.info("결제 성공 request:{}", payCreateRequest);
+        PayCreateResponse response;
+        if (Objects.nonNull(CookieUtils.getIdentityCookieValue(request))) {
+            response = payAdaptor.createResponse(payCreateRequest);
+        } else {
+            log.info("else 문");
+            response = payAdaptor.createNonUserOrderResponse(payCreateRequest);
+        }
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(response);
     }
 
-    /**
-     * 결제가 성공된 장바구니 삭제.
-     *
-     * @return the response entity
-     */
-    @GetMapping("/info/cart")
-    public ResponseEntity<Void> removeUserCart() {
-        log.debug("장바구니 삭제 호출 전");
-        cartUserService.deleteAllBookFromCart();
-        log.debug("장바구니 삭제 호출 후");
-        return ResponseEntity.status(HttpStatus.OK)
-                .build();
-    }
+
 }

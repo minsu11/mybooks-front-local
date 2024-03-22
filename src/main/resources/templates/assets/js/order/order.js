@@ -4,6 +4,7 @@ var addressCheck = "";
 
 document.addEventListener('DOMContentLoaded', function (event
 ) {
+    var address = document.getElementById("non-user-address").value;
     const radioInputs = document.querySelectorAll('input[type="radio"][name="wrapRadio"]');
     const point = document.querySelector('input[id="user-point"][type="number"]')
     const wrapCost = document.querySelector('input[id="wrap-cost"]')
@@ -12,19 +13,31 @@ document.addEventListener('DOMContentLoaded', function (event
     const submitForm = document.getElementById('order-pay-form')
     let data = 0;
     const payForm = document.getElementById('order-pay-form');
-
-    payForm.addEventListener('submit', function () {
-        const couponCost = document.getElementById('coupon-cost')
-        console.log(wrapCost.value);
-        alert(wrapCost.value);
-        if (couponCost.value < 0 || wrapCost.value < 0 || point.value < 0) {
-            alert("음수를 입력했습니다.")
-            event.preventDefault()
-            return false;
-        }
-
-
-    })
+    alert(point)
+    if (point) {
+        alert(회원)
+        payForm.addEventListener('submit', function () {
+            payForm.action = "/order";
+            payForm.method = "post"
+            const couponCost = document.getElementById('coupon-cost')
+            if (couponCost.value < 0 || wrapCost.value < 0 || point.value < 0) {
+                alert("음수를 입력했습니다.")
+                event.preventDefault()
+                return false;
+            }
+        })
+    } else {
+        alert("비회원")
+        payForm.addEventListener('submit', function (e) {
+            address = copyValuesToHiddenField(address)
+            payForm.action = "/cart/order/non/user";
+            payForm.method = "post"
+            if (wrapCost.value < 0) {
+                alert("음수를 입력했습니다.")
+                return false;
+            }
+        })
+    }
 
 
     submitForm.addEventListener("keydown", function (event) {
@@ -44,27 +57,28 @@ document.addEventListener('DOMContentLoaded', function (event
             }
         });
     });
-    point.addEventListener('keyup', function (event) {
-        event.preventDefault()
-        if (event.keyCode === 13) {
-            alert("123")
-            const total = document.querySelector('span[id="totalCost"]')
-            alert("확인 ")
-            if (point.value === "") {
-                point.value = "0"
-            }
-            const inputValue = parseInt(point.value);
-            const maxValue = parseInt(point.getAttribute('max'));
-            if (inputValue > maxValue) {
-                alert('최대값을 초과하였습니다.');
-            } else if (inputValue < 0) {
-                alert("0원 미만을 입력하셨습니다.")
-            }
+    if (point) {
+        point.addEventListener('keyup', function (event) {
+            if (event.keyCode === 13) {
+                alert("123")
+                const total = document.querySelector('span[id="totalCost"]')
+                alert("확인 ")
+                if (point.value === "") {
+                    point.value = "0"
+                }
+                const inputValue = parseInt(point.value);
+                const maxValue = parseInt(point.getAttribute('max'));
+                if (inputValue > maxValue) {
+                    alert('최대값을 초과하였습니다.');
+                } else if (inputValue < 0) {
+                    alert("0원 미만을 입력하셨습니다.")
+                }
 
-            total.textContent = updateTotalCost(parseInt(total.textContent) + data, inputValue);
-            data = inputValue;
-        }
-    })
+                total.textContent = updateTotalCost(parseInt(total.textContent) + data, inputValue);
+                data = inputValue;
+            }
+        })
+    }
 
     date.addEventListener('change', function () {
         document.getElementById('delivery-date-label').textContent = date.value;
@@ -81,6 +95,16 @@ function address() {
     const left = Math.ceil((window.screen.width - width) / 2);
     const top = Math.ceil((window.screen.height - height) / 2)
     addressCheck = window.open("/address", "_blank", "toolbar=yes,scrollbars=yes,top=" + top + ",left=" + left + ",width=" + width + ",height=" + height)
+}
+
+function copyValuesToHiddenField(address) {
+    var addressValue = document.getElementById("sample6_address").value;
+    alert(addressValue)
+    var detailAddressValue = document.getElementById("sample6_detailAddress").value;
+    alert(detailAddressValue)
+    address = addressValue + ', ' + detailAddressValue;
+    alert(addressValue)
+    return address
 }
 
 function clickCoupon(button) {

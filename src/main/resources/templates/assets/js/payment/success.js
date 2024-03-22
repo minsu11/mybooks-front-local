@@ -6,11 +6,11 @@ document.addEventListener('DOMContentLoaded', async function () {
     console.log(new Date())
     // 서버로 결제 승인에 필요한 결제 정보를 보내세요.
     const pay = await confirm(urlParams)
+    console.log("호출한 뒤 결과: ")
+    console.log(pay)
     const orderIdElement = document.getElementById("orderId");
     const amountElement = document.getElementById("amount");
 
-
-    console.log(pay)
     const payInfo = {
         "paymentKey": pay.paymentKey,
         "orderNumber": pay.orderId,
@@ -19,6 +19,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         "method": pay.method,
         "requestedAt": pay.requestedAt
     }
+    console.log("pay Info 값")
+    console.log(payInfo)
 
     const test = await payTest(payInfo);
     if (pay.status === "DONE") {
@@ -47,7 +49,7 @@ async function confirm(urlParams) {
     });
 
     const json = await response.json();
-    console.log(json)
+    console.log("결과값: " + json)
     if (!response.ok) {
         console.log(json);
         window.location.href = `/pay/fail?message=${json.message}&code=${json.code}`;
@@ -57,7 +59,8 @@ async function confirm(urlParams) {
 
 
 async function payTest(payInfo) {
-    const response = await fetch("/pay/info/success", {
+    console.log("pay test");
+    const response = await fetch("/cart/info/success", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -75,7 +78,7 @@ async function payTest(payInfo) {
 
 
 function removeCart() {
-    const response = fetch("/pay/info/cart", {
+    const response = fetch("/cart/info", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",

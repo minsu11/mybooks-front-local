@@ -38,7 +38,8 @@ public class GlobalControllerAdvice {
      * @param exception HttpClientErrorException
      * @return string
      */
-    @ExceptionHandler({HttpClientErrorException.BadRequest.class, HttpClientErrorException.NotFound.class})
+    @ExceptionHandler({HttpClientErrorException.BadRequest.class, HttpClientErrorException.NotFound.class,
+            OrderInfoNotMatchException.class})
     // 400 404 이게 리소스에서 나오는 모든 예외
     public String handleBadRequestAndNotFoundException(Exception exception, HttpServletRequest request) {
 
@@ -71,13 +72,5 @@ public class GlobalControllerAdvice {
         return query;
     }
 
-
-    @ExceptionHandler({OrderInfoNotMatchException.class})
-    public String handleOrderModulationException(Exception exception, HttpServletRequest request) {
-
-        String previousUrl = request.getHeader(REFERER);
-        request.getSession().setAttribute("error", exception.getMessage());
-        return previousUrl.replace(domain, "redirect:");
-    }
 
 }

@@ -9,7 +9,7 @@ import lombok.Getter;
  * fileName       : OrderCreateRequest<br>
  * author         : minsu11<br>
  * date           : 3/16/24<br>
- * description    :
+ * description    : 주문 생성 DTO
  * ===========================================================<br>
  * DATE              AUTHOR             NOTE<br>
  * -----------------------------------------------------------<br>
@@ -18,6 +18,9 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class BookOrderCreateRequest {
+    private String name;
+    private String email;
+    private String phone;
     private List<BookInfoRequest> bookInfoList;
     private OrderInfoRequest orderInfo;
     private String orderNumber;

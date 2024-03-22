@@ -12,10 +12,7 @@ import store.mybooks.front.admin.wrap.dto.response.WrapResponse;
 import store.mybooks.front.book.adaptor.BookAdaptor;
 import store.mybooks.front.cart.domain.CartDetail;
 import store.mybooks.front.order.adaptor.OrderAdaptor;
-import store.mybooks.front.order.dto.request.BookInfoRequest;
-import store.mybooks.front.order.dto.request.BookOrderCreateRequest;
-import store.mybooks.front.order.dto.request.BookOrderDirectRequest;
-import store.mybooks.front.order.dto.request.OrderInfoRequest;
+import store.mybooks.front.order.dto.request.*;
 import store.mybooks.front.order.dto.response.BookOrderCreateResponse;
 import store.mybooks.front.order.dto.response.BookOrderDetailResponse;
 import store.mybooks.front.order.dto.response.BookOrderInfoResponse;
@@ -144,7 +141,7 @@ public class OrderService {
     }
 
     /**
-     * 주문 등록.
+     * 회원 주문 등록.
      *
      * @param bookInfo   the book info
      * @param orderInfo  the order info
@@ -154,7 +151,8 @@ public class OrderService {
      * @param totalCost  the total cost
      * @return the book order create response
      */
-    public BookOrderCreateResponse createOrder(List<BookInfoRequest> bookInfo,
+    public BookOrderCreateResponse createOrder(OrderUserInfoRequest userInfo,
+                                               List<BookInfoRequest> bookInfo,
                                                OrderInfoRequest orderInfo,
                                                Integer point,
                                                Integer couponCost,
@@ -162,16 +160,32 @@ public class OrderService {
                                                Integer totalCost) {
         totalCost += wrapCost - point - couponCost;
         String orderNumber = "";
-
         do {
             orderNumber = OrderUtils.createOrderNumber();
         } while (!orderAdapter.checkBookOrderNumber(orderNumber));
-
-        BookOrderCreateRequest request = new BookOrderCreateRequest(bookInfo, orderInfo,
+        BookOrderCreateRequest request = new BookOrderCreateRequest(
+                userInfo.getUserName(), userInfo.getEmail(), userInfo.getPhoneNumber(),
+                bookInfo, orderInfo,
                 orderNumber, point, couponCost, wrapCost, totalCost);
-        log.debug("주문 저장할 데이터: {}", request);
+        return orderAdapter.createUserBookOrder(request);
+    }
 
-        return orderAdapter.createBookOrder(request);
+    public BookOrderCreateResponse createNonUserOrder(BookOrderRequest bookInfo,
+                                                      Integer wrapCost,
+                                                      Integer totalCost) {
+        OrderInfoRequest orderInfo = bookInfo.getOrderInfo();
+        List<BookInfoRequest> bookInfoRequests = bookInfo.getBookInfoList();
+        OrderUserInfoRequest userInfo = bookInfo.getUserInfo();
+        totalCost += wrapCost;
+        String orderNumber = "";
+        do {
+            orderNumber = OrderUtils.createOrderNumber();
+        } while (!orderAdapter.checkBookOrderNumber(orderNumber));
+        BookOrderCreateRequest request = new BookOrderCreateRequest(
+                userInfo.getUserName(), userInfo.getEmail(), userInfo.getPhoneNumber(),
+                bookInfoRequests, orderInfo,
+                orderNumber, 0, 0, wrapCost, totalCost);
+        return orderAdapter.createNonUserBookOrder(request);
     }
 
     public BookOrderInfoResponse getPayBookOrderInfo(String orderNumber) {
