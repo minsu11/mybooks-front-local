@@ -89,7 +89,6 @@ function clickCoupon(button) {
         return
     }
     const id = button.parentElement.parentElement.id
-    alert("/checkout/" + button.value + "/coupon/" + id)
     const width = 800
     const height = 600
     const left = Math.ceil((window.screen.width - width) / 2);

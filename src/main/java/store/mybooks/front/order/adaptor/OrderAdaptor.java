@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import store.mybooks.front.auth.Annotation.RequiredAuthorization;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.order.dto.request.BookOrderCreateRequest;
 import store.mybooks.front.order.dto.response.BookOrderCreateResponse;
@@ -55,11 +56,11 @@ public class OrderAdaptor {
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
-
+    @RequiredAuthorization
     public BookOrderCreateResponse createBookOrder(BookOrderCreateRequest request) {
         HttpEntity<BookOrderCreateRequest> httpEntity = new HttpEntity<>(request, Utils.getAuthHeader());
         ResponseEntity<BookOrderCreateResponse> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL,
+                gatewayAdaptorProperties.getAddress() + MEMBER_URL,
                 HttpMethod.POST,
                 httpEntity,
                 new ParameterizedTypeReference<BookOrderCreateResponse>() {
@@ -113,7 +114,7 @@ public class OrderAdaptor {
     }
 
     /**
-     * 주문번호로 조회된 주문 상세 목록
+     * 주문번호로 조회된 주문 상세 목록.
      *
      * @param orderNumber the order number
      * @return the book order detail list

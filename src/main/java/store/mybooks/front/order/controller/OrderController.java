@@ -78,7 +78,7 @@ public class OrderController {
                                       ModelMap modelMap) {
         BookStockResponse bookStockResponse = bookService.getBookStockResponse(request.getId());
         orderInfoCheckService.checkAmount(request.getQuantity(), bookStockResponse.getStock());
-        
+
         BookGetResponseForOrder bookGetResponseForOrder = bookService.getBookForOrder(request.getId());
         List<BookGetResponseForOrder> bookGetResponseForOrders = List.of(bookService.getBookForOrder(request.getId()));
         PointResponse pointResponse = userPointService.getPointsHeld();
@@ -93,7 +93,6 @@ public class OrderController {
         modelMap.put("localDate", LocalDate.now());
         modelMap.put("user", user);
         modelMap.put("delivery", deliveryRule);
-        log.debug("메서드 끝");
         return "direct-order-checkout";
     }
 
@@ -144,7 +143,7 @@ public class OrderController {
      * methodName : viewCoupon<br>
      * author : minsu11<br>
      * description : 주문 페이지에서 사용 가능한 쿠폰 페이지.
-     * <br> *
+     * <br>
      *
      * @param modelMap model
      * @param bookId   쿠폰 적용할 도서 아이디
@@ -163,22 +162,6 @@ public class OrderController {
         return "checkout-coupon";
     }
 
-    /**
-     * methodName : viewCoupon<br>
-     * author : minsu11<br>
-     * description : 결제 페이지에서 사용 가능한 전체 쿠폰 페이지.
-     * <br>
-     *
-     * @param modelMap the model map
-     * @return the string
-     */
-    @GetMapping("checkout/total/coupon")
-    public String viewTotalCoupon(ModelMap modelMap) {
-        List<UserCouponGetResponseForOrder> useCoupon = userCouponService.getUsableUserTotalCoupon();
-        modelMap.put("couponList", useCoupon);
-        modelMap.put("allCoupon", true);
-        return "checkout-coupon";
-    }
 
     /**
      * methodName : viewCoupon<br>

@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const button = document.getElementById("payment-button");
     const coupon = document.getElementById("all-book-coupon-button");
     const generateRandomString = orderNumber.toString()
-    var couponCheck;
+    var couponCheck = "";
     var amount = parseInt(document.getElementById("order-total-cost").value);
 
 // ------  결제위젯 초기화 ------
@@ -32,21 +32,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // ------  결제 금액 업데이트 ------
 // @docs https://docs.tosspayments.com/reference/widget-sdk#updateamount결제-금액
-    if (coupon) {
-        coupon.addEventListener("click", function () {
-            // paymentMethodWidget.updateAmount(amount - 5000);
-            if (!couponCheck.closed && couponCheck) {
-
-            }
-        });
-    }
-
 // ------ '결제하기' 버튼 누르면 결제창 띄우기 ------
 // @docs https://docs.tosspayments.com/reference/widget-sdk#requestpayment결제-정보
     button.addEventListener("click", function () {
         // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
         // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
-
 
         payValue.then(value => {
             paymentWidget.requestPayment({

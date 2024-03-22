@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="/style.css"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>토스페이먼츠 샘플 프로젝트</title>
+    <title>결제 창</title>
     <!-- 결제위젯 SDK 추가 -->
     <script src="https://js.tosspayments.com/v1/payment-widget"></script>
 </div>
@@ -20,18 +20,21 @@
         <div class="row justify-content-center">
 
             <section>
-                <h3>결제 정보</h3>
-                <div>
-                    <h5>주문 번호</h5>
-                    <span th:text="${orderInfo.number}"></span>
-                    <h5>결제 금액</h5>
-                    <span th:text="${orderInfo.totalCost}"></span>
-                    <input th:value="${orderInfo.number}" type="hidden"
-                           id="order-number">
-                    <input th:value="${orderInfo.totalCost}" type="hidden"
-                           id="order-total-cost">
+                <div class="form-text">
+                    <h3>결제 정보</h3>
+                    <div>
+                        <h5>주문 번호</h5>
+                        <span th:text="${orderInfo.number}"></span>
+                        <br>
+                        <h5>결제 금액</h5>
+                        <span th:text="${orderInfo.totalCost}"></span>
+                        <br>
+                        <input th:value="${orderInfo.number}" type="hidden"
+                               id="order-number">
+                        <input th:value="${orderInfo.totalCost}" type="hidden"
+                               id="order-total-cost">
+                    </div>
                 </div>
-
 
             </section>
 
@@ -53,7 +56,7 @@
                     <div th:if="${isCouponUsed == false}">
                         <div style="padding-left: 25px">
                             <div class="checkable typography--p">
-                                <button type="button" id="all-book-coupon-button">
+                                <button type="button" id="all-book-coupon-button" onclick="">
                                     전체 쿠폰 적용
                                 </button>
 
