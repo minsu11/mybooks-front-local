@@ -28,11 +28,13 @@ import store.mybooks.front.user.dto.request.UserEmailRequest;
 import store.mybooks.front.user.dto.request.UserGradeModifyRequest;
 import store.mybooks.front.user.dto.request.UserLoginRequest;
 import store.mybooks.front.user.dto.request.UserModifyRequest;
+import store.mybooks.front.user.dto.request.UserOauthRequest;
 import store.mybooks.front.user.dto.request.UserPasswordModifyRequest;
 import store.mybooks.front.user.dto.request.UserStatusModifyRequest;
 import store.mybooks.front.user.dto.response.UserEncryptedPasswordResponse;
 import store.mybooks.front.user.dto.response.UserGetResponse;
 import store.mybooks.front.user.dto.response.UserLoginResponse;
+import store.mybooks.front.user.dto.response.UserOauthCreateResponse;
 import store.mybooks.front.utils.CookieUtils;
 import store.mybooks.front.utils.Utils;
 
@@ -137,6 +139,28 @@ public class UserController {
         return "redirect:/";
     }
 
+    @GetMapping("/verification/social/{oauthId}")
+    public String socialUserForm(HttpServletRequest request,@PathVariable("oauthId")String oauthId) {
+        request.setAttribute("nowDate",LocalDate.now());
+        request.setAttribute("oauthId",oauthId);
+        return "social";
+    }
+
+    @PostMapping("/social")
+    public String createAndLoginOauthUser(@ModelAttribute UserOauthRequest oauthRequest, HttpServletRequest request, HttpServletResponse response) {
+
+        UserOauthCreateResponse createResponse = userAdaptor.createAndLoginOauthUser(oauthRequest);
+
+
+        TokenCreateResponse tokenCreateResponse =
+                tokenAdaptor.createToken(
+                        new TokenCreateRequest(false, createResponse.getId(),
+                                createResponse.getUserStatusName(), String.valueOf(UUID.randomUUID()),
+                                Utils.getUserIp(request), Utils.getUserAgent(request)));
+
+        CookieUtils.addJwtCookie(response, tokenCreateResponse.getAccessToken());
+        return "redirect:/";
+    }
 
     /**
      * methodName : myPageForm

@@ -17,6 +17,7 @@ import store.mybooks.front.user.dto.request.UserGradeModifyRequest;
 import store.mybooks.front.user.dto.request.UserModifyRequest;
 import store.mybooks.front.user.dto.request.UserOauthCreateRequest;
 import store.mybooks.front.user.dto.request.UserOauthLoginRequest;
+import store.mybooks.front.user.dto.request.UserOauthRequest;
 import store.mybooks.front.user.dto.request.UserPasswordModifyRequest;
 import store.mybooks.front.user.dto.request.UserStatusModifyRequest;
 import store.mybooks.front.user.dto.response.UserCreateResponse;
@@ -167,6 +168,22 @@ public class UserAdaptor {
         }
         return response.getBody();
     }
+
+    public UserOauthCreateResponse createAndLoginOauthUser(UserOauthRequest request){
+        ResponseEntity<UserOauthCreateResponse> responseEntity =
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL + "/oauth/no-info",
+                        HttpMethod.POST,
+                        new HttpEntity<>(request, Utils.getHttpHeader()),
+                        new ParameterizedTypeReference<>() {
+                        });
+
+        if (responseEntity.getStatusCode() != HttpStatus.CREATED) {
+            throw new RuntimeException();
+        }
+        return responseEntity.getBody();
+    }
+
+
 
 
     /**
