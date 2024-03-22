@@ -46,15 +46,15 @@
                 </tbody>
             </table>
         </div>
-    </div>
-    <div class="mt-3" th:block th:if="${categories.totalPages > 1}">
-        <div class="pagination">
-            <div class="page-item">
-                <a class="page-link" id="prevLink" th:text="'<'" th:href="@{#}"></a>
-            </div>
-            <div class="pagination" id="pageNumContainer"></div>
-            <div class="page-item">
-                <a class="page-link" id="nextLink" th:text="'>'" th:href="@{#}"></a>
+        <div class="mt-3" th:block th:if="${categories.totalPages > 1}">
+            <div class="pagination">
+                <div class="page-item">
+                    <a class="page-link" id="prevLink" th:text="'<'" th:href="@{#}"></a>
+                </div>
+                <div class="pagination" id="pageNumContainer"></div>
+                <div class="page-item">
+                    <a class="page-link" id="nextLink" th:text="'>'" th:href="@{#}"></a>
+                </div>
             </div>
         </div>
     </div>
