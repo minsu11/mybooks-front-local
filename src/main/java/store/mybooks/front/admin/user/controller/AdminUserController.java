@@ -24,7 +24,7 @@ import store.mybooks.front.admin.user.adaptor.AdminUserAdaptor;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin/member")
-public class UserController {
+public class AdminUserController {
 
     private final AdminUserAdaptor adminUserAdaptor;
 
