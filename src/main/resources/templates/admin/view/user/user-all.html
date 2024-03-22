@@ -6,8 +6,8 @@
 <div layout:fragment="content">
     <script>
         let url = "/admin/member"
-        let currentPage = [[${members.number}]]
-        let totalPages = [[${members.totalPages}]]
+        let currentPage = [[${users.number}]]
+        let totalPages = [[${users.totalPages}]]
         console.log(currentPage)
         console.log(totalPages)
     </script>
@@ -30,17 +30,17 @@
             </thead>
             <tbody>
 
-            <tr th:each="member:${members.content}">
-                <td th:text="${member.name}"></td>
-                <td th:text="${member.phoneNumber}"></td>
-                <td th:text="${member.email}"></td>
-                <td th:text="${member.birthYear}"></td>
-                <td th:text="${member.birthMonthDay}"></td>
-                <td th:text="${member.createdAt}"></td>
-                <td th:text="${member.userGradeUserGradeNameId}"></td>
-                <td th:text="${member.userStatusId}"></td>
-                <td th:text="${member.latestLogin}"></td>
-                <td th:text="${member.gradeChangedDate}"></td>
+            <tr th:each="user:${users.content}">
+                <td th:text="${user.name}"></td>
+                <td th:text="${user.phoneNumber}"></td>
+                <td th:text="${user.email}"></td>
+                <td th:text="${user.birthYear}"></td>
+                <td th:text="${user.birthMonthDay}"></td>
+                <td th:text="${user.createdAt}"></td>
+                <td th:text="${user.userGradeUserGradeNameId}"></td>
+                <td th:text="${user.userStatusId}"></td>
+                <td th:text="${user.latestLogin}"></td>
+                <td th:text="${user.gradeChangedDate}"></td>
             </tr>
             </tbody>
         </table>

@@ -14,7 +14,7 @@
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
                         <li><a href="/"><i class="lni lni-home"></i>Home</a></li>
-                        <li>회원가입</li>
+                        <li>추가정보 기입</li>
                     </ul>
                 </div>
             </div>
@@ -30,8 +30,17 @@
                     <div class="col-lg-6 offset-lg-3 col-md-10 offset-md-1 col-12">
                         <div class="register-form">
 
-                            <form id="registerForm" class="row" method="post" action="/signup"
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="reg-fn">소셜 회원으로 추가적인 정보가 필요합니다</label>
+                                </div>
+                            </div>
+
+                            <form id="registerForm" class="row" method="post" action="/social"
                                   onsubmit="return checkPasswordAndAuth()">
+
+                                <input type="hidden" id="oauthId" name="oauthId" th:value="${oauthId}" />
+
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="reg-fn">이름</label>
@@ -43,23 +52,6 @@
                                     <div class="form-group">
                                         <label for="reg-email">이메일</label>
                                         <input class="form-control" type="email" id="reg-email" name="email" required>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="password">비밀번호</label>
-                                        <input class="form-control" type="password" id="password" name="password"
-                                               required>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="confirmPassword">비밀번호 확인</label>
-                                        <input class="form-control" type="password" id="confirmPassword"
-                                               name="check-password"
-                                               required>
                                     </div>
                                 </div>
 
@@ -99,9 +91,8 @@
                                 <input type="hidden" name="isAdmin" value="false">
 
                                 <div class="button">
-                                    <button class="btn" type="submit">회원가입</button>
+                                    <button class="btn" type="submit">회원인증</button>
                                 </div>
-                                <p class="outer-link">이미 회원이신가요? <a th:href="@{/login}">로그인</a></p>
 
                             </form>
 
@@ -115,39 +106,6 @@
 
     <script>
         var authNumber; // 전역 변수로 선언하여 다른 함수에서도 사용할 수 있도록 설정
-
-
-
-
-
-        // 강력한 비밀번호인지 확인하는 함수
-        function strongPassword(str) {
-            return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(str);
-        }
-
-
-
-        function checkPassword() {
-            var newPassword = document.getElementById('password').value;
-            var confirmPassword = document.getElementById('confirmPassword').value;
-
-
-            // 강력한 비밀번호인지 확인
-            if (!strongPassword(newPassword)) {
-                alert("비밀번호는 최소 8자 이상의 길이, 하나의 영문자, 숫자, 특수 문자를 포함해야 합니다.");
-                return false;
-            }
-
-            // 새 비밀번호와 비밀번호 확인이 일치하는지 확인합니다.
-            if (newPassword !== confirmPassword) {
-                // 일치하지 않는 경우 경고 메시지를 표시하고 폼을 제출하지 않습니다.
-                alert("비밀번호가 일치하지 않습니다.");
-                return false; // 폼 제출 방지
-            }
-            // 일치하는 경우 폼을 제출합니다.
-            return true;
-        }
-
 
         function validatePhoneNumberAndRequestAuthCode() {
             // 전화번호 양식을 가져옵니다.
@@ -188,10 +146,6 @@
 
 
         function checkPasswordAndAuth() {
-            // 비밀번호 확인 로직 추가
-            if (!checkPassword()) {
-                return false; // 비밀번호가 일치하지 않으면 폼 제출 방지
-            }
 
             // 인증번호 확인
             var verificationCode = document.getElementById('verificationCode').value;

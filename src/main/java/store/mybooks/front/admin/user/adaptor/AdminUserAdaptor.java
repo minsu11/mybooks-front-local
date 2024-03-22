@@ -1,4 +1,4 @@
-package store.mybooks.front.admin.member.adaptor;
+package store.mybooks.front.admin.user.adaptor;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
@@ -29,7 +29,7 @@ import store.mybooks.front.utils.Utils;
 
 @Component
 @RequiredArgsConstructor
-public class MemberAdaptor {
+public class AdminUserAdaptor {
 
     private final RestTemplate restTemplate;
 
@@ -37,7 +37,7 @@ public class MemberAdaptor {
     private static final String ADMIN_URL = "/api/admin/users";
 
     @RequiredAuthorization
-    public PageResponse<UserGetResponse> getPagedMembers(Pageable pageable) {
+    public PageResponse<UserGetResponse> getPagedUsers(Pageable pageable) {
 
         ResponseEntity<PageResponse<UserGetResponse>> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + ADMIN_URL + "/page?page=" + pageable.getPageNumber()
