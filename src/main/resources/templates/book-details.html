@@ -196,7 +196,7 @@
                     <div class="single-block">
                         <div class="row">
                             <div class="col-4">
-                                <h2 style="font-size: 24px; margin-top: 20px;">도서정보</h2>
+                                <h2 style="font-size: 35px; margin-top: 20px;">도서정보</h2>
                                 <table class="table">
                                     <tr>
                                         <th>출판일</th>
@@ -217,20 +217,20 @@
                                 </table>
                             </div>
                             <div class="col-12">
-                                <h2 style="font-size: 24px; margin-top: 20px;">목차</h2>
+                                <h2 style="font-size: 35px; margin-top: 20px;">목차</h2>
                                 <div th:utext="${book.index}"></div>
 
-                                <h2 style="font-size: 24px; margin-top: 20px;">설명</h2>
+                                <h2 style="font-size: 35px; margin-top: 20px;">설명</h2>
                                 <div th:utext="${book.explanation}"></div>
 
-                                <h2 style="font-size: 24px; margin-top: 20px;">책소개</h2>
+                                <h2 style="font-size: 35px; margin-top: 20px;">책소개</h2>
                                 <div th:each="contentImage : ${contentImage}">
                                     <img th:src="${contentImage.path + contentImage.fileName + contentImage.extension}"
                                          alt="책 소개 이미지">
                                 </div>
 
 
-                                <h2 style="font-size: 24px; margin-top: 20px;">저자 소개</h2>
+                                <h2 style="font-size: 35px; margin-top: 20px;">저자 소개</h2>
                                 <div th:each="author : ${book.authorList}">
                                     <p>저자명: <span th:text="${author.name}"></span></p>
                                     <p>저자소개: <span th:text="${author.content}"></span></p>
