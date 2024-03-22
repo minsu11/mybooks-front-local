@@ -55,7 +55,8 @@
                                                     aria-label="publisherId">
                                                 <option selected>출판사 선택</option>
                                                 <option th:each="publisher : ${publishers}"
-                                                        th:value="${publisher.id}" th:text="${publisher.name}"></option>
+                                                        th:value="${publisher.id}"
+                                                        th:text="${publisher.name}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -72,8 +73,8 @@
 
                                 <div class="col-sm-15">
                                     <div class="form-group">
-                                        <label for="explanation">목차</label>
-                                        <div id="editor1"></div>
+                                        <label for="index">목차</label>
+                                        <div id="editorIndex"></div>
                                         <input type="hidden" id="index" name="index">
                                     </div>
                                 </div>
@@ -81,7 +82,7 @@
                                 <div class="col-sm-15">
                                     <div class="form-group">
                                         <label for="explanation">설명</label>
-                                        <div id="editor"></div>
+                                        <div id="editorExplanation"></div>
                                         <input type="hidden" id="explanation" name="explanation">
                                     </div>
                                 </div>
@@ -253,21 +254,8 @@
         });
 
         $(document).ready(function () {
-            const editor = new toastui.Editor({
-                el: document.querySelector('#editor'),
-                height: '500px',
-                initialEditType: 'wysiwyg',
-                previewStyle: 'vertical',
-                usageStatistics: false,
-                toolbarItems: [
-                    ['heading', 'bold', 'italic', 'strike'],
-                    ['hr', 'quote'],
-                    ['ul', 'ol', 'task', 'indent', 'outdent'],
-                    ['table', 'code', 'codeblock']
-                ]
-            });
-            const editor1 = new toastui.Editor({
-                el: document.querySelector('#editor1'),
+            const editorIndex = new toastui.Editor({
+                el: document.querySelector('#editorIndex'),
                 height: '350px',
                 initialEditType: 'wysiwyg',
                 previewStyle: 'vertical',
@@ -279,10 +267,23 @@
                     ['table', 'code', 'codeblock']
                 ]
             });
-            $('#registerForm').on('submit', function (e) {
-                document.getElementById('explanation').value = editor.getHTML();
-                document.getElementById('index').value = editor1.getHTML();
 
+            const editorExplanation = new toastui.Editor({
+                el: document.querySelector('#editorExplanation'),
+                height: '500px',
+                initialEditType: 'wysiwyg',
+                previewStyle: 'vertical',
+                usageStatistics: false,
+                toolbarItems: [
+                    ['heading', 'bold', 'italic', 'strike'],
+                    ['hr', 'quote'],
+                    ['ul', 'ol', 'task', 'indent', 'outdent'],
+                    ['table', 'code', 'codeblock']
+                ]
+            });
+            $('#registerForm').on('submit', function () {
+                document.getElementById('index').value = editorIndex.getHTML();
+                document.getElementById('explanation').value = editorExplanation.getHTML();
             });
         });
 
