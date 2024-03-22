@@ -27,7 +27,30 @@ import store.mybooks.front.pageable.dto.response.PageResponse;
 public class ElasticService {
     private final ElasticAdaptor elasticAdaptor;
 
-    public PageResponse<BookBriefResponse> getSearchResultPage(String query, Pageable pageable) {
+    public PageResponse<BookBriefResponse> getSearchResultPage(String query, Pageable pageable, String order) {
+        if (order != null) {
+            Sort sort;
+            switch (order) {
+                case "recent":
+                    sort = Sort.by(Sort.Direction.DESC, "book_publish_date");
+                    break;
+                case "low-price":
+                    sort = Sort.by(Sort.Direction.ASC, "book_sale_cost");
+                    break;
+                case "high-price":
+                    sort = Sort.by(Sort.Direction.DESC, "book_sale_cost");
+                    break;
+                case "rate":
+                    sort = Sort.by(Sort.Direction.DESC, "avg_rate");
+                    break;
+                case "review":
+                    sort = Sort.by(Sort.Direction.DESC, "book_review_count");
+                    break;
+                default:
+                    sort = Sort.by(Sort.Direction.DESC, "book_view_count");
+            }
+            pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+        }
         return elasticAdaptor.searchPaged(query, pageable);
     }
 }
