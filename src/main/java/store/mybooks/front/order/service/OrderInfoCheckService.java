@@ -205,7 +205,7 @@ public class OrderInfoCheckService {
     /**
      * 장바구니 구매과정에서 재고 검사.
      *
-     * @param cartDetails the cart details
+     * @param bookOrderDetailList the cart details
      */
     public void isCheckAmountBookCart(List<BookOrderDetailResponse> bookOrderDetailList) {
         for (BookOrderDetailResponse bookOrderDetail : bookOrderDetailList) {
@@ -228,5 +228,17 @@ public class OrderInfoCheckService {
         }
     }
 
+    public void validationCheckNonUserOrder(List<CartDetail> cartDetailList) {
+        for (CartDetail cartDetail : cartDetailList) {
+            BookStockResponse stock = bookAdaptor.getBookStockResponse(cartDetail.getBookId());
+            if (cartDetail.getStock() > stock.getStock()) {
+                throw new AmountOverStockException();
+            }
+            if (cartDetail.getStock() <= 0) {
+                throw new AmountNegativeException();
+            }
+        }
+
+    }
 
 }

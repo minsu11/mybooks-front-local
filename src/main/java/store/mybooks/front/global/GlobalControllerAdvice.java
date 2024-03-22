@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.HttpClientErrorException;
 import store.mybooks.front.auth.exception.*;
+import store.mybooks.front.order.exception.AmountNegativeException;
+import store.mybooks.front.order.exception.AmountOverStockException;
 import store.mybooks.front.order.exception.OrderInfoNotMatchException;
+import store.mybooks.front.payment.exception.PayFailedException;
 import store.mybooks.front.utils.CookieUtils;
 
 /**
@@ -39,7 +42,8 @@ public class GlobalControllerAdvice {
      * @return string
      */
     @ExceptionHandler({HttpClientErrorException.BadRequest.class, HttpClientErrorException.NotFound.class,
-            OrderInfoNotMatchException.class})
+            OrderInfoNotMatchException.class, PayFailedException.class, AmountNegativeException.class,
+            AmountOverStockException.class})
     // 400 404 이게 리소스에서 나오는 모든 예외
     public String handleBadRequestAndNotFoundException(Exception exception, HttpServletRequest request) {
 

@@ -191,7 +191,6 @@ public class OrderController {
 
         List<CartDetail> bookFromCart;
         if (Objects.nonNull(CookieUtils.getIdentityCookieValue(request))) {
-
             PointResponse pointResponse = userPointService.getPointsHeld();
             UserGetResponse user = userAdaptor.findUser();
             modelMap.put("user", user);
@@ -199,7 +198,9 @@ public class OrderController {
             bookFromCart = cartUserService.getBookFromCart();
             modelMap.put("userCheck", true);
         } else {
+
             bookFromCart = cartNonUserService.getBookFromCart(cartCookie);
+            orderInfoCheckService.validationCheckNonUserOrder(bookFromCart);
             modelMap.put("userCheck", false);
         }
 
