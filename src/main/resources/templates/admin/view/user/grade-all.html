@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/admin-layout}">
+
+
+<body>
+
+<div layout:fragment="content">
+    <div class="container mt-5"> <!-- text-center 클래스 추가 -->
+        <h3>모든 회원등급표(비활성 등급 포함)</h3>
+        <table class="table table-bordered" style="width: 120%; height: 100%;">
+            <thead>
+            <tr>
+                <th>이름</th>
+                <th>최소 가격</th>
+                <th>최대 가격</th>
+                <th>포인트 적립률 (%)</th>
+                <th>생성일</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="grade : ${userGrades}">
+                <td th:text="${grade.userGradeNameId}"></td>
+                <td th:text="${grade.minCost}"></td>
+                <td th:text="${grade.maxCost}"></td>
+                <td th:text="${grade.rate}"></td>
+                <td th:text="${grade.createdDate}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+</div>
+
+
+</body>
+
+</html>
