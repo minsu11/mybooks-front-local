@@ -6,6 +6,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * packageName    : store.mybooks.front.pageable.dto.response<br>
@@ -19,6 +20,7 @@ import lombok.NoArgsConstructor;
  * 2/24/24        minsu11       최초 생성<br>
  */
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class PageResponse<T> {
