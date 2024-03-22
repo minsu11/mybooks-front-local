@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/admin-layout}">
+
+<div layout:fragment="content">
+    <div class="container mt-5"> <!-- text-center 클래스 추가 -->
+        <table class="table table-bordered" style="width: 120%; height: 100%;">
+            <thead>
+            <tr>
+                <th>회원 상태표</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="status : ${userStatus}">
+                <td th:text="${status.id}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+
+
+    </div>
+
+
+</div>
+
+</html>
