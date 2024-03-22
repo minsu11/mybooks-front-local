@@ -38,6 +38,9 @@
 
                             <form id="registerForm" class="row" method="post" action="/social"
                                   onsubmit="return checkPasswordAndAuth()">
+
+                                <input type="hidden" id="oauthId" name="oauthId" th:value="${oauthId}" />
+
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="reg-fn">이름</label>
