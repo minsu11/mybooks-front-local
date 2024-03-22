@@ -45,8 +45,9 @@ public class BookAdminService {
     }
 
 
-    public void updateBook(Long bookId, BookModifyRequest modifyRequest) {
-        bookAdminAdaptor.updateBook(bookId, modifyRequest);
+    public void updateBook(Long bookId, BookModifyRequest modifyRequest, MultipartFile thumbnailImage,
+                           List<MultipartFile> contentImages) throws IOException {
+        bookAdminAdaptor.updateBook(bookId, modifyRequest, thumbnailImage, contentImages);
     }
 
     public List<BookStatusGetResponse> getBookStatus() {

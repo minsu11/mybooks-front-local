@@ -1,6 +1,7 @@
 package store.mybooks.front.oauth;
 
 import java.util.Map;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
@@ -49,8 +50,6 @@ public class OauthService {
     // 바디부에 필요한 정보들 추가 , 페이코 api 양식에 맞춰서
     private MultiValueMap<String, String> tokenRequest(String code, OauthProvider provider) {
 
-        System.out.println(code);
-
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
         formData.add("client_id", keyConfig.keyStore(provider.getClientId()));
         formData.add("client_secret", keyConfig.keyStore(provider.getClientSecret()));
@@ -79,22 +78,29 @@ public class OauthService {
         // 유저 정보 가져오기
         UserProfile userProfile = getUserProfile(providerName, tokenResponse, provider);
 
-        // 가져온걸로 db 긁어서 있는회원인지 확인
+
+        // 가져온 OauthId 가지고 db 긁어서 있는회원인지 확인
         UserLoginResponse userLoginResponse =
-                userAdaptor.loginOauthUser(new UserOauthLoginRequest(userProfile.getEmail()));
+                userAdaptor.loginOauthUser(new UserOauthLoginRequest(userProfile.getOauthId()));
 
         if (userLoginResponse.getIsValidUser()) { // 이미 존재하는 회원이면 그대로 로그인
             return userLoginResponse;
         }
 
-        // 존재하는 회원 아니면 회원가입 시키기
+        // 만약 null 이라면 = 정보제공 동의 안해주면 , 추가정보 받기
+        if (Objects.isNull(userProfile.getEmail()) || Objects.isNull(userProfile.getBirthday()) ||
+                Objects.isNull(userProfile.getMobile()) || Objects.isNull(userProfile.getName())) {
+            return new UserLoginResponse(false,false,0L,userProfile.getOauthId());
+        }
+
+        // 정보제공 동의 해줬다면 바로 회원가입 시키기
         UserOauthCreateRequest createRequest =
                 new UserOauthCreateRequest(userProfile.getName(), userProfile.getMobile(), userProfile.getEmail(),
-                        userProfile.getBirthday());
+                        userProfile.getBirthday(),userProfile.getOauthId());
 
-        UserOauthCreateResponse createResponse=userAdaptor.createOauthUser(createRequest);
+        UserOauthCreateResponse createResponse = userAdaptor.createOauthUser(createRequest);
 
-        return new UserLoginResponse(true,false,createResponse.getId(),createResponse.getUserStatusName());
+        return new UserLoginResponse(true, false, createResponse.getId(), createResponse.getUserStatusName());
 
     }
 

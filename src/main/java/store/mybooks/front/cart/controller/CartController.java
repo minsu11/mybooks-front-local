@@ -6,17 +6,21 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import store.mybooks.front.cart.domain.CartDetail;
 import store.mybooks.front.cart.domain.CartRegisterRequest;
-import store.mybooks.front.cart.service.CartUserService;
+import store.mybooks.front.cart.domain.OrderItemRequest;
 import store.mybooks.front.cart.service.CartNonUserService;
+import store.mybooks.front.cart.service.CartUserService;
+import store.mybooks.front.cart.service.CartUtil;
 import store.mybooks.front.utils.CookieUtils;
 
 /**
@@ -107,24 +111,15 @@ public class CartController {
         return Objects.nonNull(CookieUtils.getIdentityCookieValue(request));
     }
 
-
-//    @PostMapping("/cart/order")
-//    public String cartOrder(@CookieValue(name = CartUtil.CART_COOKIE, required = false) Cookie cartCookie,
-//                            HttpServletResponse response, Model model) {
-//        try {
-//            List<CartDetail> cartDetailList = cartUtil.viewCart(cartCookie);
-//            if (cartDetailList.isEmpty()) {
-//                return "redirect:/cart";
-//            } else {
-//                model.addAttribute("cartItem", cartDetailList);
-//                String emptyCart = objectMapper.writeValueAsString(new ArrayList<CartDetail>());
-//                //TODO
-//            }
-//        } catch (JsonProcessingException e) {
-//            throw new RuntimeException(e);
-//        }
-//        return "";
-//    }
-
-
+    @PostMapping("/cart/update")
+    public ResponseEntity<Void> updateBookAmount(@CookieValue(name = CartUtil.CART_COOKIE, required = false) Cookie cartCookie,
+                                                 HttpServletResponse response, HttpServletRequest request,
+                                                 @RequestBody List<OrderItemRequest> orderItemRequest) {
+        if (isUser(request)) {
+            cartUserService.updateAmountBookInCart(orderItemRequest);
+        } else {
+            cartNonUserService.orderBookInCart(cartCookie, response, orderItemRequest);
+        }
+        return ResponseEntity.ok().build();
+    }
 }

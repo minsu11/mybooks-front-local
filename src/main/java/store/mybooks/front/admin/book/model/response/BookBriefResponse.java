@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import store.mybooks.front.image.dto.ImageResponse;
 
 /**
  * packageName    : store.mybooks.front.admin.book.model.response <br/>
@@ -24,11 +23,13 @@ import store.mybooks.front.image.dto.ImageResponse;
 public class BookBriefResponse {
     private Long id;
 
-    private ImageResponse imageResponse;
+    private String image;
 
     private String name;
 
-//    private Double rate;
+    private Double rate;
+
+    private Long reviewCount;
 
     private Integer cost;
 

@@ -4,6 +4,39 @@
       layout:decorate="~{common/layout/my-books-layout}">
 <head>
     <style>
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .pagination a {
+            padding: 8px 16px;
+            margin: 4px;
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .pagination a:hover {
+            background-color: #3367d6;
+        }
+
+        .pagination ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+        }
+
+        .pagination li {
+            margin-right: 5px;
+        }
+
         .quantity-input {
             display: flex;
             align-items: center;
@@ -43,7 +76,6 @@
     </style>
 </head>
 <div layout:fragment="content">
-
 
     <!-- Start Breadcrumbs -->
     <div class="breadcrumbs">
@@ -90,7 +122,7 @@
                             <p>출판사: <span th:text="${book.publisher.name}"></span></p>
                             <p>카테고리: <span th:text="${categoryNameList}"></span></p>
                             <p>태그: <span th:text="${tagNameList}"></span></p>
-                            <p>리뷰: <span></span></p>
+                            <p>리뷰: <span id="roundedRate"></span>/5(<span th:text="(${book.reviewCount})"></span>)</p>
                             <div class="price-info">
                                 <div class="original-price">정가: <span th:text="${book.originalCost}">원</span></div>
                                 <div class="sale-price">판매가:
@@ -164,7 +196,7 @@
                     <div class="single-block">
                         <div class="row">
                             <div class="col-4">
-                                <h2 style="font-size: 24px; margin-top: 20px;">도서정보</h2>
+                                <h2 style="font-size: 35px; margin-top: 20px;">도서정보</h2>
                                 <table class="table">
                                     <tr>
                                         <th>출판일</th>
@@ -185,19 +217,20 @@
                                 </table>
                             </div>
                             <div class="col-12">
-                                <h2 style="font-size: 24px; margin-top: 20px;">목차</h2>
+                                <h2 style="font-size: 35px; margin-top: 20px;">목차</h2>
                                 <div th:utext="${book.index}"></div>
 
-                                <h2 style="font-size: 24px; margin-top: 20px;">설명</h2>
+                                <h2 style="font-size: 35px; margin-top: 20px;">설명</h2>
                                 <div th:utext="${book.explanation}"></div>
 
-                                <h2 style="font-size: 24px; margin-top: 20px;">책소개</h2>
+                                <h2 style="font-size: 35px; margin-top: 20px;">책소개</h2>
                                 <div th:each="contentImage : ${contentImage}">
-                                    <img th:src="${contentImage.path + contentImage.fileName + contentImage.extension}" alt="책 소개 이미지">
+                                    <img th:src="${contentImage.path + contentImage.fileName + contentImage.extension}"
+                                         alt="책 소개 이미지">
                                 </div>
 
 
-                                <h2 style="font-size: 24px; margin-top: 20px;">저자 소개</h2>
+                                <h2 style="font-size: 35px; margin-top: 20px;">저자 소개</h2>
                                 <div th:each="author : ${book.authorList}">
                                     <p>저자명: <span th:text="${author.name}"></span></p>
                                     <p>저자소개: <span th:text="${author.content}"></span></p>
@@ -208,193 +241,118 @@
                     <!-- 도서상세정보 끝 -->
 
 
-                    <div class="row">
-                        <div class="col-lg-4 col-12">
-                            <div class="single-block give-review">
-                                <h4>4.5 (Overall)</h4>
-                                <ul>
-                                    <li>
-                                        <span>5 stars - 38</span>
-                                        <i class="lni lni-star-filled"></i>
-                                        <i class="lni lni-star-filled"></i>
-                                        <i class="lni lni-star-filled"></i>
-                                        <i class="lni lni-star-filled"></i>
-                                        <i class="lni lni-star-filled"></i>
-                                    </li>
-                                    <li>
-                                        <span>4 stars - 10</span>
-                                        <i class="lni lni-star-filled"></i>
-                                        <i class="lni lni-star-filled"></i>
-                                        <i class="lni lni-star-filled"></i>
-                                        <i class="lni lni-star-filled"></i>
-                                        <i class="lni lni-star"></i>
-                                    </li>
-                                    <li>
-                                        <span>3 stars - 3</span>
-                                        <i class="lni lni-star-filled"></i>
-                                        <i class="lni lni-star-filled"></i>
-                                        <i class="lni lni-star-filled"></i>
-                                        <i class="lni lni-star"></i>
-                                        <i class="lni lni-star"></i>
-                                    </li>
-                                    <li>
-                                        <span>2 stars - 1</span>
-                                        <i class="lni lni-star-filled"></i>
-                                        <i class="lni lni-star-filled"></i>
-                                        <i class="lni lni-star"></i>
-                                        <i class="lni lni-star"></i>
-                                        <i class="lni lni-star"></i>
-                                    </li>
-                                    <li>
-                                        <span>1 star - 0</span>
-                                        <i class="lni lni-star-filled"></i>
-                                        <i class="lni lni-star"></i>
-                                        <i class="lni lni-star"></i>
-                                        <i class="lni lni-star"></i>
-                                        <i class="lni lni-star"></i>
-                                    </li>
-                                </ul>
-                                <!-- Button trigger modal -->
-                                <button type="button" class="btn review-btn" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal">
-                                    Leave a Review
-                                </button>
-                            </div>
-                        </div>
-                        <div class="col-lg-8 col-12">
-                            <div class="single-block">
-                                <div class="reviews">
-                                    <h4 class="title">Latest Reviews</h4>
-                                    <!-- Start Single Review -->
-                                    <div class="single-review">
-                                        <img src="https://via.placeholder.com/150x150" alt="#">
-                                        <div class="review-info">
-                                            <h4>Awesome quality for the price
-                                                <span>Jacob Hammond
-                                            </span>
-                                            </h4>
-                                            <ul class="stars">
-                                                <li><i class="lni lni-star-filled"></i></li>
-                                                <li><i class="lni lni-star-filled"></i></li>
-                                                <li><i class="lni lni-star-filled"></i></li>
-                                                <li><i class="lni lni-star-filled"></i></li>
-                                                <li><i class="lni lni-star-filled"></i></li>
+                    <div class="col-lg-8 col-12">
+                        <div class="single-block">
+                            <div class="myrevies">
+                                <h2>리뷰</h2>
+                                <div class="row mt-3">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <ul class="list-group">
+                                                <li th:each="review : ${reviews.content}" class="list-group-item">
+                                                    <div class="row">
+                                                        <div class="col-md-10">
+                                                            <h5 class="mb-1"><span th:text="${review.title}"></span>
+                                                            </h5>
+                                                            <p class="mb-1">평점 : <span class="rating__result"
+                                                                                       th:text="${review.rate+'/5'}"></span>
+                                                            </p>
+                                                            <p class="mb-1">등록일 : <span th:text="${review.date}"></span>
+                                                            </p>
+                                                            <p class="mb-1">작성자 : <span
+                                                                    th:text="${review.userName}"></span></p>
+
+                                                            <div class="col-md-2">
+                                                                <div class="float-left">
+                                                                    <img th:if="${review.reviewImage != null}"
+                                                                         th:src="${review.reviewImage}"
+                                                                         width="100" height="100" alt="리뷰 이미지"/>
+                                                                </div>
+                                                            </div>
+                                                            <p class="mb-1"><span th:text="${review.content}"></span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </li>
                                             </ul>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                                tempor...</p>
                                         </div>
                                     </div>
-                                    <!-- End Single Review -->
-                                    <!-- Start Single Review -->
-                                    <div class="single-review">
-                                        <img src="https://via.placeholder.com/150x150" alt="#">
-                                        <div class="review-info">
-                                            <h4>My husband love his new...
-                                                <span>Alex Jaza
-                                            </span>
-                                            </h4>
-                                            <ul class="stars">
-                                                <li><i class="lni lni-star-filled"></i></li>
-                                                <li><i class="lni lni-star-filled"></i></li>
-                                                <li><i class="lni lni-star-filled"></i></li>
-                                                <li><i class="lni lni-star-filled"></i></li>
-                                                <li><i class="lni lni-star"></i></li>
-                                            </ul>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                                tempor...</p>
-                                        </div>
-                                    </div>
-                                    <!-- End Single Review -->
-                                    <!-- Start Single Review -->
-                                    <div class="single-review">
-                                        <img src="https://via.placeholder.com/150x150" alt="#">
-                                        <div class="review-info">
-                                            <h4>I love the built quality...
-                                                <span>Jacob Hammond
-                                            </span>
-                                            </h4>
-                                            <ul class="stars">
-                                                <li><i class="lni lni-star-filled"></i></li>
-                                                <li><i class="lni lni-star-filled"></i></li>
-                                                <li><i class="lni lni-star-filled"></i></li>
-                                                <li><i class="lni lni-star-filled"></i></li>
-                                                <li><i class="lni lni-star-filled"></i></li>
-                                            </ul>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                                tempor...</p>
-                                        </div>
-                                    </div>
-                                    <!-- End Single Review -->
                                 </div>
                             </div>
+                            <div class="pagination">
+                                <ul>
+                                    <li th:each="i : ${#numbers.sequence(0, reviews.totalPages - 1)}">
+                                        <a th:href="@{${#httpServletRequest.requestURI}(page=${i})}"
+                                           th:text="${i + 1}" th:class="${reviews.number == i ? 'active' : ''}"></a>
+                                    </li>
+                                </ul>
+                            </div>
+
                         </div>
                     </div>
+
                 </div>
             </div>
+
         </div>
     </section>
     <!-- End Item Details -->
 
-    <!-- Review Modal -->
-    <div class="modal fade review-modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Leave a Review</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="review-name">Your Name</label>
-                                <input class="form-control" type="text" id="review-name" required>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="review-email">Your Email</label>
-                                <input class="form-control" type="email" id="review-email" required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="review-subject">Subject</label>
-                                <input class="form-control" type="text" id="review-subject" required>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label for="review-rating">Rating</label>
-                                <select class="form-control" id="review-rating">
-                                    <option>5 Stars</option>
-                                    <option>4 Stars</option>
-                                    s
-                                    <option>3 Stars</option>
-                                    <option>2 Stars</option>
-                                    <option>1 Star</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="review-message">Review</label>
-                        <textarea class="form-control" id="review-message" rows="8" required></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer button">
-                    <button type="button" class="btn">Submit Review</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End Review Modal -->
-
 
     <script type="text/javascript">
+
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // 리뷰 목록이 비어 있는지 확인
+            var reviewsList = document.querySelectorAll(".list-group-item");
+            if (reviewsList.length === 0) {
+                // 리뷰가 없는 경우 메시지를 보여줌
+                var noReviewsMessage = document.createElement("p");
+                noReviewsMessage.textContent = "리뷰가 존재하지 않습니다.";
+                document.querySelector(".myrevies").appendChild(noReviewsMessage);
+                // 페이지네이션 숨김
+                document.querySelector(".pagination").style.display = "none";
+            }
+        });
+
+
+        // 페이지 번호를 클릭할 때 AJAX로 페이지를 로드하는 함수
+        function loadReviewsPage(pageNumber) {
+            // AJAX 요청 생성
+            var xhr = new XMLHttpRequest();
+            var bookId = [[${book.id}]];
+            var url = "/review/book/" + bookId + "?page=" + pageNumber;
+            xhr.open("GET", url, true);
+
+            // 요청이 완료되었을 때의 콜백 함수 등록
+            xhr.onload = function () {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    // 요청이 성공한 경우 페이지 내용을 업데이트
+                    var response = xhr.responseText;
+
+                    document.querySelector(".myrevies").innerHTML = response;
+                } else {
+                    // 요청이 실패한 경우 오류 처리
+                    console.error(xhr.statusText);
+                }
+            };
+
+            // 요청 보내기
+            xhr.send();
+        }
+
+        document.querySelectorAll(".pagination li a").forEach(function (pageLink) {
+            pageLink.addEventListener("click", function (event) {
+                event.preventDefault(); // 링크 기본 동작 방지
+                var pageNumber = parseInt(this.textContent.trim()); // 클릭한 페이지 번호 가져오기
+                loadReviewsPage(pageNumber-1); // 해당 페이지 로드
+            });
+        });
+
+
+
+
+
         const current = document.getElementById("current");
         const opacity = 0.6;
         const imgs = document.querySelectorAll(".img");
@@ -432,5 +390,15 @@
         }
 
         setting()
+
+
+        // Thymeleaf를 통해 전달된 book.rate 값을 가져옴
+        var originalRate = parseFloat([[${book.rate}]]);
+        // 소수점 한 자리로 반올림
+        var roundedRate = Math.round(originalRate * 10) / 10;
+
+        // 소수점 한 자리에서 반올림한 값을 HTML에 설정
+        document.getElementById('roundedRate').innerText = roundedRate;
+
     </script>
 </div>

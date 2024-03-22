@@ -1,7 +1,7 @@
 package store.mybooks.front.order.dto.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * packageName    : store.mybooks.front.order.dto.dto.request<br>
@@ -15,7 +15,7 @@ import lombok.Setter;
  * 3/6/24        minsu11       최초 생성<br>
  */
 @Getter
-@Setter
+@AllArgsConstructor
 public class BookOrderDirectRequest {
     private Long id;
     private Integer saleCost;

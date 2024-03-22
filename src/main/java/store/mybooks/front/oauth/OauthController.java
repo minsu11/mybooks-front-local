@@ -40,16 +40,19 @@ public class OauthController {
 
         UserLoginResponse loginResponse = oauthService.oauthLogin(provider, code);
 
+        if (loginResponse.getUserId().equals(0L)) {
+            return "redirect:/verification/social/"+loginResponse.getStatus();
+        }
+
         if (loginResponse.getIsValidUser()) { // 기존에 계정이 있거나 , 회원가입에 문제가 없는 경우 로그인
+
             TokenCreateResponse tokenCreateResponse =
                     tokenAdaptor.createToken(
                             new TokenCreateRequest(loginResponse.getIsAdmin(), loginResponse.getUserId(),
                                     loginResponse.getStatus(), String.valueOf(UUID.randomUUID()),
-                                    Utils.getUserIp(request),Utils.getUserAgent(request)));
-
+                                    Utils.getUserIp(request), Utils.getUserAgent(request)));
 
             CookieUtils.addJwtCookie(response, tokenCreateResponse.getAccessToken());
-
             return "redirect:/";
         }
 

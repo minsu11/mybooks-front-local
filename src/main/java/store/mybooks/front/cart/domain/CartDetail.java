@@ -1,9 +1,6 @@
 package store.mybooks.front.cart.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * packageName    : store.mybooks.front.cart <br/>
@@ -20,16 +17,23 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
+@ToString
 public class CartDetail {
     private Long bookId;
-    private int cartDetailAmount;
+    private Integer cartDetailAmount;
     private String name;
     private String bookImage;
     private Integer cost;
     private Integer saleCost;
+    private Integer stock;
+    private String sellingStatus;
+
+    public void addAmount(int amount) {
+        this.cartDetailAmount = this.cartDetailAmount + amount;
+    }
 
     public void amountUpdate(int amount) {
-        this.cartDetailAmount = this.cartDetailAmount + amount;
+        this.cartDetailAmount = amount;
     }
 
     public CartDetail saleUpdate(Integer amount) {

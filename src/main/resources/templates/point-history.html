@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/my-books-layout}">
+
+<div layout:fragment="content">
+    <script>
+        let url = "/user/point-history"
+        let currentPage = [[${points.number}]]
+        let totalPages = [[${points.totalPages}]]
+    </script>
+    <div class="container">
+        <table class="table table-hover text-center">
+            <thead>
+            <tr>
+                <th th:text="포인트"></th>
+                <th th:text="'적립 구분'"></th>
+                <th th:text="'적립 날짜'"></th>
+            </tr>
+            </thead>
+            <tbody>
+                    <tr th:each="point: ${points.content}">
+                        <td th:text="${point.statusCost}"></td>
+                        <td th:text="${point.pointRuleName}"></td>
+                        <td th:text="${point.createdDate}"></td>
+                    </tr>
+            </tbody>
+        </table>
+        <div class="mt-3" th:block th:if="${points.totalPages > 1}">
+            <div class="pagination">
+                <div class="page-item">
+                    <a class="page-link" id="prevLink" th:text="'<'" th:href="@{#}"></a>
+                </div>
+                <div class="pagination" id="pageNumContainer"></div>
+                <div class="page-item">
+                    <a class="page-link" id="nextLink" th:text="'>'" th:href="@{#}"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/admin/js/page/setPrevious.js"></script>
+    <script src="/admin/js/page/setNext.js"></script>
+    <script src="/admin/js/page/setLastPage.js"></script>
+</div>
