@@ -143,16 +143,35 @@ public class BookAdminAdaptor {
      * @return bookModifyResponse
      */
     @RequiredAuthorization
-    public BookModifyResponse updateBook(Long bookId, BookModifyRequest modifyRequest) {
-        ResponseEntity<BookModifyResponse> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + ADMIN_URL + "/{id}",
-                HttpMethod.PUT,
-                new HttpEntity<>(modifyRequest, Utils.getAuthHeader()),
-                new ParameterizedTypeReference<>() {
-                }, bookId);
+    public void updateBook(Long bookId, BookModifyRequest modifyRequest, MultipartFile thumbnailImage,
+                           List<MultipartFile> contentImages) throws IOException {
+        HttpHeaders headers = Utils.getAuthHeader();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        MultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
+        parts.add("request", modifyRequest);
+        if (thumbnailImage != null && !thumbnailImage.isEmpty()) {
+            parts.add("thumbnail", new FileSystemResource(convert(thumbnailImage)));
+        }
+        if (contentImages != null && !contentImages.isEmpty()) {
+            for (MultipartFile file : contentImages) {
+                if (!file.isEmpty()) {
+                    parts.add("content", new FileSystemResource(convert(file)));
+                }
+            }
+        }
 
-        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+        HttpEntity<MultiValueMap<String, Object>> requestHttpEntity = new HttpEntity<>(parts, headers);
+
+        ResponseEntity<Void> responseEntity = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + ADMIN_URL + "/" + bookId,
+                HttpMethod.PUT,
+                requestHttpEntity,
+                Void.class);
+
+
+        Utils.getResponseEntity(responseEntity, HttpStatus.OK);
     }
+
 
     /**
      * methodName : getBookStatus

@@ -4,7 +4,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import store.mybooks.front.admin.book.model.response.BookBriefResponseIncludePublishDate;
+import store.mybooks.front.admin.book.model.response.BookBriefResponse;
 import store.mybooks.front.category.adaptor.CategoryAdaptor;
 import store.mybooks.front.category.model.reesponse.CategoryGetResponseForCategoryView;
 import store.mybooks.front.category.model.reesponse.CategoryGetResponseForMainView;
@@ -34,8 +34,8 @@ public class CategoryService {
         return categoryAdaptor.getCategoriesForCategoryView(categoryId);
     }
 
-    public PageResponse<BookBriefResponseIncludePublishDate> getBooksForCategoryView(Integer categoryId,
-                                                                                     Pageable pageable) {
+    public PageResponse<BookBriefResponse> getBooksForCategoryView(Integer categoryId,
+                                                                   Pageable pageable) {
         return categoryAdaptor.getBooksForCategoryView(categoryId, pageable);
     }
 }

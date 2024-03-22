@@ -3,11 +3,13 @@ package store.mybooks.front.cart.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.admin.book.adaptor.BookAdminAdaptor;
 import store.mybooks.front.admin.book.model.response.BookCartResponse;
+import store.mybooks.front.cart.adaptor.CartAdaptor;
 import store.mybooks.front.cart.controller.CartController;
 import store.mybooks.front.cart.domain.CartDetail;
 import store.mybooks.front.cart.domain.CartRegisterRequest;
@@ -32,7 +34,10 @@ public class CartUserService {
 
     private final BookAdminAdaptor bookAdminAdaptor;
     private final RedisTemplate<String, CartDetail> redisTemplate;
+    private final RedisTemplate<String, String> stringRedisTemplate;
     private final UserAdaptor userAdaptor;
+    private final CartAdaptor cartAdaptor;
+    private static final String EXPIRED_KEY = "EXPIRED_CART";
 
     /**
      * Gets book from cart.
@@ -42,9 +47,8 @@ public class CartUserService {
     public List<CartDetail> getBookFromCart() {
         String cartKey = cartKey();
         List<CartDetail> cartDetailList = redisTemplate.opsForList().range(cartKey, 0, -1);
-
         if (Objects.isNull(cartDetailList) || cartDetailList.isEmpty()) {
-            return new ArrayList<>();
+            return cartAdaptor.moveDataMysqlToRedis(cartKey);
         } else {
             return cartDetailList;
         }
@@ -82,6 +86,9 @@ public class CartUserService {
                             cartBook.getSaleCost(), cartBook.getStock(), cartBook.getSellingStatus());
             cartDetailList.add(cartDetail);
             redisTemplate.opsForList().rightPush(cartKey, cartDetail);
+            stringRedisTemplate.opsForValue().set(getExpiredKey(cartKey), cartKey);
+            stringRedisTemplate.expire(getExpiredKey(cartKey), 179, TimeUnit.MINUTES);
+            redisTemplate.expire(cartKey, 180, TimeUnit.MINUTES);
         }
     }
 
@@ -144,5 +151,9 @@ public class CartUserService {
     public String cartKey() {
         UserGetResponse user = userAdaptor.findUser();
         return CartController.CART_COOKIE_VALUE + ":" + user.getEmail();
+    }
+
+    public String getExpiredKey(String cartKey) {
+        return EXPIRED_KEY + " " + cartKey;
     }
 }

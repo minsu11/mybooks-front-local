@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import store.mybooks.front.admin.book.model.response.BookBriefResponseIncludePublishDate;
+import store.mybooks.front.admin.book.model.response.BookBriefResponse;
 import store.mybooks.front.category.model.reesponse.CategoryGetResponseForCategoryView;
 import store.mybooks.front.category.model.reesponse.CategoryGetResponseForMainView;
 import store.mybooks.front.config.GatewayAdaptorProperties;
@@ -68,12 +68,11 @@ public class CategoryAdaptor {
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
-    public PageResponse<BookBriefResponseIncludePublishDate> getBooksForCategoryView(Integer categoryId,
-                                                                                     Pageable pageable) {
+    public PageResponse<BookBriefResponse> getBooksForCategoryView(Integer categoryId, Pageable pageable) {
         HttpHeaders headers = Utils.getHttpHeader();
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
-        ResponseEntity<PageResponse<BookBriefResponseIncludePublishDate>> exchange = restTemplate.exchange(
+        ResponseEntity<PageResponse<BookBriefResponse>> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + URL + "/view/book/" + categoryId
                         + "?page=" + pageable.getPageNumber() + "&size=" + pageable.getPageSize(),
                 HttpMethod.GET,
