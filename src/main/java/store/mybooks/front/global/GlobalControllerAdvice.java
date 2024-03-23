@@ -3,6 +3,7 @@ package store.mybooks.front.global;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -29,6 +30,7 @@ import store.mybooks.front.utils.CookieUtils;
  * 2/27/24          damho-lee          최초 생성
  */
 @ControllerAdvice
+@Slf4j
 public class GlobalControllerAdvice {
 
     private static final String REFERER = "referer";
@@ -87,6 +89,7 @@ public class GlobalControllerAdvice {
 
     @ExceptionHandler({Exception.class}) // 발생하는 모든 예외
     public String handleRuntimeException(Exception e,Model model) {
+        log.warn(e.getMessage());
         model.addAttribute("errorMessage",e.getMessage());
         return "error";
     }
