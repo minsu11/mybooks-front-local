@@ -9,6 +9,7 @@
         .regular-cost {
             text-decoration: line-through;
         }
+
         .prd .tab-class .nav-item a.active {
             background: var(--bs-secondary) !important;
         }
@@ -45,11 +46,9 @@
 
                                     </h2>
                                     <p>
-                                        </p>
-                                    <h3><span></span> </h3>
-<!--                                    <div class="button">-->
-<!--                                        <a href="product-grids.html" class="btn">Shop Now</a>-->
-<!--                                    </div>-->
+                                    </p>
+                                    <h3><span></span></h3>
+
                                 </div>
                             </div>
                             <!-- End Single Slider -->
@@ -60,10 +59,8 @@
                                     <h2><span></span>
                                     </h2>
                                     <p></p>
-                                    <h3><span></span> </h3>
-<!--                                    <div class="button">-->
-<!--                                        <a href="product-grids.html" class="btn">Shop Now</a>-->
-<!--                                    </div>-->
+                                    <h3><span></span></h3>
+
                                 </div>
                             </div>
                             <!-- End Single Slider -->
@@ -140,7 +137,6 @@
             </div>
 
 
-
             <div class="tab-content center">
                 <div id="tab-1" class="tab-pane fade show p-0 active">
                     <div class="row mt-3">
@@ -179,8 +175,10 @@
                                     </th:block>
                                     <p>리뷰 수 : <span th:text=" ${book.reviewCount}"></span></p>
                                     <div class="price">
-                                        <span class="sale-cost" th:text="${book.saleCost} + '원'  "></span>
-                                        <s class="regular-cost" th:text="${book.cost} + '원'"></s>
+                                        <span class="sale-cost"
+                                              th:text="${#numbers.formatInteger(book.saleCost, 1, 'COMMA')} + '원'  "></span>
+                                        <s class="regular-cost"
+                                           th:text="${#numbers.formatInteger(book.cost, 1, 'COMMA')} + '원'"></s>
                                     </div>
 
 
@@ -226,8 +224,10 @@
                                     </th:block>
                                     <p>리뷰 수 : <span th:text=" ${book.reviewCount}"></span></p>
                                     <div class="price">
-                                        <span class="sale-cost" th:text="${book.saleCost} + '원'  "></span>
-                                        <s class="regular-cost" th:text="${book.cost} + '원'"></s>
+                                        <span class="sale-cost"
+                                              th:text="${#numbers.formatInteger(book.saleCost, 1, 'COMMA')} + '원'  "></span>
+                                        <s class="regular-cost"
+                                           th:text="${#numbers.formatInteger(book.cost, 1, 'COMMA')} + '원'"></s>
                                     </div>
 
 
@@ -273,8 +273,10 @@
                                     </th:block>
                                     <p>리뷰 수 : <span th:text=" ${book.reviewCount}"></span></p>
                                     <div class="price">
-                                        <span class="sale-cost" th:text="${book.saleCost} + '원'  "></span>
-                                        <s class="regular-cost" th:text="${book.cost} + '원'"></s>
+                                        <span class="sale-cost"
+                                              th:text="${#numbers.formatInteger(book.saleCost, 1, 'COMMA')} + '원'  "></span>
+                                        <s class="regular-cost"
+                                           th:text="${#numbers.formatInteger(book.cost, 1, 'COMMA')} + '원'"></s>
                                     </div>
 
 
@@ -288,7 +290,6 @@
         </div>
 
     </section>
-
 
 
     <!-- Start Trending Product Area -->
@@ -339,8 +340,10 @@
                             <p>리뷰 수 : <span th:text=" ${book.reviewCount}"></span></p>
                             <div class="price">
 
-                                <span class="sale-cost" th:text="${book.saleCost} + '원'  "></span>
-                                <s class="regular-cost" th:text="${book.cost} + '원'"></s>
+                                <span class="sale-cost"
+                                      th:text="${#numbers.formatInteger(book.saleCost, 1, 'COMMA')} + '원'  "></span>
+                                <s class="regular-cost"
+                                   th:text="${#numbers.formatInteger(book.cost, 1, 'COMMA')} + '원'"></s>
 
                             </div>
 
@@ -400,8 +403,10 @@
                             <p>리뷰 수 : <span th:text=" ${book.reviewCount}"></span></p>
                             <div class="price">
 
-                                <span class="sale-cost" th:text="${book.saleCost} + '원'  "></span>
-                                <s class="regular-cost" th:text="${book.cost} + '원'"></s>
+                                <span class="sale-cost"
+                                      th:text="${#numbers.formatInteger(book.saleCost, 1, 'COMMA')} + '원'  "></span>
+                                <s class="regular-cost"
+                                   th:text="${#numbers.formatInteger(book.cost, 1, 'COMMA')} + '원'"></s>
 
                             </div>
 
