@@ -35,8 +35,12 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
-    @GetMapping("/register")
-    public String reviewRegisterForm() {
+    @GetMapping("{orderId}/register/{orderDetailId}")
+    public String reviewRegisterForm(@PathVariable(name = "orderId") Long orderId,
+                                     @PathVariable(name = "orderDetailId") Long orderDetailId, Model model) {
+        model.addAttribute("orderId",orderId);
+        model.addAttribute("orderDetailId", orderDetailId);
+
         return "review-register";
     }
 
@@ -45,23 +49,20 @@ public class ReviewController {
                                  @RequestParam(value = "contentImage", required = false) MultipartFile contentImages)
             throws IOException {
 
-        // todo 이거 진짜로 바꾸기
-
-
-        createRequest.setOrderDetailId(1L);
         reviewService.createReview(createRequest, contentImages);
         return "redirect:/review";
     }
 
     @GetMapping
-    public String getReviewByUserId(@PageableDefault (size = 8)Pageable pageable, Model model) {
+    public String getReviewByUserId(@PageableDefault(size = 8) Pageable pageable, Model model) {
         model.addAttribute("reviews", reviewService.getAllUserReview(pageable));
         return "review";
     }
 
     @GetMapping("/book/{bookId}")
-    public String getReviewByBookId(@PathVariable(name = "bookId")Long bookId, @PageableDefault(size=5)Pageable pageable, Model model){
-        model.addAttribute("reviews",reviewService.getBookReview(pageable,bookId));
+    public String getReviewByBookId(@PathVariable(name = "bookId") Long bookId,
+                                    @PageableDefault(size = 5) Pageable pageable, Model model) {
+        model.addAttribute("reviews", reviewService.getBookReview(pageable, bookId));
         return "review-book";
     }
 
@@ -76,7 +77,7 @@ public class ReviewController {
                                @ModelAttribute ReviewModifyRequest request,
                                @RequestParam(value = "contentImage", required = false) MultipartFile contentImages)
             throws IOException {
-        reviewService.modifyReview(reviewId, request,contentImages);
+        reviewService.modifyReview(reviewId, request, contentImages);
         return "redirect:/review";
     }
 

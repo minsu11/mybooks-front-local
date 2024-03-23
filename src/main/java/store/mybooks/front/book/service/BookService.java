@@ -1,10 +1,19 @@
 package store.mybooks.front.book.service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.admin.book.model.response.BookDetailResponse;
+<<<<<<< HEAD
 import store.mybooks.front.admin.book.model.response.BookGetResponseForOrder;
 import store.mybooks.front.admin.book.model.response.BookStockResponse;
+=======
+import store.mybooks.front.admin.book.model.response.BookLikeResponse;
+import store.mybooks.front.admin.book.model.response.BookPopularityResponse;
+import store.mybooks.front.admin.book.model.response.BookPublicationDateResponse;
+import store.mybooks.front.admin.book.model.response.BookRatingResponse;
+import store.mybooks.front.admin.book.model.response.BookReviewResponse;
+>>>>>>> dev
 import store.mybooks.front.book.adaptor.BookAdaptor;
 
 /**
@@ -35,6 +44,7 @@ public class BookService {
         return bookAdaptor.getBook(bookId);
     }
 
+<<<<<<< HEAD
     /**
      * 바로 구매 정보를 조회.
      *
@@ -48,5 +58,25 @@ public class BookService {
     public BookStockResponse getBookStockResponse(Long bookId) {
         return bookAdaptor.getBookStockResponse(bookId);
 
+=======
+    public List<BookPopularityResponse> getBookPopularitySortList() {
+        return bookAdaptor.getBookPopularitySortList();
+    }
+
+    public List<BookLikeResponse> getBookLikeSortList() {
+        return bookAdaptor.getBookLikeSortList();
+    }
+
+    public List<BookReviewResponse> getBookReviewSortList() {
+        return bookAdaptor.getBookReviewSortList();
+    }
+
+    public List<BookRatingResponse> getBookRatingSortList() {
+        return bookAdaptor.getBookRatingSortList();
+    }
+
+    public List<BookPublicationDateResponse> getBookPublicationDateSortList() {
+        return bookAdaptor.getBookPublicationDateSortList();
+>>>>>>> dev
     }
 }

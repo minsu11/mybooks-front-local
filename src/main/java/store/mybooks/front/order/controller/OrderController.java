@@ -8,9 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import store.mybooks.front.admin.book.model.response.BookGetResponseForOrder;
@@ -295,4 +298,13 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.OK)
                 .build();
     }
+
+    @GetMapping("/order")
+    public String getAllUserOrder(@PageableDefault Pageable pageable, Model model) {
+
+        model.addAttribute("orders", orderService.getAllUserBookOrder(pageable));
+        return "user-order";
+    }
+
+
 }

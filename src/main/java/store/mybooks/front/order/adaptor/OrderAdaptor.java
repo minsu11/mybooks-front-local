@@ -3,6 +3,7 @@ package store.mybooks.front.order.adaptor;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -12,10 +13,8 @@ import org.springframework.web.client.RestTemplate;
 import store.mybooks.front.auth.Annotation.RequiredAuthorization;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.order.dto.request.BookOrderCreateRequest;
-import store.mybooks.front.order.dto.response.BookOrderCreateResponse;
-import store.mybooks.front.order.dto.response.BookOrderDetailResponse;
-import store.mybooks.front.order.dto.response.BookOrderInfoResponse;
-import store.mybooks.front.order.dto.response.BookOrderPayInfoResponse;
+import store.mybooks.front.order.dto.response.*;
+import store.mybooks.front.pageable.dto.response.PageResponse;
 import store.mybooks.front.utils.Utils;
 
 /**
@@ -151,6 +150,20 @@ public class OrderAdaptor {
                 }, orderNumber
         );
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
+
+    @RequiredAuthorization
+    public PageResponse<BookOrderUserResponse> getAllUserBookOrder(Pageable pageable) {
+        ResponseEntity<PageResponse<BookOrderUserResponse>> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + MEMBER_URL + "/users?page=" + pageable.getPageNumber() + "&size=" +
+                        pageable.getPageSize(),
+                HttpMethod.GET,
+                new HttpEntity<>(Utils.getAuthHeader()),
+                new ParameterizedTypeReference<>() {
+                }
+        );
+
+        return exchange.getBody();
 
     }
 

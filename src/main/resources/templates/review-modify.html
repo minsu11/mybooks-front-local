@@ -5,7 +5,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Review Form</title>
 
     <style>
         .rating {
@@ -127,7 +126,7 @@
                                             <div class="col-12">
                                                 <div class="form-group message">
                                                     <textarea name="content" placeholder="수정할 내용"
-                                                              th:text="${review.content}"></textarea>
+                                                              th:text="${review.content}" required="required"></textarea>
                                                 </div>
                                             </div>
 
