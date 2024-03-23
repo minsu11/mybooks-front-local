@@ -5,7 +5,6 @@ import java.util.Objects;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +13,7 @@ import store.mybooks.front.order.dto.response.BookOrderPayInfoResponse;
 import store.mybooks.front.order.service.OrderInfoCheckService;
 import store.mybooks.front.order.service.OrderService;
 import store.mybooks.front.payment.adaptor.PayAdaptor;
+import store.mybooks.front.payment.dto.request.PayCancelOrderNumberRequest;
 import store.mybooks.front.payment.dto.request.PayCancelRequest;
 import store.mybooks.front.payment.dto.request.PayCreateRequest;
 import store.mybooks.front.payment.dto.request.TossPaymentRequest;
@@ -34,7 +34,6 @@ import store.mybooks.front.utils.CookieUtils;
  * -----------------------------------------------------------<br>
  * 3/18/24        minsu11       최초 생성<br>
  */
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class PayRestController {
@@ -42,7 +41,6 @@ public class PayRestController {
     private final OrderService orderService;
     private final PayAdaptor payAdaptor;
     private final OrderInfoCheckService orderInfoCheckService;
-
     private static final String USER_COOKIE_VALUE = "identity_cookie";
 
     /**
@@ -81,12 +79,11 @@ public class PayRestController {
     public ResponseEntity<PayCreateResponse> payProcessing(@RequestBody PayCreateRequest payCreateRequest,
                                                            @CookieValue(name = USER_COOKIE_VALUE, required = false) Cookie cookie,
                                                            HttpServletRequest request) {
-        log.info("결제 성공 request:{}", payCreateRequest);
         PayCreateResponse response;
         if (Objects.nonNull(CookieUtils.getIdentityCookieValue(request))) {
             response = payAdaptor.createResponse(payCreateRequest);
         } else {
-            log.info("else 문");
+
             response = payAdaptor.createNonUserOrderResponse(payCreateRequest);
         }
 
@@ -95,11 +92,18 @@ public class PayRestController {
     }
 
     @PostMapping("/pay/info/cancel")
-    public ResponseEntity<TossPaymentResponse> cancelProcessing(@RequestBody PayCancelRequest cancelRequest) {
+    public ResponseEntity<TossPaymentResponse> cancelProcessing(@RequestBody PayCancelOrderNumberRequest cancelRequest) {
         PaymentResponse response = payService.getPaymentKey(cancelRequest);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(payService.cancelToss(response));
+    }
+
+    @PostMapping("/pay/info/cancel/process")
+    public ResponseEntity<Void> cancelPayAfterProcess(@RequestBody PayCancelRequest request) {
+        payService.cancelPayAfterProcess(request);
+        return ResponseEntity.status(HttpStatus.OK)
+                .build();
     }
 
 }

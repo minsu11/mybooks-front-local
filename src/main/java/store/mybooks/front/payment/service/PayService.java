@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import store.mybooks.front.order.adaptor.OrderAdaptor;
 import store.mybooks.front.order.dto.response.BookOrderDetailResponse;
 import store.mybooks.front.payment.adaptor.PayAdaptor;
+import store.mybooks.front.payment.dto.request.PayCancelOrderNumberRequest;
 import store.mybooks.front.payment.dto.request.PayCancelRequest;
 import store.mybooks.front.payment.dto.request.TossPaymentCancelRequest;
 import store.mybooks.front.payment.dto.request.TossPaymentRequest;
@@ -69,9 +70,12 @@ public class PayService {
      * @param request the request
      * @return the payment key
      */
-    public PaymentResponse getPaymentKey(PayCancelRequest request) {
+    public PaymentResponse getPaymentKey(PayCancelOrderNumberRequest request) {
         return payAdaptor.getPaymentKey(request);
     }
 
+    public void cancelPayAfterProcess(PayCancelRequest request) {
+        payAdaptor.cancelPayAfterProcess(request);
+    }
 
 }
