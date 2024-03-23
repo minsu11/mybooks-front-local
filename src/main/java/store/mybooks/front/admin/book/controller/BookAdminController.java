@@ -114,6 +114,7 @@ public class BookAdminController {
                 book.getTagList().stream().map(TagGetResponseForBookDetail::getId).collect(Collectors.toList()));
         model.addAttribute("bookCategoryList", book.getCategoryList().stream().map(CategoryIdAndName::getId).collect(Collectors.toList()));
 
+        model.addAttribute("publishers", publisherService.getAllPublishers());
         model.addAttribute("categories", categoryAdminService.getCategories());
         model.addAttribute("tags", tagService.getTags());
         model.addAttribute("authors", authorService.getAllAuthors());
@@ -130,8 +131,9 @@ public class BookAdminController {
      * @return string
      */
     @PostMapping("/update/{id}")
-    public String updateBook(@RequestParam("id") Long bookId, @ModelAttribute BookModifyRequest modifyRequest) {
-        bookAdminService.updateBook(bookId, modifyRequest);
+    public String updateBook(@RequestParam("id") Long bookId, @Valid @ModelAttribute BookModifyRequest modifyRequest, @RequestParam(value = "thumbnailImage", required = false)
+    MultipartFile thumbnailImage, @RequestParam(value = "contentImage", required = false) List<MultipartFile> contentImages) throws IOException {
+        bookAdminService.updateBook(bookId, modifyRequest, thumbnailImage, contentImages);
         return "redirect:/admin/book/update?id=" + bookId;
     }
 }

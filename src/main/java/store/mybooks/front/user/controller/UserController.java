@@ -7,7 +7,6 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -65,8 +64,6 @@ public class UserController {
     private final RedisProperties redisProperties;
 
 
-    private final ApplicationEventPublisher applicationEventPublisher;
-
     /**
      * methodName : loginUserForm
      * author : masiljangajji
@@ -92,7 +89,6 @@ public class UserController {
 
     @GetMapping("/logout")
     public String logout() {
-//        applicationEventPublisher.publishEvent(new LogoutCartDataMoveEvent(this));
         return "redirect:/";
     }
 
@@ -217,7 +213,7 @@ public class UserController {
 
             // 쿠키추가
             CookieUtils.addJwtCookie(response, tokenCreateResponse.getAccessToken());
-//            applicationEventPublisher.publishEvent(new LoginCartDataMoveEvent(this));
+
             return "redirect:/";
         }
 

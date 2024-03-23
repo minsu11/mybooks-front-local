@@ -9,7 +9,7 @@
         let totalPages = [[${tags.totalPages}]]
     </script>
     <h1>태그 페이지</h1>
-    <div>
+    <div class="container">
         <div>
             <a th:href="@{/admin/tag/register}" class="btn btn-primary" role="button">태그 추가하기</a>
         </div>
@@ -37,17 +37,20 @@
                 </tbody>
             </table>
         </div>
-    </div>
-    <div class="mt-3" th:block th:if="${tags.totalPages > 1}">
-        <div class="pagination">
-            <div class="page-item">
-                <a class="page-link" id="prevLink" th:text="'<'" th:href="@{#}"></a>
-            </div>
-            <div class="pagination" id="pageNumContainer"></div>
-            <div class="page-item">
-                <a class="page-link" id="nextLink" th:text="'>'" th:href="@{#}"></a>
+        <div class="mt-3" th:block th:if="${tags.totalPages > 1}">
+            <div class="pagination">
+                <div class="page-item">
+                    <a class="page-link" id="prevLink" th:text="'<'" th:href="@{#}"></a>
+                </div>
+                <div class="pagination" id="pageNumContainer"></div>
+                <div class="page-item">
+                    <a class="page-link" id="nextLink" th:text="'>'" th:href="@{#}"></a>
+                </div>
             </div>
         </div>
     </div>
+    <script src="/admin/js/page/setPrevious.js"></script>
+    <script src="/admin/js/page/setNext.js"></script>
+    <script src="/admin/js/page/setLastPage.js"></script>
 </div>
 </html>

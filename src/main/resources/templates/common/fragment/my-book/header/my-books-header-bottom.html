@@ -2,7 +2,8 @@
 <html lang="en" xmlns:th="http://www.thympleaf.org">
 <div th:fragment="myBooksHeaderBottomFragment">
 
-    <div class="container">
+    <div class="container"
+         style="border-bottom: 1px solid #eee; border-left:1px solid #eee; border-right: 1px solid #eee">
         <div class="row align-items-center">
             <div class="col-lg-8 col-md-6 col-12">
                 <div class="nav-inner">
@@ -18,7 +19,7 @@
                                     var ul1 = document.createElement('ul');
                                     ul1.classList.add("sub-category");
 
-                                    data.forEach(function(data) {
+                                    data.forEach(function (data) {
                                         var li2 = document.createElement('li');
                                         var a1 = document.createElement('a');
                                         a1.href = "/category/category-display/" + data.parentCategoryId;
@@ -29,7 +30,7 @@
                                         var ul3 = document.createElement('ul');
                                         ul3.classList.add("inner-sub-category");
 
-                                        data.childCategoryList.forEach(function(childCategory) {
+                                        data.childCategoryList.forEach(function (childCategory) {
                                             var li4 = document.createElement('li');
                                             var a2 = document.createElement('a');
                                             a2.href = "/category/category-display/" + childCategory.id;
@@ -45,7 +46,7 @@
                                     });
                                     categoryMenu.appendChild(ul1);
                                 },
-                                error: function(data) {
+                                error: function (data) {
                                     console.log("카테고리 부르던 중 에러 발생");
                                     console.log(data);
                                 }
@@ -65,9 +66,9 @@
                         </button>
                         <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
                             <ul id="nav" class="navbar-nav ms-auto">
-<!--                                <li class="nav-item">-->
-<!--                                    <a href="/" class="active" aria-label="Toggle navigation">홈</a>-->
-<!--                                </li>-->
+                                <!--                                <li class="nav-item">-->
+                                <!--                                    <a href="/" class="active" aria-label="Toggle navigation">홈</a>-->
+                                <!--                                </li>-->
                                 <li class="nav-item">
                                     <a class="dd-menu collapsed" href="javascript:void(0)" data-bs-toggle="collapse"
                                        data-bs-target="#submenu-1-2" aria-controls="navbarSupportedContent"
@@ -75,8 +76,13 @@
                                     <ul class="sub-menu collapse" id="submenu-1-2">
                                         <li class="nav-item"><a href="/user">마이페이지</a></li>
                                         <li class="nav-item"><a href="/user/address">내 주소</a></li>
-                                        <li class="nav-item"><a href="login">쿠폰</a></li>
+
+
+
+                                        <li class="nav-item"><a href="/user-coupon">쿠폰</a></li>
+                                        <li class="nav-item"><a href="/user/point-history">포인트</a></li>
                                         <li class="nav-item"><a href="/order">주문목록</a></li>
+
                                         <li class="nav-item"><a href="mail-success.html">결제내역</a></li>
                                         <li class="nav-item"><a href="/review">리뷰내역</a></li>
                                     </ul>
@@ -93,21 +99,21 @@
                                         <li class="nav-item"><a href="checkout">Checkout</a></li>
                                     </ul>
                                 </li>
-<!--                                <li class="nav-item">-->
-<!--                                    <a class="dd-menu collapsed" href="javascript:void(0)" data-bs-toggle="collapse"-->
-<!--                                       data-bs-target="#submenu-1-4" aria-controls="navbarSupportedContent"-->
-<!--                                       aria-expanded="false" aria-label="Toggle navigation">Blog</a>-->
-<!--                                    <ul class="sub-menu collapse" id="submenu-1-4">-->
-<!--                                        <li class="nav-item"><a href="/blog-grid-sidebar">Blog Grid Sidebar</a>-->
-<!--                                        </li>-->
-<!--                                        <li class="nav-item"><a href="blog-single">Blog Single</a></li>-->
-<!--                                        <li class="nav-item"><a href="blog-single-sidebar">Blog Single-->
-<!--                                            Sibebar</a></li>-->
-<!--                                    </ul>-->
-<!--                                </li>-->
-<!--                                <li class="nav-item">-->
-<!--                                    <a href="contact" aria-label="Toggle navigation">Contact Us</a>-->
-<!--                                </li>-->
+                                <!--                                <li class="nav-item">-->
+                                <!--                                    <a class="dd-menu collapsed" href="javascript:void(0)" data-bs-toggle="collapse"-->
+                                <!--                                       data-bs-target="#submenu-1-4" aria-controls="navbarSupportedContent"-->
+                                <!--                                       aria-expanded="false" aria-label="Toggle navigation">Blog</a>-->
+                                <!--                                    <ul class="sub-menu collapse" id="submenu-1-4">-->
+                                <!--                                        <li class="nav-item"><a href="/blog-grid-sidebar">Blog Grid Sidebar</a>-->
+                                <!--                                        </li>-->
+                                <!--                                        <li class="nav-item"><a href="blog-single">Blog Single</a></li>-->
+                                <!--                                        <li class="nav-item"><a href="blog-single-sidebar">Blog Single-->
+                                <!--                                            Sibebar</a></li>-->
+                                <!--                                    </ul>-->
+                                <!--                                </li>-->
+                                <!--                                <li class="nav-item">-->
+                                <!--                                    <a href="contact" aria-label="Toggle navigation">Contact Us</a>-->
+                                <!--                                </li>-->
                             </ul>
                         </div> <!-- navbar collapse -->
                     </nav>
@@ -116,22 +122,33 @@
             </div>
             <div class="col-lg-4 col-md-6 col-12">
                 <!-- 소설 관련 버튼 시작  -->
-                <div class="nav-social">
-                    <h5 class="title">Github :</h5>
-                    <ul>
-                        <li>
-                            <a href="https://github.com/nhnacademy-be4-My-Books"><i class="lni lni-github"></i></a>
-                        </li>
+                <div class="navbar-cart">
+                    <div class="wishlist">
+                        <a th:href="@{/book-like}" th:if="${identity_cookie_value}">
+                            <i class="lni lni-heart"></i>
+                        </a>
+                    </div>
+
+                    <div class="cart-items">
+                        <a th:href="@{/cart}" class="main-btn">
+                            <i class="lni lni-cart"></i>
+                        </a>
+                    </div>
+<!--                    <h5 class="title">Github :</h5>-->
+<!--                    <ul>-->
 <!--                        <li>-->
-<!--                            <a href="javascript:void(0)"><i class="lni lni-twitter-original"></i></a>-->
+<!--                            <a href="https://github.com/nhnacademy-be4-My-Books"><i class="lni lni-github"></i></a>-->
 <!--                        </li>-->
-<!--                        <li>-->
-<!--                            <a href="javascript:void(0)"><i class="lni lni-instagram"></i></a>-->
-<!--                        </li>-->
-<!--                        <li>-->
-<!--                            <a href="javascript:void(0)"><i class="lni lni-skype"></i></a>-->
-<!--                        </li>-->
-                    </ul>
+                        <!--                        <li>-->
+                        <!--                            <a href="javascript:void(0)"><i class="lni lni-twitter-original"></i></a>-->
+                        <!--                        </li>-->
+                        <!--                        <li>-->
+                        <!--                            <a href="javascript:void(0)"><i class="lni lni-instagram"></i></a>-->
+                        <!--                        </li>-->
+                        <!--                        <li>-->
+                        <!--                            <a href="javascript:void(0)"><i class="lni lni-skype"></i></a>-->
+                        <!--                        </li>-->
+<!--                    </ul>-->
                 </div>
                 <!-- 소셜 관련 버튼 끝 -->
             </div>
