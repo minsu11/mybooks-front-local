@@ -129,7 +129,7 @@
 
                                     <p><strong>주문 상태:</strong> <span th:text="${detail.statusId}">Order Status</span>
                                     </p>
-                                    <a th:if="${detail.statusId != '구매 확정'}" th:href="'/review/' + ${order.id} + '/register/' + ${detail.id}" class="btn btn-primary">리뷰 작성</a>
+                                    <a th:if="${detail.statusId != '구매 확정'}" th:href="'/review/' + ${order.id} + '/register/' + ${detail.orderDetailId}" class="btn btn-primary">리뷰 작성</a>
                                 </div>
                             </div>
 
