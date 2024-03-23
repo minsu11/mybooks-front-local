@@ -49,9 +49,6 @@ public class ReviewController {
                                  @RequestParam(value = "contentImage", required = false) MultipartFile contentImages)
             throws IOException {
 
-
-        System.out.println(createRequest.getOrderId());
-        System.out.println(createRequest.getOrderDetailId());
         reviewService.createReview(createRequest, contentImages);
         return "redirect:/review";
     }
