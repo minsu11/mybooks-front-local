@@ -126,8 +126,11 @@
                                             <div class="col-12 file-container">
                                                 <input id="contentImage" name="contentImage" type="file" class="file" accept="image/*">
                                             </div>
+
                                             <div class="col-12">
                                                 <div class="form-group button">
+                                                    <input type="hidden" name="orderDetailId" th:value="${orderDetailId}">
+                                                    <input type="hidden" name="orderId" th:value="${orderId}">
                                                     <button type="submit" class="btn ">리뷰 작성</button>
                                                 </div>
                                             </div>
