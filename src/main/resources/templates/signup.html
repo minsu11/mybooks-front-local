@@ -89,12 +89,11 @@
                                 </div>
 
 
-
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="reg-birthdate">생일</label>
                                         <input class="form-control" type="date" id="reg-birthdate" name="birth"
-                                               required>
+                                               required th:max="${nowDate}">
                                     </div>
                                 </div>
                                 <input type="hidden" name="isAdmin" value="false">
@@ -117,9 +116,27 @@
     <script>
         var authNumber; // 전역 변수로 선언하여 다른 함수에서도 사용할 수 있도록 설정
 
+
+
+
+
+        // 강력한 비밀번호인지 확인하는 함수
+        function strongPassword(str) {
+            return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(str);
+        }
+
+
+
         function checkPassword() {
             var newPassword = document.getElementById('password').value;
             var confirmPassword = document.getElementById('confirmPassword').value;
+
+
+            // 강력한 비밀번호인지 확인
+            if (!strongPassword(newPassword)) {
+                alert("비밀번호는 최소 8자 이상의 길이, 하나의 영문자, 숫자, 특수 문자를 포함해야 합니다.");
+                return false;
+            }
 
             // 새 비밀번호와 비밀번호 확인이 일치하는지 확인합니다.
             if (newPassword !== confirmPassword) {

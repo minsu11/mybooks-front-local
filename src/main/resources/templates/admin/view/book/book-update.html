@@ -8,9 +8,8 @@
             width: 100%;
         }
     </style>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js"></script>
-    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet"/>
 </head>
 
 
@@ -24,31 +23,44 @@
                             <h3>도서 수정</h3>
                         </div>
 
-                        <form class="row" th:action="@{/admin/book/update/{id}(id=${book.id})}" method="post">
+                        <form id="updateForm" class="row" th:action="@{/admin/book/update/{id}(id=${book.id})}" method="post" enctype="multipart/form-data">
                             <div class="col-md-6">
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="name">도서명</label>
                                             <input class="form-control" type="text" id="name" name="name"
-                                                   th:value="${book.name}" readonly>
+                                                   th:value="${book.name}" required
+                                                   minlength="1"
+                                                   maxlength="100">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="isbn">ISBN(13자리)</label>
                                             <input class="form-control" type="text" id="isbn" name="isbn"
-                                                   th:value="${book.isbn}" readonly>
+                                                   th:value="${book.isbn}" required
+                                                   pattern="\d{13}">
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <div class="form-group">
+                                        <div class="form-group mb-0">
                                             <label for="publisherId">출판사</label>
-                                            <input class="form-control" type="text" id="publisherId" name="publisherId"
-                                                   th:value="${book.publisher.name}" readonly>
+                                        </div>
+                                        <div class="form-group ">
+                                            <select class="form-select custom-select" id="publisherId"
+                                                    name="publisherId"
+                                                    aria-label="publisherId">
+                                                <option selected>출판사 선택</option>
+                                                <option th:each="publisher : ${publishers}"
+                                                        th:value="${publisher.id}"
+                                                        th:text="${publisher.name}"
+                                                        th:selected="${publisher.id == book.publisher.id}">
+                                                </option>
+                                            </select>
                                         </div>
                                     </div>
 
@@ -56,7 +68,7 @@
                                         <div class="form-group">
                                             <label for="publishDate">출판일자</label>
                                             <input class="form-control" type="date" id="publishDate"
-                                                   name="publishDate" th:value="${book.publishDate}" readonly>
+                                                   name="publishDate" th:value="${book.publishDate}" required>
                                         </div>
                                     </div>
                                 </div>
@@ -64,14 +76,16 @@
                                 <div class="col-sm-15">
                                     <div class="form-group">
                                         <label for="index">목차</label>
-                                        <div id="index" class="form-control" style="height: 16rem; overflow-y: auto;" readonly th:utext="${book.index}"></div>
+                                        <div id="editorIndex"></div>
+                                        <input type="hidden" id="index" name="index">
                                     </div>
                                 </div>
 
                                 <div class="col-sm-15">
                                     <div class="form-group">
-                                        <label for="content">설명</label>
-                                        <div id="content" class="form-control" style="height: 32rem; overflow-y: auto;" readonly th:utext="${book.explanation}"></div>
+                                        <label for="explanation">설명</label>
+                                        <div id="editorExplanation"></div>
+                                        <input type="hidden" id="explanation" name="explanation">
                                     </div>
                                 </div>
                             </div>
@@ -81,15 +95,15 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group mb-0">
-                                            <label for="authorList">저자</label>
+                                            <label for="authorList">저자 검색</label>
                                         </div>
                                         <div class="form-group">
-                                            <select id="authorList" class="form-control">
-                                                <option value="">저자 목록</option>
+                                            <select id="authorList" name="authorList" multiple="multiple" size="10" class="form-control">
                                                 <option th:each="author : ${authors}"
-                                                        th:if="${#lists.contains(bookAuthorList, author.id)}"
-                                                        th:text="${author.name + ': ' + (author.content.length() > 10 ? author.content.substring(0, 10) + '...' : author.content)}"
-                                                        disabled>
+                                                        th:value="${author.id}"
+                                                        th:title="${author.content}"
+                                                        th:text="${author.name}"
+                                                        th:selected="${#lists.contains(bookAuthorList, author.id)}">
                                                 </option>
                                             </select>
                                         </div>
@@ -99,7 +113,8 @@
                                         <div class="form-group">
                                             <label for="page">페이지수</label>
                                             <input class="form-control" type="number" id="page" name="page"
-                                                   th:value="${book.page}" readonly>
+                                                   th:value="${book.page}" required
+                                                   min="1">
                                         </div>
                                     </div>
                                 </div>
@@ -109,7 +124,7 @@
                                         <div class="form-group">
                                             <label for="originalCost">정가</label>
                                             <input class="form-control" type="number" id="originalCost"
-                                                   name="originalCost" th:value="${book.originalCost}" readonly>
+                                                   name="originalCost" th:value="${book.originalCost}" required min="1">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -155,7 +170,8 @@
                                         </div>
                                         <div class="form-group">
                                             <select id="categoryList" name="categoryList" multiple="multiple" size="10">
-                                                <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"
+                                                <option th:each="category : ${categories}" th:value="${category.id}"
+                                                        th:text="${category.name}"
                                                         th:selected="${#lists.contains(bookCategoryList, category.id)}"></option>
                                             </select>
                                         </div>
@@ -167,7 +183,8 @@
                                             <label for="tagList">태그</label>
                                         </div>
                                         <div class="form-group">
-                                            <select id="tagList" name="tagList" multiple="multiple" size="10" class="form-control">
+                                            <select id="tagList" name="tagList" multiple="multiple" size="10"
+                                                    class="form-control">
                                                 <option th:each="tag : ${tags}"
                                                         th:value="${tag.id}"
                                                         th:text="${tag.name}"
@@ -185,21 +202,33 @@
                                             <div class="col-4">
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="radio" name="isPacking"
-                                                           id="packTrue" value = "true" th:checked="${book.isPacking}">
+                                                           id="packTrue" value="true" th:checked="${book.isPacking}">
                                                     <label class="form-check-label" for="packTrue">가능</label>
                                                 </div>
                                             </div>
                                             <div class="col-4">
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="radio" name="isPacking"
-                                                           id="packFalse" value = "false" th:checked="${!book.isPacking}">
+                                                           id="packFalse" value="false" th:checked="${!book.isPacking}">
                                                     <label class="form-check-label" for="packFalse">불가능</label>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-sm-6">
+                                    <label>썸네일 이미지 업로드</label>
+                                    <div class="form-group">
+                                        <input id="thumbnailImage" name="thumbnailImage" type="file" class="file">
+                                    </div>
+                                </div>
 
+                                <div class="col-sm-6">
+                                    <label>본문 이미지 업로드</label>
+                                    <div class="form-group">
+                                        <input id="contentImage" name="contentImage" type="file" class="file" multiple>
+                                    </div>
+                                </div>
 
                                 <div class="form-group row mt-5">
                                     <div class="col-sm-auto">
@@ -217,7 +246,80 @@
             </div>
         </div>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js"></script>
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script th:inline="javascript">
+        var bookIndex = /*[[${book.index}]]*/ '';
+        var bookExplanation = /*[[${book.explanation}]]*/ '';
+    </script>
     <script>
+        $(document).ready(function () {
+            $('#publisherId').select2({
+                placeholder: "출판사 선택",
+                allowClear: true,
+                width: '100%'
+            });
+        });
+
+        $(document).ready(function () {
+            const editorIndex = new toastui.Editor({
+                el: document.querySelector('#editorIndex'),
+                height: '350px',
+                initialEditType: 'wysiwyg',
+                previewStyle: 'vertical',
+                usageStatistics: false,
+                initialValue: bookIndex,
+                toolbarItems: [
+                    ['heading', 'bold', 'italic', 'strike'],
+                    ['hr', 'quote'],
+                    ['ul', 'ol', 'task', 'indent', 'outdent'],
+                    ['table', 'code', 'codeblock']
+                ]
+            });
+
+            const editorExplanation = new toastui.Editor({
+                el: document.querySelector('#editorExplanation'),
+                height: '500px',
+                initialEditType: 'wysiwyg',
+                previewStyle: 'vertical',
+                usageStatistics: false,
+                initialValue: bookExplanation,
+                toolbarItems: [
+                    ['heading', 'bold', 'italic', 'strike'],
+                    ['hr', 'quote'],
+                    ['ul', 'ol', 'task', 'indent', 'outdent'],
+                    ['table', 'code', 'codeblock']
+                ]
+            });
+            $('#updateForm').on('submit', function () {
+                document.getElementById('index').value = editorIndex.getHTML();
+                document.getElementById('explanation').value = editorExplanation.getHTML();
+            });
+        });
+
+        $(document).ready(function () {
+            $('#authorList').multiselect({
+                nonSelectedText: '저자 선택',
+                maxHeight: 400,
+                includeSelectAllOption: false,
+                numberDisplayed: 1,
+                enableFiltering: true,
+                enableCaseInsensitiveFiltering: true,
+                filterPlaceholder: '저자 검색'
+            });
+
+            $('#authorSearch').on('keyup', function () {
+                var searchTerm = $(this).val().toLowerCase();
+                $('#authorList option').each(function () {
+                    var text = $(this).text().toLowerCase();
+                    var match = text.indexOf(searchTerm) > -1;
+                });
+                $('#authorList').multiselect('rebuild');
+            });
+        });
+
         $(document).ready(function () {
             $('#categoryList').multiselect({
                 nonSelectedText: '카테고리 선택(최대 10개)',
@@ -227,7 +329,7 @@
                 enableFiltering: true,
                 enableCaseInsensitiveFiltering: true,
                 filterPlaceholder: '카테고리 검색',
-                onChange: function(option, checked) {
+                onChange: function (option, checked) {
                     var selectedOptions = $('#categoryList option:selected');
                     var count = selectedOptions.length;
                     if (count > 10) {
@@ -237,9 +339,9 @@
                     }
                 }
             });
-            $('#categorySearch').on('keyup', function() {
+            $('#categorySearch').on('keyup', function () {
                 var searchTerm = $(this).val().toLowerCase();
-                $('#categoryList option').each(function() {
+                $('#categoryList option').each(function () {
                     var text = $(this).text().toLowerCase();
                     var match = text.indexOf(searchTerm) > -1;
                     $(this).toggle(match);
@@ -258,9 +360,9 @@
                 enableCaseInsensitiveFiltering: true,
                 filterPlaceholder: '태그 검색'
             });
-            $('#tagSearch').on('keyup', function() {
+            $('#tagSearch').on('keyup', function () {
                 var searchTerm = $(this).val().toLowerCase();
-                $('#tagList option').each(function() {
+                $('#tagList option').each(function () {
                     var text = $(this).text().toLowerCase();
                     var match = text.indexOf(searchTerm) > -1;
                     $(this).toggle(match);

@@ -19,6 +19,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class UserOauthLoginRequest {
 
-    private String email;
+    private String oauthId;
 
 }
