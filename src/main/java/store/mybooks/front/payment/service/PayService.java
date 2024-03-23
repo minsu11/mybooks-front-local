@@ -4,9 +4,13 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import store.mybooks.front.order.adaptor.OrderAdaptor;
 import store.mybooks.front.order.dto.response.BookOrderDetailResponse;
 import store.mybooks.front.payment.adaptor.PayAdaptor;
+import store.mybooks.front.payment.dto.request.PayCancelRequest;
+import store.mybooks.front.payment.dto.request.TossPaymentCancelRequest;
 import store.mybooks.front.payment.dto.request.TossPaymentRequest;
+import store.mybooks.front.payment.dto.response.PaymentResponse;
 import store.mybooks.front.payment.dto.response.TossPaymentResponse;
 
 /**
@@ -25,6 +29,7 @@ import store.mybooks.front.payment.dto.response.TossPaymentResponse;
 @RequiredArgsConstructor
 public class PayService {
     private final PayAdaptor payAdaptor;
+    private final OrderAdaptor orderAdaptor;
 
     /**
      * 주문 상세에서 쿠폰을 사용했는 지 판별.
@@ -44,6 +49,28 @@ public class PayService {
 
     public TossPaymentResponse createTossPayment(TossPaymentRequest request) {
         return payAdaptor.confirmPayment(request);
+    }
+
+    /**
+     * 결제 취소.
+     *
+     * @param response response
+     * @return the toss payment response
+     */
+    public TossPaymentResponse cancelToss(PaymentResponse response) {
+        TossPaymentCancelRequest request = new TossPaymentCancelRequest("결제 취소");
+
+        return payAdaptor.cancelPay(request, response);
+    }
+
+    /**
+     * payment key 조회.
+     *
+     * @param request the request
+     * @return the payment key
+     */
+    public PaymentResponse getPaymentKey(PayCancelRequest request) {
+        return payAdaptor.getPaymentKey(request);
     }
 
 

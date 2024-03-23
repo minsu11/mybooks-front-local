@@ -47,9 +47,7 @@ public class PayController {
      * @throws Exception
      */
     @GetMapping("/success")
-    public String paymentRequest(ModelMap model,
-                                 @ModelAttribute TossPaymentRequest request
-    ) {
+    public String paymentRequest(@ModelAttribute TossPaymentRequest request) {
         return "success";
     }
 
@@ -60,7 +58,6 @@ public class PayController {
         log.debug("결제창 넘어온 값: {}", bookOrderInfoResponse);
         model.put("tossValue", tossAppKey.getClientKey());
         model.put("orderInfo", bookOrderInfoResponse);
-//        model.put("isCouponUsed", payService.checkCouponUsed(bookOrderInfoResponse.getOrderDetails()));
         model.put("orderNumber", orderNumber);
         return "payment";
     }
@@ -68,12 +65,9 @@ public class PayController {
     @GetMapping("/non/{orderNumber}")
     public String indexNonUser(ModelMap model,
                                @PathVariable(name = "orderNumber") String orderNumber) throws Exception {
-        log.info("비회원의 주문 번호: {}", orderNumber);
         BookOrderInfoResponse bookOrderInfoResponse = orderService.getPayBookOrderInfo(orderNumber);
-        log.debug("결제창 넘어온 값: {}", bookOrderInfoResponse);
         model.put("tossValue", tossAppKey.getClientKey());
         model.put("orderInfo", bookOrderInfoResponse);
-//        model.put("isCouponUsed", payService.checkCouponUsed(bookOrderInfoResponse.getOrderDetails()));
         model.put("orderNumber", orderNumber);
         return "payment";
     }

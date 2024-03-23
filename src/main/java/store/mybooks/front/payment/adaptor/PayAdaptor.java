@@ -7,12 +7,16 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 import store.mybooks.front.auth.Annotation.RequiredAuthorization;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.config.TossAppKey;
+import store.mybooks.front.payment.dto.request.PayCancelRequest;
 import store.mybooks.front.payment.dto.request.PayCreateRequest;
+import store.mybooks.front.payment.dto.request.TossPaymentCancelRequest;
 import store.mybooks.front.payment.dto.request.TossPaymentRequest;
 import store.mybooks.front.payment.dto.response.PayCreateResponse;
+import store.mybooks.front.payment.dto.response.PaymentResponse;
 import store.mybooks.front.payment.dto.response.TossPaymentResponse;
 import store.mybooks.front.payment.exception.PayFailedException;
 import store.mybooks.front.utils.Utils;
@@ -62,7 +66,7 @@ public class PayAdaptor {
     }
 
 
-    public TossPaymentResponse getTossPaymentResponse(TossPaymentRequest request) {
+    public TossPaymentResponse cancelPay(TossPaymentCancelRequest request, PaymentResponse response) {
         HttpHeaders headers = new HttpHeaders();
 
         Base64.Encoder encoder = Base64.getEncoder();
@@ -70,10 +74,15 @@ public class PayAdaptor {
         String authorizations = new String(encodedBytes, 0, encodedBytes.length);
 
         headers.setBasicAuth(authorizations);
+        String uri = UriComponentsBuilder
+                .fromUriString(TOSS_URL)
+                .path("/" + response.getPaymentKey() + "/cancel")
+                .build().toString();
+
         try {
             ResponseEntity<TossPaymentResponse> exchange = restTemplate.exchange(
-                    TOSS_URL + "/" + request.getPaymentKey(),
-                    HttpMethod.GET,
+                    uri,
+                    HttpMethod.POST,
                     new HttpEntity<>(request, headers),
                     new ParameterizedTypeReference<TossPaymentResponse>() {
                     }
@@ -116,5 +125,17 @@ public class PayAdaptor {
                 }
         );
         return Utils.getResponseEntity(exchange, HttpStatus.CREATED);
+    }
+
+    public PaymentResponse getPaymentKey(PayCancelRequest request) {
+        HttpEntity<PayCancelRequest> httpEntity = new HttpEntity<>(request, Utils.getHttpHeader());
+        ResponseEntity<PaymentResponse> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL + "/{orderNumber}",
+                HttpMethod.GET,
+                httpEntity,
+                new ParameterizedTypeReference<PaymentResponse>() {
+                }, request.getOrderNumber());
+
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 }
