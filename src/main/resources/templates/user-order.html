@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Form</title>
     <style>
         .pagination {
             display: flex;
@@ -52,18 +53,13 @@
             cursor: pointer;
         }
 
-        .edit-button:hover {
-            background-color: #F5F5F5;
+
+        /* 주문 상세 정보 사이의 간격 */
+        .order-detail {
+            border-top: 1px solid black; /* 검은색 선 추가 */
+            margin-top: 50px;
         }
 
-        .rating-container {
-            display: inline-block;
-        }
-
-        .rating-star {
-            font-size: 20px;
-            color: #dabd18b2;
-        }
 
     </style>
 </head>
@@ -78,7 +74,7 @@
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
                         <li><a href="index.html"><i class="lni lni-home"></i> Home</a></li>
-                        <li>리뷰</li>
+                        <li>주문내역</li>
                     </ul>
                 </div>
             </div>
@@ -87,52 +83,76 @@
     <!-- End Breadcrumbs -->
     <div class="container ml-2">
         <div>
-            <div class="row mt-3" th:if="${reviews != null and not #lists.isEmpty(reviews.content)}">
-                <div th:each="review : ${reviews.content}" class="col-md-3 mb-3">
+
+            <div class="row mt-3" th:if="${orders != null and not #lists.isEmpty(orders.content)}">
+                <!-- 주문 카드 반복 -->
+                <div th:each="order : ${orders.content}" class="col-md-3 mb-3">
                     <div class="card h-100">
                         <div class="card-body">
-                            <h5><span th:text="${review.title}"></span></h5>
-                            <br>
-                            도서명 : <a th:href="@{'/book/' + ${review.bookId}}" th:text="${review.bookName}"></a><br>
+                            <!-- 주문 정보 -->
+                            <h5>주문정보</h5>
+                            <p><strong>주문 상태:</strong> <span th:text="${order.statusId}">Status ID</span></p>
+                            <p><strong>배송 정책:</strong> <span
+                                    th:text="${order.deliveryRuleName}">Delivery Rule Name</span></p>
+                            <p><strong>배송비:</strong> <span th:text="${order.deliveryCost}">Delivery Cost</span></p>
+                            <p><strong>주문일:</strong> <span th:text="${order.orderDate}">Order Date</span></p>
+                            <p><strong>송장 번호:</strong> <span th:text="${order.invoiceNumber}">Invoice Number</span></p>
+                            <p><strong>수령인:</strong> <span th:text="${order.receiverName}">Receiver Name</span></p>
+                            <p><strong>주소:</strong> <span th:text="${order.receiverAddress}">Receiver Address</span></p>
+                            <p><strong>핸드폰 번호:</strong> <span th:text="${order.receiverPhoneNumber}">Receiver Phone Number</span>
+                            </p>
+                            <p><strong>추가 메시지:</strong> <span th:text="${order.receiverMessage}">Receiver Message</span>
+                            </p>
+                            <p><strong>전체 가격:</strong> <span th:text="${order.totalCost}">Total Cost</span></p>
+                            <p><strong>포인트:</strong> <span th:text="${order.pointCost}">Point Cost</span></p>
+                            <p><strong>쿠폰:</strong> <span th:text="${order.couponCost}">Coupon Cost</span></p>
+                            <p><strong>주문번호:</strong> <span th:text="${order.number}">Number</span></p>
 
-                            평점 : <span class="rating__result" th:text="${review.rate+'/5'}"></span>
+                            <!-- 주문 상세 정보 표시 -->
+                            <div th:each="detail : ${order.orderDetailInfoList}" class="order-detail">
 
-                            <br>
-                            등록일 : <span th:text="${review.date}"></span>
-                            <br>
+                                <div class="order-detail-item">
+                                    <p><a th:href="'/book/' + ${detail.id}" th:text="${detail.bookName}"></a></p>
+                                </div>
+                                <div class="order-detail-item">
+                                    <p><strong>가격:</strong> <span th:text="${detail.cost}">Cost</span></p>
+                                </div>
+                                <div class="order-detail-item">
+                                    <p><strong>수량:</strong> <span th:text="${detail.amount}">Amount</span></p>
+                                </div>
+                                <div class="order-detail-item">
+                                    <p><strong>쿠폰 적용:</strong> <span th:text="${detail.isCouponUsed} ? 'O' : 'X'">Coupon Used</span>
+                                    </p>
+                                </div>
+                                <img th:src="${detail.image}" alt="Book Image" class="book-image">
+                                <div class="order-detail-item">
 
-                            <br>
-                            <span th:text="${review.content}"></span>
-
-                            <div class="float-right">
-                                <img th:if="${review.reviewImage != null}"
-                                     th:src="${review.reviewImage}"
-                                     width="100" height="100" alt="리뷰 이미지"/>
+                                    <p><strong>주문 상태:</strong> <span th:text="${detail.statusId}">Order Status</span>
+                                    </p>
+                                    <a th:if="${detail.statusId != '구매 확정'}" th:href="'/review/' + ${order.id} + '/register/' + ${detail.orderDetailId}" class="btn btn-primary">리뷰 작성</a>
+                                </div>
                             </div>
+
                         </div>
-                        <!-- 수정 버튼 -->
-                        <a class="edit-button" th:href="@{/review/modify(reviewId=${review.reviewId})}">수정</a>
                     </div>
                 </div>
-
+                <!-- Pagination -->
                 <div class="pagination">
                     <ul>
-                        <li th:each="i : ${#numbers.sequence(0, reviews.totalPages - 1)}">
+                        <li th:each="i : ${#numbers.sequence(0, orders.totalPages - 1)}">
                             <a th:href="@{${#httpServletRequest.requestURI}(page=${i})}"
-                               th:text="${i + 1}" th:class="${reviews.number == i ? 'active' : ''}"></a>
+                               th:text="${i + 1}" th:class="${orders.number == i ? 'active' : ''}"></a>
                         </li>
                     </ul>
                 </div>
-
-
             </div>
-            <div th:if="${reviews == null or #lists.isEmpty(reviews.content)}" style="text-align: center; margin-top: 20px;">
+            <!-- 주문내역이 없을 때의 메시지 -->
+            <div th:if="${orders == null or #lists.isEmpty(orders.content)}"
+                 style="text-align: center; margin-top: 20px;">
                 <div style="background-color: #f8f9fa; padding: 20px; border-radius: 10px;">
-                    <h2>리뷰가 존재하지 않습니다.</h2>
+                    <h2>주문내역이 존재하지 않습니다.</h2>
                 </div>
             </div>
-
-
         </div>
 
         <!-- Start Team Area -->

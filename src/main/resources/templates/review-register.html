@@ -96,19 +96,24 @@
                         <div class="col-lg-8 col-md-12 col-12">
                             <div class="contact-form-head">
                                 <div class="form-main">
-                                    <form class="form" method="post" action="/review/register" enctype="multipart/form-data">
+                                    <form class="form" method="post" action="/review/register"
+                                          enctype="multipart/form-data">
                                         <div class="row">
                                             <div class="col-lg-6 col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <input name="title" type="text" placeholder="제목" required="required">
+                                                    <input name="title" type="text" placeholder="제목"
+                                                           required="required">
                                                 </div>
                                             </div>
 
                                             <div class="col-lg-6 col-md-6 col-12">
-                                                별점<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
+                                                별점
+                                                <link rel="stylesheet"
+                                                      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
                                                 <div class="rating">
                                                     <span class="rating__result"></span>
-                                                    <input type="hidden" name="rate" id="rate" value="5"> <!-- Hidden input field for rate -->
+                                                    <input type="hidden" name="rate" id="rate" value="5">
+                                                    <!-- Hidden input field for rate -->
                                                     <i class="rating__star far fa-star"></i>
                                                     <i class="rating__star far fa-star"></i>
                                                     <i class="rating__star far fa-star"></i>
@@ -119,15 +124,21 @@
 
                                             <div class="col-12">
                                                 <div class="form-group message">
-                                                    <textarea name="content" placeholder="내용"></textarea>
+                                                    <textarea name="content" placeholder="내용" required="required"></textarea>
                                                 </div>
                                             </div>
 
                                             <div class="col-12 file-container">
-                                                <input id="contentImage" name="contentImage" type="file" class="file" accept="image/*">
+                                                <input id="contentImage" name="contentImage" type="file" class="file"
+                                                       accept="image/*">
                                             </div>
+
+
                                             <div class="col-12">
                                                 <div class="form-group button">
+                                                    <input type="hidden" name="orderDetailId"
+                                                           th:value="${orderDetailId}">
+                                                    <input type="hidden" name="orderId" th:value="${orderId}">
                                                     <button type="submit" class="btn ">리뷰 작성</button>
                                                 </div>
                                             </div>
@@ -179,7 +190,7 @@
         executeRating(ratingStars, ratingResult);
 
         // Disable form submission if rating is 0
-        document.getElementById('reviewForm').addEventListener('submit', function(event) {
+        document.getElementById('reviewForm').addEventListener('submit', function (event) {
             const ratingValue = document.getElementById('rate').value;
             if (ratingValue === '0') {
                 event.preventDefault(); // Prevent form submission
@@ -187,5 +198,6 @@
             }
         });
     </script>
+</div>
 </body>
 </html>
