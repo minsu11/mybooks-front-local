@@ -3,6 +3,7 @@ package store.mybooks.front.global;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -84,8 +85,9 @@ public class GlobalControllerAdvice {
         return previousUrl.replace(domain, "redirect:");
     }
 
-    @ExceptionHandler({Exception.class}) // 프론트에서 발생하는 모든 예외
-    public String handleRuntimeException() {
+    @ExceptionHandler({Exception.class}) // 발생하는 모든 예외
+    public String handleRuntimeException(Exception e,Model model) {
+        model.addAttribute("errorMessage",e.getMessage());
         return "error";
     }
 
