@@ -1,8 +1,14 @@
 package store.mybooks.front.book.service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.admin.book.model.response.BookDetailResponse;
+import store.mybooks.front.admin.book.model.response.BookLikeResponse;
+import store.mybooks.front.admin.book.model.response.BookPopularityResponse;
+import store.mybooks.front.admin.book.model.response.BookPublicationDateResponse;
+import store.mybooks.front.admin.book.model.response.BookRatingResponse;
+import store.mybooks.front.admin.book.model.response.BookReviewResponse;
 import store.mybooks.front.book.adaptor.BookAdaptor;
 
 /**
@@ -31,5 +37,25 @@ public class BookService {
      */
     public BookDetailResponse getBook(Long bookId) {
         return bookAdaptor.getBook(bookId);
+    }
+
+    public List<BookPopularityResponse> getBookPopularitySortList() {
+        return bookAdaptor.getBookPopularitySortList();
+    }
+
+    public List<BookLikeResponse> getBookLikeSortList() {
+        return bookAdaptor.getBookLikeSortList();
+    }
+
+    public List<BookReviewResponse> getBookReviewSortList() {
+        return bookAdaptor.getBookReviewSortList();
+    }
+
+    public List<BookRatingResponse> getBookRatingSortList() {
+        return bookAdaptor.getBookRatingSortList();
+    }
+
+    public List<BookPublicationDateResponse> getBookPublicationDateSortList() {
+        return bookAdaptor.getBookPublicationDateSortList();
     }
 }

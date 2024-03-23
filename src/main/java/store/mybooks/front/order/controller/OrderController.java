@@ -4,7 +4,10 @@ import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -195,4 +198,14 @@ public class OrderController {
                 orderRequest.getOrderInfo(), point, couponCost, wrapCost, totalCost);
         return "redirect:/pay/" + response.getNumber();
     }
+
+
+    @GetMapping("/order")
+    public String getAllUserOrder(@PageableDefault Pageable pageable, Model model){
+
+        model.addAttribute("orders",orderService.getAllUserBookOrder(pageable));
+        return "user-order";
+    }
+
+
 }

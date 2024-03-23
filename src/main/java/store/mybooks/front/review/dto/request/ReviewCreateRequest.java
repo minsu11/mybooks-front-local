@@ -23,6 +23,8 @@ public class ReviewCreateRequest {
 
     private Long orderDetailId;
 
+    private Long orderId;
+
     private Integer rate;
 
     private String title;

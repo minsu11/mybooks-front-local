@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.admin.book.model.response.BookDetailResponse;
 import store.mybooks.front.admin.wrap.adaptor.WrapAdaptor;
@@ -19,7 +20,9 @@ import store.mybooks.front.order.dto.request.OrderInfoRequest;
 import store.mybooks.front.order.dto.response.BookOrderCreateResponse;
 import store.mybooks.front.order.dto.response.BookOrderInfoResponse;
 import store.mybooks.front.order.dto.response.BookOrderPayInfoResponse;
+import store.mybooks.front.order.dto.response.BookOrderUserResponse;
 import store.mybooks.front.order.utils.OrderUtils;
+import store.mybooks.front.pageable.dto.response.PageResponse;
 import store.mybooks.front.user.adaptor.UserAdaptor;
 import store.mybooks.front.user_address.adaptor.UserAddressAdaptor;
 import store.mybooks.front.user_coupon.adaptor.UserCouponAdaptor;
@@ -181,4 +184,11 @@ public class OrderService {
     public BookOrderPayInfoResponse getBookOrderPayInfo(String orderNumber) {
         return orderAdapter.getBookOrderPayInfo(orderNumber);
     }
+
+    public PageResponse<BookOrderUserResponse> getAllUserBookOrder(Pageable pageable){
+
+
+        return orderAdapter.getAllUserBookOrder(pageable);
+    }
+
 }
