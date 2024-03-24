@@ -1,8 +1,8 @@
 package store.mybooks.front.payment.dto.request;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * packageName    : store.mybooks.front.payment.dto.request<br>
@@ -16,8 +16,8 @@ import lombok.NoArgsConstructor;
  * 3/23/24        minsu11       최초 생성<br>
  */
 @Getter
+@Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class PayCancelOrderNumberRequest {
-    private String orderNumber;
+public class PayCancelReasonRequest {
+    private String cancelReason;
 }

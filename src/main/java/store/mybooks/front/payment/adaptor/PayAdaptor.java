@@ -146,17 +146,17 @@ public class PayAdaptor {
     /**
      * payment key를 조회.
      *
-     * @param request the request
+     * @param orderNumber 주문번호
      * @return the payment key
      */
-    public PaymentResponse getPaymentKey(PayCancelOrderNumberRequest request) {
-        HttpEntity<PayCancelOrderNumberRequest> httpEntity = new HttpEntity<>(request, Utils.getHttpHeader());
+    public PaymentResponse getPaymentKey(String orderNumber) {
+        HttpEntity<PayCancelReasonRequest> httpEntity = new HttpEntity<>(Utils.getHttpHeader());
         ResponseEntity<PaymentResponse> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + URL + "/{orderNumber}",
                 HttpMethod.GET,
                 httpEntity,
                 new ParameterizedTypeReference<PaymentResponse>() {
-                }, request.getOrderNumber());
+                }, orderNumber);
 
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
@@ -166,14 +166,15 @@ public class PayAdaptor {
      *
      * @param request the request
      */
+    @RequiredAuthorization
     public void cancelPayAfterProcess(PayCancelRequest request) {
         String uri = UriComponentsBuilder
                 .fromUriString(gatewayAdaptorProperties.getAddress())
                 .path(URL + "/cancel")
                 .build().toString();
+        System.out.println("url 주소가 제대로 나옴?" + uri);
 
-
-        HttpEntity<PayCancelRequest> httpEntity = new HttpEntity<>(request, Utils.getHttpHeader());
+        HttpEntity<PayCancelRequest> httpEntity = new HttpEntity<>(request, Utils.getAuthHeader());
         ResponseEntity<Void> exchange = restTemplate.exchange(
                 uri,
                 HttpMethod.POST,

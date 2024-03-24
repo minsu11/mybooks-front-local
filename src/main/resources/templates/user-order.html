@@ -59,6 +59,21 @@
             margin-top: 50px;
         }
 
+        .button {
+            background-color: #ffffff;
+            color: #333333;
+            border: 2px solid #333333;
+            border-radius: 15px;
+            padding: 10px 20px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        /* 마우스 호버 효과 */
+        .button:hover {
+            background-color: #333333;
+            color: #ffffff;
+        }
 
     </style>
 </head>
@@ -128,9 +143,16 @@
 
                                     <p><strong>주문 상태:</strong> <span th:text="${detail.statusId}">Order Status</span>
                                     </p>
-                                    <a th:if="${detail.statusId != '구매 확정'}" th:href="'/review/' + ${order.id} + '/register/' + ${detail.orderDetailId}" class="btn btn-primary">리뷰 작성</a>
+                                    <a th:if="${detail.statusId != '구매 확정'}"
+                                       th:href="'/review/' + ${order.id} + '/register/' + ${detail.orderDetailId}"
+                                       class="button">리뷰 작성</a>
+                                    <a th:if="${order.statusId == '주문 완료'}"
+                                       th:href="'/pay/cancel/' + ${order.number}"
+                                       class="button">주문 취소</a>
                                 </div>
+
                             </div>
+
 
                         </div>
                     </div>
@@ -211,6 +233,5 @@
     </div>
 
 </div>
-
 </body>
 </html>

@@ -310,4 +310,18 @@ public class OrderController {
     }
 
 
+    /**
+     * methodName : deleteAddress<br>
+     * author : minsu11<br>
+     * description : 배송지에서 유저의 주소를 삭제.
+     *
+     * @param addressId id
+     * @return string
+     */
+    @PostMapping("/address/delete")
+    public String deleteAddress(@RequestParam(name = "addressId") Long addressId) {
+        userAddressAdaptor.deleteUserAddress(addressId);
+        return "redirect:/address";
+    }
+
 }

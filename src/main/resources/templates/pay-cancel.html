@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/my-books-layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .pagination a {
+            padding: 8px 16px;
+            margin: 4px;
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .pagination a:hover {
+            background-color: #3367d6;
+        }
+
+        .pagination ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+        }
+
+        .pagination li {
+            margin-right: 5px;
+        }
+
+        /* 수정 버튼 스타일 */
+        .edit-button {
+            padding: 8px 16px;
+            background-color: #F5F5F5;
+            color: #34495e;
+            border: none;
+            border-radius: 4px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+
+        /* 주문 상세 정보 사이의 간격 */
+        .order-detail {
+            border-top: 1px solid black; /* 검은색 선 추가 */
+            margin-top: 50px;
+        }
+
+        .button {
+            background-color: #ffffff;
+            color: #333333;
+            border: 2px solid #333333;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 10px;
+            cursor: pointer;
+        }
+
+        /* 마우스 호버 효과 */
+        .button:hover {
+            background-color: #333333;
+            color: #ffffff;
+        }
+
+
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <!-- Start Breadcrumbs -->
+    <div class="breadcrumbs">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6 col-12">
+                </div>
+                <div class="col-lg-6 col-md-6 col-12">
+                    <ul class="breadcrumb-nav">
+                        <li><a href="/"><i class="lni lni-home"></i> Home</a></li>
+                        <li>주문내역</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Breadcrumbs -->
+    <div class="container ml-2">
+        <div class="form-control" style="margin: 0 auto">
+            <div class="row justify-content-center">
+                <div style="margin: 0 auto ">
+                    <h5>취소 사유</h5>
+                    <form method="post" th:action="@{'/pay/cancel/'+${orderNumber}}">
+                        <label>
+                            <input type="text" id="cancelReason" name="cancelReason" placeholder="취소 사유 입력하세요">
+                        </label>
+                        <button type="submit" class="button">확인</button>
+                    </form>
+                </div>
+
+
+            </div>
+        </div>
+
+        <!-- Start Team Area -->
+        <section class="team section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <!-- Start Single Team -->
+                        <div class="single-team">
+                            <div class="content">
+                                <div class="info">
+                                    <a href="/user">
+                                        <h3>마이페이지</h3>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Single Team -->
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <!-- Start Single Team -->
+                        <div class="single-team">
+                            <div class="content">
+                                <a href="/user/address">
+                                    <h3>주소관리</h3>
+                                </a>
+                            </div>
+                        </div>
+                        <!-- End Single Team -->
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <!-- Start Single Team -->
+                        <div class="single-team">
+                            <div class="content">
+                                <a href="/order">
+                                    <h3>주문 내역</h3>
+                                </a>
+                            </div>
+                        </div>
+                        <!-- End Single Team -->
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <!-- Start Single Team -->
+                        <div class="single-team">
+                            <div class="content">
+                                <a href="/review">
+                                    <h3>리뷰 내역</h3>
+                                </a>
+                            </div>
+                        </div>
+                        <!-- End Single Team -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+</div>
+</body>
+</html>

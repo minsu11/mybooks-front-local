@@ -13,12 +13,9 @@ import store.mybooks.front.order.dto.response.BookOrderPayInfoResponse;
 import store.mybooks.front.order.service.OrderInfoCheckService;
 import store.mybooks.front.order.service.OrderService;
 import store.mybooks.front.payment.adaptor.PayAdaptor;
-import store.mybooks.front.payment.dto.request.PayCancelOrderNumberRequest;
-import store.mybooks.front.payment.dto.request.PayCancelRequest;
 import store.mybooks.front.payment.dto.request.PayCreateRequest;
 import store.mybooks.front.payment.dto.request.TossPaymentRequest;
 import store.mybooks.front.payment.dto.response.PayCreateResponse;
-import store.mybooks.front.payment.dto.response.PaymentResponse;
 import store.mybooks.front.payment.dto.response.TossPaymentResponse;
 import store.mybooks.front.payment.service.PayService;
 import store.mybooks.front.utils.CookieUtils;
@@ -90,19 +87,5 @@ public class PayRestController {
                 .body(response);
     }
 
-    @PostMapping("/pay/info/cancel")
-    public ResponseEntity<TossPaymentResponse> cancelProcessing(@RequestBody PayCancelOrderNumberRequest cancelRequest) {
-        PaymentResponse response = payService.getPaymentKey(cancelRequest);
-
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(payService.cancelToss(response));
-    }
-
-    @PostMapping("/pay/info/cancel/process")
-    public ResponseEntity<Void> cancelPayAfterProcess(@RequestBody PayCancelRequest request) {
-        payService.cancelPayAfterProcess(request);
-        return ResponseEntity.status(HttpStatus.OK)
-                .build();
-    }
 
 }

@@ -6,14 +6,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import store.mybooks.front.config.TossAppKey;
 import store.mybooks.front.order.dto.response.BookOrderInfoResponse;
 import store.mybooks.front.order.service.OrderService;
+import store.mybooks.front.payment.dto.request.PayCancelReasonRequest;
 import store.mybooks.front.payment.dto.request.TossPaymentRequest;
+import store.mybooks.front.payment.dto.response.TossPaymentResponse;
 import store.mybooks.front.payment.service.PayService;
 
 
@@ -91,5 +90,20 @@ public class PayController {
         return "fail";
     }
 
+    @GetMapping("/cancel/{orderNumber}")
+    public String viewOrderCancel(@PathVariable String orderNumber,
+                                  ModelMap modelMap) {
+        modelMap.put("orderNumber", orderNumber);
+        return "pay-cancel";
+    }
 
+
+    @PostMapping("/cancel/{orderNumber}")
+    public String doOrderCancel(@PathVariable String orderNumber,
+                                @ModelAttribute PayCancelReasonRequest request,
+                                ModelMap modelMap) {
+        TossPaymentResponse response = payService.cancelToss(orderNumber, request);
+        payService.cancelPayAfterProcess(response);
+        return "redirect:/order";
+    }
 }
