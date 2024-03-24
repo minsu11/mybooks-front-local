@@ -83,7 +83,6 @@ public class PayRestController {
         if (Objects.nonNull(CookieUtils.getIdentityCookieValue(request))) {
             response = payAdaptor.createResponse(payCreateRequest);
         } else {
-
             response = payAdaptor.createNonUserOrderResponse(payCreateRequest);
         }
 

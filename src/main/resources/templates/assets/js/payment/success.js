@@ -3,14 +3,12 @@
 var status;
 document.addEventListener('DOMContentLoaded', async function () {
     const urlParams = new URLSearchParams(window.location.search);
-    console.log(new Date())
     // 서버로 결제 승인에 필요한 결제 정보를 보내세요.
     const pay = await confirm(urlParams)
-    console.log("호출한 뒤 결과: ")
-    console.log(pay)
+    const successTitleElement = document.getElementById("success-title");
     const orderIdElement = document.getElementById("orderId");
     const amountElement = document.getElementById("amount");
-
+    const orderNameElement = document.getElementById("order-name");
     const payInfo = {
         "paymentKey": pay.paymentKey,
         "orderNumber": pay.orderId,
@@ -19,18 +17,16 @@ document.addEventListener('DOMContentLoaded', async function () {
         "method": pay.method,
         "requestedAt": pay.requestedAt
     }
-    console.log("pay Info 값")
-    console.log(payInfo)
 
     const test = await payTest(payInfo);
-    if (pay.status === "DONE") {
+    if (pay.status === "DONE" && payInfo.status === "DONE") {
         console.log("삭제 호출 ")
         removeCart();
     }
-    console.log(payInfo)
-    console.log(test);
-    orderIdElement.textContent = "주문번호: " + payInfo.paymentKey;
+    successTitleElement.textContent = "결제 성공"
+    orderIdElement.textContent = "주문 번호: " + payInfo.paymentKey;
     amountElement.textContent = "결제 금액: " + payInfo.totalAmount;
+
 })
 
 async function confirm(urlParams) {
