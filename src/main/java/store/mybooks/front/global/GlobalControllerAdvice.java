@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.HttpClientErrorException;
 import store.mybooks.front.auth.exception.AccessIdForbiddenException;
 import store.mybooks.front.auth.exception.AuthenticationIsNotValidException;
 import store.mybooks.front.auth.exception.LoginFailedException;
@@ -36,23 +35,9 @@ public class GlobalControllerAdvice {
 
     private static final String REFERER = "referer";
 
-//    private static final String domain = "https://www.my-books.store";
+    private static final String domain = "https://www.my-books.store";
+    
 
-    private static final String domain = "http://localhost:8080/";
-    /**
-     * methodName : badRequestException <br>
-     * author : damho-lee <br>
-     * description : resource 서버에서 BadRequest, NotFound 상태코드가 오는 경우를 처리하는 ExceptionHandler.<br>
-     *
-     * @param exception HttpClientErrorException
-     * @return string
-     */
-    @ExceptionHandler({HttpClientErrorException.BadRequest.class, HttpClientErrorException.NotFound.class})
-    // 400 404 이게 리소스에서 나오는 모든 예외
-    public String handleBadRequestAndNotFoundException(Exception exception, HttpServletRequest request) {
-        String previousUrl = request.getHeader(REFERER);
-        return previousUrl.replace(domain, "redirect:");
-    }
 
     // 토큰 인증/인가와 관련된 모든 예외를 잡음
     @ExceptionHandler({AuthenticationIsNotValidException.class, AccessIdForbiddenException.class,
