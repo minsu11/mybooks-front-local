@@ -1,6 +1,7 @@
 var wrapCheck = "";
 var couponCheck = "";
 var addressCheck = "";
+const textarea = document.getElementById('receiver-message');
 
 document.addEventListener('DOMContentLoaded', function (event
 ) {
@@ -138,3 +139,26 @@ function updateTotalCost(total, num) {
 }
 
 
+const maxLength = 50;
+var msgCheck = false;
+
+textarea.addEventListener('input', function () {
+    const currentLength = textarea.value.length;
+    if (currentLength > maxLength) {
+        textarea.value = textarea.value.slice(0, maxLength);
+
+        if (msgCheck === false) {
+            const message = document.createElement('span');
+            message.textContent = '최대 입력 가능한 글자 수를 초과했습니다.';
+            message.style.color = 'red';
+            textarea.parentElement.appendChild(message);
+            msgCheck = true;
+        }
+    } else {
+        msgCheck = false;
+        const message = textarea.parentElement.querySelector('span');
+        if (message) {
+            message.remove();
+        }
+    }
+});

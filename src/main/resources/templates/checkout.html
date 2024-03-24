@@ -15,6 +15,54 @@
         input[type='number'] {
             -moz-appearance: textfield;
         }
+
+        #user-point {
+            /* 여기에 원하는 스타일을 적용하세요 */
+            width: 100px; /* 너비 조정 */
+            height: 15px;
+            padding: 10px; /* 내부 여백 조정 */
+            border: 1px solid #ccc; /* 테두리 스타일 지정 */
+            border-radius: 5px; /* 테두리 모서리 둥글게 만들기 */
+            font-size: 14px; /* 글꼴 크기 조정 */
+        }
+
+        #receiver-message {
+            /* 크기 고정 */
+            width: 300px; /* 가로 크기 지정 */
+            height: 150px; /* 세로 크기 지정 */
+            resize: none; /* 리사이즈 비활성화 */
+
+            /* 스타일 지정 */
+            padding: 10px; /* 내부 여백 지정 */
+            border: 1px solid #ccc; /* 테두리 스타일 지정 */
+            border-radius: 5px; /* 테두리 모서리 둥글게 만들기 */
+            font-size: 16px; /* 글꼴 크기 지정 */
+        }
+
+        #pay-btn {
+            background-color: #808080; /* 회색 배경 */
+            border: none; /* 테두리 없음 */
+            color: white; /* 흰색 텍스트 */
+            padding: 10px 20px; /* 버튼 내부 여백 */
+            text-align: center; /* 텍스트 가운데 정렬 */
+            text-decoration: none; /* 밑줄 없음 */
+            display: inline-block; /* 인라인 블록 요소로 표시 */
+            font-size: 16px; /* 글꼴 크기 */
+            margin: 4px 2px; /* 버튼 간격 */
+            cursor: pointer; /* 커서를 포인터로 변경 */
+            border-radius: 5px; /* 둥근 모서리 */
+        }
+
+        /* 마우스를 올렸을 때 버튼 스타일 */
+        #pay-btn:hover {
+            background-color: #6b6b6b; /* 더 어두운 회색 배경 */
+        }
+
+        /* 버튼이 눌렸을 때 스타일 */
+        #pay-btn:active {
+            background-color: #595959; /* 더 어두운 회색 배경 */
+        }
+
     </style>
     <!-- Start Breadcrumbs -->
     <div class="breadcrumbs">
@@ -133,7 +181,7 @@
                                                         <div class="row">
                                                             <div class="col-md-6 form-input form">
                                                                 <label>
-                                                                    <input name="userInfo.userName" type="text">
+                                                                    <input name="userInfo.orderCode" type="text">
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -288,14 +336,13 @@
                                                                 </span>
                                                                 </label>
                                                             </td>
-                                                            <td th:text="${book.cost}"></td>
-                                                            <td th:text="${book.saleCost}">
+                                                            <td th:text="${#numbers.formatInteger(book.cost,1,'COMMA')}"></td>
+                                                            <td th:text="${#numbers.formatInteger(book.saleCost,1,'COMMA')}">
                                                             </td>
                                                             <td>
-
                                                                 <div>
                                                                     <label>
-                                                                        <span th:text="${book.cartDetailAmount}">
+                                                                        <span th:text="${#numbers.formatInteger(book.cartDetailAmount,1,'COMMA')}">
                                                                         </span>
                                                                         <input th:name="|bookInfoList[${index.index}].amount|"
                                                                                th:value="${book.cartDetailAmount}"
@@ -306,7 +353,7 @@
 
                                                             <td>
                                                                 <label>
-                                                                    <span th:text="${book.saleCost} * ${book.cartDetailAmount}"></span>
+                                                                    <span th:text="${#numbers.formatInteger(book.saleCost*book.cartDetailAmount , 1, 'COMMA')}"></span>
                                                                     <input class="book-sale-cost"
                                                                            th:name="|bookInfoList[${index.index}].bookCost|"
                                                                            th:value="${book.saleCost.intValue()} * ${book.cartDetailAmount.intValue()}"
@@ -362,6 +409,7 @@
                                 <th:block th:if="${userCheck == true}">
                                     <li>
                                         <h5>포인트 사용</h5>
+                                        <hr>
                                         <section class="form-control">
                                             <div class="row">
                                                 <div class="col-12">
@@ -369,10 +417,13 @@
                                                         <label>
                                                             <p th:if="${point==null}" th:text="'보유 포인트: 0'"></p>
                                                             <p th:if="${point!=null}"
-                                                               th:text="'보유 포인트: '+ ${point}"></p>
-                                                            <input id="user-point" type="number" placeholder="포인트 사용"
-                                                                   min="0" value="0" name="orderInfo.usingPoint"
-                                                                   th:max="${point}">
+                                                               th:text="'보유 포인트: '+ ${#numbers.formatInteger(point,1,'COMMA')}"></p>
+                                                            <label>사용할 포인트:
+                                                                <input id="user-point" type="number"
+                                                                       placeholder="포인트 사용"
+                                                                       min="0" value="0" name="orderInfo.usingPoint"
+                                                                       th:max="${point}">
+                                                            </label>
                                                         </label>
                                                     </div>
                                                 </div>
@@ -382,6 +433,7 @@
                                 </th:block>
                                 <li>
                                     <h5>배송</h5>
+                                    <hr>
                                     <section class="form-control">
                                         <div>
                                             <h6> 배송 날짜</h6>
@@ -424,11 +476,13 @@
                                     <section class="form-content">
                                         <div class="row">
                                             <div class="col-12">
-                                                <div class="checkout-payment-form">
+                                                <div class="form-text">
                                                     <div class="single-form form-default">
-                                                        <label>결제 금액</label>
+                                                        <label style="font-size: 17px">결제 금액</label>
                                                         <div class="form-text">
-                                                            <span id="totalCost" th:text="${totalCost}"></span>
+                                                            <span id="totalCost"
+                                                                  th:text="${#numbers.formatInteger(totalCost,1,'COMMA')}"
+                                                                  style="font-size: 14px;"></span>
                                                             <input id="input-total-cost" th:value="${totalCost}"
                                                                    type="hidden"/>
                                                         </div>
@@ -436,9 +490,12 @@
                                                     <div class="single-form form-default">
                                                         <label>포장 비용</label>
                                                         <div class="form-text">
-                                                            <input type="number" id="wrap-cost" value="0"
-                                                                   class="form-control w-25" name="orderInfo.wrapCost"
-                                                                   readonly/>
+                                                            <label>
+                                                                <input type="number" id="wrap-cost" value="0"
+                                                                       class="form-control w-50"
+                                                                       name="orderInfo.wrapCost"
+                                                                       readonly/>
+                                                            </label>
                                                         </div>
                                                     </div>
                                                     <th:block th:if="${userCheck==true}">

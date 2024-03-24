@@ -165,7 +165,7 @@ public class OrderService {
         BookOrderCreateRequest request = new BookOrderCreateRequest(
                 userInfo.getUserName(), userInfo.getEmail(), userInfo.getPhoneNumber(),
                 bookInfo, orderInfo,
-                orderNumber, point, couponCost, wrapCost, totalCost);
+                orderNumber, point, couponCost, wrapCost, totalCost, null);
         return orderAdapter.createUserBookOrder(request);
     }
 
@@ -179,11 +179,12 @@ public class OrderService {
         String orderNumber = "";
         do {
             orderNumber = OrderUtils.createOrderNumber();
-        } while (!orderAdapter.checkBookOrderNumber(orderNumber));
+        } while (!(boolean) orderAdapter.checkBookOrderNumber(orderNumber));
         BookOrderCreateRequest request = new BookOrderCreateRequest(
                 userInfo.getUserName(), userInfo.getEmail(), userInfo.getPhoneNumber(),
                 bookInfoRequests, orderInfo,
-                orderNumber, 0, 0, wrapCost, totalCost);
+                orderNumber, 0, 0,
+                wrapCost, totalCost, userInfo.getOrderCode());
         return orderAdapter.createNonUserBookOrder(request);
     }
 

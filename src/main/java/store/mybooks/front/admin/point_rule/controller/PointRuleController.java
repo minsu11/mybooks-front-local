@@ -48,7 +48,7 @@ public class PointRuleController {
      * @return string
      */
     @GetMapping
-    public String viewPointRule(ModelMap modelMap, @PageableDefault Pageable pageable) {
+    public String viewPointRule(ModelMap modelMap, @PageableDefault(size = 8) Pageable pageable) {
         PageResponse<PointRuleResponse> pageResponse = pointRuleService.getPointResponsePage(pageable);
         modelMap.put("pointRulePage", pageResponse);
         return "admin/view/point-rule/point-rule-view";

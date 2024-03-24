@@ -60,7 +60,6 @@ public class PayService {
      */
     public TossPaymentResponse cancelToss(PaymentResponse response) {
         TossPaymentCancelRequest request = new TossPaymentCancelRequest("결제 취소");
-
         return payAdaptor.cancelPay(request, response);
     }
 

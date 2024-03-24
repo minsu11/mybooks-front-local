@@ -3,6 +3,7 @@ package store.mybooks.front.admin.book_order.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * packageName    : store.mybooks.front.admin.book_order.dto.response<br>
@@ -17,6 +18,7 @@ import lombok.Getter;
  */
 
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class BookOrderRegisterInvoiceNumberResponse {
     private String invoiceNumber;

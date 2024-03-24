@@ -24,5 +24,6 @@ public class BookOrderInfoResponse {
     private String number;
     private Integer totalCost;
     private Boolean isCouponUsed;
+    private Integer pointCost;
     private List<BookOrderDetailResponse> orderDetails;
 }

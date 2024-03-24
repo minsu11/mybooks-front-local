@@ -28,6 +28,7 @@ public class BookOrderCreateRequest {
     private Integer couponCost;
     private Integer wrapCost;
     private Integer totalCost;
+    private String orderCode;
 
 
 }

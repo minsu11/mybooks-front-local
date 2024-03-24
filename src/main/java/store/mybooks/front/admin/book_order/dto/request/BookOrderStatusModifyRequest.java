@@ -23,5 +23,5 @@ public class BookOrderStatusModifyRequest {
     private Long id;
 
     @NotBlank
-    private String statusId;
+    private String invoiceNumber;
 }

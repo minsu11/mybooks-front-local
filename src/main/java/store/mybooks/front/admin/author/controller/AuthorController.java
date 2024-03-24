@@ -46,10 +46,9 @@ public class AuthorController {
      * @return 모든 저자의 {@code list}를 보여주는 {@code view}의 경로
      */
     @GetMapping
-    public String viewAuthor(@PageableDefault Pageable pageable, ModelMap modelMap) {
+    public String viewAuthor(@PageableDefault(size = 8) Pageable pageable, ModelMap modelMap) {
         PageResponse<AuthorResponse> authorResponseList = authorService.getPageAuthors(pageable);
-      
-        log.debug("=======> value:{}", authorResponseList);
+
         modelMap.put("authors", authorResponseList);
         return "admin/view/author/author-view-form";
     }
@@ -82,8 +81,6 @@ public class AuthorController {
     @PostMapping("/register")
     public String doRegisterAuthor(
             @ModelAttribute AuthorCreateRequest createRequest) {
-
-        log.debug("=======>value: {}", createRequest.getName());
         if (authorService.createAuthor(createRequest)) {
             return "redirect:/admin/author";
         }
@@ -103,7 +100,6 @@ public class AuthorController {
     @GetMapping("/update-form")
     public String viewModifyForm(ModelMap modelMap,
                                  @ModelAttribute AuthorRequest request) {
-        log.debug("author id value: {}", request);
         modelMap.put("modifyAuthor", request);
         modelMap.put("pathValue", "update");
         return "admin/view/author/author-register-view";
@@ -125,7 +121,6 @@ public class AuthorController {
             ModelMap modelMap,
             @ModelAttribute AuthorRequest request) {
 
-        log.debug("modify request: {}", request);
         if (authorService.updateAuthor(request)) {
             return "redirect:/admin/author";
         }
@@ -144,7 +139,6 @@ public class AuthorController {
      */
     @PostMapping("/delete")
     public String doDeleteAuthor(@ModelAttribute AuthorDeleteRequest id) {
-        log.debug("삭제할 id value: {}", id);
         authorService.deleteAuthor(id);
 
         return "redirect:/admin/author";

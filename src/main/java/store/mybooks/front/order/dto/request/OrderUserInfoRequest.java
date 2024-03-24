@@ -23,5 +23,5 @@ public class OrderUserInfoRequest {
     private String email;
     private String phoneNumber;
     private Long addressId;
-
+    private String orderCode;
 }

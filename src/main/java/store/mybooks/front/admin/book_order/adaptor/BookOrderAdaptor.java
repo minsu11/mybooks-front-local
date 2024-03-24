@@ -104,13 +104,9 @@ public class BookOrderAdaptor {
     public BookOrderRegisterInvoiceNumberResponse registerInvoiceNumberResponse(BookOrderRegisterInvoiceNumberRequest request) {
         HttpHeaders headers = Utils.getAuthHeader();
         HttpEntity<BookOrderRegisterInvoiceNumberRequest> requestHttpEntity = new HttpEntity<>(request, headers);
-        UriComponents uriComponents = UriComponentsBuilder
-                .fromUriString(gatewayAdaptorProperties.getAddress() + ADMIN_URL + "/{value}/{status}")
-                .encode()
-                .buildAndExpand("admin", "invoiceNumber");
-
+        
         ResponseEntity<BookOrderRegisterInvoiceNumberResponse> exchange = restTemplate.exchange(
-                uriComponents.toString(),
+                gatewayAdaptorProperties.getAddress() + ADMIN_URL + "/invoiceNumbers",
                 HttpMethod.PUT,
                 requestHttpEntity,
                 new ParameterizedTypeReference<BookOrderRegisterInvoiceNumberResponse>() {

@@ -72,6 +72,7 @@ public class OrderController {
 
     private static final String USER_COOKIE_VALUE = "identity_cookie";
     private static final String NON_USER_CART_VALUE = "cart";
+    private static final String REDIRECT_PAY_URL = "redirect:/pay/";
 
     /**
      * methodName : viewOrderPage<br>
@@ -226,7 +227,6 @@ public class OrderController {
      */
     @PostMapping("/order")
     public String doOrder(@ModelAttribute BookOrderRequest orderRequest) {
-        log.info("회원 장바구니: {}", orderRequest);
         List<CartDetail> cart = cartUserService.getBookFromCart();
         orderInfoCheckService.checkModulation(orderRequest, cart);
         int point = orderService.getPoint(orderRequest.getOrderInfo());
@@ -236,27 +236,30 @@ public class OrderController {
         BookOrderCreateResponse response = orderService.createOrder(
                 orderRequest.getUserInfo(), orderRequest.getBookInfoList(), orderRequest.getOrderInfo(),
                 point, couponCost, wrapCost, totalCost);
-        return "redirect:/pay/" + response.getNumber();
+        return REDIRECT_PAY_URL + response.getNumber();
     }
 
+    /**
+     * 비회원 주문.
+     *
+     * @param orderRequest the order request
+     * @param cookie       the cookie
+     * @return the string
+     */
     @PostMapping("/cart/order/non/user")
     public String doNonUserOrder(@ModelAttribute BookOrderRequest orderRequest,
                                  @CookieValue(name = NON_USER_CART_VALUE, required = false) Cookie cookie) {
         List<CartDetail> cart = cartNonUserService.getBookFromCart(cookie);
-
-
         orderInfoCheckService.checkNonOrderModulation(orderRequest, cart);
         int wrapCost = orderService.calculateBookWrapCost(orderRequest.getBookInfoList());
         int totalCost = orderService.calculateTotalCost(cart);
         BookOrderCreateResponse response = orderService.createNonUserOrder(orderRequest, wrapCost, totalCost);
-        return "redirect:/pay/" + response.getNumber();
+        return REDIRECT_PAY_URL + response.getNumber();
     }
 
     @PostMapping("/direct/order")
     public String doDirectOrder(@ModelAttribute BookOrderRequest orderRequest
     ) {
-        log.debug("값이 제대로 들어왔는지 확인: {}", orderRequest);
-
         BookGetResponseForOrder bookGetResponseForOrder =
                 bookService.getBookForOrder(orderRequest.getBookInfoList().get(0).getBookId());
 
@@ -277,7 +280,7 @@ public class OrderController {
                 orderRequest.getBookInfoList(),
                 orderRequest.getOrderInfo(), point, couponCost, wrapCost, totalCost);
 
-        return "redirect:/pay/" + response.getNumber();
+        return REDIRECT_PAY_URL + response.getNumber();
     }
 
     /**
