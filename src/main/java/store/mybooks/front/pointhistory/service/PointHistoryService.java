@@ -3,9 +3,8 @@ package store.mybooks.front.pointhistory.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import store.mybooks.front.pageable.dto.response.PageResponse;
 import store.mybooks.front.pointhistory.adaptor.PointHistoryAdaptor;
-import store.mybooks.front.pointhistory.model.PointHistoryGetResponse;
+import store.mybooks.front.pointhistory.model.PointResponseForUser;
 
 /**
  * packageName    : store.mybooks.front.pointhistory.service
@@ -31,7 +30,7 @@ public class PointHistoryService {
      * @param pageable Pageable
      * @return PageResponse
      */
-    public PageResponse<PointHistoryGetResponse> getPointHistories(Pageable pageable) {
+    public PointResponseForUser getPointHistories(Pageable pageable) {
         return pointHistoryAdaptor.getPointHistories(pageable);
     }
 }
