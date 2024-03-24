@@ -1,5 +1,6 @@
 package store.mybooks.front.book.adaptor;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
@@ -11,6 +12,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import store.mybooks.front.admin.book.model.response.BookBriefResponse;
 import store.mybooks.front.admin.book.model.response.BookDetailResponse;
+import store.mybooks.front.admin.book.model.response.BookLikeResponse;
+import store.mybooks.front.admin.book.model.response.BookPopularityResponse;
+import store.mybooks.front.admin.book.model.response.BookPublicationDateResponse;
+import store.mybooks.front.admin.book.model.response.BookRatingResponse;
+import store.mybooks.front.admin.book.model.response.BookReviewResponse;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.utils.Utils;
 
@@ -74,6 +80,57 @@ public class BookAdaptor {
                 new ParameterizedTypeReference<BookDetailResponse>() {
                 },
                 id);
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
+
+
+    public List<BookPopularityResponse> getBookPopularitySortList() {
+        ResponseEntity<List<BookPopularityResponse>> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL + "/popularity",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<BookPopularityResponse>>() {
+                });
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
+
+    public List<BookLikeResponse> getBookLikeSortList() {
+        ResponseEntity<List<BookLikeResponse>> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL + "/bookLike",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<BookLikeResponse>>() {
+                });
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
+
+    public List<BookReviewResponse> getBookReviewSortList() {
+        ResponseEntity<List<BookReviewResponse>> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL + "/bookReviewCount",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<BookReviewResponse>>() {
+                });
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
+
+    public List<BookRatingResponse> getBookRatingSortList() {
+        ResponseEntity<List<BookRatingResponse>> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL + "/bookRating",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<BookRatingResponse>>() {
+                });
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
+
+    public List<BookPublicationDateResponse> getBookPublicationDateSortList() {
+        ResponseEntity<List<BookPublicationDateResponse>> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL + "/bookPublicationDate",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<BookPublicationDateResponse>>() {
+                });
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 }

@@ -1,12 +1,11 @@
-package store.mybooks.front.user_status.controller;
+package store.mybooks.front.admin.user_status.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import store.mybooks.front.user_status.adaptor.UserStatusAdaptor;
+import store.mybooks.front.admin.user_status.adaptor.UserStatusAdaptor;
 
 /**
  * packageName    : store.mybooks.resource.user_status.controller<br>
@@ -21,23 +20,18 @@ import store.mybooks.front.user_status.adaptor.UserStatusAdaptor;
  */
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/users-status")
+@RequestMapping("/admin/member/status")
 public class UserStatusController {
 
     private final UserStatusAdaptor userStatusAdaptor;
 
 
-    @GetMapping("/{id}")
-    public String getAllAccounts(@PathVariable(name = "id") String id,
-                                 Model model) {
-        model.addAttribute("userStatus", userStatusAdaptor.findUserStatusById(id));
+    @GetMapping
+    public String findUserStatusById(Model model) {
+        model.addAttribute("userStatus", userStatusAdaptor.findAllUserStatus());
 
-
-        return "good";
+        return "admin/view/user/status";
     }
-
-
-
 
 
 }

@@ -3,14 +3,33 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{common/layout/my-books-layout}">
 
-<style>
-    .product-image img {
-        width: 100%;
-        height: auto;
-    }
-</style>
-<div layout:fragment="content">
 
+<div layout:fragment="content">
+    <style>
+        .regular-cost {
+            text-decoration: line-through;
+        }
+
+        .prd .tab-class .nav-item a.active {
+            background: var(--bs-secondary) !important;
+        }
+
+        .prd .tab-class .nav-item a.active span {
+            color: var(--bs-white) !important;
+        }
+
+        .owl-carousel, .owl-carousel .owl-item {
+            -webkit-tap-highlight-color: transparent;
+            position: relative
+        }
+
+        .owl-carousel {
+            display: none;
+            width: 100%;
+            z-index: 1
+        }
+
+    </style>
     <!-- Start Hero Area -->
     <section class="hero-area">
         <div class="container">
@@ -21,33 +40,27 @@
                         <div class="hero-slider">
                             <!-- Start Single Slider -->
                             <div class="single-slider"
-                                 style="background-image: url(https://via.placeholder.com/800x500);">
+                                 style="background-image: url(https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_e805e9a72d2f47338a0a463196c36314/my-books-container/logo/%E1%84%92%E1%85%A8%E1%84%90%E1%85%A2%E1%86%A8coupon.png);">
                                 <div class="content">
-                                    <h2><span>No restocking fee ($35 savings)</span>
-                                        M75 Sport Watch
+                                    <h2><span></span>
+
                                     </h2>
-                                    <p>Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor incididunt ut
-                                        labore dolore magna aliqua.</p>
-                                    <h3><span>Now Only</span> $320.99</h3>
-                                    <div class="button">
-                                        <a href="product-grids.html" class="btn">Shop Now</a>
-                                    </div>
+                                    <p>
+                                    </p>
+                                    <h3><span></span></h3>
+
                                 </div>
                             </div>
                             <!-- End Single Slider -->
                             <!-- Start Single Slider -->
                             <div class="single-slider"
-                                 style="background-image: url(https://via.placeholder.com/800x500);">
+                                 style="background-image: url(https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_e805e9a72d2f47338a0a463196c36314/my-books-container/logo/bookimage1.png);">
                                 <div class="content">
-                                    <h2><span>Big Sale Offer</span>
-                                        Get the Best Deal on CCTV Camera
+                                    <h2><span></span>
                                     </h2>
-                                    <p>Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor incididunt ut
-                                        labore dolore magna aliqua.</p>
-                                    <h3><span>Combo Only:</span> $590.00</h3>
-                                    <div class="button">
-                                        <a href="product-grids.html" class="btn">Shop Now</a>
-                                    </div>
+                                    <p></p>
+                                    <h3><span></span></h3>
+
                                 </div>
                             </div>
                             <!-- End Single Slider -->
@@ -92,142 +105,209 @@
     <!-- End Hero Area -->
 
     <!-- Start Featured Categories Area -->
-    <section class="featured-categories section">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="section-title">
-                        <h2>Featured Categories</h2>
-                        <p>There are many variations of passages of Lorem Ipsum available, but the majority have
-                            suffered alteration in some form.</p>
-                    </div>
+    <section class="featured-categories prd trending-product section" style="padding-top: 0px; padding-bottom: 0px">
+        <div class="container py-5">
+            <div class="text-center tab-class" style="height: 200px">
+                <div class="row g-4 section-title">
+                    <h2>책상의 거장들</h2>
+                    <p>누적 랭킹을 통한 통찰력</p>
+                </div>
+                <div class="col-lg-4 text-start ">
+                </div>
+                <div class="col-lg-8 text-end">
+                    <ul class="nav nav-pills d-inline-flex text-center mb-5">
+                        <li class="nav-item">
+                            <a class="d-flex m-2 py-2 bg-light rounded-pill active" data-bs-toggle="pill" href="#tab-1">
+                                <span class="text-dark" style="width: 130px;">평점 높은 순</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-2">
+                                <span class="text-dark" style="width: 130px;">리뷰 많은 순</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-3">
+                                <span class="text-dark" style="width: 130px;">좋아요 많은 순</span>
+                            </a>
+                        </li>
+                    </ul>
+
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-4 col-md-6 col-12">
-                    <!-- Start Single Category -->
-                    <div class="single-category">
-                        <h3 class="heading">TV & Audios</h3>
-                        <ul>
-                            <li><a href="product-grids.html">Smart Television</a></li>
-                            <li><a href="product-grids.html">QLED TV</a></li>
-                            <li><a href="product-grids.html">Audios</a></li>
-                            <li><a href="product-grids.html">Headphones</a></li>
-                            <li><a href="product-grids.html">View All</a></li>
-                        </ul>
-                        <div class="images">
-                            <img src="https://via.placeholder.com/180x180" alt="#">
+
+
+            <div class="tab-content center">
+                <div id="tab-1" class="tab-pane fade show p-0 active">
+                    <div class="row mt-3">
+                        <div th:each="book, iterStat: ${ratingList}" class="col-lg-3 col-md-6 col-12 ">
+                            <div class="single-product card h-100">
+                                <div class="product-image">
+                                    <img class="product-image card-img-top"
+                                         th:src="${book.image}"
+                                         alt="#">
+                                    <div class="button">
+                                        <form action="/cart/add" method="post">
+                                            <input type="hidden" name="id" th:value="${book.id}">
+                                            <input type="hidden" name="cost" th:value="${book.cost}">
+                                            <input type="hidden" name="saleCost" th:value="${book.saleCost}">
+                                            <input type="hidden" name="quantity" value=1>
+                                            <button type="submit" class="lni lni-cart btn">Add to Cart</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="product-info">
+                                    <h4 class="title">
+                                        <span th:text="${iterStat.count + '. '}" class="emphasis"></span>
+                                        <a th:href="@{'/book/' + ${book.id}}" th:text="${book.name}"></a>
+                                    </h4>
+
+                                    <th:block th:with="roundedRate=${T(java.lang.Math).floor(book.rate)}">
+                                        <ul class="review">
+                                            <li th:each="star, reviewIterStat: ${#numbers.sequence(1, 5)}">
+
+                                                <i class="lni"
+                                                   th:classappend="${roundedRate >= reviewIterStat.index +1 ? 'lni-star-filled' : 'lni-star'}"></i>
+                                            </li>
+
+                                            <li><span th:text="${book.rate}"></span></li>
+                                        </ul>
+                                    </th:block>
+                                    <p>리뷰 수 : <span th:text=" ${book.reviewCount}"></span></p>
+                                    <div class="price">
+                                        <span class="sale-cost"
+                                              th:text="${#numbers.formatInteger(book.saleCost, 1, 'COMMA')} + '원'  "></span>
+                                        <s class="regular-cost"
+                                           th:text="${#numbers.formatInteger(book.cost, 1, 'COMMA')} + '원'"></s>
+                                    </div>
+
+
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <!-- End Single Category -->
                 </div>
-                <div class="col-lg-4 col-md-6 col-12">
-                    <!-- Start Single Category -->
-                    <div class="single-category">
-                        <h3 class="heading">Desktop & Laptop</h3>
-                        <ul>
-                            <li><a href="product-grids.html">Smart Television</a></li>
-                            <li><a href="product-grids.html">QLED TV</a></li>
-                            <li><a href="product-grids.html">Audios</a></li>
-                            <li><a href="product-grids.html">Headphones</a></li>
-                            <li><a href="product-grids.html">View All</a></li>
-                        </ul>
-                        <div class="images">
-                            <img src="https://via.placeholder.com/180x180" alt="#">
+                <div id="tab-2" class="tab-pane fade show p-0">
+                    <div class="row mt-3">
+                        <div th:each="book, iterStat: ${reviewList}" class="col-lg-3 col-md-6 col-12">
+                            <div class="single-product card h-100">
+                                <div class="product-image">
+                                    <img class="product-image card-img-top"
+                                         th:src="${book.image}"
+                                         alt="#">
+                                    <div class="button">
+                                        <form action="/cart/add" method="post">
+                                            <input type="hidden" name="id" th:value="${book.id}">
+                                            <input type="hidden" name="cost" th:value="${book.cost}">
+                                            <input type="hidden" name="saleCost" th:value="${book.saleCost}">
+                                            <input type="hidden" name="quantity" value=1>
+                                            <button type="submit" class="lni lni-cart btn">Add to Cart</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="product-info">
+                                    <h4 class="title">
+                                        <span th:text="${iterStat.count + '. '}" class="emphasis"></span>
+                                        <a th:href="@{'/book/' + ${book.id}}" th:text="${book.name}"></a>
+                                    </h4>
+
+                                    <th:block th:with="roundedRate=${T(java.lang.Math).floor(book.rate)}">
+                                        <ul class="review">
+                                            <li th:each="star, reviewIterStat: ${#numbers.sequence(1, 5)}">
+
+                                                <i class="lni"
+                                                   th:classappend="${roundedRate >= reviewIterStat.index +1 ? 'lni-star-filled' : 'lni-star'}"></i>
+                                            </li>
+
+                                            <li><span th:text="${book.rate}"></span></li>
+                                        </ul>
+                                    </th:block>
+                                    <p>리뷰 수 : <span th:text=" ${book.reviewCount}"></span></p>
+                                    <div class="price">
+                                        <span class="sale-cost"
+                                              th:text="${#numbers.formatInteger(book.saleCost, 1, 'COMMA')} + '원'  "></span>
+                                        <s class="regular-cost"
+                                           th:text="${#numbers.formatInteger(book.cost, 1, 'COMMA')} + '원'"></s>
+                                    </div>
+
+
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <!-- End Single Category -->
                 </div>
-                <div class="col-lg-4 col-md-6 col-12">
-                    <!-- Start Single Category -->
-                    <div class="single-category">
-                        <h3 class="heading">Cctv Camera</h3>
-                        <ul>
-                            <li><a href="product-grids.html">Smart Television</a></li>
-                            <li><a href="product-grids.html">QLED TV</a></li>
-                            <li><a href="product-grids.html">Audios</a></li>
-                            <li><a href="product-grids.html">Headphones</a></li>
-                            <li><a href="product-grids.html">View All</a></li>
-                        </ul>
-                        <div class="images">
-                            <img src="https://via.placeholder.com/180x180" alt="#">
+                <div id="tab-3" class="tab-pane fade show p-0">
+                    <div class="row mt-3">
+                        <div th:each="book, iterStat: ${likeList}" class="col-lg-3 col-md-6 col-12">
+                            <div class="single-product card h-100">
+                                <div class="product-image">
+                                    <img class="product-image card-img-top"
+                                         th:src="${book.image}"
+                                         alt="#">
+                                    <div class="button">
+                                        <form action="/cart/add" method="post">
+                                            <input type="hidden" name="id" th:value="${book.id}">
+                                            <input type="hidden" name="cost" th:value="${book.cost}">
+                                            <input type="hidden" name="saleCost" th:value="${book.saleCost}">
+                                            <input type="hidden" name="quantity" value=1>
+                                            <button type="submit" class="lni lni-cart btn">Add to Cart</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="product-info">
+                                    <h4 class="title">
+                                        <span th:text="${iterStat.count + '. '}" class="emphasis"></span>
+                                        <a th:href="@{'/book/' + ${book.id}}" th:text="${book.name}"></a>
+                                    </h4>
+
+                                    <th:block th:with="roundedRate=${T(java.lang.Math).floor(book.rate)}">
+                                        <ul class="review">
+                                            <li th:each="star, reviewIterStat: ${#numbers.sequence(1, 5)}">
+
+                                                <i class="lni"
+                                                   th:classappend="${roundedRate >= reviewIterStat.index +1 ? 'lni-star-filled' : 'lni-star'}"></i>
+                                            </li>
+
+                                            <li><span th:text="${book.rate}"></span></li>
+                                        </ul>
+                                    </th:block>
+                                    <p>리뷰 수 : <span th:text=" ${book.reviewCount}"></span></p>
+                                    <div class="price">
+                                        <span class="sale-cost"
+                                              th:text="${#numbers.formatInteger(book.saleCost, 1, 'COMMA')} + '원'  "></span>
+                                        <s class="regular-cost"
+                                           th:text="${#numbers.formatInteger(book.cost, 1, 'COMMA')} + '원'"></s>
+                                    </div>
+
+
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <!-- End Single Category -->
                 </div>
-                <div class="col-lg-4 col-md-6 col-12">
-                    <!-- Start Single Category -->
-                    <div class="single-category">
-                        <h3 class="heading">Dslr Camera</h3>
-                        <ul>
-                            <li><a href="product-grids.html">Smart Television</a></li>
-                            <li><a href="product-grids.html">QLED TV</a></li>
-                            <li><a href="product-grids.html">Audios</a></li>
-                            <li><a href="product-grids.html">Headphones</a></li>
-                            <li><a href="product-grids.html">View All</a></li>
-                        </ul>
-                        <div class="images">
-                            <img src="https://via.placeholder.com/180x180" alt="#">
-                        </div>
-                    </div>
-                    <!-- End Single Category -->
-                </div>
-                <div class="col-lg-4 col-md-6 col-12">
-                    <!-- Start Single Category -->
-                    <div class="single-category">
-                        <h3 class="heading">Smart Phones</h3>
-                        <ul>
-                            <li><a href="product-grids.html">Smart Television</a></li>
-                            <li><a href="product-grids.html">QLED TV</a></li>
-                            <li><a href="product-grids.html">Audios</a></li>
-                            <li><a href="product-grids.html">Headphones</a></li>
-                            <li><a href="product-grids.html">View All</a></li>
-                        </ul>
-                        <div class="images">
-                            <img src="https://via.placeholder.com/180x180" alt="#">
-                        </div>
-                    </div>
-                    <!-- End Single Category -->
-                </div>
-                <div class="col-lg-4 col-md-6 col-12">
-                    <!-- Start Single Category -->
-                    <div class="single-category">
-                        <h3 class="heading">Game Console</h3>
-                        <ul>
-                            <li><a href="product-grids.html">Smart Television</a></li>
-                            <li><a href="product-grids.html">QLED TV</a></li>
-                            <li><a href="product-grids.html">Audios</a></li>
-                            <li><a href="product-grids.html">Headphones</a></li>
-                            <li><a href="product-grids.html">View All</a></li>
-                        </ul>
-                        <div class="images">
-                            <img src="https://via.placeholder.com/180x180" alt="#">
-                        </div>
-                    </div>
-                    <!-- End Single Category -->
-                </div>
+
             </div>
         </div>
+
     </section>
-    <!-- End Features Area -->
+
 
     <!-- Start Trending Product Area -->
-    <section class="trending-product section">
+    <section class="trending-product section" style="padding-bottom: 0px; padding-top: 40px">
         <div class="container">
             <div class="row">
                 <div class="col-12">
                     <div class="section-title">
-                        <h2>Trending Product</h2>
-                        <p>There are many variations of passages of Lorem Ipsum available, but the majority have
-                            suffered alteration in some form.</p>
+                        <h2>일간 인기 상품 순위!</h2>
+                        <p>인기 상품! 뭐가 있을까?</p><br/>
                     </div>
                 </div>
             </div>
             <div class="row mt-3">
-                <div th:each="book: ${books.content}" class="col-lg-3 col-md-6 col-12">
+                <div th:each="book, iterStat: ${popularList}" class="col-lg-3 col-md-6 col-12">
                     <div class="single-product card h-100">
                         <div class="product-image">
-                            <img class="product-image card-img-top "
+                            <img class="product-image card-img-top"
                                  th:src="${book.image}"
                                  alt="#">
                             <div class="button">
@@ -242,14 +322,32 @@
                         </div>
                         <div class="product-info">
                             <h4 class="title">
+                                <span th:text="${iterStat.count + '. '}" class="emphasis"></span>
                                 <a th:href="@{'/book/' + ${book.id}}" th:text="${book.name}"></a>
                             </h4>
-                            <ul class="review">
-                                <li><p>리뷰: <span th:text="${book.rate}">/5</span>(<span th:text="(${book.reviewCount})"></span>)</p></li>
-                            </ul>
+
+                            <th:block th:with="roundedRate=${T(java.lang.Math).floor(book.rate)}">
+                                <ul class="review">
+                                    <li th:each="star, reviewIterStat: ${#numbers.sequence(1, 5)}">
+
+                                        <i class="lni"
+                                           th:classappend="${roundedRate >= reviewIterStat.index +1 ? 'lni-star-filled' : 'lni-star'}"></i>
+                                    </li>
+
+                                    <li><span th:text="${book.rate}"></span></li>
+                                </ul>
+                            </th:block>
+                            <p>리뷰 수 : <span th:text=" ${book.reviewCount}"></span></p>
                             <div class="price">
-                                <span th:text="${book.saleCost}"></span>
+
+                                <span class="sale-cost"
+                                      th:text="${#numbers.formatInteger(book.saleCost, 1, 'COMMA')} + '원'  "></span>
+                                <s class="regular-cost"
+                                   th:text="${#numbers.formatInteger(book.cost, 1, 'COMMA')} + '원'"></s>
+
                             </div>
+
+
                         </div>
                     </div>
                 </div>
@@ -263,23 +361,22 @@
             <div class="row">
                 <div class="col-12">
                     <div class="section-title">
-                        <h2>Special Offer</h2>
-                        <p>There are many variations of passages of Lorem Ipsum available, but the majority have
-                            suffered alteration in some form.</p>
+                        <h2>새로 나온 책!</h2>
+                        <p>새로 나온 책! 뭐가 있을까?</p><br/>
                     </div>
                 </div>
             </div>
             <div class="row mt-3">
-                <div th:each="book: ${books.content}" class="col-lg-3 col-md-6 col-12">
+                <div th:each="book, iterStat: ${publicationList}" class="col-lg-3 col-md-6 col-12">
                     <div class="single-product card h-100">
                         <div class="product-image">
-                            <img class="product-image card-img-top "
+                            <img class="product-image card-img-top"
                                  th:src="${book.image}"
                                  alt="#">
                             <div class="button">
                                 <form action="/cart/add" method="post">
                                     <input type="hidden" name="id" th:value="${book.id}">
-                                    <input type="hidden" name="originalCost" th:value="${book.cost}">
+                                    <input type="hidden" name="cost" th:value="${book.cost}">
                                     <input type="hidden" name="saleCost" th:value="${book.saleCost}">
                                     <input type="hidden" name="quantity" value=1>
                                     <button type="submit" class="lni lni-cart btn">Add to Cart</button>
@@ -288,331 +385,39 @@
                         </div>
                         <div class="product-info">
                             <h4 class="title">
+                                <span th:text="${iterStat.count + '. '}" class="emphasis"></span>
                                 <a th:href="@{'/book/' + ${book.id}}" th:text="${book.name}"></a>
                             </h4>
-                            <ul class="review">
-                                <li><p>리뷰: <span th:text="${book.rate}">/5</span>(<span th:text="(${book.reviewCount})"></span>)</p></li>
 
-                            </ul>
+                            <th:block th:with="roundedRate=${T(java.lang.Math).floor(book.rate)}">
+                                <ul class="review">
+                                    <li th:each="star, reviewIterStat: ${#numbers.sequence(1, 5)}">
+
+                                        <i class="lni"
+                                           th:classappend="${roundedRate >= reviewIterStat.index +1 ? 'lni-star-filled' : 'lni-star'}"></i>
+                                    </li>
+
+                                    <li><span th:text="${book.rate}"></span></li>
+                                </ul>
+                            </th:block>
+                            <p>리뷰 수 : <span th:text=" ${book.reviewCount}"></span></p>
                             <div class="price">
-                                <span th:text="${book.saleCost}"></span>
+
+                                <span class="sale-cost"
+                                      th:text="${#numbers.formatInteger(book.saleCost, 1, 'COMMA')} + '원'  "></span>
+                                <s class="regular-cost"
+                                   th:text="${#numbers.formatInteger(book.cost, 1, 'COMMA')} + '원'"></s>
+
                             </div>
+
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <!-- End Special Offer -->
 
-    <!-- Start Home Product List -->
-<!--    <section class="home-product-list section">-->
-<!--        <div class="container">-->
-<!--            <div class="row">-->
-<!--                <div class="col-lg-4 col-md-4 col-12 custom-responsive-margin">-->
-<!--                    <h4 class="list-title">Best Sellers</h4>-->
-<!--                    &lt;!&ndash; Start Single List &ndash;&gt;-->
-<!--                    <div class="single-list">-->
-<!--                        <div class="list-image">-->
-<!--                            <a href="product-grids.html"><img src="https://via.placeholder.com/100x100" alt="#"></a>-->
-<!--                        </div>-->
-<!--                        <div class="list-info">-->
-<!--                            <h3>-->
-<!--                                <a href="product-grids.html">GoPro Hero4 Silver</a>-->
-<!--                            </h3>-->
-<!--                            <span>$287.99</span>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    &lt;!&ndash; End Single List &ndash;&gt;-->
-<!--                    &lt;!&ndash; Start Single List &ndash;&gt;-->
-<!--                    <div class="single-list">-->
-<!--                        <div class="list-image">-->
-<!--                            <a href="product-grids.html"><img src="https://via.placeholder.com/100x100" alt="#"></a>-->
-<!--                        </div>-->
-<!--                        <div class="list-info">-->
-<!--                            <h3>-->
-<!--                                <a href="product-grids.html">Puro Sound Labs BT2200</a>-->
-<!--                            </h3>-->
-<!--                            <span>$95.00</span>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    &lt;!&ndash; End Single List &ndash;&gt;-->
-<!--                    &lt;!&ndash; Start Single List &ndash;&gt;-->
-<!--                    <div class="single-list">-->
-<!--                        <div class="list-image">-->
-<!--                            <a href="product-grids.html"><img src="https://via.placeholder.com/100x100" alt="#"></a>-->
-<!--                        </div>-->
-<!--                        <div class="list-info">-->
-<!--                            <h3>-->
-<!--                                <a href="product-grids.html">HP OfficeJet Pro 8710</a>-->
-<!--                            </h3>-->
-<!--                            <span>$120.00</span>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    &lt;!&ndash; End Single List &ndash;&gt;-->
-<!--                </div>-->
-<!--                <div class="col-lg-4 col-md-4 col-12 custom-responsive-margin">-->
-<!--                    <h4 class="list-title">New Arrivals</h4>-->
-<!--                    &lt;!&ndash; Start Single List &ndash;&gt;-->
-<!--                    <div class="single-list">-->
-<!--                        <div class="list-image">-->
-<!--                            <a href="product-grids.html"><img src="https://via.placeholder.com/100x100" alt="#"></a>-->
-<!--                        </div>-->
-<!--                        <div class="list-info">-->
-<!--                            <h3>-->
-<!--                                <a href="product-grids.html">iPhone X 256 GB Space Gray</a>-->
-<!--                            </h3>-->
-<!--                            <span>$1150.00</span>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    &lt;!&ndash; End Single List &ndash;&gt;-->
-<!--                    &lt;!&ndash; Start Single List &ndash;&gt;-->
-<!--                    <div class="single-list">-->
-<!--                        <div class="list-image">-->
-<!--                            <a href="product-grids.html"><img src="https://via.placeholder.com/100x100" alt="#"></a>-->
-<!--                        </div>-->
-<!--                        <div class="list-info">-->
-<!--                            <h3>-->
-<!--                                <a href="product-grids.html">Canon EOS M50 Mirrorless Camera</a>-->
-<!--                            </h3>-->
-<!--                            <span>$950.00</span>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    &lt;!&ndash; End Single List &ndash;&gt;-->
-<!--                    &lt;!&ndash; Start Single List &ndash;&gt;-->
-<!--                    <div class="single-list">-->
-<!--                        <div class="list-image">-->
-<!--                            <a href="product-grids.html"><img src="https://via.placeholder.com/100x100" alt="#"></a>-->
-<!--                        </div>-->
-<!--                        <div class="list-info">-->
-<!--                            <h3>-->
-<!--                                <a href="product-grids.html">Microsoft Xbox One S</a>-->
-<!--                            </h3>-->
-<!--                            <span>$298.00</span>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    &lt;!&ndash; End Single List &ndash;&gt;-->
-<!--                </div>-->
-<!--                <div class="col-lg-4 col-md-4 col-12">-->
-<!--                    <h4 class="list-title">Top Rated</h4>-->
-<!--                    &lt;!&ndash; Start Single List &ndash;&gt;-->
-<!--                    <div class="single-list">-->
-<!--                        <div class="list-image">-->
-<!--                            <a href="product-grids.html"><img src="https://via.placeholder.com/100x100" alt="#"></a>-->
-<!--                        </div>-->
-<!--                        <div class="list-info">-->
-<!--                            <h3>-->
-<!--                                <a href="product-grids.html">Samsung Gear 360 VR Camera</a>-->
-<!--                            </h3>-->
-<!--                            <span>$68.00</span>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    &lt;!&ndash; End Single List &ndash;&gt;-->
-<!--                    &lt;!&ndash; Start Single List &ndash;&gt;-->
-<!--                    <div class="single-list">-->
-<!--                        <div class="list-image">-->
-<!--                            <a href="product-grids.html"><img src="https://via.placeholder.com/100x100" alt="#"></a>-->
-<!--                        </div>-->
-<!--                        <div class="list-info">-->
-<!--                            <h3>-->
-<!--                                <a href="product-grids.html">Samsung Galaxy S9+ 64 GB</a>-->
-<!--                            </h3>-->
-<!--                            <span>$840.00</span>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    &lt;!&ndash; End Single List &ndash;&gt;-->
-<!--                    &lt;!&ndash; Start Single List &ndash;&gt;-->
-<!--                    <div class="single-list">-->
-<!--                        <div class="list-image">-->
-<!--                            <a href="product-grids.html"><img src="https://via.placeholder.com/100x100" alt="#"></a>-->
-<!--                        </div>-->
-<!--                        <div class="list-info">-->
-<!--                            <h3>-->
-<!--                                <a href="product-grids.html">Zeus Bluetooth Headphones</a>-->
-<!--                            </h3>-->
-<!--                            <span>$28.00</span>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    &lt;!&ndash; End Single List &ndash;&gt;-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </section>-->
-    <!-- End Home Product List -->
-
-    <!-- Start Brands Area -->
-<!--    <div class="brands">-->
-<!--        <div class="container">-->
-<!--            <div class="row">-->
-<!--                <div class="col-lg-6 offset-lg-3 col-md-12 col-12">-->
-<!--                    <h2 class="title">Popular Brands</h2>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="brands-logo-wrapper">-->
-<!--                <div class="brands-logo-carousel d-flex align-items-center justify-content-between">-->
-<!--                    <div class="brand-logo">-->
-<!--                        <img src="https://via.placeholder.com/220x160" alt="#">-->
-<!--                    </div>-->
-<!--                    <div class="brand-logo">-->
-<!--                        <img src="https://via.placeholder.com/220x160" alt="#">-->
-<!--                    </div>-->
-<!--                    <div class="brand-logo">-->
-<!--                        <img src="https://via.placeholder.com/220x160" alt="#">-->
-<!--                    </div>-->
-<!--                    <div class="brand-logo">-->
-<!--                        <img src="https://via.placeholder.com/220x160" alt="#">-->
-<!--                    </div>-->
-<!--                    <div class="brand-logo">-->
-<!--                        <img src="https://via.placeholder.com/220x160" alt="#">-->
-<!--                    </div>-->
-<!--                    <div class="brand-logo">-->
-<!--                        <img src="https://via.placeholder.com/220x160" alt="#">-->
-<!--                    </div>-->
-<!--                    <div class="brand-logo">-->
-<!--                        <img src="https://via.placeholder.com/220x160" alt="#">-->
-<!--                    </div>-->
-<!--                    <div class="brand-logo">-->
-<!--                        <img src="https://via.placeholder.com/220x160" alt="#">-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-    <!-- End Brands Area -->
-
-    <!-- Start Blog Section Area -->
-<!--    <section class="blog-section section">-->
-<!--        <div class="container">-->
-<!--            <div class="row">-->
-<!--                <div class="col-12">-->
-<!--                    <div class="section-title">-->
-<!--                        <h2>Our Latest News</h2>-->
-<!--                        <p>There are many variations of passages of Lorem-->
-<!--                            Ipsum available, but the majority have suffered alteration in some form.</p>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="row">-->
-<!--                <div class="col-lg-4 col-md-6 col-12">-->
-<!--                    &lt;!&ndash; Start Single Blog &ndash;&gt;-->
-<!--                    <div class="single-blog">-->
-<!--                        <div class="blog-img">-->
-<!--                            <a href="blog-single-sidebar.html">-->
-<!--                                <img src="https://via.placeholder.com/370x215" alt="#">-->
-<!--                            </a>-->
-<!--                        </div>-->
-<!--                        <div class="blog-content">-->
-<!--                            <a class="category" href="javascript:void(0)">eCommerce</a>-->
-<!--                            <h4>-->
-<!--                                <a href="blog-single-sidebar.html">What information is needed for shipping?</a>-->
-<!--                            </h4>-->
-<!--                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor-->
-<!--                                incididunt.</p>-->
-<!--                            <div class="button">-->
-<!--                                <a href="javascript:void(0)" class="btn">Read More</a>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    &lt;!&ndash; End Single Blog &ndash;&gt;-->
-<!--                </div>-->
-<!--                <div class="col-lg-4 col-md-6 col-12">-->
-<!--                    &lt;!&ndash; Start Single Blog &ndash;&gt;-->
-<!--                    <div class="single-blog">-->
-<!--                        <div class="blog-img">-->
-<!--                            <a href="blog-single-sidebar.html">-->
-<!--                                <img src="https://via.placeholder.com/370x215" alt="#">-->
-<!--                            </a>-->
-<!--                        </div>-->
-<!--                        <div class="blog-content">-->
-<!--                            <a class="category" href="javascript:void(0)">Gaming</a>-->
-<!--                            <h4>-->
-<!--                                <a href="blog-single-sidebar.html">Interesting fact about gaming consoles</a>-->
-<!--                            </h4>-->
-<!--                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor-->
-<!--                                incididunt.</p>-->
-<!--                            <div class="button">-->
-<!--                                <a href="javascript:void(0)" class="btn">Read More</a>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    &lt;!&ndash; End Single Blog &ndash;&gt;-->
-<!--                </div>-->
-<!--                <div class="col-lg-4 col-md-6 col-12">-->
-<!--                    &lt;!&ndash; Start Single Blog &ndash;&gt;-->
-<!--                    <div class="single-blog">-->
-<!--                        <div class="blog-img">-->
-<!--                            <a href="blog-single-sidebar.html">-->
-<!--                                <img src="https://via.placeholder.com/370x215" alt="#">-->
-<!--                            </a>-->
-<!--                        </div>-->
-<!--                        <div class="blog-content">-->
-<!--                            <a class="category" href="javascript:void(0)">Electronic</a>-->
-<!--                            <h4>-->
-<!--                                <a href="blog-single-sidebar.html">Electronics, instrumentation & control engineering-->
-<!--                                </a>-->
-<!--                            </h4>-->
-<!--                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor-->
-<!--                                incididunt.</p>-->
-<!--                            <div class="button">-->
-<!--                                <a href="javascript:void(0)" class="btn">Read More</a>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    &lt;!&ndash; End Single Blog &ndash;&gt;-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </section>-->
-    <!-- End Blog Section Area -->
-
-    <!-- Start Shipping Info -->
-    <!--<section class="shipping-info">
-        <div class="container">
-            <ul>
-                &lt;!&ndash; Free Shipping &ndash;&gt;
-                <li>
-                    <div class="media-icon">
-                        <i class="lni lni-delivery"></i>
-                    </div>
-                    <div class="media-body">
-                        <h5>Free Shipping</h5>
-                        <span>On order over $99</span>
-                    </div>
-                </li>
-                &lt;!&ndash; Money Return &ndash;&gt;
-                <li>
-                    <div class="media-icon">
-                        <i class="lni lni-support"></i>
-                    </div>
-                    <div class="media-body">
-                        <h5>24/7 Support.</h5>
-                        <span>Live Chat Or Call.</span>
-                    </div>
-                </li>
-                &lt;!&ndash; Support 24/7 &ndash;&gt;
-                <li>
-                    <div class="media-icon">
-                        <i class="lni lni-credit-cards"></i>
-                    </div>
-                    <div class="media-body">
-                        <h5>Online Payment.</h5>
-                        <span>Secure Payment Services.</span>
-                    </div>
-                </li>
-                &lt;!&ndash; Safe Payment &ndash;&gt;
-                <li>
-                    <div class="media-icon">
-                        <i class="lni lni-reload"></i>
-                    </div>
-                    <div class="media-body">
-                        <h5>Easy Return.</h5>
-                        <span>Hassle Free Shopping.</span>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </section>-->
-    <!-- End Shipping Info -->
 
     <script type="text/javascript">
         //========= Hero Slider
@@ -654,6 +459,32 @@
             }
         });
 
+        tns({
+            container: '.brands-logo-carousel',
+            slideBy: 'page', // 한 번에 페이지 단위로 슬라이드 이동
+            autoplay: true, // 자동 재생
+            autoplayButtonOutput: false, // 자동 재생 버튼 숨김
+            mouseDrag: true, // 마우스 드래그로 슬라이드 이동
+            gutter: 15, // 슬라이드 사이의 간격
+            items: 4, // 한 번에 표시될 슬라이드 개수
+            nav: true, // 네비게이션(이전/다음 버튼) 표시
+            controls: false, // 슬라이드 컨트롤 숨김
+            responsive: {
+                0: {
+                    items: 1, // 화면이 작을 때 한 번에 표시될 슬라이드 개수
+                },
+                540: {
+                    items: 3, // 화면이 중간일 때 한 번에 표시될 슬라이드 개수
+                },
+                768: {
+                    items: 5, // 화면이 크면 한 번에 표시될 슬라이드 개수
+                },
+                992: {
+                    items: 6, // 더 큰 화면에서 한 번에 표시될 슬라이드 개수
+                }
+            }
+        });
+
     </script>
     <script>
         const finaleDate = new Date("February 15, 2025 00:00:00").getTime();
@@ -685,6 +516,8 @@
         }
         timer();
         setInterval(timer, 1000);
+
     </script>
+
 </div>
 </html>

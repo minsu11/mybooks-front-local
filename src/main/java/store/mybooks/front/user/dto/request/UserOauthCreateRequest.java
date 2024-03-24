@@ -26,6 +26,8 @@ public class UserOauthCreateRequest {
 
     private String birthMonthDay;
 
+    private String oauthId;
+
 
 }
 

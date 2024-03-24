@@ -1,12 +1,12 @@
 package store.mybooks.front.user.controller;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,19 +21,19 @@ import store.mybooks.front.auth.dto.request.TokenCreateRequest;
 import store.mybooks.front.auth.dto.response.TokenCreateResponse;
 import store.mybooks.front.auth.redis.RedisAuthService;
 import store.mybooks.front.config.RedisProperties;
-import store.mybooks.front.cart.LoginCartDataMoveEvent;
-import store.mybooks.front.cart.LogoutCartDataMoveEvent;
 import store.mybooks.front.user.adaptor.UserAdaptor;
 import store.mybooks.front.user.dto.request.UserCreateRequest;
 import store.mybooks.front.user.dto.request.UserEmailRequest;
 import store.mybooks.front.user.dto.request.UserGradeModifyRequest;
 import store.mybooks.front.user.dto.request.UserLoginRequest;
 import store.mybooks.front.user.dto.request.UserModifyRequest;
+import store.mybooks.front.user.dto.request.UserOauthRequest;
 import store.mybooks.front.user.dto.request.UserPasswordModifyRequest;
 import store.mybooks.front.user.dto.request.UserStatusModifyRequest;
 import store.mybooks.front.user.dto.response.UserEncryptedPasswordResponse;
 import store.mybooks.front.user.dto.response.UserGetResponse;
 import store.mybooks.front.user.dto.response.UserLoginResponse;
+import store.mybooks.front.user.dto.response.UserOauthCreateResponse;
 import store.mybooks.front.utils.CookieUtils;
 import store.mybooks.front.utils.Utils;
 
@@ -64,8 +64,6 @@ public class UserController {
     private final RedisProperties redisProperties;
 
 
-    private final ApplicationEventPublisher applicationEventPublisher;
-
     /**
      * methodName : loginUserForm
      * author : masiljangajji
@@ -91,7 +89,6 @@ public class UserController {
 
     @GetMapping("/logout")
     public String logout() {
-//        applicationEventPublisher.publishEvent(new LogoutCartDataMoveEvent(this));
         return "redirect:/";
     }
 
@@ -106,6 +103,7 @@ public class UserController {
     @GetMapping("/signup")
     public String createUserForm(HttpServletRequest request) {
         if (Objects.isNull(request.getAttribute("identity_cookie_value"))) {
+            request.setAttribute("nowDate", LocalDate.now());
             return "signup";
         }
         return "redirect:/";
@@ -137,6 +135,28 @@ public class UserController {
         return "redirect:/";
     }
 
+    @GetMapping("/verification/social/{oauthId}")
+    public String socialUserForm(HttpServletRequest request,@PathVariable("oauthId")String oauthId) {
+        request.setAttribute("nowDate",LocalDate.now());
+        request.setAttribute("oauthId",oauthId);
+        return "social";
+    }
+
+    @PostMapping("/social")
+    public String createAndLoginOauthUser(@ModelAttribute UserOauthRequest oauthRequest, HttpServletRequest request, HttpServletResponse response) {
+
+        UserOauthCreateResponse createResponse = userAdaptor.createAndLoginOauthUser(oauthRequest);
+
+
+        TokenCreateResponse tokenCreateResponse =
+                tokenAdaptor.createToken(
+                        new TokenCreateRequest(false, createResponse.getId(),
+                                createResponse.getUserStatusName(), String.valueOf(UUID.randomUUID()),
+                                Utils.getUserIp(request), Utils.getUserAgent(request)));
+
+        CookieUtils.addJwtCookie(response, tokenCreateResponse.getAccessToken());
+        return "redirect:/";
+    }
 
     /**
      * methodName : myPageForm
@@ -188,13 +208,15 @@ public class UserController {
             TokenCreateResponse tokenCreateResponse =
                     tokenAdaptor.createToken(
                             new TokenCreateRequest(loginResponse.getIsAdmin(), loginResponse.getUserId(),
-                                    loginResponse.getStatus(), String.valueOf(UUID.randomUUID()),Utils.getUserIp(request),Utils.getUserAgent(request)));
+                                    loginResponse.getStatus(), String.valueOf(UUID.randomUUID()),
+                                    Utils.getUserIp(request), Utils.getUserAgent(request)));
 
             // 쿠키추가
             CookieUtils.addJwtCookie(response, tokenCreateResponse.getAccessToken());
-//            applicationEventPublisher.publishEvent(new LoginCartDataMoveEvent(this));
+
             return "redirect:/";
         }
+
 
         return "redirect:/login";
     }
