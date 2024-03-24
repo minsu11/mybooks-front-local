@@ -47,23 +47,25 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-content center" id="nav-tabContent">
                             <div class="tab-pane fade show active" id="nav-grid" role="tabpanel"
                                  aria-labelledby="nav-grid-tab">
                                 <div class="row mt-3">
-                                    <div th:each="book: ${books.content}" class="col-lg-3 col-md-6 col-12">
+                                    <div th:each="book, iterStat: ${books.content}" class="col-lg-3 col-md-6 col-12 ">
                                         <div class="single-product card h-100">
                                             <div class="product-image">
-                                                <img class="product-image card-img-top "
+                                                <img class="product-image card-img-top"
                                                      th:src="${book.image}"
                                                      alt="#">
                                                 <div class="button">
                                                     <form action="/cart/add" method="post">
                                                         <input type="hidden" name="id" th:value="${book.id}">
                                                         <input type="hidden" name="cost" th:value="${book.cost}">
-                                                        <input type="hidden" name="saleCost" th:value="${book.saleCost}">
+                                                        <input type="hidden" name="saleCost"
+                                                               th:value="${book.saleCost}">
                                                         <input type="hidden" name="quantity" value=1>
-                                                        <button type="submit" class="lni lni-cart btn">Add to Cart</button>
+                                                        <button type="submit" class="lni lni-cart btn">Add to Cart
+                                                        </button>
                                                     </form>
                                                 </div>
                                             </div>
@@ -71,11 +73,23 @@
                                                 <h4 class="title">
                                                     <a th:href="@{'/book/' + ${book.id}}" th:text="${book.name}"></a>
                                                 </h4>
-                                                <ul class="review">
-                                                    <li><p>리뷰: <span th:text="${book.rate}">/5</span>(<span th:text="(${book.reviewCount})"></span>)</p></li>
-                                                </ul>
+
+                                                <th:block th:with="roundedRate=${T(java.lang.Math).floor(book.rate)}">
+                                                    <ul class="review">
+                                                        <li th:each="star, reviewIterStat: ${#numbers.sequence(1, 5)}">
+
+                                                            <i class="lni"
+                                                               th:classappend="${roundedRate >= reviewIterStat.index +1 ? 'lni-star-filled' : 'lni-star'}"></i>
+                                                        </li>
+
+                                                        <li><span th:text="${book.rate}"></span></li>
+                                                    </ul>
+                                                </th:block>
+                                                <p>리뷰 수 : <span th:text=" ${book.reviewCount}"></span></p>
                                                 <div class="price">
-                                                    <span th:text="${book.saleCost}"></span>
+                                                    <span class="sale-cost" th:text="${#numbers.formatInteger(book.saleCost, 1, 'COMMA')} + '원'  "></span>
+                                                    <s class="regular-cost"
+                                                       th:text="${#numbers.formatInteger(book.cost, 1, 'COMMA')} + '원'"></s>
                                                 </div>
                                             </div>
                                         </div>
