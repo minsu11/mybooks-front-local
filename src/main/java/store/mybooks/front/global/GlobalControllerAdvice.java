@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.HttpClientErrorException;
 import store.mybooks.front.auth.exception.AccessIdForbiddenException;
 import store.mybooks.front.auth.exception.AuthenticationIsNotValidException;
+import store.mybooks.front.auth.exception.LoginFailedException;
 import store.mybooks.front.auth.exception.StatusIsDormancyException;
 import store.mybooks.front.auth.exception.StatusIsLockException;
 import store.mybooks.front.auth.exception.TokenExpiredException;
@@ -35,8 +36,9 @@ public class GlobalControllerAdvice {
 
     private static final String REFERER = "referer";
 
-    private static final String domain = "https://www.my-books.store";
+//    private static final String domain = "https://www.my-books.store";
 
+    private static final String domain = "http://localhost:8080/";
     /**
      * methodName : badRequestException <br>
      * author : damho-lee <br>
@@ -48,9 +50,7 @@ public class GlobalControllerAdvice {
     @ExceptionHandler({HttpClientErrorException.BadRequest.class, HttpClientErrorException.NotFound.class})
     // 400 404 이게 리소스에서 나오는 모든 예외
     public String handleBadRequestAndNotFoundException(Exception exception, HttpServletRequest request) {
-
         String previousUrl = request.getHeader(REFERER);
-        request.getSession().setAttribute("error", exception.getMessage());
         return previousUrl.replace(domain, "redirect:");
     }
 
@@ -78,7 +78,6 @@ public class GlobalControllerAdvice {
         return query;
     }
 
-
     @ExceptionHandler({OrderInfoNotMatchException.class})
     public String handleOrderModulationException(Exception exception, HttpServletRequest request) {
 
@@ -86,6 +85,15 @@ public class GlobalControllerAdvice {
         request.getSession().setAttribute("error", exception.getMessage());
         return previousUrl.replace(domain, "redirect:");
     }
+
+
+    @ExceptionHandler({LoginFailedException.class})
+    public String handleLoginFailedException(Exception exception, HttpServletRequest request) {
+        request.getSession().setAttribute("error", exception.getMessage());
+        return "redirect:/login";
+    }
+
+
 
     @ExceptionHandler({Exception.class}) // 발생하는 모든 예외
     public String handleRuntimeException(Exception e,Model model) {
