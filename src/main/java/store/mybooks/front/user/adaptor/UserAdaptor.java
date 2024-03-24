@@ -21,6 +21,7 @@ import store.mybooks.front.user.dto.request.UserOauthRequest;
 import store.mybooks.front.user.dto.request.UserPasswordModifyRequest;
 import store.mybooks.front.user.dto.request.UserStatusModifyRequest;
 import store.mybooks.front.user.dto.response.UserCreateResponse;
+import store.mybooks.front.user.dto.response.UserEmailCheckResponse;
 import store.mybooks.front.user.dto.response.UserEncryptedPasswordResponse;
 import store.mybooks.front.user.dto.response.UserGetResponse;
 import store.mybooks.front.user.dto.response.UserGradeModifyResponse;
@@ -184,7 +185,20 @@ public class UserAdaptor {
     }
 
 
+    public UserEmailCheckResponse verifyUserEmail(UserEmailRequest request){
 
+        ResponseEntity<UserEmailCheckResponse> responseEntity =
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL + "/email/verify/{email}",
+                        HttpMethod.GET,
+                        new HttpEntity<>(request, Utils.getHttpHeader()),
+                        new ParameterizedTypeReference<>() {
+                        },request.getEmail());
+
+        if (responseEntity.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException();
+        }
+        return responseEntity.getBody();
+    }
 
     /**
      * methodName : findUserById

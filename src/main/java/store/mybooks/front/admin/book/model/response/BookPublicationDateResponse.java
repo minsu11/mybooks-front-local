@@ -1,8 +1,8 @@
 package store.mybooks.front.admin.book.model.response;
 
-import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * packageName    : store.mybooks.resource.book.dto.response <br/>
@@ -17,6 +17,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class BookPublicationDateResponse {
     private Long id;
     private String image;
@@ -25,5 +26,4 @@ public class BookPublicationDateResponse {
     private Integer cost;
     private Integer saleCost;
     private Double rate;
-    private LocalDate publicationDate;
 }
