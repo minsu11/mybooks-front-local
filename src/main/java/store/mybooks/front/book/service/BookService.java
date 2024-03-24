@@ -45,6 +45,19 @@ public class BookService {
         return bookAdaptor.getBook(bookId);
     }
 
+    /**
+     * 바로 구매 정보를 조회.
+     *
+     * @param bookId the book id
+     * @return the book for order
+     */
+    public BookGetResponseForOrder getBookForOrder(Long bookId) {
+        return bookAdaptor.getBookForOrder(bookId);
+    }
+
+    public BookStockResponse getBookStockResponse(Long bookId) {
+        return bookAdaptor.getBookStockResponse(bookId);
+    }
 
     @Scheduled(cron = "0 5 0 * * *")
     private void fetchAndCacheBookPopularitySortList() {
