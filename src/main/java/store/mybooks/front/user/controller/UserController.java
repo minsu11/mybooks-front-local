@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.view.RedirectView;
 import store.mybooks.front.auth.adaptor.TokenAdaptor;
 import store.mybooks.front.auth.dto.request.TokenCreateRequest;
@@ -30,6 +32,7 @@ import store.mybooks.front.user.dto.request.UserModifyRequest;
 import store.mybooks.front.user.dto.request.UserOauthRequest;
 import store.mybooks.front.user.dto.request.UserPasswordModifyRequest;
 import store.mybooks.front.user.dto.request.UserStatusModifyRequest;
+import store.mybooks.front.user.dto.response.UserEmailCheckResponse;
 import store.mybooks.front.user.dto.response.UserEncryptedPasswordResponse;
 import store.mybooks.front.user.dto.response.UserGetResponse;
 import store.mybooks.front.user.dto.response.UserLoginResponse;
@@ -172,6 +175,12 @@ public class UserController {
         UserGetResponse userGetResponse = userAdaptor.findUser();
         model.addAttribute("user", userGetResponse);
         return "my-page";
+    }
+
+    @ResponseBody
+    @GetMapping("/email/verify")
+    public UserEmailCheckResponse verifyUserEmail(@RequestParam(name="email")String email){
+        return userAdaptor.verifyUserEmail(new UserEmailRequest(email));
     }
 
     /**
