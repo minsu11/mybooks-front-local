@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import store.mybooks.front.admin.author.dto.response.AuthorGetResponse;
 import store.mybooks.front.admin.book.model.response.BookDetailResponse;
 import store.mybooks.front.admin.category.model.response.CategoryIdAndName;
+import store.mybooks.front.admin.delivery_rule.service.DeliveryRuleService;
 import store.mybooks.front.admin.tag.model.response.TagGetResponseForBookDetail;
 import store.mybooks.front.book.service.BookService;
 import store.mybooks.front.booklike.service.BookLikeService;
@@ -38,6 +39,7 @@ public class BookController {
     private final BookService bookService;
     private final BookLikeService bookLikeService;
     private final ReviewService reviewService;
+    private final DeliveryRuleService deliveryRuleService;
     private final RedisTemplate<String, Integer> redisTemplate;
 
     /**
@@ -63,7 +65,7 @@ public class BookController {
         model.addAttribute("categoryNameList", book.getCategoryList().stream()
                 .map(CategoryIdAndName::getName)
                 .collect(Collectors.joining(", ")));
-
+        model.addAttribute("delivery", deliveryRuleService.getDeliveryRuleResponseByName("배송 비"));
 
         if (CookieUtils.getIdentityCookieValue(request) != null) {
             model.addAttribute("userBookLikeCheck", bookLikeService.isUserLikeCheck(bookId));
