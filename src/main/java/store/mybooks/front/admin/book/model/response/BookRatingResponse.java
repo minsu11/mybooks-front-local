@@ -2,6 +2,7 @@ package store.mybooks.front.admin.book.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * packageName    : store.mybooks.resource.book.dto.response <br/>
@@ -16,6 +17,7 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class BookRatingResponse {
     private Long id;
     private String image;
