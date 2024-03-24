@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import store.mybooks.front.auth.exception.AuthenticationIsNotValidException;
+import store.mybooks.front.auth.exception.HeaderNotExistException;
 
 /**
  * packageName    : store.mybooks.front.util<br>
@@ -118,8 +119,14 @@ public class Utils {
 
 
     public static HttpHeaders getAuthHeader() {
-        return (HttpHeaders) RequestContextHolder.currentRequestAttributes()
+
+        HttpHeaders headers = (HttpHeaders) RequestContextHolder.currentRequestAttributes()
                 .getAttribute("authHeader", RequestAttributes.SCOPE_REQUEST);
+
+        if(Objects.isNull(headers)){
+            throw new HeaderNotExistException();
+        }
+        return headers;
     }
 
     public static String getUserAgent(HttpServletRequest request){
