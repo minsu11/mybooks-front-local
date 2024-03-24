@@ -3,13 +3,16 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{common/layout/my-books-layout}">
 
-<style>
-    .product-image img {
-        width: 100%;
-        height: auto;
-    }
-</style>
 <div layout:fragment="content" class="border border-dark">
+    <style>
+        .product-image img {
+            width: 100%;
+            height: auto;
+        }
+        li a {
+            margin: 5px 0;
+        }
+    </style>
     <script>
         let url = "/category/category-display"
         let currentPage = [[${books.number}]]
@@ -24,8 +27,8 @@
                             <h3>
                                 <span th:text="${highestCategoryName}"></span>
                             </h3>
-                            <ul th:each="levelTwoCategory : ${levelTwoCategories}">
-                                <li>
+                            <ul>
+                                <li th:each="levelTwoCategory : ${levelTwoCategories}">
                                     <a th:href="@{/category/category-display/{categoryId}(categoryId=${levelTwoCategory.id})}"
                                        th:text="${levelTwoCategory.name}"></a>
                                 </li>
