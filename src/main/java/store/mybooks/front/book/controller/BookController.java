@@ -65,9 +65,6 @@ public class BookController {
                 .collect(Collectors.joining(", ")));
 
 
-        model.addAttribute("thumbNailImage", book.getThumbNailImage());
-        model.addAttribute("contentImage", book.getContentImageList());
-
         if (CookieUtils.getIdentityCookieValue(request) != null) {
             model.addAttribute("userBookLikeCheck", bookLikeService.isUserLikeCheck(bookId));
         }

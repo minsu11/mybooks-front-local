@@ -108,7 +108,7 @@
                             <main id="gallery">
                                 <div class="main-img">
                                     <div class="main-img">
-                                        <img th:src="${thumbNailImage.path + thumbNailImage.fileName + thumbNailImage.extension}"
+                                        <img th:src="${book.thumbNailImage}"
                                              id="bookImage" alt="#" class="img-fluid">
                                     </div>
                                 </div>
@@ -220,14 +220,14 @@
                                 <h2 style="font-size: 35px; margin-top: 20px;">목차</h2>
                                 <div th:utext="${book.index}"></div>
 
-                                <h2 style="font-size: 35px; margin-top: 20px;">설명</h2>
-                                <div th:utext="${book.explanation}"></div>
-
                                 <h2 style="font-size: 35px; margin-top: 20px;">책소개</h2>
-                                <div th:each="contentImage : ${contentImage}">
-                                    <img th:src="${contentImage.path + contentImage.fileName + contentImage.extension}"
+                                <div th:each="contentImage : ${book.contentImageList}">
+                                    <img th:src="${contentImage}"
                                          alt="책 소개 이미지">
                                 </div>
+
+                                <h2 style="font-size: 35px; margin-top: 20px;">설명</h2>
+                                <div th:utext="${book.explanation}"></div>
 
 
                                 <h2 style="font-size: 35px; margin-top: 20px;">저자 소개</h2>

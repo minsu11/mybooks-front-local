@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import store.mybooks.front.image.dto.ImageResponse;
 
 /**
  * packageName    : store.mybooks.front.review.controller.dto.response<br>
