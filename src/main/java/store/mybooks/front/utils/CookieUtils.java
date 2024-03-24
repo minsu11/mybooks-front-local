@@ -43,7 +43,7 @@ public class CookieUtils {
                 .httpOnly(true)
                 .domain(cookieConfig.getDomain())
                 .path("/")
-                .maxAge(3 * 24 * 60 * 60)
+                .maxAge(60L * 60L)
                 .sameSite("Strict")
                 .build();
 
@@ -58,7 +58,7 @@ public class CookieUtils {
                 .httpOnly(true)
                 .domain(cookieConfig.getDomain())
                 .path("/")
-                .maxAge(3 * 24 * 60 * 60)
+                .maxAge(60L * 60L)
                 .sameSite("Strict")
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, responseCookie.toString());

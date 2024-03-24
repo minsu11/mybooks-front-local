@@ -15,10 +15,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.view.RedirectView;
 import store.mybooks.front.auth.adaptor.TokenAdaptor;
 import store.mybooks.front.auth.dto.request.TokenCreateRequest;
 import store.mybooks.front.auth.dto.response.TokenCreateResponse;
+import store.mybooks.front.auth.exception.LoginFailedException;
+import store.mybooks.front.auth.exception.PasswordNotValidException;
 import store.mybooks.front.auth.redis.RedisAuthService;
 import store.mybooks.front.config.RedisProperties;
 import store.mybooks.front.user.adaptor.UserAdaptor;
@@ -30,6 +34,7 @@ import store.mybooks.front.user.dto.request.UserModifyRequest;
 import store.mybooks.front.user.dto.request.UserOauthRequest;
 import store.mybooks.front.user.dto.request.UserPasswordModifyRequest;
 import store.mybooks.front.user.dto.request.UserStatusModifyRequest;
+import store.mybooks.front.user.dto.response.UserEmailCheckResponse;
 import store.mybooks.front.user.dto.response.UserEncryptedPasswordResponse;
 import store.mybooks.front.user.dto.response.UserGetResponse;
 import store.mybooks.front.user.dto.response.UserLoginResponse;
@@ -72,7 +77,12 @@ public class UserController {
      * @return string
      */
     @GetMapping("/login")
-    public String loginUserForm(HttpServletRequest request) {
+    public String loginUserForm(HttpServletRequest request,Model model) {
+
+        if(Objects.nonNull(request.getSession().getAttribute("error"))){
+            model.addAttribute("loginFailed",request.getSession().getAttribute("error"));
+            request.getSession().removeAttribute("error");
+        }
 
         if (Objects.isNull(request.getAttribute("identity_cookie_value"))) {
             return "login";
@@ -174,6 +184,12 @@ public class UserController {
         return "my-page";
     }
 
+    @ResponseBody
+    @GetMapping("/email/verify")
+    public UserEmailCheckResponse verifyUserEmail(@RequestParam(name="email")String email){
+        return userAdaptor.verifyUserEmail(new UserEmailRequest(email));
+    }
+
     /**
      * methodName : loginUser
      * author : masiljangajji
@@ -186,39 +202,42 @@ public class UserController {
     public String loginUser(@ModelAttribute UserLoginRequest userLoginRequest, HttpServletRequest request,
                             HttpServletResponse response) {
 
-        UserEmailRequest emailRequest = new UserEmailRequest(userLoginRequest.getEmail());
+        try{
+            UserEmailRequest emailRequest = new UserEmailRequest(userLoginRequest.getEmail());
 
-        // 이메일 존재하는지 , 탈퇴했는지
-        UserEncryptedPasswordResponse userEncryptedPasswordResponse =
-                userAdaptor.verifyUserStatus(emailRequest);
+            // 이메일 존재하는지 , 탈퇴했는지
+            UserEncryptedPasswordResponse userEncryptedPasswordResponse =
+                    userAdaptor.verifyUserStatus(emailRequest);
 
-        // 비밀번호도 같으면 완료
-        if (passwordEncoder.matches(userLoginRequest.getPassword(),
-                userEncryptedPasswordResponse.getEncryptedPassword())) {
+            // 비밀번호도 같으면 완료
+            if (passwordEncoder.matches(userLoginRequest.getPassword(),
+                    userEncryptedPasswordResponse.getEncryptedPassword())) {
 
-            UserLoginResponse loginResponse = userAdaptor.completeLoginProcess(emailRequest);
+                UserLoginResponse loginResponse = userAdaptor.completeLoginProcess(emailRequest);
 
-            if (loginResponse.getIsAdmin()) {
-                String adminCookieValue = String.valueOf(UUID.randomUUID());
-                redisAuthService.setValues(adminCookieValue,
-                        Utils.getUserIp(request) + Utils.getUserAgent(request), Duration.ofMillis(
-                                redisProperties.getAdminExpiration()));
-                CookieUtils.addAdminCookie(response, adminCookieValue);
+                if (loginResponse.getIsAdmin()) {
+                    String adminCookieValue = String.valueOf(UUID.randomUUID());
+                    redisAuthService.setValues(adminCookieValue,
+                            Utils.getUserIp(request) + Utils.getUserAgent(request), Duration.ofMillis(
+                                    redisProperties.getAdminExpiration()));
+                    CookieUtils.addAdminCookie(response, adminCookieValue);
+                }
+                TokenCreateResponse tokenCreateResponse =
+                        tokenAdaptor.createToken(
+                                new TokenCreateRequest(loginResponse.getIsAdmin(), loginResponse.getUserId(),
+                                        loginResponse.getStatus(), String.valueOf(UUID.randomUUID()),
+                                        Utils.getUserIp(request), Utils.getUserAgent(request)));
+
+                // 쿠키추가
+                CookieUtils.addJwtCookie(response, tokenCreateResponse.getAccessToken());
+
+                return "redirect:/";
             }
-            TokenCreateResponse tokenCreateResponse =
-                    tokenAdaptor.createToken(
-                            new TokenCreateRequest(loginResponse.getIsAdmin(), loginResponse.getUserId(),
-                                    loginResponse.getStatus(), String.valueOf(UUID.randomUUID()),
-                                    Utils.getUserIp(request), Utils.getUserAgent(request)));
-
-            // 쿠키추가
-            CookieUtils.addJwtCookie(response, tokenCreateResponse.getAccessToken());
-
-            return "redirect:/";
+            throw new PasswordNotValidException();
+        }catch (RuntimeException e){
+            throw new LoginFailedException(e.getMessage());
         }
 
-
-        return "redirect:/login";
     }
 
 
