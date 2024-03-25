@@ -207,8 +207,9 @@ public class OrderController {
             orderInfoCheckService.validationCheckNonUserOrder(bookFromCart);
             modelMap.put("userCheck", false);
         }
-
-        log.debug("카트 구매: {}", bookFromCart);
+        if (bookFromCart.isEmpty()) {
+            return "/redirect:/cart";
+        }
         DeliveryRuleResponse deliveryRule = deliveryRuleService.getDeliveryRuleResponseByName("배송 비");
         modelMap.put("bookLists", bookFromCart);
         modelMap.put("totalCost", orderService.calculateTotalCost(bookFromCart));
@@ -250,6 +251,9 @@ public class OrderController {
     public String doNonUserOrder(@ModelAttribute BookOrderRequest orderRequest,
                                  @CookieValue(name = NON_USER_CART_VALUE, required = false) Cookie cookie) {
         List<CartDetail> cart = cartNonUserService.getBookFromCart(cookie);
+        if (cart.isEmpty()) {
+            return "/redirect:/cart";
+        }
         orderInfoCheckService.checkNonOrderModulation(orderRequest, cart);
         int wrapCost = orderService.calculateBookWrapCost(orderRequest.getBookInfoList());
         int totalCost = orderService.calculateTotalCost(cart);
@@ -292,6 +296,7 @@ public class OrderController {
     public ResponseEntity<Void> removeCart(@CookieValue(name = NON_USER_CART_VALUE, required = false) Cookie cookie,
                                            HttpServletRequest request,
                                            HttpServletResponse response) {
+        log.debug("장바구니 호출");
         if (Objects.nonNull(CookieUtils.getIdentityCookieValue(request))) {
             cartUserService.deleteAllBookFromCart();
         } else {

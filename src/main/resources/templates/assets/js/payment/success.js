@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     const test = await payTest(payInfo);
     if (pay.status === "DONE") {
         console.log("삭제 호출 ")
-        removeCart();
+        const cart = removeCart();
     }
     successTitleElement.textContent = "결제 성공"
     orderIdElement.textContent = "주문 번호: " + payInfo.paymentKey;
@@ -71,10 +71,13 @@ async function payTest(payInfo) {
 
 
 function removeCart() {
+    console.log("장바구니 삭제 전")
     const response = fetch("/cart/info", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
         },
     });
+    console.log("장바구니 ")
+    return response
 }
