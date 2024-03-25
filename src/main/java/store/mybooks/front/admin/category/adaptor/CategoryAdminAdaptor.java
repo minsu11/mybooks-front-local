@@ -52,7 +52,7 @@ public class CategoryAdminAdaptor {
      * @return list
      */
     public List<CategoryGetResponse> getHighestCategories() {
-        HttpHeaders headers = Utils.getAuthHeader();
+        HttpHeaders headers = Utils.getHttpHeader();
 
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
@@ -79,7 +79,7 @@ public class CategoryAdminAdaptor {
      * @return list
      */
     public List<CategoryGetResponse> getChildCategories(long parentCategoryId) {
-        HttpHeaders headers = Utils.getAuthHeader();
+        HttpHeaders headers = Utils.getHttpHeader();
 
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
