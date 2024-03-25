@@ -54,7 +54,6 @@ public class PayController {
     public String index(ModelMap model,
                         @PathVariable(name = "orderNumber") String orderNumber) throws Exception {
         BookOrderInfoResponse bookOrderInfoResponse = orderService.getPayBookOrderInfo(orderNumber);
-        log.debug("결제창 넘어온 값: {}", bookOrderInfoResponse);
         model.put("tossValue", tossAppKey.getClientKey());
         model.put("orderInfo", bookOrderInfoResponse);
         model.put("orderNumber", orderNumber);

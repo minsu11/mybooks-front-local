@@ -170,7 +170,7 @@ public class PayAdaptor {
     public void cancelPayAfterProcess(PayCancelRequest request) {
         String uri = UriComponentsBuilder
                 .fromUriString(gatewayAdaptorProperties.getAddress())
-                .path(URL + "/cancel")
+                .path(MEMBER_URL + "/cancel")
                 .build().toString();
         System.out.println("url 주소가 제대로 나옴?" + uri);
 

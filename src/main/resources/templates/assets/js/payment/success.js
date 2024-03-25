@@ -1,4 +1,3 @@
-var status;
 document.addEventListener('DOMContentLoaded', async function () {
     const urlParams = new URLSearchParams(window.location.search);
     const pay = await confirm(urlParams)
@@ -6,6 +5,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     const orderIdElement = document.getElementById("orderId");
     const amountElement = document.getElementById("amount");
     const orderNameElement = document.getElementById("order-name");
+
     const payInfo = {
         "paymentKey": pay.paymentKey,
         "orderNumber": pay.orderId,
@@ -14,9 +14,11 @@ document.addEventListener('DOMContentLoaded', async function () {
         "method": pay.method,
         "requestedAt": pay.requestedAt
     }
-
+    console.log("api 호출 하기 전")
     const test = await payTest(payInfo);
-    if (pay.status === "DONE" && payInfo.status === "DONE") {
+    console.log("api 호출 하기 후")
+    console.log(test)
+    if (pay.status === "DONE") {
         console.log("삭제 호출 ")
         removeCart();
     }
@@ -42,6 +44,7 @@ async function confirm(urlParams) {
     });
 
     const json = await response.json();
+    console.log("결과값: " + json.status)
     console.log("결과값: " + json)
     if (!response.ok) {
         console.log(json);
