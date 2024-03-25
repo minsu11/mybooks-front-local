@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", async function () {
+document.addEventListener("DOMContentLoaded", function () {
     const orderNumber = document.getElementById("order-number").value;
     const button = document.getElementById("payment-button");
     const coupon = document.getElementById("all-book-coupon-button");
@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const paymentWidget = PaymentWidget(clientKey, customerKey); // 회원 결제
     console.log("함수 실행하기 전")
     // const paymentWidget = PaymentWidget(clientKey, PaymentWidget.ANONYMOUS); // 비회원 결제
+    const payValue = payInfo(customerKey);
 
 // ------  결제 UI 렌더링 ------
 // @docs https://docs.tosspayments.com/reference/widget-sdk#renderpaymentmethods선택자-결제-금액-옵션
@@ -33,10 +34,9 @@ document.addEventListener("DOMContentLoaded", async function () {
 // @docs https://docs.tosspayments.com/reference/widget-sdk#updateamount결제-금액
 // ------ '결제하기' 버튼 누르면 결제창 띄우기 ------
 // @docs https://docs.tosspayments.com/reference/widget-sdk#requestpayment결제-정보
-    button.addEventListener("click", async function () {
+    button.addEventListener("click", function () {
         // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
         // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
-        const payValue = await payInfo(customerKey.toString());
         payValue.then(value => {
             paymentWidget.requestPayment({
                 orderId: customerKey,
