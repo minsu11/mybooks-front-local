@@ -106,6 +106,7 @@ public class CartUserService {
         for (CartDetail cartDetail : cartDetailList) {
             if (Objects.equals(bookId, cartDetail.getBookId())) {
                 redisTemplate.opsForList().remove(cartKey, 1, cartDetail);
+                cartAdaptor.deleteCartData(bookId);
                 break;
             }
         }
@@ -141,6 +142,7 @@ public class CartUserService {
     public void deleteAllBookFromCart() {
         String cartKey = cartKey();
         redisTemplate.delete(cartKey);
+        cartAdaptor.deleteAllCartData();
     }
 
     /**

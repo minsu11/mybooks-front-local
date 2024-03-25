@@ -2,6 +2,7 @@ package store.mybooks.front.cart.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * packageName    : store.mybooks.front.cart.domain <br/>
@@ -15,6 +16,7 @@ import lombok.Getter;
  * 3/8/24        Fiat_lux       최초 생성<br/>
  */
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class CartUserRedisKeyNameRequest {
     private String cartKey;
