@@ -59,6 +59,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function payInfo(customerKey) {
 
+    console.log("확인용")
+    console.log(customerKey)
+
     const response = await fetch("/pay/info/" + customerKey, {
         method: "GET",
         headers: {
