@@ -10,11 +10,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const clientKey = document.querySelector(".toss").value;
     const customerKey = generateRandomString;
+    console.log("key: " + customerKey);
     const paymentWidget = PaymentWidget(clientKey, customerKey); // 회원 결제
-
+    console.log("함수 실행하기 전")
     const payValue = payInfo(customerKey);
     // const paymentWidget = PaymentWidget(clientKey, PaymentWidget.ANONYMOUS); // 비회원 결제
-    console.log(coupon)
+    console.log(payValue)
 
 // ------  결제 UI 렌더링 ------
 // @docs https://docs.tosspayments.com/reference/widget-sdk#renderpaymentmethods선택자-결제-금액-옵션
