@@ -23,5 +23,9 @@ public class BookOrderDetailResponse {
     private Integer cost;
     private Boolean isCouponUsed;
     private Integer amount;
+    private String image;
+
+    private String statusId;
+    private Long orderDetailId;
 
 }
