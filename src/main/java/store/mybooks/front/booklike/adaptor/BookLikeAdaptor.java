@@ -34,7 +34,6 @@ public class BookLikeAdaptor {
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
     private static final String URL_MEMBER = "/api/member/book-likes";
-    private static final String URL = "/api/book-likes";
 
     /**
      * methodName : getPageUserBookLike
@@ -84,11 +83,12 @@ public class BookLikeAdaptor {
      * @param bookId Long
      * @return boolean
      */
+    @RequiredAuthorization
     public boolean isUserLikeCheck(Long bookId) {
         ResponseEntity<Boolean> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL + "/{bookId}",
+                gatewayAdaptorProperties.getAddress() + URL_MEMBER + "/{bookId}",
                 HttpMethod.GET,
-                null,
+                new HttpEntity<>(Utils.getAuthHeader()),
                 new ParameterizedTypeReference<>() {
                 }, bookId);
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
