@@ -13,14 +13,8 @@ import store.mybooks.front.admin.wrap.dto.response.WrapResponse;
 import store.mybooks.front.book.adaptor.BookAdaptor;
 import store.mybooks.front.cart.domain.CartDetail;
 import store.mybooks.front.order.adaptor.OrderAdaptor;
-import store.mybooks.front.order.dto.request.BookInfoRequest;
-import store.mybooks.front.order.dto.request.BookOrderCreateRequest;
-import store.mybooks.front.order.dto.request.BookOrderDirectRequest;
-import store.mybooks.front.order.dto.request.OrderInfoRequest;
-import store.mybooks.front.order.dto.response.BookOrderCreateResponse;
-import store.mybooks.front.order.dto.response.BookOrderInfoResponse;
-import store.mybooks.front.order.dto.response.BookOrderPayInfoResponse;
-import store.mybooks.front.order.dto.response.BookOrderUserResponse;
+import store.mybooks.front.order.dto.request.*;
+import store.mybooks.front.order.dto.response.*;
 import store.mybooks.front.order.utils.OrderUtils;
 import store.mybooks.front.pageable.dto.response.PageResponse;
 import store.mybooks.front.user.adaptor.UserAdaptor;
@@ -89,11 +83,11 @@ public class OrderService {
 
     public Integer calculateBookCouponCost(List<BookInfoRequest> bookInfoRequests) {
         int result = 0;
-        for (int i = 0; i < bookInfoRequests.size(); i++) {
-            int saleCost = bookInfoRequests.get(i).getSaleCost();
-            int amount = bookInfoRequests.get(i).getAmount();
+        for (BookInfoRequest bookInfoRequest : bookInfoRequests) {
+            int saleCost = bookInfoRequest.getSaleCost();
+            int amount = bookInfoRequest.getAmount();
             int couponCost = 0;
-            Long couponId = bookInfoRequests.get(i).getSelectCouponId();
+            Long couponId = bookInfoRequest.getSelectCouponId();
             if (Objects.nonNull(couponId)) {
 
                 UserCouponResponse coupon = userCouponAdaptor.getUserCouponResponse(couponId);
@@ -146,7 +140,7 @@ public class OrderService {
     }
 
     /**
-     * 주문 등록.
+     * 회원 주문 등록.
      *
      * @param bookInfo   the book info
      * @param orderInfo  the order info
@@ -156,7 +150,8 @@ public class OrderService {
      * @param totalCost  the total cost
      * @return the book order create response
      */
-    public BookOrderCreateResponse createOrder(List<BookInfoRequest> bookInfo,
+    public BookOrderCreateResponse createOrder(OrderUserInfoRequest userInfo,
+                                               List<BookInfoRequest> bookInfo,
                                                OrderInfoRequest orderInfo,
                                                Integer point,
                                                Integer couponCost,
@@ -164,16 +159,33 @@ public class OrderService {
                                                Integer totalCost) {
         totalCost += wrapCost - point - couponCost;
         String orderNumber = "";
-
         do {
             orderNumber = OrderUtils.createOrderNumber();
         } while (!orderAdapter.checkBookOrderNumber(orderNumber));
+        BookOrderCreateRequest request = new BookOrderCreateRequest(
+                userInfo.getUserName(), userInfo.getEmail(), userInfo.getPhoneNumber(),
+                bookInfo, orderInfo,
+                orderNumber, point, couponCost, wrapCost, totalCost, null);
+        return orderAdapter.createUserBookOrder(request);
+    }
 
-        BookOrderCreateRequest request = new BookOrderCreateRequest(bookInfo, orderInfo,
-                orderNumber, point, couponCost, wrapCost, totalCost);
-        log.debug("주문 저장할 데이터: {}", request);
-        
-        return orderAdapter.createBookOrder(request);
+    public BookOrderCreateResponse createNonUserOrder(BookOrderRequest bookInfo,
+                                                      Integer wrapCost,
+                                                      Integer totalCost) {
+        OrderInfoRequest orderInfo = bookInfo.getOrderInfo();
+        List<BookInfoRequest> bookInfoRequests = bookInfo.getBookInfoList();
+        OrderUserInfoRequest userInfo = bookInfo.getUserInfo();
+        totalCost += wrapCost;
+        String orderNumber = "";
+        do {
+            orderNumber = OrderUtils.createOrderNumber();
+        } while (!(boolean) orderAdapter.checkBookOrderNumber(orderNumber));
+        BookOrderCreateRequest request = new BookOrderCreateRequest(
+                userInfo.getUserName(), userInfo.getEmail(), userInfo.getPhoneNumber(),
+                bookInfoRequests, orderInfo,
+                orderNumber, 0, 0,
+                wrapCost, totalCost, userInfo.getOrderCode());
+        return orderAdapter.createNonUserBookOrder(request);
     }
 
     public BookOrderInfoResponse getPayBookOrderInfo(String orderNumber) {
@@ -185,7 +197,11 @@ public class OrderService {
         return orderAdapter.getBookOrderPayInfo(orderNumber);
     }
 
-    public PageResponse<BookOrderUserResponse> getAllUserBookOrder(Pageable pageable){
+    public List<BookOrderDetailResponse> getBookOrderDetail(String orderNumber) {
+        return orderAdapter.getBookOrderDetailList(orderNumber);
+    }
+
+    public PageResponse<BookOrderUserResponse> getAllUserBookOrder(Pageable pageable) {
 
 
         return orderAdapter.getAllUserBookOrder(pageable);

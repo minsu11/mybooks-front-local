@@ -1,22 +1,22 @@
-package store.mybooks.front.order.dto.request;
+package store.mybooks.front.admin.book.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * packageName    : store.mybooks.front.order.dto.dto.request<br>
- * fileName       : BookOrderDirectRequset<br>
+ * packageName    : store.mybooks.front.admin.book.model.response<br>
+ * fileName       : BookStockResponse<br>
  * author         : minsu11<br>
- * date           : 3/6/24<br>
+ * date           : 3/21/24<br>
  * description    :
  * ===========================================================<br>
  * DATE              AUTHOR             NOTE<br>
  * -----------------------------------------------------------<br>
- * 3/6/24        minsu11       최초 생성<br>
+ * 3/21/24        minsu11       최초 생성<br>
  */
 @Getter
 @AllArgsConstructor
-public class BookOrderDirectRequest {
+public class BookStockResponse {
     private Long id;
-    private Integer quantity;
+    private Integer stock;
 }

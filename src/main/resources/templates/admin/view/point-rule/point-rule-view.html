@@ -5,22 +5,36 @@
 
 <div layout:fragment="content">
     <script>
-        let url = "/admin/point"
+        let url = "/admin/point-rule"
         let currentPage = [[${pointRulePage.number}]]
         let totalPages = [[${pointRulePage.totalPages}]]
     </script>
     <div class="container mt-5">
-        <h2>포인트 규정</h2>
-        <form method="get" action="/admin/point-rule/register">
-            <label>포인트 적립률</label>
-            <button type="submit" class="btn btn-outline-primary">등록</button>
-        </form>
+        <!--        <label>-->
+        <!--            <h2>포인트 규정</h2>-->
+        <!--            <form method="get" action="/admin/point-rule/register">-->
+        <!--                <p>포인트 적립률</p>-->
+        <!--                <button type="submit" class="btn btn-outline-primary">포인트 규정 등록</button>-->
+        <!--            </form>-->
+        <!--        </label>-->
+        <div>
+            <label>
+                <h2 style="display: inline;">포인트 규정</h2>
+
+            </label>
+            <form method="get" action="/admin/point-rule/register" style="display: inline; float:right;">
+                <button type="submit" class="btn btn-outline-primary" style="float: right;">포인트 규정 등록</button>
+            </form>
+
+        </div>
         <table class="table">
             <thead>
             <tr>
                 <th>포인트 규정 명</th>
                 <th>포인트 적립률</th>
                 <th>포인트 적립 금액</th>
+                <th></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -42,7 +56,6 @@
                 </td>
                 <td>
                     <form id="deleteForm" method="post" th:action="@{'/admin/point-rule/'+${pointRule.id}}">
-
                         <button class="btn btn-outline-secondary" type="submit" id="button-delete">삭제
                         </button>
                     </form>
@@ -52,7 +65,7 @@
 
             </tbody>
         </table>
-        <div class="mt-3" th:block th:if="${pointRulePage.totalPages > 1}">
+        <div class="mt-3" th:block th:if="${pointRulePage.totalPages> 1}">
             <div class="pagination">
                 <div class="page-item">
                     <a class="page-link" id="prevLink" th:text="'<'" th:href="@{#}"></a>

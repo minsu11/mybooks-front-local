@@ -22,5 +22,6 @@ public class BookOrderDetailResponse {
     private String bookName;
     private Integer cost;
     private Boolean isCouponUsed;
+    private Integer amount;
 
 }

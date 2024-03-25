@@ -7,12 +7,13 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 import store.mybooks.front.auth.Annotation.RequiredAuthorization;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.config.TossAppKey;
-import store.mybooks.front.payment.dto.request.PayCreateRequest;
-import store.mybooks.front.payment.dto.request.TossPaymentRequest;
+import store.mybooks.front.payment.dto.request.*;
 import store.mybooks.front.payment.dto.response.PayCreateResponse;
+import store.mybooks.front.payment.dto.response.PaymentResponse;
 import store.mybooks.front.payment.dto.response.TossPaymentResponse;
 import store.mybooks.front.payment.exception.PayFailedException;
 import store.mybooks.front.utils.Utils;
@@ -38,6 +39,12 @@ public class PayAdaptor {
     private static final String URL = "/api/pays";
     private static final String MEMBER_URL = "/api/member/pays";
 
+    /**
+     * Confirm payment toss payment response.
+     *
+     * @param request the request
+     * @return the toss payment response
+     */
     public TossPaymentResponse confirmPayment(TossPaymentRequest request) {
         HttpHeaders headers = Utils.getHttpHeader();
         String apiKey = tossAppKey.getKey();
@@ -62,7 +69,14 @@ public class PayAdaptor {
     }
 
 
-    public TossPaymentResponse getTossPaymentResponse(TossPaymentRequest request) {
+    /**
+     * Cancel pay toss payment response.
+     *
+     * @param request  the request
+     * @param response the response
+     * @return the toss payment response
+     */
+    public TossPaymentResponse cancelPay(TossPaymentCancelRequest request, PaymentResponse response) {
         HttpHeaders headers = new HttpHeaders();
 
         Base64.Encoder encoder = Base64.getEncoder();
@@ -70,10 +84,15 @@ public class PayAdaptor {
         String authorizations = new String(encodedBytes, 0, encodedBytes.length);
 
         headers.setBasicAuth(authorizations);
+        String uri = UriComponentsBuilder
+                .fromUriString(TOSS_URL)
+                .path("/" + response.getPaymentKey() + "/cancel")
+                .build().toString();
+
         try {
             ResponseEntity<TossPaymentResponse> exchange = restTemplate.exchange(
-                    TOSS_URL + "/" + request.getPaymentKey(),
-                    HttpMethod.GET,
+                    uri,
+                    HttpMethod.POST,
                     new HttpEntity<>(request, headers),
                     new ParameterizedTypeReference<TossPaymentResponse>() {
                     }
@@ -93,18 +112,6 @@ public class PayAdaptor {
      * @param request the request
      * @return the pay create response
      */
-//    public PayCreateResponse createPayment(PayCreateRequest request) {
-//        HttpHeaders headers = Utils.getHttpHeader();
-//        HttpEntity<PayCreateRequest> httpEntity = new HttpEntity<>(request, headers);
-//        ResponseEntity<PayCreateResponse> exchange = restTemplate.exchange(
-//                gatewayAdaptorProperties.getAddress() + URL,
-//                HttpMethod.POST,
-//                httpEntity,
-//                new ParameterizedTypeReference<PayCreateResponse>() {
-//                }
-//        );
-//        return Utils.getResponseEntity(exchange, HttpStatus.CREATED);
-//    }
     @RequiredAuthorization
     public PayCreateResponse createResponse(PayCreateRequest request) {
         HttpEntity<PayCreateRequest> httpEntity = new HttpEntity<>(request, Utils.getAuthHeader());
@@ -116,5 +123,65 @@ public class PayAdaptor {
                 }
         );
         return Utils.getResponseEntity(exchange, HttpStatus.CREATED);
+    }
+
+    /**
+     * 비회원 주문 결제.
+     *
+     * @param request the request
+     * @return the pay create response
+     */
+    public PayCreateResponse createNonUserOrderResponse(PayCreateRequest request) {
+        HttpEntity<PayCreateRequest> httpEntity = new HttpEntity<>(request, Utils.getHttpHeader());
+        ResponseEntity<PayCreateResponse> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL + "/non/user",
+                HttpMethod.POST,
+                httpEntity,
+                new ParameterizedTypeReference<PayCreateResponse>() {
+                }
+        );
+        return Utils.getResponseEntity(exchange, HttpStatus.CREATED);
+    }
+
+    /**
+     * payment key를 조회.
+     *
+     * @param orderNumber 주문번호
+     * @return the payment key
+     */
+    public PaymentResponse getPaymentKey(String orderNumber) {
+        HttpEntity<PayCancelReasonRequest> httpEntity = new HttpEntity<>(Utils.getHttpHeader());
+        ResponseEntity<PaymentResponse> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL + "/{orderNumber}",
+                HttpMethod.GET,
+                httpEntity,
+                new ParameterizedTypeReference<PaymentResponse>() {
+                }, orderNumber);
+
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
+
+    /**
+     * Cancel pay.
+     *
+     * @param request the request
+     */
+    @RequiredAuthorization
+    public void cancelPayAfterProcess(PayCancelRequest request) {
+        String uri = UriComponentsBuilder
+                .fromUriString(gatewayAdaptorProperties.getAddress())
+                .path(MEMBER_URL + "/cancel")
+                .build().toString();
+        System.out.println("url 주소가 제대로 나옴?" + uri);
+
+        HttpEntity<PayCancelRequest> httpEntity = new HttpEntity<>(request, Utils.getAuthHeader());
+        ResponseEntity<Void> exchange = restTemplate.exchange(
+                uri,
+                HttpMethod.POST,
+                httpEntity,
+                new ParameterizedTypeReference<Void>() {
+                }
+        );
+        Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 }

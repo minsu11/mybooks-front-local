@@ -10,13 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import store.mybooks.front.admin.book.model.response.BookBriefResponse;
-import store.mybooks.front.admin.book.model.response.BookDetailResponse;
-import store.mybooks.front.admin.book.model.response.BookLikeResponse;
-import store.mybooks.front.admin.book.model.response.BookPopularityResponse;
-import store.mybooks.front.admin.book.model.response.BookPublicationDateResponse;
-import store.mybooks.front.admin.book.model.response.BookRatingResponse;
-import store.mybooks.front.admin.book.model.response.BookReviewResponse;
+import store.mybooks.front.admin.book.model.response.*;
 import store.mybooks.front.config.GatewayAdaptorProperties;
 import store.mybooks.front.utils.Utils;
 
@@ -80,6 +74,42 @@ public class BookAdaptor {
                 new ParameterizedTypeReference<BookDetailResponse>() {
                 },
                 id);
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+    }
+
+    /**
+     * 바로 구매에서 사용될 DTO 데이터.
+     *
+     * @param bookId the book id
+     * @return the book for order
+     */
+    public BookGetResponseForOrder getBookForOrder(Long bookId) {
+        ResponseEntity<BookGetResponseForOrder> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL_ID + "/order",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<BookGetResponseForOrder>() {
+                }, bookId
+        );
+        return Utils.getResponseEntity(exchange, HttpStatus.OK);
+
+    }
+
+    /**
+     * {@code id}의 도서 재고 조회.
+     *
+     * @param bookId the book id
+     * @return the book stock response
+     */
+    public BookStockResponse getBookStockResponse(Long bookId) {
+        ResponseEntity<BookStockResponse> exchange = restTemplate.exchange(
+                gatewayAdaptorProperties.getAddress() + URL_ID + "/order/stock",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<BookStockResponse>() {
+                }, bookId
+        );
+
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 

@@ -6,12 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import store.mybooks.front.admin.book.model.response.BookDetailResponse;
-import store.mybooks.front.admin.book.model.response.BookLikeResponse;
-import store.mybooks.front.admin.book.model.response.BookPopularityResponse;
-import store.mybooks.front.admin.book.model.response.BookPublicationDateResponse;
-import store.mybooks.front.admin.book.model.response.BookRatingResponse;
-import store.mybooks.front.admin.book.model.response.BookReviewResponse;
+import store.mybooks.front.admin.book.model.response.*;
 import store.mybooks.front.book.adaptor.BookAdaptor;
 
 /**
@@ -48,6 +43,20 @@ public class BookService {
      */
     public BookDetailResponse getBook(Long bookId) {
         return bookAdaptor.getBook(bookId);
+    }
+
+    /**
+     * 바로 구매 정보를 조회.
+     *
+     * @param bookId the book id
+     * @return the book for order
+     */
+    public BookGetResponseForOrder getBookForOrder(Long bookId) {
+        return bookAdaptor.getBookForOrder(bookId);
+    }
+
+    public BookStockResponse getBookStockResponse(Long bookId) {
+        return bookAdaptor.getBookStockResponse(bookId);
     }
 
     @Scheduled(cron = "0 5 0 * * *")

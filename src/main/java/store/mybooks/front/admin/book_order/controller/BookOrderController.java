@@ -3,6 +3,7 @@ package store.mybooks.front.admin.book_order.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -42,7 +43,7 @@ public class BookOrderController {
      * @return string
      */
     @GetMapping
-    public String viewBookOrder(ModelMap modelMap, Pageable pageable) {
+    public String viewBookOrder(ModelMap modelMap, @PageableDefault Pageable pageable) {
         PageResponse<BookOrderAdminResponse> bookOrderAdminPage = bookOrderService.getBookOrderAdminPage(pageable);
         modelMap.put("bookOrderList", bookOrderAdminPage);
         return "admin/view/book-order/order-view";
