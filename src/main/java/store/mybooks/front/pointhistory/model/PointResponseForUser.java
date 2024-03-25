@@ -1,24 +1,23 @@
 package store.mybooks.front.pointhistory.model;
 
-import java.time.LocalDate;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import store.mybooks.front.pageable.dto.response.PageResponse;
 
 /**
  * packageName    : store.mybooks.front.pointhistory.model
- * fileName       : PointHistoryGetResponse
+ * fileName       : PointHistoryInfoResponse
  * author         : damho-lee
- * date           : 3/19/24
+ * date           : 3/25/24
  * description    :
  * ===========================================================
  * DATE              AUTHOR             NOTE
  * -----------------------------------------------------------
- * 3/19/24          damho-lee          최초 생성
+ * 3/25/24          damho-lee          최초 생성
  */
 @Getter
 @NoArgsConstructor
-public class PointHistoryGetResponse {
-    private String pointRuleName;
-    private Integer statusCost;
-    private LocalDate createdDate;
+public class PointResponseForUser {
+    private Integer remainPoint;
+    private PageResponse<PointHistoryResponse> pointHistoryResponsePage;
 }

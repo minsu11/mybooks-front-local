@@ -41,8 +41,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
-                        <li><a href="index.html"><i class="lni lni-home"></i> Home</a></li>
-                        <li><a href="index.html">Shop</a></li>
+                        <li><a href="/"><i class="lni lni-home"></i> Home</a></li>
                         <li>Cart</li>
                     </ul>
                 </div>
@@ -89,7 +88,7 @@
                                                         th:text="${cartDetail.name}">
                             </a></h5>
                             <p class="product-des">
-                                <span class="stock" th:text="'잔여수량: ' + ${cartDetail.stock}"></span>
+                                <span class="stock" style="display: none" th:text="${cartDetail.stock}"></span>
                                 <span class="book-status" th:text="'도서상태: ' + ${cartDetail.sellingStatus}"></span>
                             </p></div>
                         <div class="quantity-input col-lg-2 col-md-2 col-12">
@@ -100,10 +99,10 @@
                             </button>
                         </div>
                         <div class="col-lg-2 col-md-2 col-12 ">
-                            <p th:text="${#numbers.formatInteger(cartDetail.cost, 3, 'COMMA')}"></p>
+                            <p th:text="${#numbers.formatInteger(cartDetail.cost, 1, 'COMMA')}"></p>
                         </div>
                         <div class="col-lg-2 col-md-2 col-12 " id="cost">
-                            <p th:text="${#numbers.formatInteger(cartDetail.saleCost, 3, 'COMMA')}"></p>
+                            <p th:text="${#numbers.formatInteger(cartDetail.saleCost, 1, 'COMMA')}"></p>
 
                         </div>
                         <div class="col-lg-1 col-md-2 col-12">
@@ -151,9 +150,7 @@
                             total += counterValue * costValue;
                         }
 
-                        // document.getElementById('totalAmount').innerText = total;
-
-                        document.getElementById('totalAmount').innerText = total + '원';
+                        document.getElementById('totalAmount').innerText = total.toLocaleString() + '원';
                     }
 
                     async function orderAndRedirect() {
@@ -178,7 +175,7 @@
                         } catch (error) {
                             console.error("주문 처리중에 에러가 벌생했다 : ", error.name);
                             window.location.href = "/cart";
-                        }finally {
+                        } finally {
                             document.getElementById('orderButton').disabled = false;
                         }
                     }
@@ -250,7 +247,7 @@
 
                             cartItems.forEach(function (cartItem) {
                                 let quantity = parseInt(cartItem.querySelector('.counter').innerText);
-                                let stock = parseInt(cartItem.querySelector('.stock').innerText);
+                                let stock = parseInt(cartItem.querySelector('.stock').textContent);
                                 if (quantity <= 0 || quantity > stock) {
                                     isValid = false;
                                     return;
@@ -270,21 +267,12 @@
                         <div class="total-amount">
                             <div class="row">
                                 <div class="col-lg-8 col-md-6 col-12">
-                                    <!--                            <div class="left">-->
-                                    <!--                                <div class="coupon">-->
-                                    <!--                                    <form action="#" target="_blank">-->
-                                    <!--                                        <input name="Coupon" placeholder="Enter Your Coupon">-->
-                                    <!--                                        <div class="button">-->
-                                    <!--                                            <button class="btn">Apply Coupon</button>-->
-                                    <!--                                        </div>-->
-                                    <!--                                    </form>-->
-                                    <!--                                </div>-->
-                                    <!--                            </div>-->                                </div>
+                                </div>
                                 <div class="col-lg-4 col-md-6 col-12">
                                     <div class="right">
                                         <ul>
                                             <li class="last">총 주문금액
-                                                <span th:text="${totalAmount}" id="totalAmount"></span>
+                                                <span id="totalAmount"></span>
                                             </li>
                                         </ul>
                                         <div class="button">

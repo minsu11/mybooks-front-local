@@ -9,6 +9,7 @@
         .regular-cost {
             text-decoration: line-through;
         }
+
         .prd .tab-class .nav-item a.active {
             background: var(--bs-secondary) !important;
         }
@@ -33,75 +34,62 @@
     <section class="hero-area">
         <div class="container">
             <div class="row">
-                <div class="col-lg-8 col-12 custom-padding-right">
+                <div class="custom-padding-right">
                     <div class="slider-head">
                         <!-- Start Hero Slider -->
                         <div class="hero-slider">
                             <!-- Start Single Slider -->
                             <div class="single-slider"
-                                 style="background-image: url(https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_e805e9a72d2f47338a0a463196c36314/my-books-container/logo/%E1%84%92%E1%85%A8%E1%84%90%E1%85%A2%E1%86%A8coupon.png);">
+                                 style="background-image: url(https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_e805e9a72d2f47338a0a463196c36314/my-books-container/event/springbookevent.png);">
                                 <div class="content">
                                     <h2><span></span>
 
                                     </h2>
                                     <p>
-                                        </p>
-                                    <h3><span></span> </h3>
-<!--                                    <div class="button">-->
-<!--                                        <a href="product-grids.html" class="btn">Shop Now</a>-->
-<!--                                    </div>-->
+                                    </p>
+                                    <h3><span></span></h3>
+
                                 </div>
                             </div>
                             <!-- End Single Slider -->
                             <!-- Start Single Slider -->
                             <div class="single-slider"
-                                 style="background-image: url(https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_e805e9a72d2f47338a0a463196c36314/my-books-container/logo/bookimage1.png);">
+                                 style="background-image: url(https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_e805e9a72d2f47338a0a463196c36314/my-books-container/event/spring-event.png);">
                                 <div class="content">
                                     <h2><span></span>
                                     </h2>
                                     <p></p>
-                                    <h3><span></span> </h3>
-<!--                                    <div class="button">-->
-<!--                                        <a href="product-grids.html" class="btn">Shop Now</a>-->
-<!--                                    </div>-->
+                                    <h3><span></span></h3>
+
                                 </div>
                             </div>
+                            <div class="single-slider"
+                                 style="background-image: url(https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_e805e9a72d2f47338a0a463196c36314/my-books-container/event/my-books-year-event.png);">
+                                <div class="content">
+                                    <h2><span></span>
+                                    </h2>
+                                    <p></p>
+                                    <h3><span></span></h3>
+
+                                </div>
+                            </div>
+                            <div class="single-slider"
+                                 style="background-image: url(https://kr1-api-object-storage.nhncloudservice.com/v1/AUTH_e805e9a72d2f47338a0a463196c36314/my-books-container/event/year-event.png);">
+                                <div class="content">
+                                    <h2><span></span>
+                                    </h2>
+                                    <p></p>
+                                    <h3><span></span></h3>
+
+                                </div>
+                            </div>
+
                             <!-- End Single Slider -->
                         </div>
                         <!-- End Hero Slider -->
                     </div>
                 </div>
-                <div class="col-lg-4 col-12">
-                    <div class="row">
-                        <div class="col-lg-12 col-md-6 col-12 md-custom-padding">
-                            <!-- Start Small Banner -->
-                            <div class="hero-small-banner"
-                                 style="background-image: url('https://via.placeholder.com/370x250');">
-                                <div class="content">
-                                    <h2>
-                                        <span>New line required</span>
-                                        iPhone 12 Pro Max
-                                    </h2>
-                                    <h3>$259.99</h3>
-                                </div>
-                            </div>
-                            <!-- End Small Banner -->
-                        </div>
-                        <div class="col-lg-12 col-md-6 col-12">
-                            <!-- Start Small Banner -->
-                            <div class="hero-small-banner style2">
-                                <div class="content">
-                                    <h2>Weekly Sale!</h2>
-                                    <p>Saving up to 50% off all online store items this week.</p>
-                                    <div class="button">
-                                        <a class="btn" href="product-grids.html">Shop Now</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Start Small Banner -->
-                        </div>
-                    </div>
-                </div>
+
             </div>
         </div>
     </section>
@@ -138,7 +126,6 @@
 
                 </div>
             </div>
-
 
 
             <div class="tab-content center">
@@ -179,8 +166,10 @@
                                     </th:block>
                                     <p>리뷰 수 : <span th:text=" ${book.reviewCount}"></span></p>
                                     <div class="price">
-                                        <span class="sale-cost" th:text="${book.saleCost} + '원'  "></span>
-                                        <s class="regular-cost" th:text="${book.cost} + '원'"></s>
+                                        <span class="sale-cost"
+                                              th:text="${#numbers.formatInteger(book.saleCost, 1, 'COMMA')} + '원'  "></span>
+                                        <s class="regular-cost"
+                                           th:text="${#numbers.formatInteger(book.cost, 1, 'COMMA')} + '원'"></s>
                                     </div>
 
 
@@ -226,8 +215,10 @@
                                     </th:block>
                                     <p>리뷰 수 : <span th:text=" ${book.reviewCount}"></span></p>
                                     <div class="price">
-                                        <span class="sale-cost" th:text="${book.saleCost} + '원'  "></span>
-                                        <s class="regular-cost" th:text="${book.cost} + '원'"></s>
+                                        <span class="sale-cost"
+                                              th:text="${#numbers.formatInteger(book.saleCost, 1, 'COMMA')} + '원'  "></span>
+                                        <s class="regular-cost"
+                                           th:text="${#numbers.formatInteger(book.cost, 1, 'COMMA')} + '원'"></s>
                                     </div>
 
 
@@ -273,8 +264,10 @@
                                     </th:block>
                                     <p>리뷰 수 : <span th:text=" ${book.reviewCount}"></span></p>
                                     <div class="price">
-                                        <span class="sale-cost" th:text="${book.saleCost} + '원'  "></span>
-                                        <s class="regular-cost" th:text="${book.cost} + '원'"></s>
+                                        <span class="sale-cost"
+                                              th:text="${#numbers.formatInteger(book.saleCost, 1, 'COMMA')} + '원'  "></span>
+                                        <s class="regular-cost"
+                                           th:text="${#numbers.formatInteger(book.cost, 1, 'COMMA')} + '원'"></s>
                                     </div>
 
 
@@ -288,7 +281,6 @@
         </div>
 
     </section>
-
 
 
     <!-- Start Trending Product Area -->
@@ -339,8 +331,10 @@
                             <p>리뷰 수 : <span th:text=" ${book.reviewCount}"></span></p>
                             <div class="price">
 
-                                <span class="sale-cost" th:text="${book.saleCost} + '원'  "></span>
-                                <s class="regular-cost" th:text="${book.cost} + '원'"></s>
+                                <span class="sale-cost"
+                                      th:text="${#numbers.formatInteger(book.saleCost, 1, 'COMMA')} + '원'  "></span>
+                                <s class="regular-cost"
+                                   th:text="${#numbers.formatInteger(book.cost, 1, 'COMMA')} + '원'"></s>
 
                             </div>
 
@@ -400,8 +394,10 @@
                             <p>리뷰 수 : <span th:text=" ${book.reviewCount}"></span></p>
                             <div class="price">
 
-                                <span class="sale-cost" th:text="${book.saleCost} + '원'  "></span>
-                                <s class="regular-cost" th:text="${book.cost} + '원'"></s>
+                                <span class="sale-cost"
+                                      th:text="${#numbers.formatInteger(book.saleCost, 1, 'COMMA')} + '원'  "></span>
+                                <s class="regular-cost"
+                                   th:text="${#numbers.formatInteger(book.cost, 1, 'COMMA')} + '원'"></s>
 
                             </div>
 

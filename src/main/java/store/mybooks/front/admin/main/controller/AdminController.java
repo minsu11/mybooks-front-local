@@ -28,6 +28,6 @@ public class AdminController {
     @GetMapping
     @RequiredAdminCookie
     public String doAdmin() {
-        return "admin";
+        return "redirect:/admin/member";
     }
 }

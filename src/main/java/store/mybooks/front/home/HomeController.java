@@ -48,7 +48,6 @@ public class HomeController {
         model.addAttribute("reviewList", bookReviewSortList);
         model.addAttribute("ratingList", bookRatingSortList);
         model.addAttribute("publicationList", bookPublicationDateSortList);
-//        model.addAttribute("books", bookAdminService.getBooks(pageable));
         return "index";
     }
 

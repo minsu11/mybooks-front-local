@@ -1,5 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thympleaf.org">
+<style>
+    .my-svg {
+        display: inline-block;
+        vertical-align: middle; /* 이미지를 수직 가운데 정렬합니다. */
+    }
+
+    a {
+        display: inline-block;
+        vertical-align: middle; /* 링크를 이미지와 같은 라인에 위치시킵니다. */
+    }
+</style>
 <div th:fragment="myBooksFooterMiddleFragment">
     <!-- Start Footer Middle -->
     <div class="footer-middle">
@@ -10,37 +21,14 @@
                         <!-- Single Widget -->
                         <div class="single-footer f-contact">
                             <h3>Get In Touch With Us</h3>
-                            <p class="phone">Phone: +1 (900) 33 169 7720</p>
+                            <p class="phone">Phone: +82 xxx-xxxx-xxxx</p>
                             <ul>
                                 <li><span>Monday-Friday: </span> 9.00 am - 8.00 pm</li>
                                 <li><span>Saturday: </span> 10.00 am - 6.00 pm</li>
                             </ul>
                             <p class="mail">
-                                <a href="mailto:support@shopgrids.com">support@shopgrids.com</a>
+                                <a href="https://github.com/nhnacademy-be4-My-Books">my-books.store</a>
                             </p>
-                        </div>
-                        <!-- End Single Widget -->
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-12">
-                        <!-- Single Widget -->
-                        <div class="single-footer our-app">
-                            <h3>Our Mobile App</h3>
-                            <ul class="app-btn">
-                                <li>
-                                    <a href="javascript:void(0)">
-                                        <i class="lni lni-apple"></i>
-                                        <span class="small-title">Download on the</span>
-                                        <span class="big-title">App Store</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)">
-                                        <i class="lni lni-play-store"></i>
-                                        <span class="small-title">Download on the</span>
-                                        <span class="big-title">Google Play</span>
-                                    </a>
-                                </li>
-                            </ul>
                         </div>
                         <!-- End Single Widget -->
                     </div>
@@ -49,29 +37,34 @@
                         <div class="single-footer f-link">
                             <h3>Information</h3>
                             <ul>
-                                <li><a href="javascript:void(0)">About Us</a></li>
-                                <li><a href="javascript:void(0)">Contact Us</a></li>
-                                <li><a href="javascript:void(0)">Downloads</a></li>
-                                <li><a href="javascript:void(0)">Sitemap</a></li>
-                                <li><a href="javascript:void(0)">FAQs Page</a></li>
+                                <li>
+                                    <img height="20" width="20"
+                                         src="/admin/vendor/fontawesome-free/svgs/brands/github-reverse.svg">
+                                    <a href="https://github.com/nhnacademy-be4-My-Books">my-books's GitHub</a></li>
+                                <li>
+                                    <img height="20" width="20" src="/admin/vendor/fontawesome-free/svgs/brands/database.png">
+                                    <a href="https://www.erdcloud.com/d/DdPQcQX2nM83kE5gY">Erd-Cloud</a></li>
+                                <li>
+                                    <img height="20" width="20" src="/admin/vendor/fontawesome-free/svgs/brands/book.png">
+                                    <a href="javascript:void(0)">Api-Docs</a></li>
+
                             </ul>
                         </div>
                         <!-- End Single Widget -->
                     </div>
-<!--                    <div class="col-lg-3 col-md-6 col-12">-->
-<!--                        &lt;!&ndash; Single Widget &ndash;&gt;-->
-<!--                        <div class="single-footer f-link">-->
-<!--                            <h3>Shop Departments</h3>-->
-<!--                            <ul>-->
-<!--                                <li><a href="javascript:void(0)">Computers & Accessories</a></li>-->
-<!--                                <li><a href="javascript:void(0)">Smartphones & Tablets</a></li>-->
-<!--                                <li><a href="javascript:void(0)">TV, Video & Audio</a></li>-->
-<!--                                <li><a href="javascript:void(0)">Cameras, Photo & Video</a></li>-->
-<!--                                <li><a href="javascript:void(0)">Headphones</a></li>-->
-<!--                            </ul>-->
-<!--                        </div>-->
-<!--                        &lt;!&ndash; End Single Widget &ndash;&gt;-->
-<!--                    </div>-->
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <!-- Single Widget -->
+                        <div class="single-footer f-link">
+                            <h3>Sponsored & Contributor</h3>
+                            <ul>
+                                <li><a href="https://nhnacademy.github.io">NHN-Academy</a></li>
+                                <li><a href="javascript:void(0)">Marco</a></li>
+                                <li><a href="javascript:void(0)">Eugene TA</a></li>
+                                <li><a href="javascript:void(0)">Kyung Seo TA</a></li>
+                            </ul>
+                        </div>
+                        <!-- End Single Widget -->
+                    </div>
                 </div>
             </div>
         </div>

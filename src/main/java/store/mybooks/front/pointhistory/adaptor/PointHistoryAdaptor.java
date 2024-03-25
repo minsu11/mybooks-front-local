@@ -12,8 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import store.mybooks.front.auth.Annotation.RequiredAuthorization;
 import store.mybooks.front.config.GatewayAdaptorProperties;
-import store.mybooks.front.pageable.dto.response.PageResponse;
-import store.mybooks.front.pointhistory.model.PointHistoryGetResponse;
+import store.mybooks.front.pointhistory.model.PointResponseForUser;
 import store.mybooks.front.utils.Utils;
 
 /**
@@ -45,11 +44,11 @@ public class PointHistoryAdaptor {
      * @return PageResponse
      */
     @RequiredAuthorization
-    public PageResponse<PointHistoryGetResponse> getPointHistories(Pageable pageable) {
+    public PointResponseForUser getPointHistories(Pageable pageable) {
         HttpHeaders headers = Utils.getAuthHeader();
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
 
-        ResponseEntity<PageResponse<PointHistoryGetResponse>> exchange = restTemplate.exchange(
+        ResponseEntity<PointResponseForUser> exchange = restTemplate.exchange(
                 gatewayAdaptorProperties.getAddress() + URL_MEMBER
                         + "/history?page=" + pageable.getPageNumber() + "&size=" + pageable.getPageSize(),
                 HttpMethod.GET,
