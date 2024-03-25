@@ -138,7 +138,7 @@ public class ReviewAdaptor {
                 gatewayAdaptorProperties.getAddress() + URL + "/book/{bookId}" + "?page=" + pageable.getPageNumber()
                         + "&size=" + pageable.getPageSize(),
                 HttpMethod.GET,
-                new HttpEntity<>(Utils.getAuthHeader()),
+                null,
                 new ParameterizedTypeReference<>() {
                 }, bookId);
 
