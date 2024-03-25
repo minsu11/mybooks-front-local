@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
     const orderNumber = document.getElementById("order-number").value;
     const button = document.getElementById("payment-button");
     const coupon = document.getElementById("all-book-coupon-button");
@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("key: " + customerKey);
     const paymentWidget = PaymentWidget(clientKey, customerKey); // 회원 결제
     console.log("함수 실행하기 전")
-    const payValue = payInfo(customerKey);
+    const payValue = await payInfo(customerKey.toString());
     // const paymentWidget = PaymentWidget(clientKey, PaymentWidget.ANONYMOUS); // 비회원 결제
     console.log(payValue)
 
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
 })
 
 async function payInfo(customerKey) {
-
+    console.log("주문: " + customerKey)
     const response = await fetch("/pay/info/" + customerKey, {
         method: "GET",
         headers: {
