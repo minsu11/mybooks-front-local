@@ -45,23 +45,34 @@
                        th:class="${order == 'review'} ? 'active' : ''">리뷰순</a>
                 </div>
                 <div th:if="${books.content.size() > 0}" class="row mt-3">
-                    <div th:each="book : ${books.content}" class="col-md-3 mb-3">
+                    <div th:each="book, iterStat : ${books.content}" class="col-md-3 mb-3">
                         <div class="single-product card h-100">
                             <div class="product-image">
                                 <img class="product-image card-img-top" th:src="${book.image}" alt="#">
                             </div>
                             <div class="product-info">
-                                <h4 class="book-title-large-text">
+                                <h4 class="title">
+                                    <span th:text="${iterStat.count + '. '}" class="emphasis"></span>
                                     <a th:href="@{'/book/' + ${book.id}}" th:text="${book.name}"></a>
                                 </h4>
-                                <ul class="review">
-                                    <li><p>리뷰: <span th:text="${book.rate}">/5</span>(<span
-                                            th:text="(${book.reviewCount})"></span>)</p></li>
-                                </ul>
+
+                                <th:block th:with="roundedRate=${T(java.lang.Math).floor(book.rate)}">
+                                    <ul class="review">
+                                        <li th:each="star, reviewIterStat: ${#numbers.sequence(1, 5)}">
+
+                                            <i class="lni"
+                                               th:classappend="${roundedRate >= reviewIterStat.index +1 ? 'lni-star-filled' : 'lni-star'}"></i>
+                                        </li>
+
+                                        <li><span th:text="${book.rate}"></span></li>
+                                    </ul>
+                                </th:block>
+                                <p>리뷰 수 : <span th:text=" ${book.reviewCount}"></span></p>
                                 <div class="price">
-                                    <span th:text="'₩'+ ${book.saleCost}"></span>
-                                    <span th:if="${book.saleCost != book.cost}" class="discount-price"
-                                          th:text="${book.cost}"></span>
+                                        <span class="sale-cost"
+                                              th:text="${#numbers.formatInteger(book.saleCost, 1, 'COMMA')} + '원'  "></span>
+                                    <s class="regular-cost"
+                                       th:text="${#numbers.formatInteger(book.cost, 1, 'COMMA')} + '원'"></s>
                                 </div>
                             </div>
                         </div>
