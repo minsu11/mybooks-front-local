@@ -46,7 +46,8 @@ public class PointAdminAdaptor {
     @RequiredAuthorization
     public PageResponse<PointRuleResponse> getPointRuleResponsePage(Pageable pageable) {
         ResponseEntity<PageResponse<PointRuleResponse>> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL + "/page?page=" + pageable.getPageNumber() + "&size=" + pageable.getPageSize(),
+                gatewayAdaptorProperties.getAddress() + URL + "/page?page="
+                        + pageable.getPageNumber() + "&size=" + pageable.getPageSize(),
                 HttpMethod.GET,
                 new HttpEntity<>(Utils.getAuthHeader()),
                 new ParameterizedTypeReference<PageResponse<PointRuleResponse>>() {

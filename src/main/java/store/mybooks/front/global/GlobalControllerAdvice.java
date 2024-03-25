@@ -9,12 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
-import store.mybooks.front.auth.exception.AccessIdForbiddenException;
-import store.mybooks.front.auth.exception.AuthenticationIsNotValidException;
-import store.mybooks.front.auth.exception.LoginFailedException;
-import store.mybooks.front.auth.exception.StatusIsDormancyException;
-import store.mybooks.front.auth.exception.StatusIsLockException;
-import store.mybooks.front.auth.exception.TokenExpiredException;
+import store.mybooks.front.auth.exception.*;
 import store.mybooks.front.order.exception.OrderInfoNotMatchException;
 import store.mybooks.front.utils.CookieUtils;
 
@@ -36,7 +31,6 @@ public class GlobalControllerAdvice {
     private static final String REFERER = "referer";
 
     private static final String domain = "https://www.my-books.store";
-    
 
 
     // 토큰 인증/인가와 관련된 모든 예외를 잡음
@@ -79,11 +73,10 @@ public class GlobalControllerAdvice {
     }
 
 
-
     @ExceptionHandler({Exception.class}) // 발생하는 모든 예외
-    public String handleRuntimeException(Exception e,Model model) {
+    public String handleRuntimeException(Exception e, Model model) {
         log.warn(e.getMessage());
-        model.addAttribute("errorMessage",e.getMessage());
+        model.addAttribute("errorMessage", e.getMessage());
         return "error";
     }
 
