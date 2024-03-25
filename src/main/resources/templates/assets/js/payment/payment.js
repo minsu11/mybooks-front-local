@@ -39,10 +39,6 @@ document.addEventListener("DOMContentLoaded", function () {
         // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
 
         payValue.then(value => {
-            alert(value.orderName)
-            alert(value.email)
-            alert(value.name)
-            alert(value.phoneNumber)
             paymentWidget.requestPayment({
                 orderId: customerKey,
                 orderName: value.orderName,

@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', function (event
     const payForm = document.getElementById('order-pay-form');
     alert(point)
     if (point) {
-        alert(회원)
         payForm.addEventListener('submit', function () {
             payForm.action = "/order";
             payForm.method = "post"
@@ -28,7 +27,6 @@ document.addEventListener('DOMContentLoaded', function (event
             }
         })
     } else {
-        alert("비회원")
         payForm.addEventListener('submit', function (e) {
             address = copyValuesToHiddenField(address)
             payForm.action = "/cart/order/non/user";
@@ -61,9 +59,7 @@ document.addEventListener('DOMContentLoaded', function (event
     if (point) {
         point.addEventListener('keyup', function (event) {
             if (event.keyCode === 13) {
-                alert("123")
                 const total = document.querySelector('span[id="totalCost"]')
-                alert("확인 ")
                 if (point.value === "") {
                     point.value = "0"
                 }

@@ -14,10 +14,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         "method": pay.method,
         "requestedAt": pay.requestedAt
     }
-    console.log("api 호출 하기 전")
     const test = await payTest(payInfo);
-    console.log("api 호출 하기 후")
-    console.log(test)
     if (pay.status === "DONE") {
         console.log("삭제 호출 ")
         removeCart();
