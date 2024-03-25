@@ -19,7 +19,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class OrderInfoRequest {
-
     private String recipientName;
     private String recipientPhoneNumber;
     private String recipientAddress;

@@ -10,65 +10,115 @@
     <link rel="stylesheet" type="text/css" href="/style.css"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>토스페이먼츠 샘플 프로젝트</title>
+    <title>결제 창</title>
     <!-- 결제위젯 SDK 추가 -->
     <script src="https://js.tosspayments.com/v1/payment-widget"></script>
+    <style>
+        /* 섹션 스타일링 */
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        section {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+        }
+
+        /* 제목 스타일링 */
+        h3 {
+            margin-top: 0;
+            font-size: 24px;
+            color: #333333;
+        }
+
+        /* 소제목 스타일링 */
+        h5 {
+            margin-top: 10px;
+            margin-bottom: 5px;
+            font-size: 18px;
+            color: #666666;
+        }
+
+        /* 숨김 필드 스타일링 */
+        input[type="hidden"] {
+            display: none;
+        }
+
+        /* 값 표시 스타일링 */
+        span {
+            font-size: 16px;
+            color: #333333;
+        }
+
+        .button {
+            background-color: #ffffff;
+            color: #333333;
+            border: 2px solid #333333;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* 마우스 호버 효과 */
+        .button:hover {
+            background-color: #333333;
+            color: #ffffff;
+        }
+    </style>
 </div>
 
 <div layout:fragment="content">
-    <div class="container">
+    <div class="container" style="margin-top: 30px;">
         <div class="row justify-content-center">
 
             <section>
-                <h3>결제 정보</h3>
-                <div>
-                    <h5>주문 번호</h5>
-                    <span th:text="${orderInfo.number}"></span>
-                    <h5>결제 금액</h5>
-                    <span th:text="${orderInfo.totalCost}"></span>
-                    <input th:value="${orderInfo.number}" type="hidden"
-                           id="order-number">
-                    <input th:value="${orderInfo.totalCost}" type="hidden"
-                           id="order-total-cost">
+                <div class="form-text">
+                    <div>
+                        <h3>결제 정보</h3>
+                        <hr>
+                        <div style="margin-top: 10px">
+                            <span th:text="'주문 번호: ' + ${orderInfo.number}"></span>
+                            <br>
+                            <span th:text="'결제 금액: ' + ${orderInfo.totalCost}"></span>
+                            <br>
+                            <input th:value="${orderInfo.number}" type="hidden"
+                                   id="order-number">
+                            <input th:value="${orderInfo.totalCost}" type="hidden"
+                                   id="order-total-cost">
+                        </div>
+                    </div>
                 </div>
 
 
-            </section>
-
-
-            <div class="wrapper">
-                <div
-                        class="box_section"
-                        style="
+                <div class="wrapper">
+                    <div
+                            class="box_section"
+                            style="
           padding: 40px 30px 50px 30px;
           margin-top: 30px;
           margin-bottom: 50px;
         ">
-                    <input class="toss" th:value="${tossValue}" type="hidden">
-                    <!-- 결제 UI -->
-                    <div id="payment-method"></div>
-                    <!-- 이용약관 UI -->
-                    <div id="agreement"></div>
-                    <!-- 쿠폰 체크박스 -->
-                    <div th:if="${isCouponUsed == false}">
-                        <div style="padding-left: 25px">
-                            <div class="checkable typography--p">
-                                <button type="button" id="all-book-coupon-button">
-                                    전체 쿠폰 적용
-                                </button>
-
-                            </div>
+                        <input class="toss" th:value="${tossValue}" type="hidden">
+                        <!-- 결제 UI -->
+                        <div id="payment-method"></div>
+                        <!-- 이용약관 UI -->
+                        <div id="agreement"></div>
+                        <!-- 결제하기 버튼 -->
+                        <div class="result wrapper">
+                            <button class="button" id="payment-button" style="margin-top: 30px">
+                                결제하기
+                            </button>
                         </div>
                     </div>
-                    <!-- 결제하기 버튼 -->
-                    <div class="result wrapper">
-                        <button class="button" id="payment-button" style="margin-top: 30px">
-                            결제하기
-                        </button>
-                    </div>
+
                 </div>
-            </div>
+            </section>
+
         </div>
+
         <script src="/assets/js/payment/payment.js"></script>
     </div>
 </div>

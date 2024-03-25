@@ -1,4 +1,4 @@
-package store.mybooks.front.payment;
+package store.mybooks.front.payment.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -6,14 +6,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import store.mybooks.front.config.TossAppKey;
 import store.mybooks.front.order.dto.response.BookOrderInfoResponse;
 import store.mybooks.front.order.service.OrderService;
+import store.mybooks.front.payment.dto.request.PayCancelReasonRequest;
 import store.mybooks.front.payment.dto.request.TossPaymentRequest;
+import store.mybooks.front.payment.dto.response.TossPaymentResponse;
 import store.mybooks.front.payment.service.PayService;
 
 
@@ -47,26 +46,32 @@ public class PayController {
      * @throws Exception
      */
     @GetMapping("/success")
-    public String paymentRequest(ModelMap model,
-                                 @ModelAttribute TossPaymentRequest request
-    ) {
+    public String paymentRequest(@ModelAttribute TossPaymentRequest request) {
         return "success";
     }
 
     @GetMapping("/{orderNumber}")
-    public String index(HttpServletRequest request, ModelMap model,
+    public String index(ModelMap model,
                         @PathVariable(name = "orderNumber") String orderNumber) throws Exception {
         BookOrderInfoResponse bookOrderInfoResponse = orderService.getPayBookOrderInfo(orderNumber);
         model.put("tossValue", tossAppKey.getClientKey());
         model.put("orderInfo", bookOrderInfoResponse);
-        model.put("isCouponUsed", payService.checkCouponUsed(bookOrderInfoResponse.getOrderDetails()));
         model.put("orderNumber", orderNumber);
         return "payment";
     }
 
+    @GetMapping("/non/{orderNumber}")
+    public String indexNonUser(ModelMap model,
+                               @PathVariable(name = "orderNumber") String orderNumber) throws Exception {
+        BookOrderInfoResponse bookOrderInfoResponse = orderService.getPayBookOrderInfo(orderNumber);
+        model.put("tossValue", tossAppKey.getClientKey());
+        model.put("orderInfo", bookOrderInfoResponse);
+        model.put("orderNumber", orderNumber);
+        return "payment";
+    }
 
     /**
-     * 인증실패처리
+     * 인증실패처리.
      *
      * @param request
      * @param model
@@ -84,5 +89,20 @@ public class PayController {
         return "fail";
     }
 
+    @GetMapping("/cancel/{orderNumber}")
+    public String viewOrderCancel(@PathVariable String orderNumber,
+                                  ModelMap modelMap) {
+        modelMap.put("orderNumber", orderNumber);
+        return "pay-cancel";
+    }
 
+
+    @PostMapping("/cancel/{orderNumber}")
+    public String doOrderCancel(@PathVariable String orderNumber,
+                                @ModelAttribute PayCancelReasonRequest request,
+                                ModelMap modelMap) {
+        TossPaymentResponse response = payService.cancelToss(orderNumber, request);
+        payService.cancelPayAfterProcess(response);
+        return "redirect:/order";
+    }
 }

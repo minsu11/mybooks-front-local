@@ -33,7 +33,7 @@ public class BookLikeAdaptor {
 
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
-    private static final String URL = "/api/member/book-likes";
+    private static final String URL_MEMBER = "/api/member/book-likes";
 
     /**
      * methodName : getPageUserBookLike
@@ -46,7 +46,7 @@ public class BookLikeAdaptor {
     @RequiredAuthorization
     public PageResponse<BookBriefResponse> getPageUserBookLike(Pageable pageable) {
         ResponseEntity<PageResponse<BookBriefResponse>> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL + "?page=" + pageable.getPageNumber() + "&size="
+                gatewayAdaptorProperties.getAddress() + URL_MEMBER + "?page=" + pageable.getPageNumber() + "&size="
                         + pageable.getPageSize(),
                 HttpMethod.GET,
                 new HttpEntity<>(Utils.getAuthHeader()),
@@ -67,7 +67,7 @@ public class BookLikeAdaptor {
     @RequiredAuthorization
     public boolean updateBookLike(Long bookId) {
         ResponseEntity<Boolean> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL + "/{bookId}",
+                gatewayAdaptorProperties.getAddress() + URL_MEMBER + "/{bookId}",
                 HttpMethod.POST,
                 new HttpEntity<>(Utils.getAuthHeader()),
                 new ParameterizedTypeReference<>() {
@@ -86,7 +86,7 @@ public class BookLikeAdaptor {
     @RequiredAuthorization
     public boolean isUserLikeCheck(Long bookId) {
         ResponseEntity<Boolean> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL + "/{bookId}",
+                gatewayAdaptorProperties.getAddress() + URL_MEMBER + "/{bookId}",
                 HttpMethod.GET,
                 new HttpEntity<>(Utils.getAuthHeader()),
                 new ParameterizedTypeReference<>() {

@@ -2,24 +2,31 @@ package store.mybooks.front.order.controller;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import store.mybooks.front.admin.book.model.response.BookGetResponseForOrder;
+import store.mybooks.front.admin.book.model.response.BookStockResponse;
 import store.mybooks.front.admin.delivery_rule.dto.DeliveryRuleResponse;
 import store.mybooks.front.admin.delivery_rule.service.DeliveryRuleService;
 import store.mybooks.front.admin.wrap.dto.response.WrapResponse;
 import store.mybooks.front.admin.wrap.service.WrapService;
+import store.mybooks.front.book.service.BookService;
 import store.mybooks.front.cart.domain.CartDetail;
 import store.mybooks.front.cart.service.CartNonUserService;
 import store.mybooks.front.cart.service.CartUserService;
+import store.mybooks.front.order.dto.request.BookOrderDirectRequest;
 import store.mybooks.front.order.dto.request.BookOrderRequest;
 import store.mybooks.front.order.dto.response.BookOrderCreateResponse;
 import store.mybooks.front.order.service.OrderInfoCheckService;
@@ -33,6 +40,7 @@ import store.mybooks.front.user_coupon.model.response.UserCouponGetResponseForOr
 import store.mybooks.front.user_coupon.service.UserCouponService;
 import store.mybooks.front.userpoint.dto.response.PointResponse;
 import store.mybooks.front.userpoint.service.UserPointService;
+import store.mybooks.front.utils.CookieUtils;
 
 /**
  * packageName    : store.mybooks.front.order.controller<br>
@@ -60,6 +68,11 @@ public class OrderController {
     private final CartUserService cartUserService;
     private final OrderInfoCheckService orderInfoCheckService;
     private final DeliveryRuleService deliveryRuleService;
+    private final BookService bookService;
+
+    private static final String USER_COOKIE_VALUE = "identity_cookie";
+    private static final String NON_USER_CART_VALUE = "cart";
+    private static final String REDIRECT_PAY_URL = "redirect:/pay/";
 
     /**
      * methodName : viewOrderPage<br>
@@ -70,20 +83,36 @@ public class OrderController {
      * @param modelMap model
      * @return string
      */
-//    @GetMapping("/direct/checkout")
-//    public String viewDirectOrderPage(@ModelAttribute BookOrderDirectRequest request,
-//                                      ModelMap modelMap) {
-//        BookDetailResponse bookDetailResponse = orderService.getBook(request);
-//        PointResponse pointResponse = userPointService.getPointsHeld();
-//        UserGetResponse user = userAdaptor.findUser();
-//        Integer totalCost = bookDetailResponse.getSaleCost() * request.getQuantity();
-//        modelMap.put("bookList", bookDetailResponse);
-//        modelMap.put("totalCost", totalCost);
-//        modelMap.put("point", pointResponse.getRemainingPoint());
-//        modelMap.put("user", user);
-//        modelMap.put("quantity", request.getQuantity());
-//        return "checkout";
-//    }
+    @GetMapping("/direct/checkout")
+    public String viewDirectOrderPage(@ModelAttribute BookOrderDirectRequest request,
+                                      ModelMap modelMap,
+                                      HttpServletRequest httpServletRequest) {
+        BookStockResponse bookStockResponse = bookService.getBookStockResponse(request.getId());
+        orderInfoCheckService.checkAmount(request.getQuantity(), bookStockResponse.getStock());
+
+        BookGetResponseForOrder bookGetResponseForOrder = bookService.getBookForOrder(request.getId());
+        List<BookGetResponseForOrder> bookGetResponseForOrders = List.of(bookService.getBookForOrder(request.getId()));
+        if (Objects.nonNull(CookieUtils.getIdentityCookieValue(httpServletRequest))) {
+            PointResponse pointResponse = userPointService.getPointsHeld();
+            UserGetResponse user = userAdaptor.findUser();
+            modelMap.put("point", pointResponse.getRemainingPoint());
+            modelMap.put("user", user);
+            modelMap.put("check", true);
+        } else {
+            modelMap.put("check", false);
+        }
+
+        Integer totalCost = bookGetResponseForOrder.getSaleCost() * request.getQuantity();
+        DeliveryRuleResponse deliveryRule = deliveryRuleService.getDeliveryRuleResponseByName("배송 비");
+        modelMap.put("quantity", request.getQuantity());
+        modelMap.put("bookLists", bookGetResponseForOrders);
+        modelMap.put("totalCost", totalCost);
+        modelMap.put("direct", true);
+        modelMap.put("localDate", LocalDate.now());
+        modelMap.put("delivery", deliveryRule);
+        return "direct-order-checkout";
+    }
+
 
     /**
      * methodName : viewCheckAddress<br>
@@ -131,7 +160,7 @@ public class OrderController {
      * methodName : viewCoupon<br>
      * author : minsu11<br>
      * description : 주문 페이지에서 사용 가능한 쿠폰 페이지.
-     * <br> *
+     * <br>
      *
      * @param modelMap model
      * @param bookId   쿠폰 적용할 도서 아이디
@@ -150,6 +179,7 @@ public class OrderController {
         return "checkout-coupon";
     }
 
+
     /**
      * methodName : viewCoupon<br>
      * author : minsu11<br>
@@ -159,19 +189,31 @@ public class OrderController {
      * @return the string
      */
     @GetMapping("/cart/checkout")
-    public String viewOrderPage(
-            ModelMap modelMap) {
-        PointResponse pointResponse = userPointService.getPointsHeld();
-        UserGetResponse user = userAdaptor.findUser();
+    public String viewOrderPage(ModelMap modelMap,
+                                @CookieValue(name = NON_USER_CART_VALUE, required = false) Cookie cartCookie,
+                                HttpServletRequest request) {
 
-        List<CartDetail> bookFromCart = cartUserService.getBookFromCart();
+        List<CartDetail> bookFromCart;
+        if (Objects.nonNull(CookieUtils.getIdentityCookieValue(request))) {
+            PointResponse pointResponse = userPointService.getPointsHeld();
+            UserGetResponse user = userAdaptor.findUser();
+            modelMap.put("user", user);
+            modelMap.put("point", pointResponse.getRemainingPoint());
+            bookFromCart = cartUserService.getBookFromCart();
+            modelMap.put("userCheck", true);
+        } else {
 
+            bookFromCart = cartNonUserService.getBookFromCart(cartCookie);
+            orderInfoCheckService.validationCheckNonUserOrder(bookFromCart);
+            modelMap.put("userCheck", false);
+        }
+        if (bookFromCart.isEmpty()) {
+            return "/redirect:/cart";
+        }
         DeliveryRuleResponse deliveryRule = deliveryRuleService.getDeliveryRuleResponseByName("배송 비");
         modelMap.put("bookLists", bookFromCart);
         modelMap.put("totalCost", orderService.calculateTotalCost(bookFromCart));
-        modelMap.put("point", pointResponse.getRemainingPoint());
         modelMap.put("localDate", LocalDate.now());
-        modelMap.put("user", user);
         modelMap.put("delivery", deliveryRule);
         return "checkout";
     }
@@ -186,26 +228,105 @@ public class OrderController {
      */
     @PostMapping("/order")
     public String doOrder(@ModelAttribute BookOrderRequest orderRequest) {
-        log.info("값 : {}", orderRequest.toString());
         List<CartDetail> cart = cartUserService.getBookFromCart();
-        log.debug(cart.get(0).toString());
         orderInfoCheckService.checkModulation(orderRequest, cart);
         int point = orderService.getPoint(orderRequest.getOrderInfo());
         int couponCost = orderService.calculateBookCouponCost(orderRequest.getBookInfoList());
         int wrapCost = orderService.calculateBookWrapCost(orderRequest.getBookInfoList());
         int totalCost = orderService.calculateTotalCost(cart);
-        BookOrderCreateResponse response = orderService.createOrder(orderRequest.getBookInfoList(),
-                orderRequest.getOrderInfo(), point, couponCost, wrapCost, totalCost);
-        return "redirect:/pay/" + response.getNumber();
+        BookOrderCreateResponse response = orderService.createOrder(
+                orderRequest.getUserInfo(), orderRequest.getBookInfoList(), orderRequest.getOrderInfo(),
+                point, couponCost, wrapCost, totalCost);
+        return REDIRECT_PAY_URL + response.getNumber();
     }
 
+    /**
+     * 비회원 주문.
+     *
+     * @param orderRequest the order request
+     * @param cookie       the cookie
+     * @return the string
+     */
+    @PostMapping("/cart/order/non/user")
+    public String doNonUserOrder(@ModelAttribute BookOrderRequest orderRequest,
+                                 @CookieValue(name = NON_USER_CART_VALUE, required = false) Cookie cookie) {
+        List<CartDetail> cart = cartNonUserService.getBookFromCart(cookie);
+        if (cart.isEmpty()) {
+            return "/redirect:/cart";
+        }
+        orderInfoCheckService.checkNonOrderModulation(orderRequest, cart);
+        int wrapCost = orderService.calculateBookWrapCost(orderRequest.getBookInfoList());
+        int totalCost = orderService.calculateTotalCost(cart);
+        BookOrderCreateResponse response = orderService.createNonUserOrder(orderRequest, wrapCost, totalCost);
+        return REDIRECT_PAY_URL + response.getNumber();
+    }
+
+    @PostMapping("/direct/order")
+    public String doDirectOrder(@ModelAttribute BookOrderRequest orderRequest
+    ) {
+        BookGetResponseForOrder bookGetResponseForOrder =
+                bookService.getBookForOrder(orderRequest.getBookInfoList().get(0).getBookId());
+
+        orderInfoCheckService.checkDirectOrderModulation(orderRequest, bookGetResponseForOrder);
+
+        int point = orderRequest.getOrderInfo().getUsingPoint(); // 사용한 포인트
+        log.debug("point cost: {}", point);
+        // coupon cost
+        int couponCost = orderService.calculateBookCouponCost(orderRequest.getBookInfoList());
+        log.debug("coupon cost: {}", couponCost);
+        int wrapCost = orderService.calculateBookWrapCost(orderRequest.getBookInfoList());
+        log.debug("wrap cost: {}", wrapCost);
+
+        int totalCost = bookGetResponseForOrder.getSaleCost()
+                * orderRequest.getBookInfoList().get(0).getAmount();
+        BookOrderCreateResponse response = orderService.createOrder(
+                orderRequest.getUserInfo(),
+                orderRequest.getBookInfoList(),
+                orderRequest.getOrderInfo(), point, couponCost, wrapCost, totalCost);
+
+        return REDIRECT_PAY_URL + response.getNumber();
+    }
+
+    /**
+     * 결제가 성공된 장바구니 삭제.
+     *
+     * @return the response entity
+     */
+    @GetMapping("/cart/info")
+    public ResponseEntity<Void> removeCart(@CookieValue(name = NON_USER_CART_VALUE, required = false) Cookie cookie,
+                                           HttpServletRequest request,
+                                           HttpServletResponse response) {
+        log.debug("장바구니 호출");
+        if (Objects.nonNull(CookieUtils.getIdentityCookieValue(request))) {
+            cartUserService.deleteAllBookFromCart();
+        } else {
+            cookie.setMaxAge(0);
+            response.addCookie(cookie);
+        }
+        return ResponseEntity.status(HttpStatus.OK)
+                .build();
+    }
 
     @GetMapping("/order")
-    public String getAllUserOrder(@PageableDefault Pageable pageable, Model model){
+    public String getAllUserOrder(@PageableDefault Pageable pageable, Model model) {
 
-        model.addAttribute("orders",orderService.getAllUserBookOrder(pageable));
+        model.addAttribute("orders", orderService.getAllUserBookOrder(pageable));
         return "user-order";
     }
 
+
+    /**
+     * methodName : deleteAddress<br>
+     * author : minsu11<br>
+     * description : 배송지에서 유저의 주소를 삭제.
+     *
+     * @param addressId id
+     * @return string
+     */
+    @PostMapping("/address/delete")
+    public String deleteAddress(@RequestParam(name = "addressId") Long addressId) {
+        userAddressAdaptor.deleteUserAddress(addressId);
+        return "redirect:/address";
+    }
 
 }
