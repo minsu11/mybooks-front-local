@@ -6,7 +6,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import store.mybooks.front.admin.book.model.response.BookLikeResponse;
 import store.mybooks.front.admin.book.model.response.BookPopularityResponse;
 import store.mybooks.front.admin.book.model.response.BookPublicationDateResponse;
@@ -31,7 +33,6 @@ import store.mybooks.front.book.service.BookService;
 @RequiredArgsConstructor
 public class HomeController {
 
-    private final BookAdminService bookAdminService;
     private final BookService bookService;
 
     @RequestMapping("/")
@@ -51,4 +52,8 @@ public class HomeController {
         return "index";
     }
 
+    @GetMapping("/api-docs")
+    public String apiDocs() {
+        return "api-docs";
+    }
 }
