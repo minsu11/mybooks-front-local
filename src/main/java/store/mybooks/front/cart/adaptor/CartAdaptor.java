@@ -53,5 +53,37 @@ public class CartAdaptor {
         return exchange.getBody();
     }
 
+    @RequiredAuthorization
+    public void deleteAllCartData(){
+        HttpHeaders headers = Utils.getAuthHeader();
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+        ResponseEntity<Void> exchange =
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL_USER_CART + "/delete",
+                        HttpMethod.DELETE, requestEntity, new ParameterizedTypeReference<Void>() {
+                        });
+
+        if (!Objects.equals(exchange.getStatusCode(), HttpStatus.NO_CONTENT)) {
+            throw new RuntimeException();
+        }
+
+    }
+
+    @RequiredAuthorization
+    public void deleteCartData(Long bookId) {
+        HttpHeaders headers = Utils.getAuthHeader();
+
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+        ResponseEntity<Void> exchange =
+                restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL_USER_CART + "/delete/{id}",
+                        HttpMethod.DELETE, requestEntity, new ParameterizedTypeReference<Void>() {
+                        }
+                        , bookId);
+
+        if (!Objects.equals(exchange.getStatusCode(), HttpStatus.NO_CONTENT)) {
+            throw new RuntimeException();
+        }
+
+    }
+
 
 }
