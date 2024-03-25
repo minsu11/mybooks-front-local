@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import store.mybooks.front.pointhistory.model.PointResponseForUser;
 import store.mybooks.front.pointhistory.service.PointHistoryService;
 
 /**
@@ -37,7 +38,9 @@ public class PointHistoryController {
      */
     @GetMapping
     public String getPointHistoryPage(@PageableDefault Pageable pageable, Model model) {
-        model.addAttribute("points", pointHistoryService.getPointHistories(pageable));
+        PointResponseForUser pointResponseForUser = pointHistoryService.getPointHistories(pageable);
+        model.addAttribute("remainPoint", pointResponseForUser.getRemainPoint());
+        model.addAttribute("points", pointResponseForUser.getPointHistoryResponsePage());
         return "point-history";
     }
 }
