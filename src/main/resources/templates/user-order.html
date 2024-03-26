@@ -121,7 +121,9 @@
                             <p><strong>포인트:</strong> <span th:text="${order.pointCost}">Point Cost</span></p>
                             <p><strong>쿠폰:</strong> <span th:text="${order.couponCost}">Coupon Cost</span></p>
                             <p><strong>주문번호:</strong> <span th:text="${order.number}">Number</span></p>
-
+                            <a th:if="${order.statusId == '주문 완료'}"
+                               th:href="'/pay/cancel/' + ${order.number}"
+                               class="button">주문 취소</a>
                             <!-- 주문 상세 정보 표시 -->
                             <div th:each="detail : ${order.orderDetailInfoList}" class="order-detail">
 
@@ -143,17 +145,11 @@
 
                                     <p><strong>주문 상태:</strong> <span th:text="${detail.statusId}">Order Status</span>
                                     </p>
-                                    <a th:if="${detail.statusId != '구매 확정'}"
+                                    <a th:if="${detail.statusId != '구매 확정' and ${order.statusId == '배송 완료'}}"
                                        th:href="'/review/' + ${order.id} + '/register/' + ${detail.orderDetailId}"
                                        class="button">리뷰 작성</a>
-                                    <a th:if="${order.statusId == '주문 완료'}"
-                                       th:href="'/pay/cancel/' + ${order.number}"
-                                       class="button">주문 취소</a>
                                 </div>
-
                             </div>
-
-
                         </div>
                     </div>
                 </div>
