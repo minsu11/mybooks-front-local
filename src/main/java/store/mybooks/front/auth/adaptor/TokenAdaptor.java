@@ -35,6 +35,14 @@ public class TokenAdaptor {
 
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
 
+    /**
+     * methodName : createToken
+     * author : masiljangajji
+     * description : jwt 생성요청을 보냄
+     *
+     * @param tokenCreateRequest 유저의 정보를 담은 dto , 이것을 기반으로 JWT 생성
+     * @return token create response
+     */
     public TokenCreateResponse createToken(TokenCreateRequest tokenCreateRequest) {
 
         ResponseEntity<TokenCreateResponse> responseEntity =
@@ -50,6 +58,14 @@ public class TokenAdaptor {
         return responseEntity.getBody();
     }
 
+    /**
+     * methodName : refreshAccessToken
+     * author : masiljangajji
+     * description : 엑세스토큰 재발급 요청을 보냄
+     *
+     * @param refreshTokenRequest accessToken , ip , X-User-Agent 정보
+     * @return refresh token response
+     */
     public RefreshTokenResponse refreshAccessToken(RefreshTokenRequest refreshTokenRequest) {
 
         ResponseEntity<RefreshTokenResponse> responseEntity =
@@ -65,6 +81,13 @@ public class TokenAdaptor {
         return responseEntity.getBody();
     }
 
+    /**
+     * methodName : deleteRefreshToken
+     * author : masiljangajji
+     * description : 로그아웃시 리프래시토큰 삭제 요청을 보냄
+     *
+     * @param logoutRequest 엑세스토큰 , ip , X-User-Agent
+     */
     public void deleteRefreshToken(LogoutRequest logoutRequest){
 
         ResponseEntity<Void> responseEntity =

@@ -56,6 +56,15 @@ public class UserAdaptor {
     private static final String URL_MEMBER = "/api/member/users";
     private static final String URL_ADMIN_ID = "/api/admin/users/{userId}";
 
+    /**
+     * methodName : verifyUserStatus
+     * author : masiljangajji
+     * description : 유저의 이메일을 통해 비밀번호 정보를 가져옴
+     *
+     * @param  request 유저의 이메일 정보를 담고있는 dto
+     * @throws RuntimeException HttpStatus 가 ok가 아닌 경우
+     * @return user encrypted password response
+     */
     public UserEncryptedPasswordResponse verifyUserStatus(UserEmailRequest request) {
 
         ResponseEntity<UserEncryptedPasswordResponse> responseEntity =
@@ -71,6 +80,11 @@ public class UserAdaptor {
         return responseEntity.getBody();
     }
 
+    /**
+     * methodName : verifyDormancyUser
+     * author : masiljangajji
+     * description :휴면계정인 유저의 상태를 활성으로 변경
+     */
     @RequiredAuthorization
     public void verifyDormancyUser() {
 
@@ -86,6 +100,13 @@ public class UserAdaptor {
         }
     }
 
+    /**
+     * methodName : verifyLockUser
+     * author : masiljangajji
+     * description : 잠금 상태인 유저를 활성상태로 변경
+     *
+     * @param request 새로운 비밀번호를 담고있는 dto
+     */
     @RequiredAuthorization
     public void verifyLockUser(UserPasswordModifyRequest request) {
 
@@ -101,6 +122,14 @@ public class UserAdaptor {
         }
     }
 
+    /**
+     * methodName : completeLoginProcess
+     * author : masiljangajji
+     * description : 로그인 절차가 성공했음을 알림
+     * 마지막 로그인 시간 갱신 및 포인트 적립
+     * @param request 유저 이메일정보를 담고있는 dto
+     * @return user login response
+     */
     public UserLoginResponse completeLoginProcess(UserEmailRequest request) {
         ResponseEntity<UserLoginResponse> responseEntity =
                 restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL + "/verification/complete",
@@ -116,7 +145,17 @@ public class UserAdaptor {
         return responseEntity.getBody();
     }
 
+    /**
+     * methodName : loginOauthUser
+     * author : masiljangajji
+     * description : 소셜 로그인을 처리 함
+     *
+     * @param userLoginRequest oauthId 를 담고있는 dto
+     * @return user login response
+     */
     public UserLoginResponse loginOauthUser(UserOauthLoginRequest userLoginRequest) {
+
+
 
         ResponseEntity<UserLoginResponse> responseEntity =
                 restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL + "/oauth/login", HttpMethod.POST,
@@ -128,6 +167,8 @@ public class UserAdaptor {
             throw new RuntimeException();
         }
 
+
+
         return responseEntity.getBody();
     }
 
@@ -137,7 +178,7 @@ public class UserAdaptor {
      * author : masiljangajji
      * description : 유저의 회원가입 요청을 처리함
      *
-     * @param createRequest request
+     * @param createRequest 회원정보를 담고있는 dto
      */
     public void createUser(UserCreateRequest createRequest) {
 
@@ -156,7 +197,16 @@ public class UserAdaptor {
         }
     }
 
+    /**
+     * methodName : createOauthUser
+     * author : masiljangajji
+     * description : 정보제공을 동의한 소셜로그인에 대한 계정을 생성
+     *
+     * @param createRequest request 정보제공을 동의받은 유저의 정보
+     * @return user oauth create response
+     */
     public UserOauthCreateResponse createOauthUser(UserOauthCreateRequest createRequest) {
+
 
         ResponseEntity<UserOauthCreateResponse> response =
                 restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL + "/oauth", HttpMethod.POST,
@@ -167,9 +217,18 @@ public class UserAdaptor {
         if (response.getStatusCode() != HttpStatus.CREATED) {
             throw new RuntimeException();
         }
+
         return response.getBody();
     }
 
+    /**
+     * methodName : createAndLoginOauthUser
+     * author : masiljangajji
+     * description : 정보제공을 동의하지 않는경우 추가적인 정보를 받아 회원가입 및 로그인 처리를 함
+     *
+     * @param request 유저가 입력한 유저 정보
+     * @return user oauth create response
+     */
     public UserOauthCreateResponse createAndLoginOauthUser(UserOauthRequest request){
         ResponseEntity<UserOauthCreateResponse> responseEntity =
                 restTemplate.exchange(gatewayAdaptorProperties.getAddress() + URL + "/oauth/no-info",
@@ -185,6 +244,14 @@ public class UserAdaptor {
     }
 
 
+    /**
+     * methodName : verifyUserEmail
+     * author : masiljangajji
+     * description : 이메일 중복을 확인
+     *
+     * @param request 이메일정보를 담은 Dto
+     * @return user email check response
+     */
     public UserEmailCheckResponse verifyUserEmail(UserEmailRequest request){
 
         ResponseEntity<UserEmailCheckResponse> responseEntity =
@@ -226,7 +293,7 @@ public class UserAdaptor {
      * author : masiljangajji
      * description : 유저의 비밀번호를 변경함
      *
-     * @param modifyRequest request
+     * @param modifyRequest 유저의 새로운 비밀번호를 담은 dto
      */
     @RequiredAuthorization
     public void modifyUserPassword(UserPasswordModifyRequest modifyRequest) {
@@ -250,10 +317,9 @@ public class UserAdaptor {
      * author : masiljangajji
      * description : 유저의 상태를 변경함
      *
-     * @param userId        id
-     * @param modifyRequest request
+     * @param userId   유저의 id
+     * @param modifyRequest 변경할 상태정보
      */
-
     @RequiredAuthorization
     public void modifyUserStatus(Long userId, UserStatusModifyRequest modifyRequest) {
 
@@ -280,8 +346,8 @@ public class UserAdaptor {
      * author : masiljangajji
      * description : 유저의 등급을 변경함
      *
-     * @param userId        id
-     * @param modifyRequest request
+     * @param userId   유저 아이디
+     * @param modifyRequest 변경될 등급
      */
     @RequiredAuthorization
     public void modifyUserGrade(Long userId, UserGradeModifyRequest modifyRequest) {
@@ -309,7 +375,7 @@ public class UserAdaptor {
      * author : masiljangajji
      * description : 유저의 정보를 변경함 (이름,전화번호)
      *
-     * @param modifyRequest request
+     * @param modifyRequest 이름 및 전화번호를 담은 dto
      */
     @RequiredAuthorization
     public void modifyUser(UserModifyRequest modifyRequest) {

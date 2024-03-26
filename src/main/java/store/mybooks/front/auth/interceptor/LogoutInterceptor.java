@@ -46,12 +46,12 @@ public class LogoutInterceptor implements HandlerInterceptor {
 
         // UUID - UserId 담은 redis 삭제 및 admin 쿠키 삭제
         if (Objects.nonNull(request.getAttribute("admin_cookie_value"))) {
-            log.warn("어드민쿠키 삭제 시작 ");
+            log.debug("어드민쿠키 삭제 시작 ");
             RedisAuthService redisAuthService = context.getBean(RedisAuthService.class);
             redisAuthService.deleteValues((String) request.getAttribute("admin_cookie_value"));
-            log.warn("레디스 삭제");
+            log.debug("레디스 삭제");
             CookieUtils.deleteAdminCookie(response);
-            log.warn("어드민쿠키 삭제 완료");
+            log.debug("어드민쿠키 삭제 완료");
         }
 
 

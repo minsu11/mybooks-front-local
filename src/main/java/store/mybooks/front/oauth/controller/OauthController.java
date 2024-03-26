@@ -1,4 +1,4 @@
-package store.mybooks.front.oauth;
+package store.mybooks.front.oauth.controller;
 
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import store.mybooks.front.auth.adaptor.TokenAdaptor;
 import store.mybooks.front.auth.dto.request.TokenCreateRequest;
 import store.mybooks.front.auth.dto.response.TokenCreateResponse;
+import store.mybooks.front.oauth.service.OauthService;
 import store.mybooks.front.user.dto.response.UserLoginResponse;
 import store.mybooks.front.utils.CookieUtils;
 import store.mybooks.front.utils.Utils;
@@ -34,6 +35,17 @@ public class OauthController {
 
     private final TokenAdaptor tokenAdaptor;
 
+    /**
+     * methodName : oauthLogin
+     * author : masiljangajji
+     * description : 페이코 로그인을 처리함
+     *
+     * @param provider provider , Payco
+     * @param code     code
+     * @param request  request
+     * @param response response
+     * @return string
+     */
     @GetMapping("/login/oauth2/code/{provider}")
     public String oauthLogin(@PathVariable String provider, @RequestParam String code, HttpServletRequest request,
                              HttpServletResponse response) {
@@ -41,7 +53,7 @@ public class OauthController {
         UserLoginResponse loginResponse = oauthService.oauthLogin(provider, code);
 
         if (loginResponse.getUserId().equals(0L)) {
-            return "redirect:/verification/social/"+loginResponse.getStatus();
+            return "redirect:/verification/social/" + loginResponse.getStatus();
         }
 
         if (loginResponse.getIsValidUser()) { // 기존에 계정이 있거나 , 회원가입에 문제가 없는 경우 로그인
@@ -51,6 +63,7 @@ public class OauthController {
                             new TokenCreateRequest(loginResponse.getIsAdmin(), loginResponse.getUserId(),
                                     loginResponse.getStatus(), String.valueOf(UUID.randomUUID()),
                                     Utils.getUserIp(request), Utils.getUserAgent(request)));
+
 
             CookieUtils.addJwtCookie(response, tokenCreateResponse.getAccessToken());
             return "redirect:/";

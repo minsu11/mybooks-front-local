@@ -28,7 +28,6 @@ import store.mybooks.front.review.dto.response.ReviewCreateResponse;
 import store.mybooks.front.review.dto.response.ReviewDetailGetResponse;
 import store.mybooks.front.review.dto.response.ReviewGetResponse;
 import store.mybooks.front.review.dto.response.ReviewModifyResponse;
-import store.mybooks.front.review.dto.response.ReviewRateResponse;
 import store.mybooks.front.utils.Utils;
 
 /**
@@ -42,7 +41,6 @@ import store.mybooks.front.utils.Utils;
  * -----------------------------------------------------------
  * 3/17/24        masiljangajji       최초 생성
  */
-
 @Component
 @RequiredArgsConstructor
 public class ReviewAdaptor {
@@ -57,21 +55,15 @@ public class ReviewAdaptor {
 
     private static final String URL_MEMBER_ID = "/api/member/reviews/{id}";
 
-
-    public ReviewRateResponse getTotalReviewRate(Long bookId){
-
-        ResponseEntity<ReviewRateResponse> exchange = restTemplate.exchange(
-                gatewayAdaptorProperties.getAddress() + URL + "/book/{bookId}/rate",
-                HttpMethod.GET,
-                new HttpEntity<>(Utils.getAuthHeader()),
-                new ParameterizedTypeReference<>() {
-                },bookId);
-
-        Utils.getResponseEntity(exchange, HttpStatus.OK);
-
-        return exchange.getBody();
-    }
-
+    /**
+     * methodName : createReview
+     * author : masiljangajji
+     * description : 리뷰를 생성
+     *
+     * @param request 제목 , 본문 , 별점
+     * @param file    사진
+     * @throws IOException the io exception
+     */
     @RequiredAuthorization
     public void createReview(ReviewCreateRequest request, MultipartFile file) throws IOException {
 
@@ -94,6 +86,16 @@ public class ReviewAdaptor {
         Utils.getResponseEntity(responseEntity, HttpStatus.CREATED);
     }
 
+    /**
+     * methodName : modifyUserReview
+     * author : masiljangajji
+     * description : 리뷰 수정
+     *
+     * @param reviewId 리뷰아이디
+     * @param request  제목 본문 별점
+     * @param file     이미지 파일
+     * @throws IOException the io exception
+     */
     @RequiredAuthorization
     public void modifyUserReview(Long reviewId, ReviewModifyRequest request, MultipartFile file) throws IOException {
 
@@ -113,11 +115,19 @@ public class ReviewAdaptor {
                 HttpMethod.PUT,
                 requestHttpEntity,
                 new ParameterizedTypeReference<>() {
-                },reviewId);
+                }, reviewId);
 
         Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
+    /**
+     * methodName : getAllUserReview
+     * author : masiljangajji
+     * description : 유저의 모든 리뷰 정보를 가져옴 (pagination 적용)
+     *
+     * @param pageable pageable
+     * @return page response
+     */
     @RequiredAuthorization
     public PageResponse<ReviewGetResponse> getAllUserReview(Pageable pageable) {
 
@@ -132,6 +142,15 @@ public class ReviewAdaptor {
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
+    /**
+     * methodName : getBookReview
+     * author : masiljangajji
+     * description : 책의 모든 리뷰를 가져옴
+     *
+     * @param pageable pageable
+     * @param bookId   책 아이디
+     * @return page response
+     */
     public PageResponse<ReviewDetailGetResponse> getBookReview(Pageable pageable, Long bookId) {
 
         ResponseEntity<PageResponse<ReviewDetailGetResponse>> exchange = restTemplate.exchange(
@@ -145,6 +164,14 @@ public class ReviewAdaptor {
         return Utils.getResponseEntity(exchange, HttpStatus.OK);
     }
 
+    /**
+     * methodName : getUserReview
+     * author : masiljangajji
+     * description : 유저가 작성한 특정 리뷰를 가져옴
+     *
+     * @param reviewId id
+     * @return review get response
+     */
     @RequiredAuthorization
     public ReviewGetResponse getUserReview(Long reviewId) {
 

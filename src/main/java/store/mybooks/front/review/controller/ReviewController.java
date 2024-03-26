@@ -35,15 +35,35 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
+    /**
+     * methodName : reviewRegisterForm
+     * author : masiljangajji
+     * description : 리뷰 작성을 위한 페이지로 이동
+     *
+     * @param orderId       주문 아이디
+     * @param orderDetailId 주문 상세 아이디
+     * @param model         model
+     * @return string
+     */
     @GetMapping("{orderId}/register/{orderDetailId}")
     public String reviewRegisterForm(@PathVariable(name = "orderId") Long orderId,
                                      @PathVariable(name = "orderDetailId") Long orderDetailId, Model model) {
-        model.addAttribute("orderId",orderId);
+        model.addAttribute("orderId", orderId);
         model.addAttribute("orderDetailId", orderDetailId);
 
         return "review-register";
     }
 
+    /**
+     * methodName : reviewRegister
+     * author : masiljangajji
+     * description : 리뷰 등록을 처리
+     *
+     * @param createRequest 주문 정보 및 리뷰 제목 본문 별점 정보
+     * @param contentImages 이미지파일
+     * @return string
+     * @throws IOException the io exception
+     */
     @PostMapping("/register")
     public String reviewRegister(@ModelAttribute ReviewCreateRequest createRequest,
                                  @RequestParam(value = "contentImage", required = false) MultipartFile contentImages)
@@ -53,12 +73,31 @@ public class ReviewController {
         return "redirect:/review";
     }
 
+    /**
+     * methodName : getReviewByUserId
+     * author : masiljangajji
+     * description : 유저의 모든 리뷰를 가져옴
+     *
+     * @param pageable pageable
+     * @param model    model
+     * @return string
+     */
     @GetMapping
     public String getReviewByUserId(@PageableDefault(size = 8) Pageable pageable, Model model) {
         model.addAttribute("reviews", reviewService.getAllUserReview(pageable));
         return "review";
     }
 
+    /**
+     * methodName : getReviewByBookId
+     * author : masiljangajji
+     * description : 책의 모든 리뷰를 가져옴
+     *
+     * @param bookId   책 아이디
+     * @param pageable pageable
+     * @param model    model
+     * @return string
+     */
     @GetMapping("/book/{bookId}")
     public String getReviewByBookId(@PathVariable(name = "bookId") Long bookId,
                                     @PageableDefault(size = 5) Pageable pageable, Model model) {
@@ -66,12 +105,32 @@ public class ReviewController {
         return "review-book";
     }
 
+    /**
+     * methodName : modifyForm
+     * author : masiljangajji
+     * description : 리뷰 수정페이지로 이동
+     *
+     * @param reviewId 리뷰 아이디
+     * @param model    model
+     * @return string
+     */
     @GetMapping("/modify")
     public String modifyForm(@RequestParam(name = "reviewId") Long reviewId, Model model) {
         model.addAttribute("review", reviewService.getUserReview(reviewId));
         return "review-modify";
     }
 
+    /**
+     * methodName : modifyReview
+     * author : masiljangajji
+     * description : 리뷰를 수정함
+     *
+     * @param reviewId      리뷰 아이디
+     * @param request       타이틀 본문 별점
+     * @param contentImages 이미지
+     * @return string
+     * @throws IOException the io exception
+     */
     @PostMapping("/modify")
     public String modifyReview(@RequestParam(name = "reviewId") Long reviewId,
                                @ModelAttribute ReviewModifyRequest request,

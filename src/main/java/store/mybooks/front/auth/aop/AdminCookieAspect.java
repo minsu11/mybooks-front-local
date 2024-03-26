@@ -21,6 +21,11 @@ public class AdminCookieAspect {
 
     private final RedisAuthService redisAuthService;
 
+    /**
+     * methodName : beforeMethod
+     * author : masiljangajji
+     * description : 어드민 페이지에 접근시 RequiredAdminCookie 어노테이션이 있는 경우 , adminCookie 를 확인 및 검증하는 인가처리
+     */
     @Before("@annotation(store.mybooks.front.auth.Annotation.RequiredAdminCookie)")
     public void beforeMethod() {
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(

@@ -1,7 +1,8 @@
-package store.mybooks.front.oauth;
+package store.mybooks.front.oauth.repository;
 
 import java.util.HashMap;
 import java.util.Map;
+import store.mybooks.front.oauth.OauthProvider;
 
 /**
  * packageName    : store.mybooks.front.oauth2<br>

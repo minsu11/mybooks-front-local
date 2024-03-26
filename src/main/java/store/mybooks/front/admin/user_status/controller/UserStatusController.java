@@ -26,6 +26,14 @@ public class UserStatusController {
     private final UserStatusAdaptor userStatusAdaptor;
 
 
+    /**
+     * methodName : findUserStatusById
+     * author : masiljangajji
+     * description : 유저의 모든 상태를 보여줌
+     *
+     * @param model model
+     * @return string
+     */
     @GetMapping
     public String findUserStatusById(Model model) {
         model.addAttribute("userStatus", userStatusAdaptor.findAllUserStatus());

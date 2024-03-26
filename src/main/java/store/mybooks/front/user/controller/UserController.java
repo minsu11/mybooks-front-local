@@ -73,7 +73,10 @@ public class UserController {
      * methodName : loginUserForm
      * author : masiljangajji
      * description : 로그인 페이지로 이동
+     * 이미 로그인했다면 인덱스 , 아니라면 로그인페이지로
      *
+     * @param request servlet request
+     * @param model model
      * @return string
      */
     @GetMapping("/login")
@@ -90,6 +93,13 @@ public class UserController {
         return "redirect:/";
     }
 
+    /**
+     * methodName : paycoLoginForm
+     * author : masiljangajji
+     * description : 페이코 로그인을 부름
+     *
+     * @return redirect view
+     */
     @GetMapping("/auth/payco/login")
     public RedirectView paycoLoginForm() {
 
@@ -97,6 +107,13 @@ public class UserController {
                 "https://id.payco.com/oauth2.0/authorize?response_type=code&client_id=3RDktHA_exycIbutIzVLP3D&serviceProviderCode=FRIENDS&redirect_uri=https://www.my-books.store/login/oauth2/code/payco&state=ab42ae&userLocale=ko_KR");
     }
 
+    /**
+     * methodName : logout
+     * author : masiljangajji
+     * description : 로그아웃 처리
+     * 쿠키를 지우는 등의 행위는 인터셉터에서 처리
+     * @return string
+     */
     @GetMapping("/logout")
     public String logout() {
         return "redirect:/";
@@ -108,6 +125,7 @@ public class UserController {
      * author : masiljangajji
      * description : 회원가입 페이지로 이동
      *
+     * @param request request
      * @return string
      */
     @GetMapping("/signup")
@@ -119,24 +137,51 @@ public class UserController {
         return "redirect:/";
     }
 
-    // 휴면계정인 사람 휴면인증 페이지로
+    /**
+     * methodName : dormancyUserForm
+     * author : masiljangajji
+     * description : 휴면인증페이지로 이동
+     * 상태체크는 gateway 에서 함 , 휴면인증을 해제하려면 두레이 인증이 필요
+     * @return string
+     */
     @GetMapping("/verification/dormancy")
     public String dormancyUserForm() {
         return "dormancy";
     }
 
-    // 휴면계정 dooray 인증 받겠다.
+    /**
+     * methodName : verifyDormancyUser
+     * author : masiljangajji
+     * description : dooray 인증을 받은 유저의 상태를 활성으로 변경
+     *
+     * @return string
+     */
     @PostMapping("/dormancy")
     public String verifyDormancyUser() {
         userAdaptor.verifyDormancyUser();
         return "redirect:/";
     }
 
+    /**
+     * methodName : lockUserForm
+     * author : masiljangajji
+     * description : 잠금상태인 유저를 잠금페이지로 보냄
+     * 모든 상태체크는 gateway 에서 진행
+     * @return string
+     */
     @GetMapping("/verification/lock")
     public String lockUserForm() {
         return "lock";
     }
 
+    /**
+     * methodName : verifyLockUser
+     * author : masiljangajji
+     * description : dooray 인증과 새로운 비밀번호를 받은 유저의 상태를 활성으로 변경
+     *
+     * @param request 새로운 비밀번호를 담은 dto
+     * @return string
+     */
     @PostMapping("/lock")
     public String verifyLockUser(@ModelAttribute UserPasswordModifyRequest request) {
 
@@ -145,6 +190,15 @@ public class UserController {
         return "redirect:/";
     }
 
+    /**
+     * methodName : socialUserForm
+     * author : masiljangajji
+     * description : 페이코 정보제공 비동의시 추가정보를 받기위해 social 페이지로 옮김
+     *
+     * @param request reqeust
+     * @param oauthId 페이코에서 넘겨준 oauthId
+     * @return string
+     */
     @GetMapping("/verification/social/{oauthId}")
     public String socialUserForm(HttpServletRequest request,@PathVariable("oauthId")String oauthId) {
         request.setAttribute("nowDate",LocalDate.now());
@@ -152,11 +206,20 @@ public class UserController {
         return "social";
     }
 
+    /**
+     * methodName : createAndLoginOauthUser
+     * author : masiljangajji
+     * description : 추가인증 정보를 받은 소셜 회원에 대해 회원가입 및 로그인 처리 진행
+     *
+     * @param oauthRequest 회원이 입력한 추가정보
+     * @param request request
+     * @param response response
+     * @return string
+     */
     @PostMapping("/social")
     public String createAndLoginOauthUser(@ModelAttribute UserOauthRequest oauthRequest, HttpServletRequest request, HttpServletResponse response) {
 
         UserOauthCreateResponse createResponse = userAdaptor.createAndLoginOauthUser(oauthRequest);
-
 
         TokenCreateResponse tokenCreateResponse =
                 tokenAdaptor.createToken(
@@ -173,7 +236,7 @@ public class UserController {
      * author : masiljangajji
      * description : mypage로 이동
      *
-     * @param model 유저의 정보
+     * @param model model
      * @return string
      */
     @GetMapping("/user")
@@ -184,6 +247,14 @@ public class UserController {
         return "my-page";
     }
 
+    /**
+     * methodName : verifyUserEmail
+     * author : masiljangajji
+     * description : 이메일 인증을 함
+     *
+     * @param email email
+     * @return user email check response
+     */
     @ResponseBody
     @GetMapping("/email/verify")
     public UserEmailCheckResponse verifyUserEmail(@RequestParam(name="email")String email){
@@ -195,7 +266,9 @@ public class UserController {
      * author : masiljangajji
      * description : 유저의 로그인처리
      *
-     * @param userLoginRequest login request
+     * @param userLoginRequest 이메일 , 비밀번호 정보
+     * @param request request
+     * @param response response
      * @return string
      */
     @PostMapping("/login")
@@ -233,6 +306,7 @@ public class UserController {
 
                 return "redirect:/";
             }
+            // 기존이 에러는 Error Page 로 보내지만 로그인의 경우 실패한 이유를 alert 로 알려주기 위한 처리
             throw new PasswordNotValidException();
         }catch (RuntimeException e){
             throw new LoginFailedException(e.getMessage());
@@ -246,7 +320,7 @@ public class UserController {
      * author : masiljangajji
      * description : 회원가입 요청을 처리
      *
-     * @param userCreateRequest create request
+     * @param userCreateRequest 유저의 정보
      * @return string
      */
     @PostMapping("/signup")
@@ -264,7 +338,7 @@ public class UserController {
      * author : masiljangajji
      * description : 유저의 비밀번호 변경
      *
-     * @param modifyRequest request
+     * @param modifyRequest 새로운 비밀번호
      * @return string
      */
     @PostMapping("/user/modify/password")
@@ -282,14 +356,14 @@ public class UserController {
      * author : masiljangajji
      * description : 유저의 상태변경
      *
-     * @param modifyRequest request
+     * @param userId   유저 아이디
+     * @param modifyRequest 변경될 상태정보
      * @return string
      */
     @PostMapping("/user/{userId}/modify/status")
     public String modifyUserStatus(@PathVariable(name = "userId") Long userId,
                                    @ModelAttribute UserStatusModifyRequest modifyRequest) {
 
-        // todo JWT 이건 관리자용
         userAdaptor.modifyUserStatus(userId, modifyRequest);
         return "redirect:/user";
     }
@@ -299,14 +373,13 @@ public class UserController {
      * author : masiljangajji
      * description : 유저의 등급 변경
      *
-     * @param modifyRequest request
+     * @param userId   유저 아이디
+     * @param modifyRequest 변경될 등급정보
      * @return string
      */
     @PostMapping("/user/{userId}/modify/grade")
     public String modifyUserGrade(@PathVariable(name = "userId") Long userId,
                                   @ModelAttribute UserGradeModifyRequest modifyRequest) {
-
-        // todo JWT 이건 관리자용
         userAdaptor.modifyUserGrade(userId, modifyRequest);
         return "redirect:/user";
     }
@@ -317,7 +390,7 @@ public class UserController {
      * author : masiljangajji
      * description : 유저의 정보를 변경 (이름,전화번호)
      *
-     * @param modifyRequest request
+     * @param modifyRequest 이름 및 전화번호
      * @return string
      */
     @PostMapping("/user/modify")

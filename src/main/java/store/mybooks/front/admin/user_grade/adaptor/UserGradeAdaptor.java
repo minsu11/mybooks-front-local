@@ -40,11 +40,10 @@ public class UserGradeAdaptor {
     /**
      * methodName : findUserStatusById
      * author : masiljangajji
-     * description : 유저가 가질 수 있는 상태를 찾음
+     * description : 활성상태인 모든 유저등급을 가져옴
      *
      * @return user status get response
      */
-
     @RequiredAuthorization
     public List<UserGradeGetResponse> findAllAvailableUserGrade() {
         ResponseEntity<List<UserGradeGetResponse>> responseEntity =
@@ -60,6 +59,13 @@ public class UserGradeAdaptor {
         return responseEntity.getBody();
     }
 
+    /**
+     * methodName : findAllUserGrade
+     * author : masiljangajji
+     * description : 활성 + 비활성 상태의 모든 유저등급을 가져옴
+     *
+     * @return list
+     */
     @RequiredAuthorization
     public List<UserGradeGetResponse> findAllUserGrade() {
 
@@ -77,6 +83,13 @@ public class UserGradeAdaptor {
         return responseEntity.getBody();
     }
 
+    /**
+     * methodName : createUserGrade
+     * author : masiljangajji
+     * description : 유저등급 생성
+     *
+     * @param createRequest 포인트 적립률 , 이름
+     */
     @RequiredAuthorization
     public void createUserGrade(UserGradeCreateRequest createRequest) {
         ResponseEntity<Void> responseEntity =

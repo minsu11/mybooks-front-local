@@ -1,4 +1,4 @@
-package store.mybooks.front.oauth;
+package store.mybooks.front.oauth.service;
 
 import java.util.Map;
 import java.util.Objects;
@@ -9,6 +9,11 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 import store.mybooks.front.config.KeyConfig;
+import store.mybooks.front.oauth.repository.InMemoryProviderRepository;
+import store.mybooks.front.oauth.OauthAttributes;
+import store.mybooks.front.oauth.OauthProvider;
+import store.mybooks.front.oauth.OauthTokenResponse;
+import store.mybooks.front.oauth.UserProfile;
 import store.mybooks.front.user.adaptor.UserAdaptor;
 import store.mybooks.front.user.dto.request.UserOauthCreateRequest;
 import store.mybooks.front.user.dto.request.UserOauthLoginRequest;
@@ -59,13 +64,18 @@ public class OauthService {
         return formData;
     }
 
+
     /**
-     * methodName : login
+     * methodName : oauthLogin
      * author : masiljangajji
-     * description :
-     *
-     * @param code
-     * @return oauth login response
+     * description : 소셜 로그인 요청시 providerName 을 통해 로그인 제공 업체의 ClientId , Secret 등을 가져옴
+     * 최초 로그인이 아닌경우 db 에 정보가 남아있기 떄문에 기존 회원 로그인시 로그인처리
+     * 최초 로그인이라면
+     * 정보제공 동의 -> 그 정보로 회원가입 후 로그인처리 ,
+     * 정보제공 비동의 -> 추가정보를 입력받게끔 response 반환
+     * @param providerName 소셜 로그인을 제공하는 곳의 이름
+     * @param code code
+     * @return user login response
      */
     public UserLoginResponse oauthLogin(String providerName, String code) {
 
@@ -77,6 +87,7 @@ public class OauthService {
 
         // 유저 정보 가져오기
         UserProfile userProfile = getUserProfile(providerName, tokenResponse, provider);
+
 
 
         // 가져온 OauthId 가지고 db 긁어서 있는회원인지 확인
@@ -98,7 +109,9 @@ public class OauthService {
                 new UserOauthCreateRequest(userProfile.getName(), userProfile.getMobile(), userProfile.getEmail(),
                         userProfile.getBirthday(),userProfile.getOauthId());
 
+
         UserOauthCreateResponse createResponse = userAdaptor.createOauthUser(createRequest);
+
 
         return new UserLoginResponse(true, false, createResponse.getId(), createResponse.getUserStatusName());
 

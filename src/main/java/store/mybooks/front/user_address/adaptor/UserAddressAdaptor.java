@@ -2,13 +2,10 @@ package store.mybooks.front.user_address.adaptor;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -97,7 +94,7 @@ public class UserAddressAdaptor {
      * author : masiljangajji
      * description : 유저 주소를 생성
      *
-     * @param userAddressCreateRequest address create request
+     * @param userAddressCreateRequest 별명 상세주소  추가정보
      */
     @RequiredAuthorization
     public void createUserAddress(UserAddressCreateRequest userAddressCreateRequest) {
@@ -120,8 +117,8 @@ public class UserAddressAdaptor {
      * author : masiljangajji
      * description : 유저의 주소정보를 변경 (별명,상세주소)
      *
-     * @param addressId                id
-     * @param userAddressModifyRequest address modify request
+     * @param addressId                주소 아이디
+     * @param userAddressModifyRequest 별명 및 상세주소
      */
     @RequiredAuthorization
     public void modifyUserAddress(Long addressId, UserAddressModifyRequest userAddressModifyRequest) {

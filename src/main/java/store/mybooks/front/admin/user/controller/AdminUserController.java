@@ -20,7 +20,6 @@ import store.mybooks.front.admin.user.adaptor.AdminUserAdaptor;
  * -----------------------------------------------------------
  * 3/15/24        masiljangajji       최초 생성
  */
-
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin/member")
@@ -28,6 +27,15 @@ public class AdminUserController {
 
     private final AdminUserAdaptor adminUserAdaptor;
 
+    /**
+     * methodName : viewMembers
+     * author : masiljangajji
+     * description : 모든 유저정보를 보여줌
+     *
+     * @param pageable pageable
+     * @param model    model
+     * @return string
+     */
     @GetMapping
     public String viewMembers(@PageableDefault Pageable pageable, Model model) {
 
