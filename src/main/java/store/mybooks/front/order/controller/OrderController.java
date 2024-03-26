@@ -20,6 +20,7 @@ import store.mybooks.front.admin.book.model.response.BookGetResponseForOrder;
 import store.mybooks.front.admin.book.model.response.BookStockResponse;
 import store.mybooks.front.admin.delivery_rule.dto.DeliveryRuleResponse;
 import store.mybooks.front.admin.delivery_rule.service.DeliveryRuleService;
+import store.mybooks.front.admin.delivery_rule_name.enumulation.DeliveryRuleNameEnum;
 import store.mybooks.front.admin.wrap.dto.response.WrapResponse;
 import store.mybooks.front.admin.wrap.service.WrapService;
 import store.mybooks.front.book.service.BookService;
@@ -102,8 +103,10 @@ public class OrderController {
             modelMap.put("check", false);
         }
 
+        DeliveryRuleResponse deliveryRule = deliveryRuleService
+                .getDeliveryRuleResponseByName(DeliveryRuleNameEnum.DELIVERY.getValue());
         Integer totalCost = bookGetResponseForOrder.getSaleCost() * request.getQuantity();
-        DeliveryRuleResponse deliveryRule = deliveryRuleService.getDeliveryRuleResponseByName("배송 비");
+        totalCost = totalCost > deliveryRule.getRuleCost() ? totalCost : totalCost + deliveryRule.getCost();
         modelMap.put("quantity", request.getQuantity());
         modelMap.put("bookLists", bookGetResponseForOrders);
         modelMap.put("totalCost", totalCost);
@@ -212,7 +215,7 @@ public class OrderController {
         }
         DeliveryRuleResponse deliveryRule = deliveryRuleService.getDeliveryRuleResponseByName("배송 비");
         modelMap.put("bookLists", bookFromCart);
-        modelMap.put("totalCost", orderService.calculateTotalCost(bookFromCart));
+        modelMap.put("totalCost", orderService.calculateTotalCost(bookFromCart, deliveryRule));
         modelMap.put("localDate", LocalDate.now());
         modelMap.put("delivery", deliveryRule);
         return "checkout";
@@ -233,7 +236,9 @@ public class OrderController {
         int point = orderService.getPoint(orderRequest.getOrderInfo());
         int couponCost = orderService.calculateBookCouponCost(orderRequest.getBookInfoList());
         int wrapCost = orderService.calculateBookWrapCost(orderRequest.getBookInfoList());
-        int totalCost = orderService.calculateTotalCost(cart);
+        int deleveryId = orderRequest.getOrderInfo().getDeliveryId();
+        DeliveryRuleResponse deliveryRuleResponse = deliveryRuleService.getDeliveryRule(deleveryId);
+        int totalCost = orderService.calculateTotalCost(cart, deliveryRuleResponse);
         BookOrderCreateResponse response = orderService.createOrder(
                 orderRequest.getUserInfo(), orderRequest.getBookInfoList(), orderRequest.getOrderInfo(),
                 point, couponCost, wrapCost, totalCost);
@@ -256,7 +261,9 @@ public class OrderController {
         }
         orderInfoCheckService.checkNonOrderModulation(orderRequest, cart);
         int wrapCost = orderService.calculateBookWrapCost(orderRequest.getBookInfoList());
-        int totalCost = orderService.calculateTotalCost(cart);
+        DeliveryRuleResponse deliveryRuleResponse = deliveryRuleService
+                .getDeliveryRuleResponseByName(DeliveryRuleNameEnum.DELIVERY.getValue());
+        int totalCost = orderService.calculateTotalCost(cart, deliveryRuleResponse);
         BookOrderCreateResponse response = orderService.createNonUserOrder(orderRequest, wrapCost, totalCost);
         return REDIRECT_PAY_URL + response.getNumber();
     }
@@ -270,12 +277,9 @@ public class OrderController {
         orderInfoCheckService.checkDirectOrderModulation(orderRequest, bookGetResponseForOrder);
 
         int point = orderRequest.getOrderInfo().getUsingPoint(); // 사용한 포인트
-        log.debug("point cost: {}", point);
         // coupon cost
         int couponCost = orderService.calculateBookCouponCost(orderRequest.getBookInfoList());
-        log.debug("coupon cost: {}", couponCost);
         int wrapCost = orderService.calculateBookWrapCost(orderRequest.getBookInfoList());
-        log.debug("wrap cost: {}", wrapCost);
 
         int totalCost = bookGetResponseForOrder.getSaleCost()
                 * orderRequest.getBookInfoList().get(0).getAmount();
@@ -296,7 +300,6 @@ public class OrderController {
     public ResponseEntity<Void> removeCart(@CookieValue(name = NON_USER_CART_VALUE, required = false) Cookie cookie,
                                            HttpServletRequest request,
                                            HttpServletResponse response) {
-        log.debug("장바구니 호출");
         if (Objects.nonNull(CookieUtils.getIdentityCookieValue(request))) {
             cartUserService.deleteAllBookFromCart();
         } else {
