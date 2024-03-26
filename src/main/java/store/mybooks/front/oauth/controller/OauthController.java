@@ -35,6 +35,17 @@ public class OauthController {
 
     private final TokenAdaptor tokenAdaptor;
 
+    /**
+     * methodName : oauthLogin
+     * author : masiljangajji
+     * description : 페이코 로그인을 처리함
+     *
+     * @param provider provider , Payco
+     * @param code     code
+     * @param request  request
+     * @param response response
+     * @return string
+     */
     @GetMapping("/login/oauth2/code/{provider}")
     public String oauthLogin(@PathVariable String provider, @RequestParam String code, HttpServletRequest request,
                              HttpServletResponse response) {
@@ -42,7 +53,7 @@ public class OauthController {
         UserLoginResponse loginResponse = oauthService.oauthLogin(provider, code);
 
         if (loginResponse.getUserId().equals(0L)) {
-            return "redirect:/verification/social/"+loginResponse.getStatus();
+            return "redirect:/verification/social/" + loginResponse.getStatus();
         }
 
         if (loginResponse.getIsValidUser()) { // 기존에 계정이 있거나 , 회원가입에 문제가 없는 경우 로그인

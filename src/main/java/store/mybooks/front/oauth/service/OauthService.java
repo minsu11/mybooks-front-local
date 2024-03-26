@@ -65,6 +65,18 @@ public class OauthService {
     }
 
 
+    /**
+     * methodName : oauthLogin
+     * author : masiljangajji
+     * description : 소셜 로그인 요청시 providerName 을 통해 로그인 제공 업체의 ClientId , Secret 등을 가져옴
+     * 최초 로그인이 아닌경우 db 에 정보가 남아있기 떄문에 기존 회원 로그인시 로그인처리
+     * 최초 로그인이라면
+     * 정보제공 동의 -> 그 정보로 회원가입 후 로그인처리 ,
+     * 정보제공 비동의 -> 추가정보를 입력받게끔 response 반환
+     * @param providerName 소셜 로그인을 제공하는 곳의 이름
+     * @param code code
+     * @return user login response
+     */
     public UserLoginResponse oauthLogin(String providerName, String code) {
 
         // 프론트에서 넘어온 provider 이름을 통해 InMemoryProviderRepository에서 OauthProvider 가져오기
