@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import store.mybooks.front.admin.book.model.response.BookDetailResponse;
+import store.mybooks.front.admin.delivery_rule.dto.DeliveryRuleResponse;
 import store.mybooks.front.admin.wrap.adaptor.WrapAdaptor;
 import store.mybooks.front.admin.wrap.dto.response.WrapResponse;
 import store.mybooks.front.book.adaptor.BookAdaptor;
@@ -66,12 +67,12 @@ public class OrderService {
      * @param cartDetailList 장바구니 상세
      * @return integer
      */
-    public Integer calculateTotalCost(List<CartDetail> cartDetailList) {
+    public Integer calculateTotalCost(List<CartDetail> cartDetailList, DeliveryRuleResponse deliveryRuleResponse) {
         int totalCost = 0;
         for (CartDetail cartDetail : cartDetailList) {
             totalCost += (cartDetail.getSaleCost() * cartDetail.getCartDetailAmount());
         }
-        return totalCost;
+        return totalCost > deliveryRuleResponse.getRuleCost() ? totalCost : totalCost + deliveryRuleResponse.getCost();
     }
 
     public List<Integer> calculateBooksCost(List<CartDetail> cartDetailList) {
