@@ -26,7 +26,6 @@ import store.mybooks.front.utils.Utils;
  * -----------------------------------------------------------
  * 3/15/24        masiljangajji       최초 생성
  */
-
 @Component
 @RequiredArgsConstructor
 public class AdminUserAdaptor {
@@ -36,6 +35,14 @@ public class AdminUserAdaptor {
     private final GatewayAdaptorProperties gatewayAdaptorProperties;
     private static final String ADMIN_URL = "/api/admin/users";
 
+    /**
+     * methodName : getPagedUsers
+     * author : masiljangajji
+     * description : 모든 유저정보를 가져옴
+     *
+     * @param pageable pageable
+     * @return page response
+     */
     @RequiredAuthorization
     public PageResponse<UserGetResponse> getPagedUsers(Pageable pageable) {
 
