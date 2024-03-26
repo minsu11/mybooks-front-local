@@ -15,7 +15,7 @@ import lombok.Getter;
  */
 @Getter
 public enum DeliveryRuleNameEnum {
-    DELIVERY("배송 중");
+    DELIVERY("배송 비");
 
     private final String value;
 
