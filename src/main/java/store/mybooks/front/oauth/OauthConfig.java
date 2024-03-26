@@ -4,6 +4,7 @@ import java.util.Map;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import store.mybooks.front.oauth.repository.InMemoryProviderRepository;
 
 /**
  * packageName    : store.mybooks.front.oauth2<br>

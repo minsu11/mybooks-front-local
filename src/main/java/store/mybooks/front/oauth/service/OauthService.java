@@ -1,4 +1,4 @@
-package store.mybooks.front.oauth;
+package store.mybooks.front.oauth.service;
 
 import java.util.Map;
 import java.util.Objects;
@@ -9,6 +9,11 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 import store.mybooks.front.config.KeyConfig;
+import store.mybooks.front.oauth.repository.InMemoryProviderRepository;
+import store.mybooks.front.oauth.OauthAttributes;
+import store.mybooks.front.oauth.OauthProvider;
+import store.mybooks.front.oauth.OauthTokenResponse;
+import store.mybooks.front.oauth.UserProfile;
 import store.mybooks.front.user.adaptor.UserAdaptor;
 import store.mybooks.front.user.dto.request.UserOauthCreateRequest;
 import store.mybooks.front.user.dto.request.UserOauthLoginRequest;
@@ -59,14 +64,7 @@ public class OauthService {
         return formData;
     }
 
-    /**
-     * methodName : login
-     * author : masiljangajji
-     * description :
-     *
-     * @param code
-     * @return oauth login response
-     */
+
     public UserLoginResponse oauthLogin(String providerName, String code) {
 
         // 프론트에서 넘어온 provider 이름을 통해 InMemoryProviderRepository에서 OauthProvider 가져오기
@@ -77,6 +75,7 @@ public class OauthService {
 
         // 유저 정보 가져오기
         UserProfile userProfile = getUserProfile(providerName, tokenResponse, provider);
+
 
 
         // 가져온 OauthId 가지고 db 긁어서 있는회원인지 확인
@@ -98,7 +97,9 @@ public class OauthService {
                 new UserOauthCreateRequest(userProfile.getName(), userProfile.getMobile(), userProfile.getEmail(),
                         userProfile.getBirthday(),userProfile.getOauthId());
 
+
         UserOauthCreateResponse createResponse = userAdaptor.createOauthUser(createRequest);
+
 
         return new UserLoginResponse(true, false, createResponse.getId(), createResponse.getUserStatusName());
 

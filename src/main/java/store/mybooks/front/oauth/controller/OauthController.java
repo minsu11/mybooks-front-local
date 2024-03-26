@@ -1,4 +1,4 @@
-package store.mybooks.front.oauth;
+package store.mybooks.front.oauth.controller;
 
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import store.mybooks.front.auth.adaptor.TokenAdaptor;
 import store.mybooks.front.auth.dto.request.TokenCreateRequest;
 import store.mybooks.front.auth.dto.response.TokenCreateResponse;
+import store.mybooks.front.oauth.service.OauthService;
 import store.mybooks.front.user.dto.response.UserLoginResponse;
 import store.mybooks.front.utils.CookieUtils;
 import store.mybooks.front.utils.Utils;
@@ -51,6 +52,7 @@ public class OauthController {
                             new TokenCreateRequest(loginResponse.getIsAdmin(), loginResponse.getUserId(),
                                     loginResponse.getStatus(), String.valueOf(UUID.randomUUID()),
                                     Utils.getUserIp(request), Utils.getUserAgent(request)));
+
 
             CookieUtils.addJwtCookie(response, tokenCreateResponse.getAccessToken());
             return "redirect:/";

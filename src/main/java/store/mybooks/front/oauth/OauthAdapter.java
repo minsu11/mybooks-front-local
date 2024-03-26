@@ -17,7 +17,14 @@ import java.util.Map;
 
 public class OauthAdapter {
 
-    // OauthProperties를 OauthProvider로 변환해준다.
+    /**
+     * methodName : getOauthProviders
+     * author : masiljangajji
+     * description : OauthProperties를 OauthProvider로 변환
+     *
+     * @param properties OauthProperties cliendId , cliendSecrect
+     * @return map
+     */
     public static Map<String, OauthProvider> getOauthProviders(OauthProperties properties) {
         Map<String, OauthProvider> oauthProvider = new HashMap<>();
 

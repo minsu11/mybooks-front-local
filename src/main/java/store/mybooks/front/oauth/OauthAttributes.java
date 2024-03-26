@@ -25,7 +25,6 @@ public enum OauthAttributes {
         @Override
         public UserProfile of(Map<String, Object> attributes) {
 
-
             // 페이코에서 보낸 json 형식을 자바 객체로 변환
             Map<String, Object> data = (Map<String, Object>) attributes.get("data");
             Map<String, Object> member = (Map<String, Object>) data.get("member");
@@ -49,7 +48,7 @@ public enum OauthAttributes {
     /**
      * methodName : extract
      * author : masiljangajji
-     * description :
+     * description : providername 을 이용해 어떤 서비스 제공
      *
      * @param providerName name
      * @param attributes   attributes
