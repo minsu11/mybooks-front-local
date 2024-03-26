@@ -32,7 +32,6 @@ public class UserCreateRequest {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birth;
 
-    private Boolean isAdmin;
 
 
     public void setPassword(String password) {
