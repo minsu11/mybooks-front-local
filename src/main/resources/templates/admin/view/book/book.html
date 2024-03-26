@@ -12,6 +12,9 @@
             display: block;
             margin: 0 auto;
         }
+        .regular-cost {
+            text-decoration: line-through;
+        }
     </style>
     <script>
         let url = "/admin/book"
@@ -34,7 +37,10 @@
                             </a>
                             <p>리뷰: <span th:text="${book.rate}">/5</span>(<span
                                     th:text="(${book.reviewCount})"></span>)</p>
-                            <p class="card-text" th:text="${book.saleCost == book.cost} ? '₩' + ${book.saleCost} : ('₩' + ${book.saleCost} + ' (' + ${book.cost} + ')')"></p>
+                            <p class="card-text" th:text="${book.saleCost == book.cost} ?
+    ${#numbers.formatInteger(book.saleCost, 1, 'COMMA')} + '원' :
+    (${#numbers.formatInteger(book.saleCost, 1, 'COMMA')} + '원 (원가: ' + ${#numbers.formatInteger(book.cost, 1, 'COMMA')} + '원)')">
+                            </p>
                         </div>
                     </div>
                 </div>
