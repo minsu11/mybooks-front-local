@@ -29,18 +29,42 @@ public class UserGradeController {
     private final UserGradeAdaptor userGradeAdaptor;
 
 
+    /**
+     * methodName : findAllAvailableUserGrade
+     * author : masiljangajji
+     * description : 활성상태인 유저 등급을 보여줌
+     *
+     * @param model model
+     * @return string
+     */
     @GetMapping
     public String findAllAvailableUserGrade(Model model) {
         model.addAttribute("userGrades", userGradeAdaptor.findAllAvailableUserGrade());
         return "admin/view/user/grade-active";
     }
 
+    /**
+     * methodName : findAllUserGrade
+     * author : masiljangajji
+     * description : 활성+비활성 상태의 모든 유저 둥급을 보여줌
+     *
+     * @param model model
+     * @return string
+     */
     @GetMapping("/all")
     public String findAllUserGrade(Model model) {
         model.addAttribute("userGrades", userGradeAdaptor.findAllUserGrade());
         return "admin/view/user/grade-all";
     }
 
+    /**
+     * methodName : createUserGrade
+     * author : masiljangajji
+     * description : 유저등급을 생성 함
+     *
+     * @param request 포인트 적립률 , 등급이름
+     * @return string
+     */
     @PostMapping
     public String createUserGrade(@ModelAttribute UserGradeCreateRequest request) {
         userGradeAdaptor.createUserGrade(request);
