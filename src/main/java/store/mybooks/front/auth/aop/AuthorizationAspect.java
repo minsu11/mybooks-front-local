@@ -49,6 +49,19 @@ public class AuthorizationAspect {
 
     private final RedisProperties redisProperties;
 
+    /**
+     * methodName : aroundMethod
+     * author : masiljangajji
+     * description : RequiredAuthorization 어노테이션이 걸려있는 경우 , 회원의 인가처리가 필요하다는 것을 의미
+     * identity-cookie 라는 이름의 쿠키에 JWT 를 담고 있기 떄문에 Header 에 토큰으 담아서 gateway 로 보냄
+     * gateway 에서 토큰 검증 및 유저 검증 인가처리에 문제가 없을 시 그대로 return
+     * Exception 이 발생한다면 (토큰 검증 실패 , 토큰만료 , 일반 유저가 어드민이 사용하는 기능접근 ,유저 휴면상태 , 유저 잠금상태) ErrorMessage 를 이용해
+     * 각각의 상황에 맞는 처리를 함 
+     *
+     * @param joinPoint point
+     * @return object
+     * @throws Throwable the throwable
+     */
     @Around(value = "@annotation(store.mybooks.front.auth.Annotation.RequiredAuthorization)")
     public Object aroundMethod(ProceedingJoinPoint joinPoint) throws Throwable {
 
