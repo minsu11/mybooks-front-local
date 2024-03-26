@@ -11,7 +11,6 @@ import store.mybooks.front.review.dto.request.ReviewCreateRequest;
 import store.mybooks.front.review.dto.request.ReviewModifyRequest;
 import store.mybooks.front.review.dto.response.ReviewDetailGetResponse;
 import store.mybooks.front.review.dto.response.ReviewGetResponse;
-import store.mybooks.front.review.dto.response.ReviewRateResponse;
 
 /**
  * packageName    : store.mybooks.front.review.controller.service<br>
@@ -48,10 +47,6 @@ public class ReviewService {
 
     public PageResponse<ReviewDetailGetResponse> getBookReview(Pageable pageable, Long bookId){
         return reviewAdaptor.getBookReview(pageable,bookId);
-    }
-
-    public ReviewRateResponse getTotalReviewRate(Long bookId){
-        return  reviewAdaptor.getTotalReviewRate(bookId);
     }
 
 }
