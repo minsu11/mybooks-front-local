@@ -55,7 +55,7 @@ public class UserAddressController {
      * author : masiljangajji
      * description : 유저의 주소를 삭제
      *
-     * @param addressId id
+     * @param addressId 주소 아이디
      * @return string
      */
     @PostMapping("/user/address/delete")
@@ -69,7 +69,7 @@ public class UserAddressController {
      * author : masiljangajji
      * description : 유저의 주소를 등록
      *
-     * @param userAddressCreateRequest address create request
+     * @param userAddressCreateRequest 별명 , 도로명주소 , 상세주소 , 추가정보 , 등의 정보
      * @return string
      */
     @PostMapping("/user/address/create")
@@ -84,7 +84,7 @@ public class UserAddressController {
      * description : 유저의 주소를 수정 (별명,상세주소)
      *
      * @param addressId id
-     * @param userAddressModifyRequest    address modify request
+     * @param userAddressModifyRequest  별명 상세주소  추가정보
      * @return string
      */
     @PostMapping("/user/address/modify")
