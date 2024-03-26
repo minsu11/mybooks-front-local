@@ -145,7 +145,7 @@
 
                                     <p><strong>주문 상태:</strong> <span th:text="${detail.statusId}">Order Status</span>
                                     </p>
-                                    <a th:if="${detail.statusId != '구매 확정' and ${order.statusId == '배송 완료'}}"
+                                    <a th:if="${detail.statusId != '구매 확정'}and ${order.statusId == '배송 완료'}"
                                        th:href="'/review/' + ${order.id} + '/register/' + ${detail.orderDetailId}"
                                        class="button">리뷰 작성</a>
                                 </div>
