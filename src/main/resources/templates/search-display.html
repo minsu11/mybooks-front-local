@@ -32,6 +32,8 @@
         <div class="container">
             <div>
                 <div class="sort-options">
+                    <a th:href="@{/search(query=${query}, order='accuracy')}" id="accuracy"
+                       th:class="${order == 'accuracy'} ? 'active' : ''">정확도순</a>
                     <a th:href="@{/search(query=${query}, order='popular')}" id="popular"
                        th:class="${order == 'popular'} ? 'active' : ''">인기도순</a>
                     <a th:href="@{/search(query=${query}, order='recent')}" id="recent"
