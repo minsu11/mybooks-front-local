@@ -74,16 +74,10 @@ public class UserController {
      * 이미 로그인했다면 인덱스 , 아니라면 로그인페이지로
      *
      * @param request servlet request
-     * @param model model
      * @return string
      */
     @GetMapping("/login")
-    public String loginUserForm(HttpServletRequest request,Model model) {
-
-        if(Objects.nonNull(request.getSession().getAttribute("error"))){
-            model.addAttribute("loginFailed",request.getSession().getAttribute("error"));
-            request.getSession().removeAttribute("error");
-        }
+    public String loginUserForm(HttpServletRequest request) {
 
         if (Objects.isNull(request.getAttribute("identity_cookie_value"))) {
             return "login";
