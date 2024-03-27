@@ -102,13 +102,11 @@
         } else {
             opener.document.getElementById("coupon-cost").value = parseInt(opener.document.getElementById("coupon-cost").value) + parseInt(saleCost);
             // opener.document.getElementById("coupon-cost").value = parseInt(couponCost) + parseInt(opener.document.getElementById("coupon-cost").value);
-            alert("합계 한 후: " + opener.document.getElementById("coupon-cost").value)
             opener.document.getElementsByClassName('select-coupon-cost')[index].value = saleCost;
             alert(opener.document.getElementsByClassName('select-coupon-cost')[index].value)
         }
         opener.document.getElementById('totalCost').textContent = (parseInt(bookTotalCost) - parseInt(opener.document.getElementById("coupon-cost").value) -
             parseInt(opener.document.getElementById('user-point').value)).toString()
-        alert(opener.document.getElementsByClassName('select-coupon-id')[index].value)
 
         window.close()
     }
@@ -135,11 +133,7 @@
         const couponBtn = document.getElementById('coupon-btn');
         const coupon = radio.parentElement.querySelector('.price');
         const couponId = radio.parentElement.querySelector('input[class="coupon-id-form"]').id
-        alert("error")
         const couponOrderMin = radio.parentElement.querySelector(".coupon-order-min").getAttribute("data-min")
-        alert("error1")
-        alert("if")
-        alert("test: " + radio.parentElement.querySelector(".max-discount-cost").getAttribute("data-maxDiscount"))
         const maxDiscountCost = radio.parentElement.querySelector(".max-discount-cost").getAttribute("data-maxDiscount")
         couponBtn.setAttribute('coupon-max-discount-cost', maxDiscountCost)
         couponBtn.setAttribute('coupon-name', radio.value);
@@ -149,7 +143,7 @@
         couponBtn.setAttribute('coupon-order-min', couponOrderMin)
     }
 
-    
+
 </script>
 </body>
 </html>

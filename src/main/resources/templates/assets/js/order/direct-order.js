@@ -26,7 +26,6 @@ document.addEventListener('DOMContentLoaded', function (event
     payBtn.addEventListener('submit', function () {
         const couponCost = document.getElementById('coupon-cost')
         console.log(wrapCost.value);
-        alert(wrapCost.value);
         if (couponCost.value < 0 || wrapCost.value < 0) {
             alert("음수를 입력했습니다.")
             event.preventDefault()
@@ -34,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function (event
         }
     })
 
-    
+
     date.addEventListener('change', function () {
         document.getElementById('delivery-date-label').textContent = date.value;
     })

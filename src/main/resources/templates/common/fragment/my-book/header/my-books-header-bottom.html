@@ -106,5 +106,34 @@
             </div>
         </div>
     </div>
+    <script>
+
+        async function checkUser() {
+            const response = await fetch("/home/user/identity", {
+                method: "GET"
+            });
+            const json = await response.json(); // response.json()을 호출하고 그 결과를 기다립니다.
+
+            console.log(json);
+            if (!response.ok) {
+                console.log("error")
+                return
+            }
+            if (json.checkResult === false) {
+                var newListItem = document.createElement("li");
+                newListItem.className = "nav-item";
+                newListItem.innerHTML = '<a href="/order/non-user">비회원 조회</a>';
+
+                var nav = document.getElementById("nav");
+                nav.appendChild(newListItem);
+            }
+
+
+        }
+
+        checkUser()
+
+
+    </script>
 </div>
 </html>

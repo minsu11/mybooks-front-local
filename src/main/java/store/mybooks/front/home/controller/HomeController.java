@@ -1,4 +1,4 @@
-package store.mybooks.front.home;
+package store.mybooks.front.home.controller;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -8,13 +8,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import store.mybooks.front.admin.book.model.response.BookLikeResponse;
 import store.mybooks.front.admin.book.model.response.BookPopularityResponse;
 import store.mybooks.front.admin.book.model.response.BookPublicationDateResponse;
 import store.mybooks.front.admin.book.model.response.BookRatingResponse;
 import store.mybooks.front.admin.book.model.response.BookReviewResponse;
-import store.mybooks.front.admin.book.service.BookAdminService;
 import store.mybooks.front.book.service.BookService;
 
 /**
@@ -56,4 +54,6 @@ public class HomeController {
     public String apiDocs() {
         return "api-docs";
     }
+
+
 }

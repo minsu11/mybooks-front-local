@@ -15,7 +15,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import store.mybooks.front.admin.book.model.response.BookGetResponseForOrder;
 import store.mybooks.front.admin.book.model.response.BookStockResponse;
 import store.mybooks.front.admin.delivery_rule.dto.DeliveryRuleResponse;
@@ -204,16 +209,22 @@ public class OrderController {
             modelMap.put("point", pointResponse.getRemainingPoint());
             bookFromCart = cartUserService.getBookFromCart();
             modelMap.put("userCheck", true);
+            if (bookFromCart.isEmpty()) {
+                modelMap.put("errorMessage", "장바구니가 비었습니다.");
+                return "redirect:/cart";
+            }
         } else {
-
             bookFromCart = cartNonUserService.getBookFromCart(cartCookie);
+            if (bookFromCart.isEmpty()) {
+                modelMap.put("errorMessage", "장바구니가 비었습니다.");
+                return "redirect:/cart";
+            }
             orderInfoCheckService.validationCheckNonUserOrder(bookFromCart);
             modelMap.put("userCheck", false);
         }
-        if (bookFromCart.isEmpty()) {
-            return "/redirect:/cart";
-        }
-        DeliveryRuleResponse deliveryRule = deliveryRuleService.getDeliveryRuleResponseByName("배송 비");
+
+        DeliveryRuleResponse deliveryRule = deliveryRuleService
+                .getDeliveryRuleResponseByName(DeliveryRuleNameEnum.DELIVERY.getValue());
         modelMap.put("bookLists", bookFromCart);
         modelMap.put("totalCost", orderService.calculateTotalCost(bookFromCart, deliveryRule));
         modelMap.put("localDate", LocalDate.now());

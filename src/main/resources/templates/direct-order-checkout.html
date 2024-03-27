@@ -132,7 +132,8 @@
                                                         <div class="row">
                                                             <div class="col-md-6 form-input form">
                                                                 <label>
-                                                                    <input name="userInfo.userName" type="text">
+                                                                    <input name="userInfo.userName" type="text"
+                                                                           placeholder="1~6자리까지 입력하세요">
                                                                 </label>
                                                             </div>
                                                         </div>
@@ -295,7 +296,7 @@
                                                                         <input id="quantity"
                                                                                th:name="|bookInfoList[${index.index}].amount|"
                                                                                th:value="${quantity}"
-                                                                               type="text"/>
+                                                                               type="hidden"/>
                                                                     </label>
                                                                 </div>
                                                             </td>

@@ -229,6 +229,7 @@ public class OrderInfoCheckService {
     }
 
     public void validationCheckNonUserOrder(List<CartDetail> cartDetailList) {
+
         for (CartDetail cartDetail : cartDetailList) {
             BookStockResponse stock = bookAdaptor.getBookStockResponse(cartDetail.getBookId());
             if (cartDetail.getStock() > stock.getStock()) {

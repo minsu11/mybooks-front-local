@@ -33,9 +33,11 @@
         const wrapName = document.getElementById('wrap-btn').getAttribute('wrap-name');
         const wrapCost = document.getElementById('wrap-btn').getAttribute('wrap-cost');
         const selectId = document.getElementById('wrap-btn').getAttribute('radio-id');
-
+        alert("포장지 이름" + wrapName)
+        alert("포장지 가격" + wrapCost)
+        alert("포장지 아이디" + selectId)
         const bookTotalCost = opener.document.getElementById('input-total-cost').value;
-
+        alert("총합: " + bookTotalCost)
         opener.document.querySelectorAll('p[class="select-wrap-name"]')[button.value].textContent = wrapName.toString()
         opener.document.getElementsByClassName("select-wrap")[button.value].value = selectId
         if (!beforeWrapCost) {
