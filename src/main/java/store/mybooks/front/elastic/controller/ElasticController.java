@@ -40,7 +40,7 @@ public class ElasticController {
                                       Pageable pageable, Model model) {
         PageResponse<BookBriefResponse> result = elasticService.getSearchResultPage(query, pageable, order);
 
-        model.addAttribute("order", (order != null) ? order : "popular");
+        model.addAttribute("order", (order != null) ? order : "accuracy");
         if ("rate".equals(order)) {
             List<BookBriefResponse> checkReviewCount = result.getContent().stream()
                     .filter(book -> book.getReviewCount() != null && book.getReviewCount() >= 100)

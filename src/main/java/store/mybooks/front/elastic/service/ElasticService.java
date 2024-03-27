@@ -28,9 +28,14 @@ public class ElasticService {
     private final ElasticAdaptor elasticAdaptor;
 
     public PageResponse<BookBriefResponse> getSearchResultPage(String query, Pageable pageable, String order) {
-        if (order != null) {
-            Sort sort;
+        Sort sort;
+        if (order == null || order.equals("accuracy")) {
+            sort = Sort.by(Sort.Direction.DESC, "_score");
+        } else {
             switch (order) {
+                case "popular":
+                    sort = Sort.by(Sort.Direction.DESC, "book_view_count");
+                    break;
                 case "recent":
                     sort = Sort.by(Sort.Direction.DESC, "book_publish_date");
                     break;
@@ -47,10 +52,10 @@ public class ElasticService {
                     sort = Sort.by(Sort.Direction.DESC, "book_review_count");
                     break;
                 default:
-                    sort = Sort.by(Sort.Direction.DESC, "book_view_count");
+                    sort = Sort.by(Sort.Direction.DESC, "_score");
             }
-            pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
         }
+        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
         return elasticAdaptor.searchPaged(query, pageable);
     }
 }
