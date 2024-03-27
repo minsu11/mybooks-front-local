@@ -21,8 +21,6 @@ import org.springframework.web.servlet.view.RedirectView;
 import store.mybooks.front.auth.adaptor.TokenAdaptor;
 import store.mybooks.front.auth.dto.request.TokenCreateRequest;
 import store.mybooks.front.auth.dto.response.TokenCreateResponse;
-import store.mybooks.front.auth.exception.LoginFailedException;
-import store.mybooks.front.auth.exception.PasswordNotValidException;
 import store.mybooks.front.auth.redis.RedisAuthService;
 import store.mybooks.front.config.RedisProperties;
 import store.mybooks.front.user.adaptor.UserAdaptor;
@@ -275,7 +273,6 @@ public class UserController {
     public String loginUser(@ModelAttribute UserLoginRequest userLoginRequest, HttpServletRequest request,
                             HttpServletResponse response) {
 
-        try{
             UserEmailRequest emailRequest = new UserEmailRequest(userLoginRequest.getEmail());
 
             // 이메일 존재하는지 , 탈퇴했는지
@@ -306,12 +303,8 @@ public class UserController {
 
                 return "redirect:/";
             }
-            // 기존이 에러는 Error Page 로 보내지만 로그인의 경우 실패한 이유를 alert 로 알려주기 위한 처리
-            throw new PasswordNotValidException();
-        }catch (RuntimeException e){
-            throw new LoginFailedException(e.getMessage());
-        }
 
+        return "redirect:/login";
     }
 
 
