@@ -80,7 +80,7 @@ public class AuthorizationAspect {
         } catch (RuntimeException e) {
 
             String error = e.getMessage();
-            log.info("aop fin:" + error);
+            log.error("aop fin:" + error);
 
             if (error.contains(ErrorMessage.INVALID_ACCESS.getMessage())) { // 권한이 없음
                 throw new AccessIdForbiddenException(); // 인덱스로 보내기

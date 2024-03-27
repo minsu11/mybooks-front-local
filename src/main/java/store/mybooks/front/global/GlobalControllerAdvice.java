@@ -64,13 +64,7 @@ public class GlobalControllerAdvice {
         request.getSession().setAttribute("error", exception.getMessage());
         return previousUrl.replace(domain, "redirect:");
     }
-
-
-    @ExceptionHandler({LoginFailedException.class})
-    public String handleLoginFailedException(Exception exception, HttpServletRequest request) {
-        request.getSession().setAttribute("error", exception.getMessage());
-        return "redirect:/login";
-    }
+    
 
 
     @ExceptionHandler({Exception.class}) // 발생하는 모든 예외
