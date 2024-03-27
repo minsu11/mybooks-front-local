@@ -33,11 +33,12 @@
                     <td th:text="${coupon.name}"></td>
                     <td th:text="${coupon.range}"></td>
                     <td th:text="${coupon.target}"></td>
-                    <td th:text="${coupon.orderMin}"></td>
+                    <td th:text="'₩' + ${#numbers.formatInteger(coupon.orderMin, 0, 'COMMA')}"></td>
                     <td th:if="${coupon.isRate}" th:text="${coupon.discountRateOrCost} + '%'"></td>
                     <td th:unless="${coupon.isRate}"
-                        th:text="'₩' + ${#numbers.formatInteger(coupon.discountRateOrCost, 3, 'COMMA')}"></td>
-                    <td th:text="${coupon.maxDiscountCost}"></td>
+                        th:text="'₩' + ${#numbers.formatInteger(coupon.discountRateOrCost, 0, 'COMMA')}"></td>
+                    <td th:if="${coupon.maxDiscountCost}" th:text="'₩' + ${#numbers.formatInteger(coupon.maxDiscountCost, 0, 'COMMA')}"></td>
+                    <td th:unless="${coupon.maxDiscountCost}"></td>
                     <td th:text="${coupon.startDate}"></td>
                     <td th:text="${coupon.endDate}"></td>
                     <td>
