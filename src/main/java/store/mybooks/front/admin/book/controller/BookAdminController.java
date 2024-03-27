@@ -134,6 +134,6 @@ public class BookAdminController {
     public String updateBook(@RequestParam("id") Long bookId, @Valid @ModelAttribute BookModifyRequest modifyRequest, @RequestParam(value = "thumbnailImage", required = false)
     MultipartFile thumbnailImage, @RequestParam(value = "contentImage", required = false) List<MultipartFile> contentImages) throws IOException {
         bookAdminService.updateBook(bookId, modifyRequest, thumbnailImage, contentImages);
-        return "redirect:/admin/book/update?id=" + bookId;
+        return "redirect:/admin/book";
     }
 }
