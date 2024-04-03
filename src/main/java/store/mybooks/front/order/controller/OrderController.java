@@ -343,4 +343,8 @@ public class OrderController {
         return "redirect:/address";
     }
 
+    @GetMapping("order/non-user")
+    public String viewNonUserOrder() {
+        return "non-user-order";
+    }
 }

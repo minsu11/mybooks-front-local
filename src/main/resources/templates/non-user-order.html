@@ -57,6 +57,10 @@
             background-color: #333333;
             color: #ffffff;
         }
+
+        .title-test {
+
+        }
     </style>
 </div>
 
@@ -66,51 +70,25 @@
 
             <section>
                 <div class="form-text">
-                    <div>
-                        <h3>결제 정보</h3>
+                    <div style="margin-bottom: 10px;">
+                        <h4 style="text-align:center;">
+                            주문 내역 조회
+                        </h4>
                         <hr>
-                        <div style="margin-top: 10px">
-                            <span th:text="'주문 번호: ' + ${orderInfo.number}"></span>
-                            <br>
-                            <span th:text="'결제 금액: ' + ${orderInfo.totalCost}"></span>
-                            <br>
-                            <input th:value="${orderInfo.number}" type="hidden"
-                                   id="order-number">
-                            <input th:value="${orderInfo.totalCost}" type="hidden"
-                                   id="order-total-cost">
-                        </div>
-                    </div>
-                </div>
+
+                        <label style="display: block; text-align: center;">
+                            <p>주문 코드</p>
+                            <input type="text" name="orderCode" maxlength="6">
+                        </label>
 
 
-                <div class="wrapper">
-                    <div
-                            class="box_section"
-                            style="
-          padding: 40px 30px 50px 30px;
-          margin-top: 30px;
-          margin-bottom: 50px;
-        ">
-                        <input class="toss" th:value="${tossValue}" type="hidden">
-                        <!-- 결제 UI -->
-                        <div id="payment-method"></div>
-                        <!-- 이용약관 UI -->
-                        <div id="agreement"></div>
-                        <!-- 결제하기 버튼 -->
-                        <div class="result wrapper">
-                            <button class="button" id="payment-button" style="margin-top: 30px">
-                                결제하기
-                            </button>
-                        </div>
                     </div>
 
+
                 </div>
+
             </section>
-
         </div>
-
     </div>
-    <script src="/assets/js/payment/payment.js"></script>
-
 </div>
 </html>
