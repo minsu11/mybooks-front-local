@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', function (event
     const submitForm = document.getElementById('order-pay-form')
     let data = 0;
     const payForm = document.getElementById('order-pay-form');
-    alert(point)
     if (point) {
         payForm.addEventListener('submit', function () {
             payForm.action = "/order";
@@ -96,11 +95,8 @@ function address() {
 
 function copyValuesToHiddenField(address) {
     var addressValue = document.getElementById("sample6_address").value;
-    alert(addressValue)
     var detailAddressValue = document.getElementById("sample6_detailAddress").value;
-    alert(detailAddressValue)
     address = addressValue + ', ' + detailAddressValue;
-    alert(addressValue)
     return address
 }
 
@@ -158,3 +154,4 @@ textarea.addEventListener('input', function () {
         }
     }
 });
+

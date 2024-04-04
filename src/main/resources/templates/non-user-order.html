@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout/my-books-layout}">
+<div layout:fragment="customSetting">
+    <style>
+        /* 섹션 스타일링 */
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        section {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+        }
+
+        /* 제목 스타일링 */
+        h3 {
+            margin-top: 0;
+            font-size: 24px;
+            color: #333333;
+        }
+
+        /* 소제목 스타일링 */
+        h5 {
+            margin-top: 10px;
+            margin-bottom: 5px;
+            font-size: 18px;
+            color: #666666;
+        }
+
+        /* 숨김 필드 스타일링 */
+        input[type="hidden"] {
+            display: none;
+        }
+
+        /* 값 표시 스타일링 */
+        span {
+            font-size: 16px;
+            color: #333333;
+        }
+
+        .button {
+            background-color: #ffffff;
+            color: #333333;
+            border: 2px solid #333333;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        /* 마우스 호버 효과 */
+        .button:hover {
+            background-color: #333333;
+            color: #ffffff;
+        }
+
+        .title-test {
+
+        }
+    </style>
+</div>
+
+<div layout:fragment="content">
+    <div class="container" style="margin-top: 30px;">
+        <div class="row justify-content-center">
+
+            <section>
+                <div class="form-text">
+                    <div style="margin-bottom: 10px;">
+                        <h4 style="text-align:center;">
+                            주문 내역 조회
+                        </h4>
+                        <hr>
+
+                        <label style="display: block; text-align: center;">
+                            <p>주문 코드</p>
+                            <input type="text" name="orderCode" maxlength="6">
+                        </label>
+
+
+                    </div>
+
+
+                </div>
+
+            </section>
+        </div>
+    </div>
+</div>
+</html>
